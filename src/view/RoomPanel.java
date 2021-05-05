@@ -59,9 +59,9 @@ public class RoomPanel extends JPanel {
     private final String TITLE = "Room";
 
     public RoomPanel() {
-    	//get rid of magic numbers
+    	//TODO: get rid of magic numbers
         setPreferredSize(new Dimension(600,600));
-        //this gets set to 3 so that it get
+        //this gets set to 3 so that running animation starts on correct frame
         myCurrentRunIconValue = 3;
         myPlayerMovementStatus = "STANDING";
         myCurrentIcon = RIGHT_STANDING_ICON;
