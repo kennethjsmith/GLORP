@@ -5,7 +5,7 @@ package model;
  * @author
  * @version
  */
-public class Passage {
+public class Door {
 	// fields
 	Riddle myRiddle;
 	Room myNextRoom;
@@ -14,10 +14,10 @@ public class Passage {
 	Boolean permaBlocked;
 	
 	
-	public Passage() {	
+	public Door() {	
 	}
 	
-	public Passage(Riddle theRiddle) {
+	public Door(Riddle theRiddle) {
 		myRiddle = theRiddle;
 		locked = false;
 		permaBlocked = false;

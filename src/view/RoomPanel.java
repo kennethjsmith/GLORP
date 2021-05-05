@@ -24,7 +24,7 @@ public class RoomPanel extends JPanel {
 
     // fields
 	private static final long serialVersionUID = 1L;
-	
+	//TODO: add front/rear facing icons
     //left facing alien icons
     private ImageIcon[] LEFT_RUNNING_ICONS = new ImageIcon[] 
     		{new ImageIcon("src/icons/left_running_alien1.png"), 
@@ -44,9 +44,8 @@ public class RoomPanel extends JPanel {
     private ImageIcon myCurrentIcon;
     private boolean skipFrame;
     private String myPlayerDirection;
-    private String myPlayerMovementStatus;
     private static final String[] PLAYER_DIRECTIONS = {"LEFT", "RIGHT"};
-    private static final String[] PLAYER_MOVEMENT_STATUS = {"RUNNING", "STANDING"};
+   
     
     // Set of currently pressed keys
     //TODO: create a movement/controller class?
@@ -62,8 +61,7 @@ public class RoomPanel extends JPanel {
     	//TODO: get rid of magic numbers
         setPreferredSize(new Dimension(600,600));
         //this gets set to 3 so that running animation starts on correct frame
-        myCurrentRunIconValue = 3;
-        myPlayerMovementStatus = "STANDING";
+        myCurrentRunIconValue = 0;
         myCurrentIcon = RIGHT_STANDING_ICON;
         skipFrame = true;
         JLabel label = new JLabel(TITLE, JLabel.LEFT);

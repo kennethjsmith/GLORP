@@ -7,10 +7,10 @@ package model;
  */
 //TODO: create subclasses (start and end rooms)
 public class Room {
-	Passage myNorthPassage;
-	Passage mySouthPassage;
-	Passage myWestPassage;
-	Passage myEastPassage;
+	Door myNorthPassage;
+	Door mySouthPassage;
+	Door myWestPassage;
+	Door myEastPassage;
 	
 	Item myItem;
 	int myItemXCoordinate;
