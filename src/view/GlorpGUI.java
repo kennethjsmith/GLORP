@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -29,22 +30,22 @@ public class GlorpGUI extends JFrame implements KeyListener, ActionListener {
     private static final String TITLE = "GLORP";
     
     private RoomPanel myRoomPanel;
-    private MazePanel myMazePanel;
+    private MapPanel myMazePanel;
     private RiddlePanel myRiddlePanel;
     //TODO: add panels for maze map and sphinx/questions
 
     public GlorpGUI() {
         super();
         setTitle(TITLE);
-        JPanel gamePanel = new JPanel();
-        //gamePanel.setLayout(new BoxLayout());
-        setContentPane(gamePanel);
-        myMazePanel = new MazePanel();
-        gamePanel.add(myMazePanel);
+        setPreferredSize(new Dimension(840, 840));
+        setResizable(false);
+        this.setLayout(new BorderLayout());
+        myMazePanel = new MapPanel();
+        add(myMazePanel, BorderLayout.WEST);
         myRoomPanel = new RoomPanel();
-        gamePanel.add(myRoomPanel);
+        add(myRoomPanel, BorderLayout.EAST);
         myRiddlePanel = new RiddlePanel();
-        gamePanel.add(myRiddlePanel);
+        add(myRiddlePanel, BorderLayout.SOUTH);
         pack();
         addKeyListener(this);
         repaint();

@@ -9,7 +9,6 @@ public class Door {
 	// fields
 	Riddle myRiddle;
 	Room myNextRoom;
-	
 	Boolean locked;
 	Boolean permaBlocked;
 	

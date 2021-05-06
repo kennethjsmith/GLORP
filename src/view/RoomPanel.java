@@ -5,13 +5,16 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 
 import model.Alien;
 
@@ -26,24 +29,25 @@ public class RoomPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	//TODO: add front/rear facing icons
     //left facing alien icons
-    private ImageIcon[] LEFT_RUNNING_ICONS = new ImageIcon[] 
+    private static ImageIcon[] LEFT_RUN_ICONS = new ImageIcon[] 
     		{new ImageIcon("src/icons/left_running_alien1.png"), 
     			new ImageIcon("src/icons/left_running_alien2.png"),
     				new ImageIcon("src/icons/left_running_alien3.png"),
     					new ImageIcon("src/icons/left_running_alien4.png")};
-    private ImageIcon LEFT_STANDING_ICON = new ImageIcon("src/icons/left_standing_alien.png");
+    private static ImageIcon LEFT_STANDING_ICON = new ImageIcon("src/icons/left_standing_alien.png");
     //right facing alien icons
-    private ImageIcon[] RIGHT_RUNNING_ICONS = new ImageIcon[] 
+    private static ImageIcon[] RIGHT_RUN_ICONS = new ImageIcon[] 
     		{new ImageIcon("src/icons/right_running_alien1.png"), 
     			new ImageIcon("src/icons/right_running_alien2.png"),
     				new ImageIcon("src/icons/right_running_alien3.png"),
     					new ImageIcon("src/icons/right_running_alien4.png")};
-    private ImageIcon RIGHT_STANDING_ICON = new ImageIcon("src/icons/right_standing_alien.png");
-    
+    private static ImageIcon RIGHT_STANDING_ICON = new ImageIcon("src/icons/right_standing_alien.png");
+    private static final int ICON_SIZE = 100;
     private int myCurrentRunIconValue; //used to determine which running icon
     private ImageIcon myCurrentIcon;
     private boolean skipFrame;
     private String myPlayerDirection;
+    private static final int myPlayerSpeed = 5;
     private static final String[] PLAYER_DIRECTIONS = {"LEFT", "RIGHT"};
    
     
@@ -56,12 +60,18 @@ public class RoomPanel extends JPanel {
     private int myYCoordinate = 0;
     
     private final String TITLE = "Room";
+    private final static int SIZE = 500;
 
     public RoomPanel() {
-    	//TODO: get rid of magic numbers
-        setPreferredSize(new Dimension(600,600));
-        //this gets set to 3 so that running animation starts on correct frame
+        setPreferredSize(new Dimension(SIZE,SIZE));
+        // add border
+        Border blackline = BorderFactory.createLineBorder(Color.black);
+        setBorder(blackline);
+        //resize all image icons
+        resizeImageIcons();
+        
         myCurrentRunIconValue = 0;
+        myPlayerDirection = "RIGHT";
         myCurrentIcon = RIGHT_STANDING_ICON;
         skipFrame = true;
         JLabel label = new JLabel(TITLE, JLabel.LEFT);
@@ -73,7 +83,48 @@ public class RoomPanel extends JPanel {
     public void update(Graphics g) {
         paint(g);
     }
+    
+    /**
+     * Helper for resizing single icon
+     */
+    private static void resizeImageIcons() {
+    	Image inTempImage;
+    	//resize left facing standing icon
+    	inTempImage = LEFT_STANDING_ICON.getImage(); // transform it 
+		inTempImage = inTempImage.getScaledInstance(ICON_SIZE, ICON_SIZE,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+		LEFT_STANDING_ICON = new ImageIcon(inTempImage);  // transform it back
+    	
+		//resize left facing standing icon
+    	inTempImage = RIGHT_STANDING_ICON.getImage(); // transform it 
+		inTempImage = inTempImage.getScaledInstance(ICON_SIZE, ICON_SIZE,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+		RIGHT_STANDING_ICON = new ImageIcon(inTempImage);  // transform it back
+    
+		resizeImageIconArrays();
+    }
+    
+    
+    /**
+     * Helper method, resizes to standard icon size.
+     * @param theIcons
+     */
+    private static void resizeImageIconArrays() {
 
+    	//resize left facing run icons
+    	for(int i = 0; i < LEFT_RUN_ICONS.length; i++){
+    		Image inTempImage = LEFT_RUN_ICONS[i].getImage(); // transform it 
+    		inTempImage = inTempImage.getScaledInstance(ICON_SIZE, ICON_SIZE,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+    		LEFT_RUN_ICONS[i] = new ImageIcon(inTempImage);  // transform it back
+    	}
+  
+    	//resize right facing run icons
+    	for(int i = 0; i < RIGHT_RUN_ICONS.length; i++){
+    		Image inTempImage = RIGHT_RUN_ICONS[i].getImage(); // transform it 
+    		inTempImage = inTempImage.getScaledInstance(ICON_SIZE, ICON_SIZE,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+    		RIGHT_RUN_ICONS[i] = new ImageIcon(inTempImage);  // transform it back
+    	}
+    }
+    
+ 
     @Override
     public void paintComponent(Graphics g) {
         
@@ -93,9 +144,9 @@ public class RoomPanel extends JPanel {
     	//TODO: create getIcon() class
     	//determine direction
     	if(myPlayerDirection == PLAYER_DIRECTIONS[0])
-    		myCurrentIcon = LEFT_RUNNING_ICONS[myCurrentRunIconValue];
+    		myCurrentIcon = LEFT_RUN_ICONS[myCurrentRunIconValue];
     	else if(myPlayerDirection == PLAYER_DIRECTIONS[1])
-    		myCurrentIcon = RIGHT_RUNNING_ICONS[myCurrentRunIconValue];
+    		myCurrentIcon = RIGHT_RUN_ICONS[myCurrentRunIconValue];
     	
         int k = e.getKeyCode();
         pressedKeys.add(k);
@@ -104,22 +155,21 @@ public class RoomPanel extends JPanel {
         //TODO: this results in always facing left when simultaneous left/right keys are pressed
         //make velocity increment speed a class constant
         if(pressedKeys.contains(KeyEvent.VK_D)) {
-        	myXVelocity += 4;
+        	myXVelocity += myPlayerSpeed;
         	myPlayerDirection = "RIGHT";
         }
     	if(pressedKeys.contains(KeyEvent.VK_A)) {
-    		myXVelocity -= 4;
+    		myXVelocity -= myPlayerSpeed;
     		myPlayerDirection = "LEFT";
     	}
-    	if(pressedKeys.contains(KeyEvent.VK_S)) myYVelocity += 4;
-    	if(pressedKeys.contains(KeyEvent.VK_W)) myYVelocity -= 4;
+    	if(pressedKeys.contains(KeyEvent.VK_S)) myYVelocity += myPlayerSpeed;
+    	if(pressedKeys.contains(KeyEvent.VK_W)) myYVelocity -= myPlayerSpeed;
         
-    	//TODO: Upperbound of 515 is temporary, image size should be adjusted to a class constant (same with
-    	//panel size) remove magic numbers
+    	
         if((myXCoordinate >= 0 && myXVelocity < 0) || 
-        		(myXCoordinate <= 515 && myXVelocity > 0)) myXCoordinate += myXVelocity;
+        		(myXCoordinate <= SIZE-ICON_SIZE && myXVelocity > 0)) myXCoordinate += myXVelocity;
         if((myYCoordinate >= 0 && myYVelocity < 0) || 
-        		(myYCoordinate <= 515 && myYVelocity > 0)) myYCoordinate += myYVelocity;
+        		(myYCoordinate <= SIZE-ICON_SIZE && myYVelocity > 0)) myYCoordinate += myYVelocity;
     }
 
 	public void keyReleased(KeyEvent e) {
@@ -131,6 +181,6 @@ public class RoomPanel extends JPanel {
     	else if(myPlayerDirection == PLAYER_DIRECTIONS[1])
     		myCurrentIcon = RIGHT_STANDING_ICON;
 
-		myCurrentRunIconValue = 2;
+		myCurrentRunIconValue = 0;
 	}
 }

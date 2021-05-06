@@ -9,9 +9,11 @@ import javax.swing.JPanel;
 
 public class RiddlePanel extends JPanel {
 	private final String TITLE = "Riddle";
+	private final static int WIDTH = 800;
+	private final static int HEIGHT = 300;
 	
 	public RiddlePanel() {
-        setPreferredSize(new Dimension(400,200));
+        setPreferredSize(new Dimension(WIDTH,HEIGHT));
         JLabel label = new JLabel(TITLE, JLabel.LEFT);
         setLayout(new FlowLayout());
         add(label); 

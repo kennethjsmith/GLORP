@@ -3,7 +3,7 @@ package model;
 import java.util.Stack;
 
 /**
- * The maze has all the rooms in a 2D array with a buffer around the border.
+ * The maze has all the rooms in a 2D array with adi buffer around the border.
  * @author 
  *
  */
@@ -18,7 +18,7 @@ public class Maze {
 	public Maze() {
 		myMaze = new Room[WIDTH+BORDER_BUFFER][LENGTH+BORDER_BUFFER];
 		addRooms();
-		connectRooms();
+		//connectRooms();
 	}
 	
 	//TODO: room factory? start, win, item rooms etc
@@ -29,7 +29,7 @@ public class Maze {
 			}
 		}
 	}
-	
+	/*
 	public void connectRooms() {
 		for (int i=1;i<=LENGTH;i++){
 	        for (int j=1;j<=WIDTH;j++){
@@ -43,7 +43,7 @@ public class Maze {
 	            	myMaze[i][j].myWestPassage.myNextRoom = myMaze[i][j-1];
 	        }   
 	    }
-	}
+	}*/
 	//TODO: make the grid into a maze
 	/*
 	//ref: https://en.wikipedia.org/wiki/Maze_generation_algorithm#Randomized_depth-first_search - iteratice implementation

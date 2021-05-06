@@ -7,10 +7,7 @@ package model;
  */
 //TODO: create subclasses (start and end rooms)
 public class Room {
-	Door myNorthPassage;
-	Door mySouthPassage;
-	Door myWestPassage;
-	Door myEastPassage;
+	//Map<Door, Room> myDoors= new TreeMap<>();
 	
 	Item myItem;
 	int myItemXCoordinate;
