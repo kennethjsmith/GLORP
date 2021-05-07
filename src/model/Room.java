@@ -1,7 +1,7 @@
 package model;
 /**
- * A room can have between 2 and 4 Passages. Each Passage has a riddle, if the riddle is answered incorrectly 
- * the passage becomes blocked
+ * A room can has 4 doors an item, and contains flags indicating 
+ * player presence and whether or not the room has been visited.
  * @author
  * @version
  */
@@ -9,16 +9,39 @@ package model;
 public class Room {
 	//Map<Door, Room> myDoors= new TreeMap<>();
 	
-	Item myItem;
-	int myItemXCoordinate;
-	int myItemYCoordinate;
-	
+	private Door[] myDoors;
+	private Item myItem;
+	private boolean containsPlayer;
 	private boolean visitedFlag;
 	
 	public Room() {
+		createDoors();
+		myItem = null;
+		containsPlayer = false;
 		visitedFlag = false;
 	}
 	
+	private void createDoors() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * Get the item from this room.
+	 * @return the myItem
+	 */
+	public Item getMyItem() {
+		return myItem;
+	}
+
+	/**
+	 * Place an item in this room
+	 * @param myItem the myItem to set
+	 */
+	public void setMyItem(Item theItem) {
+		myItem = theItem;
+	}
+
 	public void setVisitedFlag() {
 		visitedFlag = true;
 	}
@@ -26,6 +49,11 @@ public class Room {
 	public boolean isVisited() {
 		return visitedFlag;
 	}
+	
+	public boolean containsPlayer() {
+		return containsPlayer;
+	}
+	
 	
 	
 }

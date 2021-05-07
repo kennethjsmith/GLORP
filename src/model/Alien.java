@@ -1,14 +1,18 @@
 package model;
 
 import java.awt.image.BufferedImage;
+
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-public class Alien {
+
+//TODO: move some of this up to Character abstract class/interface?
+public class Alien implements Character{
+
 	//fields
-	//TODO: replace with array of images (animation)
 	private BufferedImage myImage;
+	private InRoomCoordinates myCoordinates;
 	
 	public Alien() {
 		myImage = null;
@@ -16,6 +20,7 @@ public class Alien {
 		    myImage = ImageIO.read(new File("icons/alien.png"));
 		} catch (IOException e) {
 		}
+		myCoordinates = new InRoomCoordinates();
 	}
 
 	/**
@@ -23,5 +28,12 @@ public class Alien {
 	 */
 	public BufferedImage getMyImage() {
 		return myImage;
+	}
+
+	/**
+	 * @return the myCoordinates
+	 */
+	public InRoomCoordinates getMyCoordinates() {
+		return myCoordinates;
 	}
 }
