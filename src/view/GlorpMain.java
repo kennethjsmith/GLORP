@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
+import model.Maze;
+
 public class GlorpMain {
     /**
      * Private constructor to prevent construction of instances.
@@ -18,7 +20,9 @@ public class GlorpMain {
      * @param theArgs Command line arguments (ignored).
      */
     public static void main(final String... theArgs) {
-        EventQueue.invokeLater(new Runnable() {
+    	Maze myMaze = new Maze();
+    	System.out.println(myMaze.toString());
+    	EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
             	GlorpGUI window = new GlorpGUI();
@@ -27,5 +31,6 @@ public class GlorpMain {
                 window.setTitle("GLORP");   
             }
         });
+        
     }
 }

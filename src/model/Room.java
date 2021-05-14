@@ -1,4 +1,7 @@
 package model;
+
+import javax.swing.ImageIcon;
+
 /**
  * A room can has 4 doors an item, and contains flags indicating 
  * player presence and whether or not the room has been visited.
@@ -13,12 +16,16 @@ public class Room {
 	private Item myItem;
 	private boolean containsPlayer;
 	private boolean visitedFlag;
+	private static ImageIcon ROOM_ICON = new ImageIcon("src/icons/room_for_map.png");
+	boolean isWinRoom;
+
 	
 	public Room() {
 		createDoors();
 		myItem = null;
 		containsPlayer = false;
 		visitedFlag = false;
+		isWinRoom = false;
 	}
 	
 	private void createDoors() {
@@ -52,6 +59,24 @@ public class Room {
 	
 	public boolean containsPlayer() {
 		return containsPlayer;
+	}
+	
+	public String toString() {
+		if(containsPlayer) return "true";
+		else return "false";
+	}
+	
+	public ImageIcon getSmallIcon() {
+		return	ROOM_ICON;
+
+	}
+	
+	public boolean isWinRoom() {
+		return true;
+	}
+	
+	public void setWinRoom() {
+		isWinRoom = true;
 	}
 	
 	
