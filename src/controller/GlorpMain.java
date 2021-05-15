@@ -2,11 +2,6 @@ package controller;
 
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import view.GlorpGUI;
-
-import model.Maze;
-
 public class GlorpMain {
     /**
      * Private constructor to prevent construction of instances.
