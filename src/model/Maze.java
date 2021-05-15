@@ -14,6 +14,8 @@ public class Maze {
 	// The 2D array that stores each room
 	private Room[][] myMaze;
 	
+	private Room myCurrentRoom;
+	
 	private boolean canAccessWinRoom;
 	
 	// The number of rows in the maze that store rooms
@@ -25,6 +27,7 @@ public class Maze {
 	// The border around the entire room is 1 space wide on each side.
 	// This is 2 to account for the buffer on both sides.
 	private final int BORDER_BUFFER = 2;
+	
 	
 	//TODO Add item tracking for the win item
 	
@@ -40,6 +43,7 @@ public class Maze {
 		
 		// this is set to true initially
 		canAccessWinRoom = true;
+		myCurrentRoom = myMaze[1][1];
 		
 	}
 	
@@ -68,6 +72,7 @@ public class Maze {
 	private void designateWinRoom() {
 		//TODO pass in the win item to set the winRoom
 		this.getRoom(LENGTH, WIDTH).setWinRoom();
+		System.out.println("Did the designate win room work? " + this.getRoom(LENGTH, WIDTH).isWinRoom());
 	}
 	
 	// Returns the room at the current index
@@ -96,25 +101,32 @@ public class Maze {
 	
 	// Searches from the current room to the win room to see if the user can still win the game
 	// Uses depth first traversal 
-	public boolean canWin(Room theCurrRoom) {
-		boolean [][] visited = new boolean[LENGTH][WIDTH];
+	public boolean canWin() {
+		boolean [][] visited = new boolean[LENGTH + 2][WIDTH + 2];
 		canAccessWinRoom = false;
-        depthFirstSearchMaze(0,  0, visited);     
+        depthFirstSearchMaze(1,  1, visited);     
         return canAccessWinRoom;
 	}
 	
 	
 	// Helper method for canWin. Uses depth first search to see if the win room is accessible
 	private void depthFirstSearchMaze(int theRow, int theColumn, boolean[][] theVisitedRooms) {
-	
+		System.out.println("the row: " + theRow + " the column: " + theColumn);
+		
+		
 	    // return if we've hit the end of the maze.
-	    if (theRow < 0 || theColumn < 0 || theRow >= LENGTH || theColumn >= WIDTH || theVisitedRooms[theRow][theColumn])
-	        return;
+	    if (theRow < 0 || theColumn < 0 || theRow > LENGTH || theColumn > WIDTH || theVisitedRooms[theRow][theColumn]) {
+	    	return;
+	    }
 	    
 	    // return if this room doesn't exist
 	    if(!this.containsRoom(theRow, theColumn)){
 	    	return;
 	    }
+	    
+	    myCurrentRoom = this.getRoom(theRow, theColumn);
+		System.out.println(this);
+
 	    
 	    Room currentRoom = this.getRoom(theRow, theColumn);
 	    
@@ -130,17 +142,16 @@ public class Maze {
 		    theVisitedRooms[theRow][theColumn] = true;
 		    
 		    // if the right door is unlocked:
-		    //if(currentRoom.getDoors()[].isPermaBlocked())
-		    depthFirstSearchMaze(theRow+ 1, theColumn, theVisitedRooms); // go right
+		    if(!currentRoom.isEastDoorBlocked()) depthFirstSearchMaze(theRow+ 1, theColumn, theVisitedRooms); // go right
 		    
 		    // if the left door is unlocked:
-		    depthFirstSearchMaze(theRow- 1, theColumn, theVisitedRooms); //go left
+		    if(!currentRoom.isWestDoorBlocked()) depthFirstSearchMaze(theRow - 1, theColumn, theVisitedRooms); //go left
 		    
 		    // if the bottom door is unlocked:
-		    depthFirstSearchMaze(theRow, theColumn + 1, theVisitedRooms); //go down
+		    if(!currentRoom.isSouthDoorBlocked())	depthFirstSearchMaze(theRow, theColumn + 1, theVisitedRooms); //go down
 		    
 		    // if the top door is unlocked:
-		    depthFirstSearchMaze(theRow, theColumn - 1, theVisitedRooms); // go up
+		    if(!currentRoom.isNorthDoorBlocked()) depthFirstSearchMaze(theRow, theColumn - 1, theVisitedRooms); // go up
 		}	
 	}
 	
@@ -148,11 +159,13 @@ public class Maze {
 	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("current");
-		for(int i = 2; i <= LENGTH; i++) {
-			for(int j = 2; j <= WIDTH; j++) {
+		for(int i = 1; i <= LENGTH; i++) {
+			for(int j = 1; j <= WIDTH; j++) {
 				Room currRoom = getRoom(i, j);
-				if (currRoom.isWinRoom()) {
+
+				if(getRoom(i, j).equals(myCurrentRoom)) {
+					sb.append(" current");
+				} else if (currRoom.isWinRoom()) {
 					sb.append("  win   ");
 				} else sb.append("   x    ");
 			}

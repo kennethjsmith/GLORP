@@ -86,7 +86,6 @@ public class MapPanel extends JPanel {
 			int yCoordinate = theRoom.getValue().height;
 			Icon currIcon = theRoom.getKey();
 			currIcon.paintIcon(this, g2d, xCoordinate, yCoordinate);
-			System.out.println(xCoordinate + " " + yCoordinate);
     	}
     }	
 }
