@@ -19,12 +19,10 @@ public class GlorpMain {
      * @param theArgs Command line arguments (ignored).
      */
     public static void main(final String... theArgs) {
-        EventQueue.invokeLater(new Runnable() {
+    	EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-            	GlorpClient game = new GlorpClient();
-          
-            }
-        });
+            GlorpClient game = new GlorpClient();
+        }});
     }
 }

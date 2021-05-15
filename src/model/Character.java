@@ -11,17 +11,23 @@ public class Character extends GamePiece {
 	// fields
 	private Point myCoordinate;
 	private ImageIcon myRoomIcon;
-	private ImageIcon myMapIcon;
-	private int mySize;
-	private Set<ImageIcon> myImageIconSet;
+	private final ImageIcon myMapIcon; //TODO: add mapIcon
+	private final int SIZE = 100;
 	
 	private ArrayList<Item> myInventory;
 	private Skin mySkin;
-	private IconDirection myDirection;
+	private IconDirection myIconDirection;
 	private int myStride; // 0 for standing, 1,2,3,4 for different run icons
+	
+	
 	
 	public Character() {
 		super();
+		mySkin = new Skin(SkinType.ALIEN);
+		myIconDirection = IconDirection.RIGHT;
+		myStride = 0;
+		myRoomIcon = mySkin.getIcon(myIconDirection, myStride);
+		this.myMapIcon = new ImageIcon(); // fix this
 	}
 	
 	public void dropItem(Item theItem){ 
@@ -29,7 +35,7 @@ public class Character extends GamePiece {
 	}
 	
 	public void updateRoomIcon() {
-		myRoomIcon = mySkin.getIcon(myDirection, myStride);
+		myRoomIcon = mySkin.getIcon(myIconDirection, myStride);
 	}
 	
 	public ArrayList<Item> getInventory() {
@@ -38,7 +44,7 @@ public class Character extends GamePiece {
 	
 	public void move(Direction theDirection){
 		//TODO: reconcile IconDirection and Direction
-		myCoordinate.move(myCoordinate.getX + theDirection.dx(), myCoordinate.getY + theDirection.dy());
+		//myCoordinate.move(myCoordinate.getX + theDirection.dx(), myCoordinate.getY + theDirection.dy());
 		if (theDirection.getLabel().equals("E"))
 		myStride++;
 		if(myStride > 4) myStride = 1;

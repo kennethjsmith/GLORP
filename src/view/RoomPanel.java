@@ -16,8 +16,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
-import model.Alien;
-
 /**
  * ref: https://stackoverflow.com/questions/22766209/i-need-a-little-help-implementing-player-movement-on-java-grid
  * @author 12538
@@ -30,18 +28,18 @@ public class RoomPanel extends JPanel {
 	//TODO: add front/rear facing icons
     //left facing alien icons
     private static ImageIcon[] LEFT_RUN_ICONS = new ImageIcon[] 
-    		{new ImageIcon("src/icons/left_running_alien1.png"), 
-    			new ImageIcon("src/icons/left_running_alien2.png"),
-    				new ImageIcon("src/icons/left_running_alien3.png"),
-    					new ImageIcon("src/icons/left_running_alien4.png")};
-    private static ImageIcon LEFT_STANDING_ICON = new ImageIcon("src/icons/left_standing_alien.png");
+    		{new ImageIcon("src/icons/left_alien1.png"), 
+    			new ImageIcon("src/icons/left_alien2.png"),
+    				new ImageIcon("src/icons/left_alien3.png"),
+    					new ImageIcon("src/icons/left_alien4.png")};
+    private static ImageIcon LEFT_STANDING_ICON = new ImageIcon("src/icons/left_alien0.png");
     //right facing alien icons
     private static ImageIcon[] RIGHT_RUN_ICONS = new ImageIcon[] 
-    		{new ImageIcon("src/icons/right_running_alien1.png"), 
-    			new ImageIcon("src/icons/right_running_alien2.png"),
-    				new ImageIcon("src/icons/right_running_alien3.png"),
-    					new ImageIcon("src/icons/right_running_alien4.png")};
-    private static ImageIcon RIGHT_STANDING_ICON = new ImageIcon("src/icons/right_standing_alien.png");
+    		{new ImageIcon("src/icons/right_alien1.png"), 
+    			new ImageIcon("src/icons/right_alien2.png"),
+    				new ImageIcon("src/icons/right_alien3.png"),
+    					new ImageIcon("src/icons/right_alien4.png")};
+    private static ImageIcon RIGHT_STANDING_ICON = new ImageIcon("src/icons/right_alien0.png");
     private static final int ICON_SIZE = 100;
     private int myCurrentRunIconValue; //used to determine which running icon
     private ImageIcon myCurrentIcon;
