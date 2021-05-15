@@ -1,8 +1,9 @@
-package view;
+package controller;
 
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import view.GlorpGUI;
 
 public class GlorpMain {
     /**
@@ -21,10 +22,8 @@ public class GlorpMain {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-            	GlorpGUI window = new GlorpGUI();
-                window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                window.setVisible(true);
-                window.setTitle("GLORP");   
+            	GlorpClient game = new GlorpClient();
+          
             }
         });
     }
