@@ -128,7 +128,7 @@ public class Room {
      * Get the item from this room.
      * @return Boolean indicator if the add was a success
      */
-    public Boolean addCharacter(Character theCharacter, Door theUnlockedDoor) throws IllegalArgumentException{ // pass in player coordinates? or player object?
+    public Boolean addCharacter(Player theCharacter, Door theUnlockedDoor) throws IllegalArgumentException{ // pass in player coordinates? or player object?
         Boolean inSuccess = false;
         if(theUnlockedDoor.isUnlocked()) { //first check if unlockedDoor is even unlocked
             for(Door d : myDoors) {

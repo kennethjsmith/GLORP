@@ -25,25 +25,7 @@ public class RoomPanel extends JPanel {
 
     // fields
 	private static final long serialVersionUID = 1L;
-	//TODO: add front/rear facing icons
-    //left facing alien icons
-    private static ImageIcon[] LEFT_RUN_ICONS = new ImageIcon[] 
-    		{new ImageIcon("src/icons/left_alien1.png"), 
-    			new ImageIcon("src/icons/left_alien2.png"),
-    				new ImageIcon("src/icons/left_alien3.png"),
-    					new ImageIcon("src/icons/left_alien4.png")};
-    private static ImageIcon LEFT_STANDING_ICON = new ImageIcon("src/icons/left_alien0.png");
-    //right facing alien icons
-    private static ImageIcon[] RIGHT_RUN_ICONS = new ImageIcon[] 
-    		{new ImageIcon("src/icons/right_alien1.png"), 
-    			new ImageIcon("src/icons/right_alien2.png"),
-    				new ImageIcon("src/icons/right_alien3.png"),
-    					new ImageIcon("src/icons/right_alien4.png")};
-    private static ImageIcon RIGHT_STANDING_ICON = new ImageIcon("src/icons/right_alien0.png");
-    private static final int ICON_SIZE = 100;
-    private int myCurrentRunIconValue; //used to determine which running icon
-    private ImageIcon myCurrentIcon;
-    private boolean skipFrame;
+
     private String myPlayerDirection;
     private static final int myPlayerSpeed = 5;
     private static final String[] PLAYER_DIRECTIONS = {"LEFT", "RIGHT"};
@@ -59,87 +41,42 @@ public class RoomPanel extends JPanel {
     
     private final String TITLE = "Room";
     private final static int SIZE = 500;
-
+    private final static GameIcon TEST_ICON = new GameIcon("right_alien1.png");
+    //private boolean skipFrame; //move to Player, or client???
+    
     public RoomPanel() {
         setPreferredSize(new Dimension(SIZE,SIZE));
         // add border
         Border blackline = BorderFactory.createLineBorder(Color.black);
         setBorder(blackline);
-        //resize all image icons
-        resizeImageIcons();
-        
-        myCurrentRunIconValue = 0;
-        myPlayerDirection = "RIGHT";
-        myCurrentIcon = RIGHT_STANDING_ICON;
-        skipFrame = true;
         JLabel label = new JLabel(TITLE, JLabel.LEFT);
         setLayout(new FlowLayout());
         add(label); 
+        
+        skipFrame = false;
     }
 
     @Override
     public void update(Graphics g) {
         paint(g);
     }
-    
-    /**
-     * Helper for resizing single icon
-     */
-    private static void resizeImageIcons() {
-    	Image inTempImage;
-    	//resize left facing standing icon
-    	inTempImage = LEFT_STANDING_ICON.getImage(); // transform it 
-		inTempImage = inTempImage.getScaledInstance(ICON_SIZE, ICON_SIZE,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-		LEFT_STANDING_ICON = new ImageIcon(inTempImage);  // transform it back
-    	
-		//resize left facing standing icon
-    	inTempImage = RIGHT_STANDING_ICON.getImage(); // transform it 
-		inTempImage = inTempImage.getScaledInstance(ICON_SIZE, ICON_SIZE,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-		RIGHT_STANDING_ICON = new ImageIcon(inTempImage);  // transform it back
-    
-		resizeImageIconArrays();
-    }
-    
-    
-    /**
-     * Helper method, resizes to standard icon size.
-     * @param theIcons
-     */
-    private static void resizeImageIconArrays() {
-
-    	//resize left facing run icons
-    	for(int i = 0; i < LEFT_RUN_ICONS.length; i++){
-    		Image inTempImage = LEFT_RUN_ICONS[i].getImage(); // transform it 
-    		inTempImage = inTempImage.getScaledInstance(ICON_SIZE, ICON_SIZE,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-    		LEFT_RUN_ICONS[i] = new ImageIcon(inTempImage);  // transform it back
-    	}
-  
-    	//resize right facing run icons
-    	for(int i = 0; i < RIGHT_RUN_ICONS.length; i++){
-    		Image inTempImage = RIGHT_RUN_ICONS[i].getImage(); // transform it 
-    		inTempImage = inTempImage.getScaledInstance(ICON_SIZE, ICON_SIZE,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-    		RIGHT_RUN_ICONS[i] = new ImageIcon(inTempImage);  // transform it back
-    	}
-    }
-    
  
     @Override
     public void paintComponent(Graphics g) {
         
     	super.paintComponent(g);
         //Graphics2D g2d = (Graphics2D) g;
-        myCurrentIcon.paintIcon(this, g, myXCoordinate, myYCoordinate);
+        TEST_ICON.paintIcon(this, g, myXCoordinate, myYCoordinate);
     }
 
     public void keyPressed(KeyEvent e) {
-    	//skip frame used to slow animation, could instead add more images
-    	if(!skipFrame) {
-	    	myCurrentRunIconValue++;
-	    	if(myCurrentRunIconValue == 4) myCurrentRunIconValue = 0;
-    	}
-    	skipFrame = !skipFrame;
+    	//skip frame used to slow animation, might move to Player
+//    	if(!skipFrame) {
+//	    	myCurrentRunIconValue++;
+//	    	if(myCurrentRunIconValue == 4) myCurrentRunIconValue = 0;
+//    	}
+//    	skipFrame = !skipFrame;
     	
-    	//TODO: create getIcon() class
     	//determine direction
     	if(myPlayerDirection == PLAYER_DIRECTIONS[0])
     		myCurrentIcon = LEFT_RUN_ICONS[myCurrentRunIconValue];
@@ -152,16 +89,16 @@ public class RoomPanel extends JPanel {
         myYVelocity = 0;
         //TODO: this results in always facing left when simultaneous left/right keys are pressed
         //make velocity increment speed a class constant
-        if(pressedKeys.contains(KeyEvent.VK_D)) {
+        if(pressedKeys.contains(KeyEvent.VK_D) || pressedKeys.contains(KeyEvent.VK_RIGHT)) {
         	myXVelocity += myPlayerSpeed;
         	myPlayerDirection = "RIGHT";
         }
-    	if(pressedKeys.contains(KeyEvent.VK_A)) {
+    	if(pressedKeys.contains(KeyEvent.VK_A) || pressedKeys.contains(KeyEvent.VK_LEFT)) {
     		myXVelocity -= myPlayerSpeed;
     		myPlayerDirection = "LEFT";
     	}
-    	if(pressedKeys.contains(KeyEvent.VK_S)) myYVelocity += myPlayerSpeed;
-    	if(pressedKeys.contains(KeyEvent.VK_W)) myYVelocity -= myPlayerSpeed;
+    	if(pressedKeys.contains(KeyEvent.VK_S) || pressedKeys.contains(KeyEvent.VK_DOWN)) myYVelocity += myPlayerSpeed;
+    	if(pressedKeys.contains(KeyEvent.VK_W) || pressedKeys.contains(KeyEvent.VK_UP)) myYVelocity -= myPlayerSpeed;
         
     	
         if((myXCoordinate >= 0 && myXVelocity < 0) || 

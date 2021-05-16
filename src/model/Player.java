@@ -6,28 +6,37 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 
-public class Character extends GamePiece {
+import view.GameIcon;
+
+public class Player extends GamePiece {
 	
 	// fields
 	private Point myCoordinate;
-	private ImageIcon myRoomIcon;
-	private final ImageIcon myMapIcon; //TODO: add mapIcon
-	private final int SIZE = 100;
+	private GameIcon myRoomIcon;
+	private final GameIcon myMapIcon = new GameIcon("src/icons/alien_map_icon.png"); //TODO: add mapIcon
 	
 	private ArrayList<Item> myInventory;
 	private Skin mySkin;
 	private IconDirection myIconDirection;
 	private int myStride; // 0 for standing, 1,2,3,4 for different run icons
 	
+	private static final int PLAYER_MAP_ICON_SIZE = 10;
+	private static final Skin DEFAULT_SKIN = new Skin(SkinType.ALIEN);
 	
-	
-	public Character() {
+	public Player() {
 		super();
-		mySkin = new Skin(SkinType.ALIEN);
+		mySkin = DEFAULT_SKIN;
 		myIconDirection = IconDirection.RIGHT;
 		myStride = 0;
 		myRoomIcon = mySkin.getIcon(myIconDirection, myStride);
-		this.myMapIcon = new ImageIcon(); // fix this
+	}
+	
+	public Player(Skin theSkin) {
+		super();
+		mySkin = theSkin;
+		myIconDirection = IconDirection.RIGHT;
+		myStride = 0;
+		myRoomIcon = mySkin.getIcon(myIconDirection, myStride);
 	}
 	
 	public void dropItem(Item theItem){ 
@@ -41,14 +50,14 @@ public class Character extends GamePiece {
 	public ArrayList<Item> getInventory() {
 		return myInventory;
 	}
-	
+	//TODO:move up to controller?
 	public void move(Direction theDirection){
-		//TODO: reconcile IconDirection and Direction
 		//myCoordinate.move(myCoordinate.getX + theDirection.dx(), myCoordinate.getY + theDirection.dy());
-		if (theDirection.getLabel().equals("E"))
+		if (theDirection == Direction.EAST) myIconDirection = IconDirection.RIGHT;
+		if (theDirection == Direction.WEST) myIconDirection = IconDirection.LEFT;
 		myStride++;
 		if(myStride > 4) myStride = 1;
 		updateRoomIcon();
-	} //TODO: include skipframe?
+	}
 
 }
