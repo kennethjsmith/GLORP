@@ -8,13 +8,13 @@ import model.Skin;
 import model.SkinType;
 import view.GlorpGUI;
 
-public class GlorpClient {
+public class GlorpController {
 	// fields
 	Maze myMaze;
 	Player myPlayer;
 	GlorpGUI myWindow;  
 	
-	public GlorpClient() {
+	public GlorpController() {
 		myMaze = new Maze();
 		
 		//hard ref to character for room panel work
@@ -24,7 +24,7 @@ public class GlorpClient {
         myWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         myWindow.setVisible(true);
         myWindow.setTitle("GLORP");
-        
+        //addKeyListener(myWindow);
         
         
 	}
