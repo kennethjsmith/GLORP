@@ -1,3 +1,4 @@
+/// trash this -> replaced with player
 package model;
 
 import java.awt.Point;

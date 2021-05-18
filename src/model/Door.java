@@ -17,9 +17,7 @@ public class Door {
     ImageIcon myIcon;
     Boolean myUnlockedFlag;
     Boolean myPermaBlockedFlag;
-    
-    //Room myNextRoom; // will doors link to another room 
-    
+
     // or will they just give their coordinates 
     // and room/maze uses those to decide how the item is attempting to leave the room
     // remove item, that call add item elsewhere 
@@ -27,6 +25,14 @@ public class Door {
     public Door(){
         myRiddle = new Riddle();
         myCoordinate = new Point();
+        myIcon = new ImageIcon();
+        myUnlockedFlag = false;
+        myPermaBlockedFlag = false; 
+    }
+    
+    public Door(Point theCoordinate){
+        myRiddle = new Riddle();
+        myCoordinate = theCoordinate;
         myIcon = new ImageIcon();
         myUnlockedFlag = false;
         myPermaBlockedFlag = false; 

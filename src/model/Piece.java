@@ -1,3 +1,5 @@
+/// trash this --> replaced with gamepiece
+
 package model;
 
 import java.awt.Point;
