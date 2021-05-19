@@ -35,6 +35,7 @@ public class GlorpController implements KeyListener{
         myWindow.setTitle("GLORP");
         myWindow.addKeyListener(this);
         
+        myWindow.paintRoomPanel(myPlayer);
         
 	}
 	

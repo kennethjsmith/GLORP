@@ -19,6 +19,7 @@ public class Player extends GamePiece {
 	private IconDirection myIconDirection;
 	private int myStride; // 0 for standing, 1,2,3,4 for different run icons
 	
+	private static final int SPEED = 5;
 	private static final int PLAYER_MAP_ICON_SIZE = 10;
 	private static final Skin DEFAULT_SKIN = new Skin(SkinType.ALIEN);
 	
@@ -50,7 +51,7 @@ public class Player extends GamePiece {
 	
 	public void move(Direction theDirection){
 		// update room icon
-		myIconDirection = IconDirection.generateIconDirection(theDirection);
+		myIconDirection = IconDirection.generateIconDirection(theDirection, myIconDirection);
 		myStride++;
 		if(myStride > 4) myStride = 1;
 		updateRoomIcon();
@@ -74,6 +75,14 @@ public class Player extends GamePiece {
 		
 	}
 	
+	/**
+	 * @return the speed
+	 */
+	public static int getSpeed() {
+		return SPEED;
+	}
+	
+
 	public String toString() {
 		return myCoordinate.toString();
 	}
