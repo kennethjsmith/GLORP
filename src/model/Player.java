@@ -11,7 +11,7 @@ import view.GameIcon;
 public class Player extends GamePiece {
 	
 	// fields
-	private Point myCoordinate;
+	private PiecePoint myCoordinate;
 	private GameIcon myRoomIcon;
 	private final GameIcon myMapIcon = new GameIcon("src/icons/alien_map_icon.png"); //TODO: add mapIcon
 	
@@ -42,10 +42,6 @@ public class Player extends GamePiece {
 	
 	public void dropItem(Item theItem){ 
 		myInventory.remove(theItem);
-	}
-	
-	public void updateRoomIcon() {
-		myRoomIcon = mySkin.getIcon(myIconDirection, myStride);
 	}
 	
 	public ArrayList<Item> getInventory() {
