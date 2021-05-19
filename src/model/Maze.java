@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Random;
 import java.util.Stack;
 
 import view.GameIcon;
@@ -58,6 +59,8 @@ public class Maze {
 	// Creates and adds rooms to myMaze.
 	private void addRooms() {
 		
+		
+		
 		// iterate through the 2d array
 		for(int i = 1; i <= LENGTH; i++) {
 			for(int j = 1; j <= WIDTH; j++) {
@@ -73,7 +76,7 @@ public class Maze {
 			}
 		}
 		
-		designateWinRoom();
+		designateWinStartRooms();
 		myCurrentRoom = myMaze[1][1];
 
 		
@@ -86,10 +89,21 @@ public class Maze {
 		return myMaze[1][1];
 	}
 	
-	// TODO if we randomize the winroom and/or start room location, we will want to create a method to make sure they are
-	// 		not too close to each other. We would likely call the method from the below method, and modify the LENGTH and WIDTH 
-	//		passed in to the setWinRoom method
-	private void designateWinRoom() {
+	// Randomly sets the WinRoom and StartRoom.
+	private void designateWinStartRooms() {
+		
+		Random rand = new Random();
+		
+		// Uses random number generator to pick a spot for the start room. 
+		// Length - 1 indicates the upper bound of the number generated.
+		// The +1 is to ensure that we do not go out of bounds on the lower bounds -> .nextInt has a lower bound of 0.
+		int startRow = rand.nextInt(LENGTH - 1) + 1;
+		int startCol = rand.nextInt(WIDTH - 1) + 1;
+		
+		// Uses random number generator to pick a spot for the end room.
+		
+		
+		
 		//TODO pass in the win item to set the winRoom
 		this.getRoom(LENGTH, WIDTH).setWinRoom();
 	}
