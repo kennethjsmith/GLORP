@@ -40,13 +40,13 @@ public class Room {
      * sets this rooms door array to the passed in door array.
      * @param Door[] theDoors
      */
-    public void setDoors(Door[] theDoors) {
+    void setDoors(Door[] theDoors) {
         if(myDoors == null) {
             myDoors = theDoors;
         }
     }
     
-    public Door[] getDoors() throws NullPointerException{
+    Door[] getDoors() throws NullPointerException{
         if(myDoors == null) { 
             throw new NullPointerException("This room has no doors.");
         }else

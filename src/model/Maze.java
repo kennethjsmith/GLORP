@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Objects;
 import java.util.Stack;
 
 /**
@@ -19,14 +20,10 @@ public class Maze {
 	private boolean canAccessWinRoom;
 	
 	// The number of rows in the maze that store rooms
-	private final int LENGTH = 6;
+	private final int LENGTH;
 	
 	// The number of columns in the maze that store rooms
-	private final int WIDTH = 6;
-	
-	// The border around the entire room is 1 space wide on each side.
-	// This is 2 to account for the buffer on both sides.
-	private final int BORDER_BUFFER = 2;
+	private final int WIDTH;
 	
 	
 	//TODO Add item tracking for the win item
@@ -34,9 +31,10 @@ public class Maze {
 	
 	public Maze() {
 		
-		// Initialize with row-major: Room[rows][columns]
-		myMaze = new Room[LENGTH+BORDER_BUFFER][WIDTH+BORDER_BUFFER];
-		addRooms();
+//		// Initialize with row-major: Room[rows][columns]
+//		myMaze = new Room[LENGTH+BORDER_BUFFER][WIDTH+BORDER_BUFFER];
+		
+		createMaze();
 		
 		// Currently sets the win room to be the bottom right corner
 		designateWinRoom();
@@ -44,20 +42,16 @@ public class Maze {
 		// this is set to true initially
 		canAccessWinRoom = true;
 		myCurrentRoom = myMaze[1][1];
+	}
+	
+	void createMaze() {
+		Objects.requireNonNull(myMaze);
+		// set length and width
+		
 		
 	}
 	
 	
-	//TODO: room factory? start, win, item rooms etc
-	private void addRooms() {
-		for(int i = 1; i <= LENGTH; i++) {
-			for(int j = 1; j <= WIDTH; j++) {
-				
-				
-				myMaze[i][j] = new Room();	
-			}
-		}
-	}
 	
 	// Communicate to the controller what the start room for the game is
 	// So that the controller can set the icon for the start room
@@ -141,21 +135,54 @@ public class Maze {
 		    theVisitedRooms[theRow][theColumn] = true;
 		    
 		    // if the right door is unlocked:
-		    if(!currentRoom.isEastDoorBlocked()) depthFirstSearchMaze(theRow+ 1, theColumn, theVisitedRooms); // go right
+		    if(!isEastDoorBlocked(theRow, theColumn)) depthFirstSearchMaze(theRow+ 1, theColumn, theVisitedRooms); // go right
 		    		    
 		    // if the left door is unlocked:
-		    if(!currentRoom.isWestDoorBlocked()) depthFirstSearchMaze(theRow - 1, theColumn, theVisitedRooms); //go left
+		    if(!isWestDoorBlocked(theRow, theColumn)) depthFirstSearchMaze(theRow - 1, theColumn, theVisitedRooms); //go left
 		    
 		    // if the bottom door is unlocked:
-		    if(!currentRoom.isSouthDoorBlocked())	depthFirstSearchMaze(theRow, theColumn + 1, theVisitedRooms); //go down
+		    if(!isSouthDoorBlocked(theRow, theColumn))	depthFirstSearchMaze(theRow, theColumn + 1, theVisitedRooms); //go down
 		    
 		    // if the top door is unlocked:
-		    if(!currentRoom.isNorthDoorBlocked()) depthFirstSearchMaze(theRow, theColumn - 1, theVisitedRooms); // go up
+		    if(!isNorthDoorBlocked(theRow, theColumn)) depthFirstSearchMaze(theRow, theColumn - 1, theVisitedRooms); // go up
 		}	
 	}
 	
 
 	
+	private boolean isEastDoorBlocked(int theRow, int theColumn) {
+		Door inDoor = getSameDoor(myMaze[theRow][theColumn], myMaze[theRow][theColumn+1]);
+		return inDoor.isBlocked();
+	}
+	
+	private boolean isWestDoorBlocked(int theRow, int theColumn) {
+		Door inDoor = getSameDoor(myMaze[theRow][theColumn], myMaze[theRow][theColumn-1]);
+		return inDoor.isBlocked();
+	}
+	
+	private boolean isNorthDoorBlocked(int theRow, int theColumn) {
+		Door inDoor = getSameDoor(myMaze[theRow][theColumn], myMaze[theRow+1][theColumn]);
+		return inDoor.isBlocked();
+	}
+
+	private boolean isSouthDoorBlocked(int theRow, int theColumn) {
+		Door inDoor = getSameDoor(myMaze[theRow][theColumn], myMaze[theRow-1][theColumn]);
+		return inDoor.isBlocked();
+	}
+
+	private Door getSameDoor(Room theCurrRoom, Room theAdjRoom) throws IllegalArgumentException{
+		//Door[] inDoors = new Door[theCurrRoom.getDoors().length];
+		for(Door d : theCurrRoom.getDoors()) {
+			for(Door o : theAdjRoom.getDoors()) {
+				if(d == o) {
+					return d;
+				}
+			}
+		}
+		throw new IllegalArgumentException("There is no shared door between these rooms.");
+	}
+
+
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		for(int i = 1; i <= LENGTH; i++) {
