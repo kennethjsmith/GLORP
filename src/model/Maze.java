@@ -142,7 +142,7 @@ public class Maze {
 		    
 		    // if the right door is unlocked:
 		    if(!currentRoom.isEastDoorBlocked()) depthFirstSearchMaze(theRow+ 1, theColumn, theVisitedRooms); // go right
-		    
+		    		    
 		    // if the left door is unlocked:
 		    if(!currentRoom.isWestDoorBlocked()) depthFirstSearchMaze(theRow - 1, theColumn, theVisitedRooms); //go left
 		    
