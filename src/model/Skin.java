@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 import view.GameIcon;
 
+import view.GameIcon;
+
 public class Skin {
 	// fields
 	private SkinType myType;
@@ -14,8 +16,6 @@ public class Skin {
 	//TODO: add front/rear facing icons
 	private static final int DEFAULT_SIZE = 100;
 
-	
-	
 	public Skin(SkinType theType){
     	myType = theType;
         myImageIconMap = new HashMap<>();
@@ -47,17 +47,18 @@ public class Skin {
     private String getImageFileName(String theDirectionLabel, String theSkinTypeLabel, int i) {
     	
         StringBuilder sb = new StringBuilder();
-       
+        sb.append("src/icons/");
         sb.append(theDirectionLabel.toLowerCase());
         sb.append("_");
         sb.append(theSkinTypeLabel.toLowerCase());
-        sb.append("i");
+        sb.append(i);
         sb.append(".png");
   
         return sb.toString(); 
     }		
-
+	
 	public GameIcon getIcon(IconDirection theIconDirection, int theStride) {
+		//System.out.println(myImageIconMap.get(theIconDirection)[theStride]);
 		return myImageIconMap.get(theIconDirection)[theStride];
 	}
 }
