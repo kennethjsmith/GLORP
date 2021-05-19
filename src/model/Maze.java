@@ -1,7 +1,8 @@
 package model;
 
-import java.util.Objects;
 import java.util.Stack;
+
+import view.GameIcon;
 
 /**
  * The maze has all the rooms in a 2D array with a buffer of size 1 around the border.
@@ -15,43 +16,68 @@ public class Maze {
 	// The 2D array that stores each room
 	private Room[][] myMaze;
 	
+	// The room our Player is currently in
 	private Room myCurrentRoom;
 	
+	// True if the Player can still access the winroom via unlocked or locked doors
 	private boolean canAccessWinRoom;
 	
 	// The number of rows in the maze that store rooms
-	private final int LENGTH;
+	private final int LENGTH = 6;
 	
 	// The number of columns in the maze that store rooms
-	private final int WIDTH;
+	private final int WIDTH = 6;
 	
+	// The border around the entire room is 1 space wide on each side.
+	// This is 2 to account for the buffer on both sides.
+	private final int BORDER_BUFFER = 2;
 	
+	// The icon for a plain room
+	private final GameIcon myPlainRoomIcon = new GameIcon("src/icons/room_for_map.png"); 
+	
+	// The icon for a win room
+	private final GameIcon myWinRoomIcon = new GameIcon("src/icons/win_room_for_map.png");
+
 	//TODO Add item tracking for the win item
 	
 	
 	public Maze() {
 		
-//		// Initialize with row-major: Room[rows][columns]
-//		myMaze = new Room[LENGTH+BORDER_BUFFER][WIDTH+BORDER_BUFFER];
+		// Initialize with row-major: Room[rows][columns]
+		myMaze = new Room[LENGTH+BORDER_BUFFER][WIDTH+BORDER_BUFFER];
 		
-		createMaze();
-		
-		// Currently sets the win room to be the bottom right corner
-		designateWinRoom();
+		// Fills out the 2d array, myMaze, with rooms
+		addRooms();
 		
 		// this is set to true initially
 		canAccessWinRoom = true;
+		
+	}
+	
+
+	// Creates and adds rooms to myMaze.
+	private void addRooms() {
+		
+		// iterate through the 2d array
+		for(int i = 1; i <= LENGTH; i++) {
+			for(int j = 1; j <= WIDTH; j++) {
+				
+				// Create a room with the winroom icon
+				if(i == LENGTH && j == WIDTH) {
+					myMaze[i][j] = new Room(myWinRoomIcon, myWinRoomIcon);
+					
+				} else { // create a room with a plain icon
+					myMaze[i][j] = new Room(myPlainRoomIcon, myPlainRoomIcon);
+
+				}
+			}
+		}
+		
+		designateWinRoom();
 		myCurrentRoom = myMaze[1][1];
-	}
-	
-	void createMaze() {
-		Objects.requireNonNull(myMaze);
-		// set length and width
-		
+
 		
 	}
-	
-	
 	
 	// Communicate to the controller what the start room for the game is
 	// So that the controller can set the icon for the start room

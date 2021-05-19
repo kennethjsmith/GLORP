@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
+import view.GameIcon;
+
 /**
  * A room can has 4 doors an item, and contains flags indicating 
  * player presence and whether or not the room has been visited.
@@ -15,8 +17,8 @@ import javax.swing.ImageIcon;
 public class Room {
     private Door[] myDoors; // for now... 4 doors each 
 	private ArrayList<GamePiece> myGamePieces; // array list, no max GamePieces
-	private final ImageIcon myLargeIcon;
-	private final ImageIcon mySmallIcon;
+	private final GameIcon myLargeIcon;
+	private final GameIcon mySmallIcon;
 	private boolean isWinRoom;
 	
 	//Map<Door, Room> myDoors= new TreeMap<>();
@@ -29,7 +31,7 @@ public class Room {
         mySmallIcon = null;
     }
     
-	public Room(ImageIcon theLargeIcon, ImageIcon theSmallIcon) { // how will rooms get their icons? And riddles? 
+	public Room(GameIcon theLargeIcon, GameIcon theSmallIcon) { // how will rooms get their icons? And riddles? 
 	    myGamePieces = new ArrayList<GamePiece>();
 	    myLargeIcon = theLargeIcon; 
 	    mySmallIcon = theSmallIcon; 
@@ -118,12 +120,12 @@ public class Room {
 		myGamePieces.add(theGamePiece);
 	}
 	
-	public ImageIcon getLargeIcon() {
-	    return null;
+	public GameIcon getLargeIcon() {
+	    return myLargeIcon;
 	}
 	
 	public ImageIcon getSmallIcon() {
-        return null;
+        return mySmallIcon;
     }
 	
 	// ADDED METHOD BELOW
