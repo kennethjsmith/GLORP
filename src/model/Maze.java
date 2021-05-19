@@ -72,7 +72,6 @@ public class Maze {
 	private void designateWinRoom() {
 		//TODO pass in the win item to set the winRoom
 		this.getRoom(LENGTH, WIDTH).setWinRoom();
-		System.out.println("Did the designate win room work? " + this.getRoom(LENGTH, WIDTH).isWinRoom());
 	}
 	
 	// Returns the room at the current index
