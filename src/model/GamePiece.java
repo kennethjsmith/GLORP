@@ -2,11 +2,10 @@
  * 
  */
 package model;
-
 import java.awt.Point;
 import java.util.Set;
-
 import javax.swing.ImageIcon;
+import view.GameIcon;
 
 /**
  * @author 12538
@@ -15,10 +14,9 @@ import javax.swing.ImageIcon;
 public abstract class GamePiece {
 	 // fields
 	 private Point myCoordinate;
-	 private ImageIcon myRoomIcon;
-	 private ImageIcon myMapIcon;
+	 private GameIcon myRoomIcon;
+	 private GameIcon myMapIcon;
 	 private int mySize;
-	 private Set<ImageIcon> myImageIconSet;
 	 
 	 public GamePiece() {
 		 
@@ -33,7 +31,7 @@ public abstract class GamePiece {
 		 
 	 }
 	 
-	 public ImageIcon getRoomIcon() {
+	 public GameIcon getRoomIcon() {
 		return myRoomIcon;
 		 
 	 }
@@ -42,7 +40,7 @@ public abstract class GamePiece {
 		 
 	 }
 	 
-	 public ImageIcon getMapIcon() {
+	 public GameIcon getMapIcon() {
 		return myMapIcon; 
 		 
 	 }
