@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
-
 import view.GameIcon;
 
 public class Skin {
@@ -14,6 +13,7 @@ public class Skin {
 	private Map<IconDirection, GameIcon[]> myImageIconMap;
 	//TODO: add front/rear facing icons
 	private static final int DEFAULT_SIZE = 100;
+
 	
 	
 	public Skin(SkinType theType){
@@ -56,7 +56,7 @@ public class Skin {
   
         return sb.toString(); 
     }		
-	
+
 	public GameIcon getIcon(IconDirection theIconDirection, int theStride) {
 		return myImageIconMap.get(theIconDirection)[theStride];
 	}

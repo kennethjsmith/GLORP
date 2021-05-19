@@ -18,6 +18,7 @@ public class Room {
 	private ArrayList<GamePiece> myGamePieces; // array list, no max GamePieces
 	private final ImageIcon myLargeIcon;
 	private final ImageIcon mySmallIcon;
+	private boolean isWinRoom;
 	
 	//Map<Door, Room> myDoors= new TreeMap<>();
 	//private boolean containsPlayer; //will be tracked by map (current room) 
@@ -40,13 +41,13 @@ public class Room {
      * sets this rooms door array to the passed in door array.
      * @param Door[] theDoors
      */
-    public void setDoors(Door[] theDoors) {
+    void setDoors(Door[] theDoors) {
         if(myDoors == null) {
             myDoors = theDoors;
         }
     }
     
-    public Door[] getDoors() throws NullPointerException{
+    Door[] getDoors() throws NullPointerException{
         if(myDoors == null) { 
             //throw new NullPointerException("This room has no doors.");
             return new Door[MAX_DOORS];
@@ -126,6 +127,16 @@ public class Room {
 	public ImageIcon getSmallIcon() {
         return null;
     }
+	
+	// ADDED METHOD BELOW
+	public void setWinRoom() {
+		isWinRoom = true;
+	}
+
+	// ADDED METHOD BELOW
+	public boolean isWinRoom() {
+		return isWinRoom;
+	}
 	
 //	public Point[] getDoorCoordinates() {
 //	    Point[] inCoordinates = new Point[MAX_DOORS];

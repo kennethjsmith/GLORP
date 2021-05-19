@@ -2,13 +2,9 @@
  * 
  */
 package model;
-
-import java.awt.Image;
 import java.awt.Point;
 import java.util.Set;
-
 import javax.swing.ImageIcon;
-
 import view.GameIcon;
 
 /**
