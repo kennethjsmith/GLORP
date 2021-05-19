@@ -66,6 +66,7 @@ public class Player extends GamePiece {
 		//System.out.println(myRoomIcon);
 	}
 	
+	
 	public GameIcon getRoomIcon() {
 		return myRoomIcon;	 
 	}
@@ -82,6 +83,14 @@ public class Player extends GamePiece {
 		return SPEED;
 	}
 	
+
+	/**
+	 * @param myStride the myStride to set
+	 */
+	public void setStride(int theStride) {
+		myStride = theStride;
+		updateRoomIcon();
+	}
 
 	public String toString() {
 		return myCoordinate.toString();
