@@ -20,6 +20,7 @@ public class Player extends GamePiece {
 	private IconDirection myIconDirection;
 	private int myStride; // 0 for standing, 1,2,3,4 for different run icons
 	
+	private static final int SPEED = 5;
 	private static final int PLAYER_MAP_ICON_SIZE = 10;
 	private static final Skin DEFAULT_SKIN = new Skin(SkinType.ALIEN);
 	
@@ -52,12 +53,50 @@ public class Player extends GamePiece {
 	}
 	//TODO:move up to controller?
 	public void move(Direction theDirection){
-		//myCoordinate.move(myCoordinate.getX + theDirection.dx(), myCoordinate.getY + theDirection.dy());
-		if (theDirection == Direction.EAST) myIconDirection = IconDirection.RIGHT;
-		if (theDirection == Direction.WEST) myIconDirection = IconDirection.LEFT;
+		// update room icon
+		myIconDirection = IconDirection.generateIconDirection(theDirection, myIconDirection);
 		myStride++;
 		if(myStride > 4) myStride = 1;
 		updateRoomIcon();
+		// move coordinates
+		//System.out.println(myCoordinate);
+		myCoordinate.move(theDirection);
+		//System.out.println(myCoordinate);
+	}
+	
+	public void updateRoomIcon() {
+		myRoomIcon = mySkin.getIcon(myIconDirection, myStride);
+		//System.out.println(myRoomIcon);
+	}
+	
+	
+	public GameIcon getRoomIcon() {
+		return myRoomIcon;	 
+	}
+	
+	public PiecePoint getCoordinate() {
+		return myCoordinate;
+		
+	}
+	
+	/**
+	 * @return the speed
+	 */
+	public static int getSpeed() {
+		return SPEED;
+	}
+	
+
+	/**
+	 * @param myStride the myStride to set
+	 */
+	public void setStride(int theStride) {
+		myStride = theStride;
+		updateRoomIcon();
+	}
+
+	public String toString() {
+		return myCoordinate.toString();
 	}
 
 }

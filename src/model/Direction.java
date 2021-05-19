@@ -4,20 +4,24 @@ import java.awt.event.KeyEvent;
 import java.util.Set;
 
 public enum Direction {
-	NORTH("N"),
-	NORTHEAST("NE"),
-	EAST("E"),
-	SOUTHEAST("SE"),
-	SOUTH("S"),
-	SOUTHWEST("SW"),
-	WEST("W"),
-	NORTHWEST("NW");
+	NORTH("N", 0, -1),
+	NORTHEAST("NE", 1, -1),
+	EAST("E", 1, 0),
+	SOUTHEAST("SE", 1, 1),
+	SOUTH("S", 0, 1),
+	SOUTHWEST("SW", -1, 1),
+	WEST("W", -1, 0),
+	NORTHWEST("NW", -1, -1);
 
 	public final String myLabel;
+	private final int dxMultiplier;
+	private final int dyMultiplier;
 
 
-	private Direction(String theLabel) {
+	private Direction(String theLabel, int theDXMultiplier, int theDYMultiplier) {
     	myLabel = theLabel;
+    	dxMultiplier = theDXMultiplier;
+    	dyMultiplier = theDYMultiplier;
     }
     
 	/**
@@ -77,5 +81,19 @@ public enum Direction {
 		if(theYDirection == null) return theXDirection;
 		
 		return null; //TODO: fix to better way. this return should never happen
+	}
+
+	/**
+	 * @return the dxMultiplier
+	 */
+	public int getDXMultiplier() {
+		return dxMultiplier;
+	}
+
+	/**
+	 * @return the dyMultiplier
+	 */
+	public int getDYMultiplier() {
+		return dyMultiplier;
 	}	
 }

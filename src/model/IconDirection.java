@@ -17,8 +17,8 @@ public enum IconDirection {
 		return myLabel;
 	}
 	
-	public static IconDirection generateIconDirection(Direction theDirection) {
-		IconDirection inIconDirection = DEFAULT_ICON_DIRECTION;
+	public static IconDirection generateIconDirection(Direction theDirection, IconDirection theCurrentIconDirection) {
+		IconDirection inIconDirection = theCurrentIconDirection;
 		
 		if (theDirection == Direction.EAST || theDirection == Direction.NORTHEAST
 				|| theDirection == Direction.SOUTHEAST) inIconDirection = IconDirection.RIGHT;

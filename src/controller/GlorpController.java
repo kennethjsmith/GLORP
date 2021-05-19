@@ -35,6 +35,7 @@ public class GlorpController implements KeyListener{
         myWindow.setTitle("GLORP");
         myWindow.addKeyListener(this);
         
+        myWindow.paintRoomPanel(myPlayer);
         
 	}
 	
@@ -55,6 +56,9 @@ public class GlorpController implements KeyListener{
     public void keyReleased(KeyEvent e) {
 		int inKey = e.getKeyCode();
 		myPressedKeys.remove(inKey);
+		
+		if(myPressedKeys.isEmpty()) myPlayer.setStride(0);
+		
 		myWindow.paintRoomPanel(myPlayer);
     }
 
