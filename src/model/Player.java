@@ -1,6 +1,5 @@
 package model;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -11,7 +10,7 @@ import view.GameIcon;
 public class Player extends GamePiece {
 	
 	// fields
-	private Point myCoordinate;
+	private PiecePoint myCoordinate;
 	private GameIcon myRoomIcon;
 	private final GameIcon myMapIcon = new GameIcon("src/icons/alien_map_icon.png"); //TODO: add mapIcon
 	
@@ -25,6 +24,7 @@ public class Player extends GamePiece {
 	
 	public Player() {
 		super();
+		myCoordinate = new PiecePoint();
 		mySkin = DEFAULT_SKIN;
 		myIconDirection = IconDirection.RIGHT;
 		myStride = 0;
@@ -33,6 +33,7 @@ public class Player extends GamePiece {
 	
 	public Player(Skin theSkin) {
 		super();
+		myCoordinate = new PiecePoint();
 		mySkin = theSkin;
 		myIconDirection = IconDirection.RIGHT;
 		myStride = 0;
@@ -43,21 +44,37 @@ public class Player extends GamePiece {
 		myInventory.remove(theItem);
 	}
 	
-	public void updateRoomIcon() {
-		myRoomIcon = mySkin.getIcon(myIconDirection, myStride);
-	}
-	
 	public ArrayList<Item> getInventory() {
 		return myInventory;
 	}
-	//TODO:move up to controller?
+	
 	public void move(Direction theDirection){
-		//myCoordinate.move(myCoordinate.getX + theDirection.dx(), myCoordinate.getY + theDirection.dy());
-		if (theDirection == Direction.EAST) myIconDirection = IconDirection.RIGHT;
-		if (theDirection == Direction.WEST) myIconDirection = IconDirection.LEFT;
+		// update room icon
+		myIconDirection = IconDirection.generateIconDirection(theDirection);
 		myStride++;
 		if(myStride > 4) myStride = 1;
 		updateRoomIcon();
+		// move coordinates
+		//System.out.println(myCoordinate);
+		myCoordinate.move(theDirection);
+		//System.out.println(myCoordinate);
 	}
-
+	
+	public void updateRoomIcon() {
+		myRoomIcon = mySkin.getIcon(myIconDirection, myStride);
+		//System.out.println(myRoomIcon);
+	}
+	
+	public GameIcon getRoomIcon() {
+		return myRoomIcon;	 
+	}
+	
+	public PiecePoint getCoordinate() {
+		return myCoordinate;
+		
+	}
+	
+	public String toString() {
+		return myCoordinate.toString();
+	}
 }
