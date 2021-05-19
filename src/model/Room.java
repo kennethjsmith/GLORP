@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
  */
 //TODO: create subclasses (start and end rooms)
 public class Room {
+    private static int MAX_DOORS = 4;
     private Door[] myDoors; // for now... 4 doors each 
 	private ArrayList<GamePiece> myGamePieces; // array list, no max GamePieces
 	private final ImageIcon myLargeIcon;
@@ -47,7 +48,8 @@ public class Room {
     
     public Door[] getDoors() throws NullPointerException{
         if(myDoors == null) { 
-            throw new NullPointerException("This room has no doors.");
+            //throw new NullPointerException("This room has no doors.");
+            return new Door[MAX_DOORS];
         }else
             return myDoors;
     }
