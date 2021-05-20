@@ -3,9 +3,6 @@ package model;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.ImageIcon;
-import view.GameIcon;
-
 import view.GameIcon;
 
 public class Skin {
@@ -78,5 +75,9 @@ public class Skin {
 	public GameIcon getIcon(IconDirection theIconDirection, int theStride) {
 		//System.out.println(myImageIconMap.get(theIconDirection)[theStride]);
 		return myRoomIconMap.get(theIconDirection)[theStride];
+	}
+	
+	public int getSize() {
+		return DEFAULT_SIZE;
 	}
 }

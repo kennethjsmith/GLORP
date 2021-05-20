@@ -18,7 +18,9 @@ public class Player extends GamePiece {
 	private Skin mySkin;
 	private IconDirection myIconDirection;
 	private int myStride; // 0 for standing, 1,2,3,4 for different run icons
-	
+	private static boolean skipFrame;
+
+
 	private static final int SPEED = 5;
 	private static final int PLAYER_MAP_ICON_SIZE = 10;
 	private static final Skin DEFAULT_SKIN = new Skin(SkinType.ALIEN);
@@ -39,6 +41,7 @@ public class Player extends GamePiece {
 		myIconDirection = IconDirection.RIGHT;
 		myStride = 0;
 		myRoomIcon = mySkin.getIcon(myIconDirection, myStride);
+		skipFrame = false;
 	}
 	
 	public void dropItem(Item theItem){ 
@@ -52,7 +55,10 @@ public class Player extends GamePiece {
 	public void move(Direction theDirection){
 		// update room icon
 		myIconDirection = IconDirection.generateIconDirection(theDirection, myIconDirection);
-		myStride++;
+		if(!skipFrame) {
+			myStride++;
+		}
+		skipFrame = !skipFrame;
 		if(myStride > 4) myStride = 1;
 		updateRoomIcon();
 		// move coordinates
@@ -89,11 +95,25 @@ public class Player extends GamePiece {
 	
 
 	/**
+	 * @return the mySkin
+	 */
+	public Skin getSkin() {
+		return mySkin;
+	}
+
+	/**
 	 * @param myStride the myStride to set
 	 */
 	public void setStride(int theStride) {
 		myStride = theStride;
 		updateRoomIcon();
+	}
+
+	/**
+	 * @param skipFrame the skipFrame to set
+	 */
+	public void setSkipFrame(boolean skipFrame) {
+		Player.skipFrame = skipFrame;
 	}
 
 	public String toString() {

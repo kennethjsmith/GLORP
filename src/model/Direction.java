@@ -30,29 +30,34 @@ public enum Direction {
 	public String getLabel() {
 		return myLabel;
 	}
-	
-	public static Direction generateDirection(Set<Integer> thePressedKeys) {
+	//TODO: magic number for wall boundary, consider if this is more controller functionality and 
+	//change location for alot of this code without breaking current functionality
+	public static Direction generateDirection(Set<Integer> thePressedKeys, Player thePlayer, int theRoomSize) {
 		Direction inXDirection = null;
 		Direction inYDirection = null;
 		Direction inComboDirection;
 		// going west
 		if((thePressedKeys.contains(KeyEvent.VK_A) || thePressedKeys.contains(KeyEvent.VK_LEFT)) &&
-				(!thePressedKeys.contains(KeyEvent.VK_D) || !thePressedKeys.contains(KeyEvent.VK_RIGHT))) {
+				(!thePressedKeys.contains(KeyEvent.VK_D) || !thePressedKeys.contains(KeyEvent.VK_RIGHT)) &&
+					thePlayer.getCoordinate().getX() >= 5) {
 			inXDirection = Direction.WEST;
 		}
 		// going east
 		if((thePressedKeys.contains(KeyEvent.VK_D) || thePressedKeys.contains(KeyEvent.VK_RIGHT)) &&
-				(!thePressedKeys.contains(KeyEvent.VK_A) || !thePressedKeys.contains(KeyEvent.VK_LEFT))) {
+				(!thePressedKeys.contains(KeyEvent.VK_A) || !thePressedKeys.contains(KeyEvent.VK_LEFT)) &&
+				thePlayer.getCoordinate().getX() <= theRoomSize -thePlayer.getSkin().getSize() - 5) {
 			inXDirection = Direction.EAST;
 		}
 		// going north
 		if((thePressedKeys.contains(KeyEvent.VK_W) || thePressedKeys.contains(KeyEvent.VK_UP)) &&
-				(!thePressedKeys.contains(KeyEvent.VK_S) || !thePressedKeys.contains(KeyEvent.VK_DOWN))) {
+				(!thePressedKeys.contains(KeyEvent.VK_S) || !thePressedKeys.contains(KeyEvent.VK_DOWN)) &&
+				thePlayer.getCoordinate().getY() >= 5) {
 			inYDirection = Direction.NORTH;
 		}
 		// going south
 		if((thePressedKeys.contains(KeyEvent.VK_S) || thePressedKeys.contains(KeyEvent.VK_DOWN)) &&
-				(!thePressedKeys.contains(KeyEvent.VK_W) || !thePressedKeys.contains(KeyEvent.VK_UP))) {
+				(!thePressedKeys.contains(KeyEvent.VK_W) || !thePressedKeys.contains(KeyEvent.VK_UP)) &&
+				thePlayer.getCoordinate().getY() <= theRoomSize - thePlayer.getSkin().getSize() - 5) {
 			inYDirection = Direction.SOUTH;
 		}
 		//System.out.println(inXDirection);
