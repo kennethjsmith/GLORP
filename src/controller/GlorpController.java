@@ -57,7 +57,10 @@ public class GlorpController implements KeyListener{
 		int inKey = e.getKeyCode();
 		myPressedKeys.remove(inKey);
 		
-		if(myPressedKeys.isEmpty()) myPlayer.setStride(0);
+		if(myPressedKeys.isEmpty()) {
+			myPlayer.setStride(0);
+			myPlayer.setSkipFrame(false);
+		}
 		
 		myWindow.paintRoomPanel(myPlayer);
     }
