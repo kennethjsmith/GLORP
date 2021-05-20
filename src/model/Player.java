@@ -71,6 +71,10 @@ public class Player extends GamePiece {
 		return myRoomIcon;	 
 	}
 	
+	public GameIcon getMapIcon() {
+		return myMapIcon;
+	}
+	
 	public PiecePoint getCoordinate() {
 		return myCoordinate;
 		
