@@ -1,6 +1,5 @@
 package model;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -26,6 +25,7 @@ public class Player extends GamePiece {
 	
 	public Player() {
 		super();
+		myCoordinate = new PiecePoint();
 		mySkin = DEFAULT_SKIN;
 		myIconDirection = IconDirection.RIGHT;
 		myStride = 0;
@@ -34,6 +34,7 @@ public class Player extends GamePiece {
 	
 	public Player(Skin theSkin) {
 		super();
+		myCoordinate = new PiecePoint();
 		mySkin = theSkin;
 		myIconDirection = IconDirection.RIGHT;
 		myStride = 0;
@@ -47,7 +48,7 @@ public class Player extends GamePiece {
 	public ArrayList<Item> getInventory() {
 		return myInventory;
 	}
-	//TODO:move up to controller?
+	
 	public void move(Direction theDirection){
 		// update room icon
 		myIconDirection = IconDirection.generateIconDirection(theDirection, myIconDirection);
@@ -94,5 +95,4 @@ public class Player extends GamePiece {
 	public String toString() {
 		return myCoordinate.toString();
 	}
-
 }

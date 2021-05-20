@@ -20,6 +20,8 @@ public class Maze {
 	// The room our Player is currently in
 	private Room myCurrentRoom;
 	
+	private Room myStartRoom;
+	
 	// True if the Player can still access the winroom via unlocked or locked doors
 	private boolean canAccessWinRoom;
 	
@@ -52,14 +54,11 @@ public class Maze {
 		
 		// this is set to true initially
 		canAccessWinRoom = true;
-		
 	}
 	
 
 	// Creates and adds rooms to myMaze.
 	private void addRooms() {
-		
-		
 		
 		// iterate through the 2d array
 		for(int i = 1; i <= LENGTH; i++) {
@@ -94,18 +93,42 @@ public class Maze {
 		
 		Random rand = new Random();
 		
-		// Uses random number generator to pick a spot for the start room. 
-		// Length - 1 indicates the upper bound of the number generated.
-		// The +1 is to ensure that we do not go out of bounds on the lower bounds -> .nextInt has a lower bound of 0.
-		int startRow = rand.nextInt(LENGTH - 1) + 1;
-		int startCol = rand.nextInt(WIDTH - 1) + 1;
 		
-		// Uses random number generator to pick a spot for the end room.
+		int startRow = 1;
+		// loops until startRow is not on the edge of the maze.
+		while(startRow == 1 || startRow == LENGTH) {
+			// Uses random number generator to pick a spot for the start room. 
+			// Length - 1 indicates the upper bound of the number generated.
+			// The +1 is to ensure that we do not go out of bounds on the lower bounds -> .nextInt has a lower bound of 0.
+			startRow = rand.nextInt(LENGTH - 1) + 1;
+		}
 		
+		int startCol = 1;
+		// loops until startCol is not on the edge of the maze.
+		while(startCol == 1 || startCol == WIDTH) {
+			startCol = rand.nextInt(WIDTH - 1) + 1;
+		}
 		
+		// Uses random number generator to pick a spot for the win room.
+		int winRow = 1;
+		// Loops until the win room is not on the border
+		// And is at least 1/4 the length of the maze away from the start room
+		while(winRow == 1 || winRow == LENGTH || Math.abs(winRow - startRow) < LENGTH / 4) {
+			winRow = rand.nextInt(LENGTH - 1) + 1;
+		}
 		
-		//TODO pass in the win item to set the winRoom
-		this.getRoom(LENGTH, WIDTH).setWinRoom();
+		// Uses random number generator to pick a spot for the win room.
+		int winCol = 1;
+		// Loops until the win room is not on the border
+		// And is at least 1/4 the width of the maze away from the start room
+		while(winCol == 1 || winCol == WIDTH || Math.abs(winCol - startCol) < WIDTH / 4) {
+			winCol = rand.nextInt(WIDTH - 1) + 1;
+		}
+		
+		this.getRoom(winRow, winCol).setWinRoom();
+		
+		myStartRoom = this.getRoom(startRow, startCol);
+		
 	}
 	
 	// Returns the room at the current index

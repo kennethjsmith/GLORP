@@ -2,6 +2,7 @@ package model;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import javax.swing.ImageIcon;
 
@@ -17,8 +18,8 @@ import view.GameIcon;
 public class Room {
     private Door[] myDoors; // for now... 4 doors each 
 	private ArrayList<GamePiece> myGamePieces; // array list, no max GamePieces
-	private final GameIcon myLargeIcon;
-	private final GameIcon mySmallIcon;
+	private GameIcon myLargeIcon;
+	private GameIcon mySmallIcon;
 	private boolean isWinRoom;
 	
 	//Map<Door, Room> myDoors= new TreeMap<>();
@@ -120,9 +121,20 @@ public class Room {
 		myGamePieces.add(theGamePiece);
 	}
 	
+	public void setLargeIcon(GameIcon theLargeIcon) {
+		Objects.requireNonNull(theLargeIcon);
+		myLargeIcon = theLargeIcon;
+	}
+	
 	public GameIcon getLargeIcon() {
 	    return myLargeIcon;
 	}
+	
+	public void setSmallIcon(GameIcon theSmallIcon) {
+		Objects.requireNonNull(theSmallIcon);
+		mySmallIcon = theSmallIcon;
+	}
+	
 	
 	public ImageIcon getSmallIcon() {
         return mySmallIcon;
