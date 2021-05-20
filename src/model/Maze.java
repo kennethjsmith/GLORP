@@ -62,6 +62,9 @@ public class Maze {
 		// Fills out the 2d array, myMaze, with rooms
 		addRooms();
 		
+		DoorFactory inFactory = new DoorFactory(myMaze); // use door factory to fill rooms with doors
+		myMaze = inFactory.getRooms();
+		
 		// this is set to true initially
 		canAccessWinRoom = true;
 	}
