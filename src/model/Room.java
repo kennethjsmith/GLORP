@@ -20,7 +20,6 @@ public class Room {
 	private ArrayList<GamePiece> myGamePieces; // array list, no max GamePieces
 	private GameIcon myLargeIcon;
 	private GameIcon mySmallIcon;
-	private boolean isWinRoom;
 	
 	//Map<Door, Room> myDoors= new TreeMap<>();
 	//private boolean containsPlayer; //will be tracked by map (current room) 
@@ -139,16 +138,6 @@ public class Room {
 	public ImageIcon getSmallIcon() {
         return mySmallIcon;
     }
-	
-	// ADDED METHOD BELOW
-	public void setWinRoom() {
-		isWinRoom = true;
-	}
-
-	// ADDED METHOD BELOW
-	public boolean isWinRoom() {
-		return isWinRoom;
-	}
 	
 //	public Point[] getDoorCoordinates() {
 //	    Point[] inCoordinates = new Point[MAX_DOORS];

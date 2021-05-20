@@ -24,7 +24,7 @@ public class GlorpController implements KeyListener{
 	private final Set<Integer> myPressedKeys = new HashSet<Integer>();
 	
 	public GlorpController(){
-		myMaze = new Maze();
+		myMaze = Maze.getInstance();
 		
 		//hard ref to character for room panel work
 		myPlayer = new Player();

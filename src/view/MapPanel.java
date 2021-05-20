@@ -37,7 +37,7 @@ public class MapPanel extends JPanel {
         add(label);
         
         // Creates a new maze: TODO Should the MapPanel receive the Maze a parameter?
-        myMaze = new Maze();
+        myMaze = Maze.getInstance();
         
         // Creates a map of all the rooms
         myRooms = new HashMap<ImageIcon, Dimension>();

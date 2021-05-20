@@ -7,6 +7,7 @@ import view.GameIcon;
 
 /**
  * The maze has all the rooms in a 2D array with a buffer of size 1 around the border.
+ * Maze uses a singleton pattern.
  * @author Ken Smith, Heather Finch
  * @version 5.14.21
  * Ask Heather if you have any questions about this class
@@ -20,16 +21,20 @@ public class Maze {
 	// The room our Player is currently in
 	private Room myCurrentRoom;
 	
+	// The room the player starts in
 	private Room myStartRoom;
+	
+	// The room the player must get to so that they can win
+	private Room myWinRoom;
 	
 	// True if the Player can still access the winroom via unlocked or locked doors
 	private boolean canAccessWinRoom;
 	
 	// The number of rows in the maze that store rooms
-	private final int LENGTH = 6;
+	private final int LENGTH = 7;
 	
 	// The number of columns in the maze that store rooms
-	private final int WIDTH = 6;
+	private final int WIDTH = 7;
 	
 	// The border around the entire room is 1 space wide on each side.
 	// This is 2 to account for the buffer on both sides.
@@ -38,13 +43,18 @@ public class Maze {
 	// The icon for a plain room
 	private final GameIcon myPlainRoomIcon = new GameIcon("src/icons/room_for_map.png"); 
 	
+	// The icon for start room
+	private final GameIcon myStartRoomIcon = new GameIcon("src/icons/start_room_for_map.png");
+	
 	// The icon for a win room
 	private final GameIcon myWinRoomIcon = new GameIcon("src/icons/win_room_for_map.png");
+	
+	// Creates the maze.
+    private static final Maze THISMAZE = new Maze();
 
-	//TODO Add item tracking for the win item
 	
-	
-	public Maze() {
+    // Constructor is private due to singleton pattern.
+	private Maze() {
 		
 		// Initialize with row-major: Room[rows][columns]
 		myMaze = new Room[LENGTH+BORDER_BUFFER][WIDTH+BORDER_BUFFER];
@@ -56,6 +66,11 @@ public class Maze {
 		canAccessWinRoom = true;
 	}
 	
+	// Returns the maze.
+	public static Maze getInstance() {
+		return THISMAZE;
+    }
+	
 
 	// Creates and adds rooms to myMaze.
 	private void addRooms() {
@@ -63,75 +78,75 @@ public class Maze {
 		// iterate through the 2d array
 		for(int i = 1; i <= LENGTH; i++) {
 			for(int j = 1; j <= WIDTH; j++) {
-				
-				// Create a room with the winroom icon
-				if(i == LENGTH && j == WIDTH) {
-					myMaze[i][j] = new Room(myWinRoomIcon, myWinRoomIcon);
-					
-				} else { // create a room with a plain icon
-					myMaze[i][j] = new Room(myPlainRoomIcon, myPlainRoomIcon);
-
-				}
+				myMaze[i][j] = new Room(myPlainRoomIcon, myPlainRoomIcon);
 			}
 		}
-		
 		designateWinStartRooms();
-		myCurrentRoom = myMaze[1][1];
-
+		myCurrentRoom = myStartRoom;
 		
 	}
 	
-	// Communicate to the controller what the start room for the game is
-	// So that the controller can set the icon for the start room
-	// Maybe find way to not pass room eventually
-	private Room getStartRoom() {
-		return myMaze[1][1];
-	}
 	
 	// Randomly sets the WinRoom and StartRoom.
 	private void designateWinStartRooms() {
 		
-		Random rand = new Random();
-		
-		
 		int startRow = 1;
-		// loops until startRow is not on the edge of the maze.
-		while(startRow == 1 || startRow == LENGTH) {
-			// Uses random number generator to pick a spot for the start room. 
-			// Length - 1 indicates the upper bound of the number generated.
-			// The +1 is to ensure that we do not go out of bounds on the lower bounds -> .nextInt has a lower bound of 0.
-			startRow = rand.nextInt(LENGTH - 1) + 1;
-		}
-		
+		startRow = generateRandomStartIndex(startRow, LENGTH);
 		int startCol = 1;
-		// loops until startCol is not on the edge of the maze.
-		while(startCol == 1 || startCol == WIDTH) {
-			startCol = rand.nextInt(WIDTH - 1) + 1;
-		}
+		startCol = generateRandomStartIndex(startCol, WIDTH);
 		
-		// Uses random number generator to pick a spot for the win room.
-		int winRow = 1;
-		// Loops until the win room is not on the border
-		// And is at least 1/4 the length of the maze away from the start room
-		while(winRow == 1 || winRow == LENGTH || Math.abs(winRow - startRow) < LENGTH / 4) {
-			winRow = rand.nextInt(LENGTH - 1) + 1;
-		}
-		
-		// Uses random number generator to pick a spot for the win room.
-		int winCol = 1;
-		// Loops until the win room is not on the border
-		// And is at least 1/4 the width of the maze away from the start room
-		while(winCol == 1 || winCol == WIDTH || Math.abs(winCol - startCol) < WIDTH / 4) {
-			winCol = rand.nextInt(WIDTH - 1) + 1;
-		}
-		
-		this.getRoom(winRow, winCol).setWinRoom();
+		System.out.println("Start Room: (" + startRow + ", " + startCol + ").");
 		
 		myStartRoom = this.getRoom(startRow, startCol);
+		myStartRoom.setLargeIcon(myStartRoomIcon);
+		myStartRoom.setSmallIcon(myStartRoomIcon);
+		
+		int winRow = 1;
+		winRow = generateRandomWinIndex(winRow, LENGTH, startRow);
+				int winCol = 1;
+		winCol = generateRandomWinIndex(winCol, WIDTH, startCol);
+		
+		System.out.println("Win Room: (" + winRow + ", " + winCol + ").");
+		
+		myWinRoom = this.getRoom(winRow, winCol);
+		myWinRoom.setLargeIcon(myWinRoomIcon);
+		myWinRoom.setSmallIcon(myWinRoomIcon);
 		
 	}
+
+	// Finds a random index in the 2d grid for the start room. TheDiameter represents either the LENGTH or WIDTH.
+	private int generateRandomStartIndex(int theIndex, int theDiameter) {
+		Random rand = new Random();
+
+		// loops until theIndex is not on the edge of the maze.
+		while(theIndex == 1 || theIndex == theDiameter) {
+			// Uses random number generator to pick a spot for the start room. 
+			// theDiameter - 1 indicates the upper bound of the number generated.
+			// The +1 is to ensure that we do not go out of bounds on the lower bounds -> .nextInt has a lower bound of 0.
+			theIndex = rand.nextInt(theDiameter - 1) + 1;
+		}	
+		return theIndex;
+	}
 	
-	// Returns the room at the current index
+	private int generateRandomWinIndex(int theIndex, int theDiameter, int theStartIndex) {
+		Random rand = new Random();
+		
+		// Loops until the win room is not on the border
+		// And is at least 1/4 the length of the maze away from the start room
+		while(theIndex == 1 || theIndex == theDiameter || Math.abs(theIndex - theStartIndex) < theDiameter / 3) {
+			theIndex = rand.nextInt(LENGTH - 1) + 1;
+		}
+		return theIndex;
+	}
+
+	// Communicate to the controller what the start room for the game is
+	// So that the controller can set the icon for the start room
+	// Maybe find way to not pass room eventually
+	private Room getStartRoom() {
+		return myStartRoom;
+	}
+	
+	// Returns the room at the provided index
 	public Room getRoom(int theRow, int theColumn) {
 		//TODO clean up magic numbers in getRoom
 		if(theRow < 1 || theColumn < 1) throw new 
@@ -189,7 +204,7 @@ public class Maze {
 	    // return if we've found the win room
 	    // TODO, should I use a "break" to exit the depthFirstSearchMaze method once the winRoom has been found?
 	    // Otherwise the DFS could recurse further.
-	    if(currentRoom.isWinRoom()) {
+	    if(currentRoom == myWinRoom) {
 	    	canAccessWinRoom = true;
 	    	return;
 	    } else {
@@ -254,7 +269,7 @@ public class Maze {
 
 				if(getRoom(i, j).equals(myCurrentRoom)) {
 					sb.append(" current");
-				} else if (currRoom.isWinRoom()) {
+				} else if (currRoom == myWinRoom) {
 					sb.append("  win   ");
 				} else sb.append("   x    ");
 			}
