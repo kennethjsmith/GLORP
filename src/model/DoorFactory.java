@@ -34,6 +34,7 @@ public class DoorFactory {
     
     public DoorFactory(Room[][] theRooms) {
         myRooms = theRooms;
+        injectDoors(); // I forgot to add this in 
     }
     
     /**
