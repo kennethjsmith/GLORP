@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 
 import model.Player;
+import model.Room;
 
 /**
  * ref: https://stackoverflow.com/questions/22766209/i-need-a-little-help-implementing-player-movement-on-java-grid
@@ -27,160 +28,69 @@ public class RoomPanel extends JPanel {
 
     // fields
 	private static final long serialVersionUID = 1L;
-	//TODO: add front/rear facing icons
-    //left facing alien icons
-    private static ImageIcon[] LEFT_RUN_ICONS = new ImageIcon[] 
-    		{new ImageIcon("src/icons/left_alien1.png"), 
-    			new ImageIcon("src/icons/left_alien2.png"),
-    				new ImageIcon("src/icons/left_alien3.png"),
-    					new ImageIcon("src/icons/left_alien4.png")};
-    private static ImageIcon LEFT_STANDING_ICON = new ImageIcon("src/icons/left_alien0.png");
-    //right facing alien icons
-    private static ImageIcon[] RIGHT_RUN_ICONS = new ImageIcon[] 
-    		{new ImageIcon("src/icons/right_alien1.png"), 
-    			new ImageIcon("src/icons/right_alien2.png"),
-    				new ImageIcon("src/icons/right_alien3.png"),
-    					new ImageIcon("src/icons/right_alien4.png")};
-    private static ImageIcon RIGHT_STANDING_ICON = new ImageIcon("src/icons/right_alien0.png");
-    private static final int ICON_SIZE = 100;
-    private int myCurrentRunIconValue; //used to determine which running icon
-    private ImageIcon myCurrentIcon;
-    private boolean skipFrame;
-    private String myPlayerDirection;
-    private static final int myPlayerSpeed = 5;
-    private static final String[] PLAYER_DIRECTIONS = {"LEFT", "RIGHT"};
-   
-    
-    // Set of currently pressed keys
-    //TODO: create a movement/controller class?
-    private final Set<Integer> pressedKeys = new HashSet<Integer>();
-    private int myXVelocity;
-    private int myYVelocity;
-    private int myXCoordinate = 0;
-    private int myYCoordinate = 0;
     
     private final String TITLE = "Room";
+    private Room myCurrentRoom; //TODO: create setter, use this not myPlayer on this panel
+    private Player myCurrentPlayer;
     private final static int SIZE = 500;
-
+    //private boolean skipFrame; //move to Player, or client???
+    
     public RoomPanel() {
         setPreferredSize(new Dimension(SIZE,SIZE));
         // add border
         Border blackline = BorderFactory.createLineBorder(Color.black);
         setBorder(blackline);
-        //resize all image icons
-        resizeImageIcons();
-        
-        myCurrentRunIconValue = 0;
-        myPlayerDirection = "RIGHT";
-        myCurrentIcon = RIGHT_STANDING_ICON;
-        skipFrame = true;
         JLabel label = new JLabel(TITLE, JLabel.LEFT);
         setLayout(new FlowLayout());
         add(label); 
+        
+        //skipFrame = false;
     }
 
     @Override
     public void update(Graphics g) {
         paint(g);
     }
-    
-    /**
-     * Helper for resizing single icon
-     */
-    private static void resizeImageIcons() {
-    	Image inTempImage;
-    	//resize left facing standing icon
-    	inTempImage = LEFT_STANDING_ICON.getImage(); // transform it 
-		inTempImage = inTempImage.getScaledInstance(ICON_SIZE, ICON_SIZE,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-		LEFT_STANDING_ICON = new ImageIcon(inTempImage);  // transform it back
-    	
-		//resize left facing standing icon
-    	inTempImage = RIGHT_STANDING_ICON.getImage(); // transform it 
-		inTempImage = inTempImage.getScaledInstance(ICON_SIZE, ICON_SIZE,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-		RIGHT_STANDING_ICON = new ImageIcon(inTempImage);  // transform it back
-    
-		resizeImageIconArrays();
-    }
-    
-    
-    /**
-     * Helper method, resizes to standard icon size.
-     * @param theIcons
-     */
-    private static void resizeImageIconArrays() {
-
-    	//resize left facing run icons
-    	for(int i = 0; i < LEFT_RUN_ICONS.length; i++){
-    		Image inTempImage = LEFT_RUN_ICONS[i].getImage(); // transform it 
-    		inTempImage = inTempImage.getScaledInstance(ICON_SIZE, ICON_SIZE,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-    		LEFT_RUN_ICONS[i] = new ImageIcon(inTempImage);  // transform it back
-    	}
-  
-    	//resize right facing run icons
-    	for(int i = 0; i < RIGHT_RUN_ICONS.length; i++){
-    		Image inTempImage = RIGHT_RUN_ICONS[i].getImage(); // transform it 
-    		inTempImage = inTempImage.getScaledInstance(ICON_SIZE, ICON_SIZE,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-    		RIGHT_RUN_ICONS[i] = new ImageIcon(inTempImage);  // transform it back
-    	}
-    }
-    
  
     @Override
-    public void paintComponent(Graphics g) {
-        
+    public void paintComponent(Graphics g) {  
     	super.paintComponent(g);
-        //Graphics2D g2d = (Graphics2D) g;
-        myCurrentIcon.paintIcon(this, g, myXCoordinate, myYCoordinate);
+    	//new ImageIcon().paintIcon(this,g,d,d);
+    	if(myCurrentPlayer != null) {
+    		//System.out.println((int)myCurrentPlayer.getCoordinate().getX());
+    		//System.out.println((int)myCurrentPlayer.getCoordinate().getY());
+    		//TODO: this floor icon will need to come from the room class
+    		GameIcon floor = new GameIcon("src/icons/floor.jpg");
+    		floor.resize(500);
+    		floor.paintIcon(this, g, 0, 0);
+    		
+    		//TODO: fix this HARDCODED doors
+    		GameIcon westDoor = new GameIcon("src/icons/WE_door.png");
+    		westDoor.resize(20,100);
+    		westDoor.paintIcon(this, g, 0, 200);
+    		GameIcon eastDoor = new GameIcon("src/icons/WE_door.png");
+    		westDoor.resize(20,100);
+    		eastDoor.paintIcon(this, g, 480, 200);
+    		GameIcon northDoor = new GameIcon("src/icons/NS_door.png");
+    		northDoor.resize(100, 20);
+    		northDoor.paintIcon(this, g, 200, 0);
+    		GameIcon southDoor = new GameIcon("src/icons/NS_door.png");
+    		northDoor.resize(100, 20);
+    		southDoor.paintIcon(this, g, 200, 480);
+    		
+    		
+    		
+    		myCurrentPlayer.getRoomIcon().paintIcon(this, g, (int)myCurrentPlayer.getCoordinate().getX(), (int)myCurrentPlayer.getCoordinate().getY());
+    		//System.out.println(myCurrentPlayer.getRoomIcon());
+    		//System.out.println(myCurrentPlayer);
+    	}
     }
 
-    public void keyPressed(KeyEvent e) {
-    	//skip frame used to slow animation, could instead add more images
-    	if(!skipFrame) {
-	    	myCurrentRunIconValue++;
-	    	if(myCurrentRunIconValue == 4) myCurrentRunIconValue = 0;
-    	}
-    	skipFrame = !skipFrame;
-    	
-    	//TODO: create getIcon() class
-    	//determine direction
-    	if(myPlayerDirection == PLAYER_DIRECTIONS[0])
-    		myCurrentIcon = LEFT_RUN_ICONS[myCurrentRunIconValue];
-    	else if(myPlayerDirection == PLAYER_DIRECTIONS[1])
-    		myCurrentIcon = RIGHT_RUN_ICONS[myCurrentRunIconValue];
-    	
-        int k = e.getKeyCode();
-        pressedKeys.add(k);
-        myXVelocity = 0;
-        myYVelocity = 0;
-        //TODO: this results in always facing left when simultaneous left/right keys are pressed
-        //make velocity increment speed a class constant
-        if(pressedKeys.contains(KeyEvent.VK_D)) {
-        	myXVelocity += myPlayerSpeed;
-        	myPlayerDirection = "RIGHT";
-        }
-    	if(pressedKeys.contains(KeyEvent.VK_A)) {
-    		myXVelocity -= myPlayerSpeed;
-    		myPlayerDirection = "LEFT";
-    	}
-    	if(pressedKeys.contains(KeyEvent.VK_S)) myYVelocity += myPlayerSpeed;
-    	if(pressedKeys.contains(KeyEvent.VK_W)) myYVelocity -= myPlayerSpeed;
-        
-    	
-        if((myXCoordinate >= 0 && myXVelocity < 0) || 
-        		(myXCoordinate <= SIZE-ICON_SIZE && myXVelocity > 0)) myXCoordinate += myXVelocity;
-        if((myYCoordinate >= 0 && myYVelocity < 0) || 
-        		(myYCoordinate <= SIZE-ICON_SIZE && myYVelocity > 0)) myYCoordinate += myYVelocity;
-    }
-
-	public void keyReleased(KeyEvent e) {
-		int k = e.getKeyCode();
-		pressedKeys.remove(k);
-		
-		if(myPlayerDirection == PLAYER_DIRECTIONS[0])
-    		myCurrentIcon = LEFT_STANDING_ICON;
-    	else if(myPlayerDirection == PLAYER_DIRECTIONS[1])
-    		myCurrentIcon = RIGHT_STANDING_ICON;
-
-		myCurrentRunIconValue = 0;
+	/**
+	 * @param myCurrentPlayer the myCurrentPlayer to set
+	 */
+	public void setCurrentPlayer(Player myCurrentPlayer) {
+		this.myCurrentPlayer = myCurrentPlayer;
 	}
+
 }

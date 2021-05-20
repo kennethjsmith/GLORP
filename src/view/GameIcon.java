@@ -27,4 +27,13 @@ public class GameIcon extends ImageIcon{
 		this.setImage(inTempImage); // transform it back
     
 	}
+	
+	public void resize(int theXSize, int theYSize) {
+		Image inTempImage;
+    	//resize left facing standing icon
+    	inTempImage = this.getImage(); // transform it 
+		inTempImage = inTempImage.getScaledInstance(theXSize, theYSize,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+		this.setImage(inTempImage); // transform it back
+    
+	}
 }

@@ -2,6 +2,7 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,7 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.Timer;
 
-public class GlorpGUI extends JFrame implements KeyListener, ActionListener {
+import model.Player;
+
+public class GlorpGUI extends JFrame {
     
     // static final fields (class constants)
 
@@ -47,32 +50,12 @@ public class GlorpGUI extends JFrame implements KeyListener, ActionListener {
         myRiddlePanel = new RiddlePanel();
         add(myRiddlePanel, BorderLayout.SOUTH);
         pack();
-        addKeyListener(this);
+        repaint();
+    }
+    //TODO: this method should pass a room to paint, not just a character
+    public void paintRoomPanel(Player thePlayer) {
+        myRoomPanel.setCurrentPlayer(thePlayer);
         repaint();
     }
 
-    @Override
-    public void repaint() {
-        super.repaint();
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        myRoomPanel.keyPressed(e);
-        repaint();
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) { }
-
-    @Override
-    public void keyReleased(KeyEvent e) { 
-    	myRoomPanel.keyReleased(e);
-        repaint();
-    }
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub	
-	}
 }

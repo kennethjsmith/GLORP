@@ -2,8 +2,11 @@ package model;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import javax.swing.ImageIcon;
+
+import view.GameIcon;
 
 /**
  * A room can has 4 doors an item, and contains flags indicating 
@@ -16,9 +19,8 @@ public class Room {
     private static int MAX_DOORS = 4;
     private Door[] myDoors; // for now... 4 doors each 
 	private ArrayList<GamePiece> myGamePieces; // array list, no max GamePieces
-	private final ImageIcon myLargeIcon;
-	private final ImageIcon mySmallIcon;
-	private boolean isWinRoom;
+	private GameIcon myLargeIcon;
+	private GameIcon mySmallIcon;
 	
 	//Map<Door, Room> myDoors= new TreeMap<>();
 	//private boolean containsPlayer; //will be tracked by map (current room) 
@@ -30,7 +32,7 @@ public class Room {
         mySmallIcon = null;
     }
     
-	public Room(ImageIcon theLargeIcon, ImageIcon theSmallIcon) { // how will rooms get their icons? And riddles? 
+	public Room(GameIcon theLargeIcon, GameIcon theSmallIcon) { // how will rooms get their icons? And riddles? 
 	    myGamePieces = new ArrayList<GamePiece>();
 	    myLargeIcon = theLargeIcon; 
 	    mySmallIcon = theSmallIcon; 
@@ -120,23 +122,24 @@ public class Room {
 		myGamePieces.add(theGamePiece);
 	}
 	
-	public ImageIcon getLargeIcon() {
-	    return null;
+	public void setLargeIcon(GameIcon theLargeIcon) {
+		Objects.requireNonNull(theLargeIcon);
+		myLargeIcon = theLargeIcon;
 	}
+	
+	public GameIcon getLargeIcon() {
+	    return myLargeIcon;
+	}
+	
+	public void setSmallIcon(GameIcon theSmallIcon) {
+		Objects.requireNonNull(theSmallIcon);
+		mySmallIcon = theSmallIcon;
+	}
+	
 	
 	public ImageIcon getSmallIcon() {
-        return null;
+        return mySmallIcon;
     }
-	
-	// ADDED METHOD BELOW
-	public void setWinRoom() {
-		isWinRoom = true;
-	}
-
-	// ADDED METHOD BELOW
-	public boolean isWinRoom() {
-		return isWinRoom;
-	}
 	
 //	public Point[] getDoorCoordinates() {
 //	    Point[] inCoordinates = new Point[MAX_DOORS];

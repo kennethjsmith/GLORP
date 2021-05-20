@@ -1,10 +1,13 @@
 package model;
 
-import java.util.Objects;
+import java.util.Random;
 import java.util.Stack;
+
+import view.GameIcon;
 
 /**
  * The maze has all the rooms in a 2D array with a buffer of size 1 around the border.
+ * Maze uses a singleton pattern.
  * @author Ken Smith, Heather Finch
  * @version 5.14.21
  * Ask Heather if you have any questions about this class
@@ -15,60 +18,135 @@ public class Maze {
 	// The 2D array that stores each room
 	private Room[][] myMaze;
 	
+	// The room our Player is currently in
 	private Room myCurrentRoom;
 	
+	// The room the player starts in
+	private Room myStartRoom;
+	
+	// The room the player must get to so that they can win
+	private Room myWinRoom;
+	
+	// True if the Player can still access the winroom via unlocked or locked doors
 	private boolean canAccessWinRoom;
 	
 	// The number of rows in the maze that store rooms
-	private final int LENGTH;
+	private final int LENGTH = 7;
 	
 	// The number of columns in the maze that store rooms
-	private final int WIDTH;
+	private final int WIDTH = 7;
 	
+	// The border around the entire room is 1 space wide on each side.
+	// This is 2 to account for the buffer on both sides.
+	private final int BORDER_BUFFER = 2;
 	
-	//TODO Add item tracking for the win item
+	// The icon for a plain room
+	private final GameIcon myPlainRoomIcon = new GameIcon("src/icons/room_for_map.png"); 
 	
+	// The icon for start room
+	private final GameIcon myStartRoomIcon = new GameIcon("src/icons/start_room_for_map.png");
 	
-	public Maze() {
+	// The icon for a win room
+	private final GameIcon myWinRoomIcon = new GameIcon("src/icons/win_room_for_map.png");
+	
+	// Creates the maze.
+    private static final Maze THISMAZE = new Maze();
+
+	
+    // Constructor is private due to singleton pattern.
+	private Maze() {
 		
-//		// Initialize with row-major: Room[rows][columns]
-//		myMaze = new Room[LENGTH+BORDER_BUFFER][WIDTH+BORDER_BUFFER];
+		// Initialize with row-major: Room[rows][columns]
+		myMaze = new Room[LENGTH+BORDER_BUFFER][WIDTH+BORDER_BUFFER];
 		
-		createMaze();
-		
-		// Currently sets the win room to be the bottom right corner
-		designateWinRoom();
+		// Fills out the 2d array, myMaze, with rooms
+		addRooms();
 		
 		// this is set to true initially
 		canAccessWinRoom = true;
-		myCurrentRoom = myMaze[1][1];
 	}
 	
-	void createMaze() {
-		Objects.requireNonNull(myMaze);
-		// set length and width
+	// Returns the maze.
+	public static Maze getInstance() {
+		return THISMAZE;
+    }
+	
+
+	// Creates and adds rooms to myMaze.
+	private void addRooms() {
 		
+		// iterate through the 2d array
+		for(int i = 1; i <= LENGTH; i++) {
+			for(int j = 1; j <= WIDTH; j++) {
+				myMaze[i][j] = new Room(myPlainRoomIcon, myPlainRoomIcon);
+			}
+		}
+		designateWinStartRooms();
+		myCurrentRoom = myStartRoom;
 		
 	}
 	
 	
+	// Randomly sets the WinRoom and StartRoom.
+	private void designateWinStartRooms() {
+		
+		int startRow = 1;
+		startRow = generateRandomStartIndex(startRow, LENGTH);
+		int startCol = 1;
+		startCol = generateRandomStartIndex(startCol, WIDTH);
+		
+		System.out.println("Start Room: (" + startRow + ", " + startCol + ").");
+		
+		myStartRoom = this.getRoom(startRow, startCol);
+		myStartRoom.setLargeIcon(myStartRoomIcon);
+		myStartRoom.setSmallIcon(myStartRoomIcon);
+		
+		int winRow = 1;
+		winRow = generateRandomWinIndex(winRow, LENGTH, startRow);
+				int winCol = 1;
+		winCol = generateRandomWinIndex(winCol, WIDTH, startCol);
+		
+		System.out.println("Win Room: (" + winRow + ", " + winCol + ").");
+		
+		myWinRoom = this.getRoom(winRow, winCol);
+		myWinRoom.setLargeIcon(myWinRoomIcon);
+		myWinRoom.setSmallIcon(myWinRoomIcon);
+		
+	}
+
+	// Finds a random index in the 2d grid for the start room. TheDiameter represents either the LENGTH or WIDTH.
+	private int generateRandomStartIndex(int theIndex, int theDiameter) {
+		Random rand = new Random();
+
+		// loops until theIndex is not on the edge of the maze.
+		while(theIndex == 1 || theIndex == theDiameter) {
+			// Uses random number generator to pick a spot for the start room. 
+			// theDiameter - 1 indicates the upper bound of the number generated.
+			// The +1 is to ensure that we do not go out of bounds on the lower bounds -> .nextInt has a lower bound of 0.
+			theIndex = rand.nextInt(theDiameter - 1) + 1;
+		}	
+		return theIndex;
+	}
 	
+	private int generateRandomWinIndex(int theIndex, int theDiameter, int theStartIndex) {
+		Random rand = new Random();
+		
+		// Loops until the win room is not on the border
+		// And is at least 1/4 the length of the maze away from the start room
+		while(theIndex == 1 || theIndex == theDiameter || Math.abs(theIndex - theStartIndex) < theDiameter / 3) {
+			theIndex = rand.nextInt(LENGTH - 1) + 1;
+		}
+		return theIndex;
+	}
+
 	// Communicate to the controller what the start room for the game is
 	// So that the controller can set the icon for the start room
 	// Maybe find way to not pass room eventually
 	private Room getStartRoom() {
-		return myMaze[1][1];
+		return myStartRoom;
 	}
 	
-	// TODO if we randomize the winroom and/or start room location, we will want to create a method to make sure they are
-	// 		not too close to each other. We would likely call the method from the below method, and modify the LENGTH and WIDTH 
-	//		passed in to the setWinRoom method
-	private void designateWinRoom() {
-		//TODO pass in the win item to set the winRoom
-		this.getRoom(LENGTH, WIDTH).setWinRoom();
-	}
-	
-	// Returns the room at the current index
+	// Returns the room at the provided index
 	public Room getRoom(int theRow, int theColumn) {
 		//TODO clean up magic numbers in getRoom
 		if(theRow < 1 || theColumn < 1) throw new 
@@ -126,7 +204,7 @@ public class Maze {
 	    // return if we've found the win room
 	    // TODO, should I use a "break" to exit the depthFirstSearchMaze method once the winRoom has been found?
 	    // Otherwise the DFS could recurse further.
-	    if(currentRoom.isWinRoom()) {
+	    if(currentRoom == myWinRoom) {
 	    	canAccessWinRoom = true;
 	    	return;
 	    } else {
@@ -191,7 +269,7 @@ public class Maze {
 
 				if(getRoom(i, j).equals(myCurrentRoom)) {
 					sb.append(" current");
-				} else if (currRoom.isWinRoom()) {
+				} else if (currRoom == myWinRoom) {
 					sb.append("  win   ");
 				} else sb.append("   x    ");
 			}

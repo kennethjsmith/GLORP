@@ -19,7 +19,7 @@ public class GlorpMain {
     	EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-            GlorpClient game = new GlorpClient();
+            GlorpController game = new GlorpController();
         }});
 
     }
