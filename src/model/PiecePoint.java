@@ -38,16 +38,17 @@ public class PiecePoint extends Point{
 //			y = y+Player.getSpeed();
 //			x = x-Player.getSpeed();
 //		}
-		
-		int inXVelocity = Player.getSpeed()*theDirection.getDXMultiplier();
-		int inYVelocity = Player.getSpeed()*theDirection.getDYMultiplier();
-		
+		if(theDirection != null) {
+			int inXVelocity = Player.getSpeed()*theDirection.getDXMultiplier();
+			int inYVelocity = Player.getSpeed()*theDirection.getDYMultiplier();
+			x = x + (inXVelocity);
+			y = y + (inYVelocity);
+		}
 		//TODO: use helper methods to establish borders
 		//if(xVelocity > 0 && canMoveRight())
 		
 		
-		x = x + (inXVelocity);
-		y = y + (inYVelocity);
+		
 		//System.out.println(x);
 		//System.out.println(y);
 	}

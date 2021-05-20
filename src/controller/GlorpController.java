@@ -43,8 +43,8 @@ public class GlorpController implements KeyListener{
     public void keyPressed(KeyEvent e) {
 		int k = e.getKeyCode();
         myPressedKeys.add(k);
-        
-        Direction inDirection = Direction.generateDirection(myPressedKeys);
+        //TODO: get the room size for this
+        Direction inDirection = Direction.generateDirection(myPressedKeys, myPlayer, 500);
         //System.out.println(inDirection);
         //System.out.println(myPlayer);
 		myPlayer.move(inDirection);
@@ -70,4 +70,5 @@ public class GlorpController implements KeyListener{
 		// TODO Auto-generated method stub
 		
 	}
+
 }

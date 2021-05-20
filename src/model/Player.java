@@ -89,6 +89,13 @@ public class Player extends GamePiece {
 	
 
 	/**
+	 * @return the mySkin
+	 */
+	public Skin getSkin() {
+		return mySkin;
+	}
+
+	/**
 	 * @param myStride the myStride to set
 	 */
 	public void setStride(int theStride) {
