@@ -209,11 +209,11 @@ public class Maze {
             myCurrentRoom = myMaze[inRow][inCol-1];  
 		}
 		
-		tempCurrentRoom.setLargeIcon(myPlainRoomIcon); // TODO Icon handling
+		//tempCurrentRoom.setLargeIcon(myPlainRoomIcon); // TODO Icon handling
 		tempCurrentRoom.setSmallIcon(myPlainRoomIcon);
 		tempCurrentRoom.setPlayer(null);
 		
-		myCurrentRoom.setLargeIcon(myCurrRoomIcon);
+		//myCurrentRoom.setLargeIcon(myCurrRoomIcon);
 		myCurrentRoom.setSmallIcon(myCurrRoomIcon);
 		myCurrentRoom.setPlayer(myPlayer); //TODO use add player instead when we have doors
 	}
