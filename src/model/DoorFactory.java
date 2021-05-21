@@ -12,10 +12,10 @@ public class DoorFactory {
     private static int MAX_DOORS = 4; 
     // currently matching the doors according to position in array 
     //[top, left, right, bottom] 
-    private static int TOP_INDEX = 1;
-    private static int LEFT_INDEX = 2;
-    private static int RIGHT_INDEX = 3;
-    private static int BOTTOM_INDEX = 4;
+    private static int TOP_INDEX = 0;
+    private static int LEFT_INDEX = 1;
+    private static int RIGHT_INDEX = 2;
+    private static int BOTTOM_INDEX = 3;
     
     // could make this an array list and connect according to coordinates
    
@@ -30,13 +30,30 @@ public class DoorFactory {
     
     public DoorFactory() {
         myRooms = new Room[0][0];
+        injectDoors();
     }
     
     public DoorFactory(Room[][] theRooms) {
+        //requireNonNull(theRooms, "Cannot add doors to NullRooms"); //java not recognizing this??
+        checkRoomsNonNull(theRooms);
         myRooms = theRooms;
-        injectDoors(); // I forgot to add this in 
+        injectDoors(); 
     }
     
+    private void checkRoomsNonNull(Room[][] theRooms) throws NullPointerException{
+        if(theRooms == null) {
+            throw new NullPointerException("Cannot add doors to NullRooms");
+        }
+        
+        for(int r = 0; r < theRooms.length; r++) {
+            for(int c = 0; c < theRooms[r].length; c++) {
+               if(theRooms[r][c] == null) {
+                   throw new NullPointerException("Cannot add doors to NullRooms");
+               }
+            }
+        }
+    }
+
     /**
      * Returns this door factories modified rooms, now filled with doors
      * @return
@@ -52,7 +69,7 @@ public class DoorFactory {
     private void injectDoors() {
         Door[] inDoors;  
         for(int r = 0; r < myRooms.length; r++) {
-            for(int c = 0; c < myRooms[0].length; c++) {
+            for(int c = 0; c < myRooms[r].length; c++) {
                 // create new array of doors
                 inDoors = new Door[MAX_DOORS]; //[top, left, right, bottom]
                 
@@ -71,28 +88,31 @@ public class DoorFactory {
                 
                 inDoors[RIGHT_INDEX] = new Door(RIGHT_COORDINATE);
                 inDoors[BOTTOM_INDEX] = new Door(BOTTOM_COORDINATE);
-                
+
                 myRooms[r][c].setDoors(inDoors); // fill the room with new door array
             }
         }
-        blockBoarderDoors();
     }
     
-    private void blockBoarderDoors() {
-        for(int r = 0; r < myRooms.length; r++) {
-            for(int c = 0; c < myRooms[0].length; c++) {
-                if(r == 0) {
-                    myRooms[r][c].getDoors()[TOP_INDEX].setBlocked();
-                }else if(r == myRooms.length - 1) {
-                    myRooms[r][c].getDoors()[BOTTOM_INDEX].setBlocked(); 
-                }else if(c == 0) {
-                    myRooms[r][c].getDoors()[LEFT_INDEX].setBlocked();
-                }else if(c == myRooms[0].length - 1) {
-                    myRooms[r][c].getDoors()[RIGHT_INDEX].setBlocked();
-                } 
-            }
-        }
-    }
+    
+//    /*
+//     * Blocks all doors along the boarder to simulate a wall
+//     */
+//    private void blockBoarderDoors() {
+//        for(int r = 0; r < myRooms.length; r++) {
+//            for(int c = 0; c < myRooms[0].length; c++) {
+//                if(r == 0) {
+//                    myRooms[r][c].getDoors()[TOP_INDEX].setBlocked();
+//                }else if(r == myRooms.length - 1) {
+//                    myRooms[r][c].getDoors()[BOTTOM_INDEX].setBlocked(); 
+//                }else if(c == 0) {
+//                    myRooms[r][c].getDoors()[LEFT_INDEX].setBlocked();
+//                }else if(c == myRooms[0].length - 1) {
+//                    myRooms[r][c].getDoors()[RIGHT_INDEX].setBlocked();
+//                } 
+//            }
+//        }
+//    }
     
 //    // would fill the remaining doors with new doors (maybe needed for arrayList doors)
 //    private Door[] fillRemainingDoors(Door[] theDoors) {
@@ -101,10 +121,7 @@ public class DoorFactory {
 ////        }
 //        return theDoors;
 //    }
-    
-    /*
-     * Blocks all doors along the boarder to simulate a wall
-     */
+
     
     
 

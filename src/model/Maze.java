@@ -8,7 +8,7 @@ import view.GameIcon;
 /**
  * The maze has all the rooms in a 2D array with a buffer of size 1 around the border.
  * Maze uses a singleton pattern.
- * @author Ken Smith, Heather Finch
+ * @author Ken Smith, Heather Finch, Katelynn Oleson 
  * @version 5.14.21
  * Ask Heather if you have any questions about this class
  *
@@ -75,7 +75,7 @@ public class Maze {
     }
 	
 
-	// Creates and adds rooms to myMaze.
+	//Creates and adds rooms to myMaze 
 	private void addRooms() {
 		
 		// iterate through the 2d array
@@ -88,7 +88,6 @@ public class Maze {
 		myCurrentRoom = myStartRoom;
 		
 	}
-	
 	
 	// Randomly sets the WinRoom and StartRoom.
 	private void designateWinStartRooms() {
