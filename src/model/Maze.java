@@ -44,18 +44,6 @@ public class Maze {
 	// This is 2 to account for the buffer on both sides.
 	private final int BORDER_BUFFER = 2;
 	
-	// The icon for a plain room
-	private final GameIcon myPlainRoomIcon = new GameIcon("src/icons/room_for_map.png"); 
-	
-	// The icon for start room
-	private final GameIcon myStartRoomIcon = new GameIcon("src/icons/start_room_for_map.png");
-	
-	// The icon for the win room
-	private final GameIcon myWinRoomIcon = new GameIcon("src/icons/win_room_for_map.png");
-	
-	// The icon for the current room
-	private final GameIcon myCurrRoomIcon = new GameIcon("src/icons/current_room_for_map.png");
-	
 	// Creates the maze.
     private static final Maze THISMAZE = new Maze();
 
@@ -111,8 +99,7 @@ public class Maze {
 		
 		// Sets start room
 		myStartRoom = myMaze[startRow][startCol];
-		//myStartRoom.setLargeIcon(myCurrRoomIcon);
-		myStartRoom.setSmallIcon(myCurrRoomIcon);
+		myStartRoom.setCurrentRoom(true);
 		myStartRoom.setPlayer(myPlayer);
 		
 		// Finds win room indexes
@@ -126,7 +113,7 @@ public class Maze {
 		// Sets win room
 		myWinRoom = myMaze[winRow][winCol];
 		//myWinRoom.setLargeIcon(myWinRoomIcon);
-		myWinRoom.setSmallIcon(myWinRoomIcon);
+		myWinRoom.setWinRoom(true);
 		
 	}
 
@@ -179,12 +166,11 @@ public class Maze {
 			
 		} else throw new IllegalArgumentException("You cannot move past the border of the maze");
 		
-		//tempCurrentRoom.setLargeIcon(myPlainRoomIcon); // TODO Icon handling
-		tempCurrentRoom.setSmallIcon(myPlainRoomIcon);
+		// TODO Icon handling
+		tempCurrentRoom.setCurrentRoom(false);
 		tempCurrentRoom.setPlayer(null);
 		
-		//myCurrentRoom.setLargeIcon(myCurrRoomIcon);
-		myCurrentRoom.setSmallIcon(myCurrRoomIcon);
+		myCurrentRoom.setCurrentRoom(true);
 		myCurrentRoom.setPlayer(myPlayer); //TODO use add player instead when we have doors
 	}
 		

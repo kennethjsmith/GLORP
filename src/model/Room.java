@@ -22,11 +22,16 @@ public class Room {
 	private Player myPlayer;
 	private GameIcon myLargeIcon;
 	private GameIcon mySmallIcon;
+	private boolean isCurrentRoom;
+	private boolean isWinRoom;
 	private final RoomIndex myIndex;
 	
 	
-	private final static GameIcon[] FLOORS = loadFloors();
-	private final static GameIcon MAP_ICON = new GameIcon("src/icons/room_for_map.png");
+	private static GameIcon[] FLOORS;
+	//TODO: should these be enumerated types? might help get rid of boolean fields upon refactor
+	private static GameIcon MAP_ICON = new GameIcon("src/icons/map_icon.png");
+	private static GameIcon MAP_ICON_CURRENT = new GameIcon("src/icons/map_icon_current.png");
+	private GameIcon MAP_ICON_WIN = new GameIcon("src/icons/map_icon_win.png");
 	private final static Random RAND = new Random();
 	
 	//Map<Door, Room> myDoors= new TreeMap<>();
@@ -34,16 +39,17 @@ public class Room {
 	//private boolean visitedFlag; // will be tracked by map? 
 	
     public Room() {
-        myItems = new ArrayList<Item>();
+    	loadIcons();
+    	myItems = new ArrayList<Item>();
         myLargeIcon = null; 
         mySmallIcon = null;
         myIndex = null;
         myPlayer = null;
     }
-    
 
 	public Room(int theRow, int theCol) { // how will rooms get their icons? And riddles? 
-	    myItems = new ArrayList<Item>();
+		loadIcons();
+		myItems = new ArrayList<Item>();
 	    setRandomFloor(); 
 	    mySmallIcon = MAP_ICON; 
 	    myIndex = new RoomIndex(theRow, theCol);
@@ -170,6 +176,20 @@ public class Room {
 		return myIndex;
 	}
 	
+	public void setCurrentRoom(boolean isCurrentRoom) {
+		this.isCurrentRoom = isCurrentRoom;
+		
+		if(isCurrentRoom) mySmallIcon = MAP_ICON_CURRENT;
+		else mySmallIcon = MAP_ICON;
+	}
+	
+	public void setWinRoom(boolean isWinRoom) {
+		this.isWinRoom = isWinRoom;
+		
+		if(isWinRoom) mySmallIcon = MAP_ICON_WIN;
+		else mySmallIcon = MAP_ICON;
+	}
+	
 //	public Point[] getDoorCoordinates() {
 //	    Point[] inCoordinates = new Point[MAX_DOORS];
 //	    for(int i = 0; i < MAX_DOORS; i++) {
@@ -177,6 +197,13 @@ public class Room {
 //	    }
 //	    return inCoordinates;
 //	}
+	private void loadIcons() {
+		FLOORS = loadFloors();
+		MAP_ICON.resize(35);
+		MAP_ICON_CURRENT.resize(35);
+		MAP_ICON_WIN.resize(35);
+	}
+	
 	private static GameIcon[] loadFloors() {
 		GameIcon[] floorIcons = new GameIcon[12];
 		for (int i = 1; i <= 12; i++) { 
@@ -190,4 +217,6 @@ public class Room {
 	private void setRandomFloor() {
 		myLargeIcon = FLOORS[RAND.nextInt(12)];
 	}
+	
+	
 }

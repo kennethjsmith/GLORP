@@ -9,8 +9,8 @@ import javax.swing.JPanel;
 
 public class ItemPanel extends JPanel{
 	private final String TITLE = "Items";
-	private final static int WIDTH = 350;
-	private final static int HEIGHT = 200;
+	private final static int WIDTH = 315;
+	private final static int HEIGHT = 185;
 
 	// Constructor 
 	public ItemPanel() {

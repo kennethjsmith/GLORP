@@ -56,7 +56,7 @@ public class GlorpGUI extends JFrame {
         c.fill = GridBagConstraints.HORIZONTAL;
         
         myMapPanel = new MapPanel();
-        myMapPanel.setBackground(Color.black);
+        myMapPanel.setBackground(Color.darkGray);
         c.gridx = 0;
         c.gridy = 0;
         add(myMapPanel, c);
