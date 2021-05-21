@@ -86,11 +86,7 @@ public class GlorpController implements KeyListener{
     				myPlayer.getCoordinate().getX() <= 250) {
     		myPlayer.getCoordinate().setLocation(200, 5);
     		myMaze.move(Direction.SOUTH);
-
     	}
-    		
-    		
-		
 	}
 
 	@Override
@@ -102,7 +98,6 @@ public class GlorpController implements KeyListener{
 			myPlayer.setStride(0);
 			myPlayer.setSkipFrame(false);
 		}
-		
 		myWindow.repaint();
 	}
 
