@@ -239,9 +239,6 @@ public class Maze {
 	    if(!this.containsRoom(theRow, theColumn)){
 	    	return;
 	    }
-	    
-//	    myCurrentRoom = this.getRoom(theRow, theColumn);
-//		System.out.println(this);
 
 	    
 	    Room currentRoom = this.getRoom(theRow, theColumn);
@@ -308,11 +305,11 @@ public class Maze {
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		for(int i = 1; i <= LENGTH; i++) {
-			for(int j = 1; j <= WIDTH; j++) {
-				Room currRoom = getRoom(i, j);
+		for(int row = 1; row <= LENGTH; row++) {
+			for(int col = 1; col <= WIDTH; col++) {
+				Room currRoom = getRoom(row, col);
 
-				if(getRoom(i, j).equals(myCurrentRoom)) {
+				if(getRoom(row, col).equals(myCurrentRoom)) {
 					sb.append(" current");
 				} else if (currRoom == myWinRoom) {
 					sb.append("  win   ");
