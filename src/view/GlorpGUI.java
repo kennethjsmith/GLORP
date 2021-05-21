@@ -1,28 +1,12 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JSlider;
-import javax.swing.Timer;
-
-import model.Player;
 
 public class GlorpGUI extends JFrame {
     
@@ -62,7 +46,7 @@ public class GlorpGUI extends JFrame {
         add(myMapPanel, c);
         
         myItemPanel = new ItemPanel();
-        myItemPanel.setBackground(new Color(194,178,128)); //SAND COLOR
+        myItemPanel.setBackground(Color.lightGray); //SAND COLOR
         c.gridx = 0;
         c.gridy = 1;
         add(myItemPanel, c);
