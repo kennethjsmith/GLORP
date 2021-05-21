@@ -29,19 +29,17 @@ public class GlorpController implements KeyListener{
 		myMaze = Maze.getInstance();
 		
 		//hard ref to character for room panel work, should get player out of room
-		myPlayer = new Player();
+		myPlayer = myMaze.getPlayer();
 		
 		myWindow = new GlorpGUI();
+
         myWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         myWindow.setVisible(true);
         myWindow.setTitle("GLORP");
         myWindow.addKeyListener(this);
         
-        myWindow.paintRoomPanel(myPlayer);
-        
-        //System.out.println(myMaze.canWin());
-        
-	}
+        myWindow.repaint();
+    }
 	
 	@Override
     public void keyPressed(KeyEvent e) {
@@ -54,7 +52,8 @@ public class GlorpController implements KeyListener{
 		myPlayer.move(inDirection);
 		checkInteractions();
 		//System.out.println(myPlayer);
-        myWindow.paintRoomPanel(myPlayer); //TODO: this method call should pass a room
+		//myWindow.getRoomPanel().setCurrentRoom(myMaze.getCurrRoom());
+        myWindow.repaint();
     }
 
     private void checkInteractions() {
@@ -64,24 +63,30 @@ public class GlorpController implements KeyListener{
     			myPlayer.getCoordinate().getY() >= 150 &&
     				myPlayer.getCoordinate().getY() <= 250) {
     		myPlayer.getCoordinate().setLocation(5, 200);
+    		myMaze.move(Direction.EAST);
     	}
     	//west door zone
     	if(myPlayer.getCoordinate().getX() == 0 &&
     			myPlayer.getCoordinate().getY() >= 150 &&
     				myPlayer.getCoordinate().getY() <= 250) {
     		myPlayer.getCoordinate().setLocation(395, 200);
+    		myMaze.move(Direction.WEST);
     	}
     	//north door zone
     	if(myPlayer.getCoordinate().getY() == 0 &&
     			myPlayer.getCoordinate().getX() >= 150 &&
     				myPlayer.getCoordinate().getX() <= 250) {
     		myPlayer.getCoordinate().setLocation(200, 395);
+    		myMaze.move(Direction.NORTH);
+
     	}
     	//south door zone
     	if(myPlayer.getCoordinate().getY() == 400 &&
     			myPlayer.getCoordinate().getX() >= 150 &&
     				myPlayer.getCoordinate().getX() <= 250) {
     		myPlayer.getCoordinate().setLocation(200, 5);
+    		myMaze.move(Direction.SOUTH);
+
     	}
     		
     		
@@ -98,8 +103,8 @@ public class GlorpController implements KeyListener{
 			myPlayer.setSkipFrame(false);
 		}
 		
-		myWindow.paintRoomPanel(myPlayer);
-    }
+		myWindow.repaint();
+	}
 
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub	

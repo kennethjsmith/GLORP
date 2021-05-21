@@ -1,8 +1,11 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +15,9 @@ import java.awt.event.KeyListener;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.Timer;
@@ -33,29 +39,77 @@ public class GlorpGUI extends JFrame {
     private static final String TITLE = "GLORP";
     
     private RoomPanel myRoomPanel;
-    private MapPanel myMazePanel;
+    private MapPanel myMapPanel;
     private RiddlePanel myRiddlePanel;
+    private ItemPanel myItemPanel;
     //TODO: add panels for maze map and sphinx/questions
 
     public GlorpGUI() {
         super();
         setTitle(TITLE);
-        setPreferredSize(new Dimension(840, 840));
-        setResizable(false);
-        this.setLayout(new BorderLayout());
-        myMazePanel = new MapPanel();
-        add(myMazePanel, BorderLayout.WEST);
+        //sets frame background
+        //getContentPane().setBackground(Color.black);
+        //setPreferredSize(new Dimension(840, 860));
+        //setResizable(false);
+        this.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        
+        myMapPanel = new MapPanel();
+        myMapPanel.setBackground(Color.black);
+        c.gridx = 0;
+        c.gridy = 0;
+        add(myMapPanel, c);
+        
+        myItemPanel = new ItemPanel();
+        myItemPanel.setBackground(new Color(194,178,128)); //SAND COLOR
+        c.gridx = 0;
+        c.gridy = 1;
+        add(myItemPanel, c);
+        
         myRoomPanel = new RoomPanel();
-        add(myRoomPanel, BorderLayout.EAST);
+        c.gridx = 1;
+        c.gridy = 0;
+        c.gridheight = 2;
+        add(myRoomPanel, c);
+        
         myRiddlePanel = new RiddlePanel();
-        add(myRiddlePanel, BorderLayout.SOUTH);
+        myRiddlePanel.setBackground(new Color(194,178,128)); //SAND COLOR
+        c.gridx = 2;
+        c.gridy = 0;
+        c.gridheight = 2;
+        add(myRiddlePanel, c);
+        
+        addMenuBar();
+        
         pack();
         repaint();
     }
-    //TODO: this method should pass a room to paint, not just a character
-    public void paintRoomPanel(Player thePlayer) {
-        myRoomPanel.setCurrentPlayer(thePlayer);
-        repaint();
-    }
 
+    public void addMenuBar() {
+    	JMenuBar myMenubar = new JMenuBar();
+        JMenu file = new JMenu("File");
+        
+        
+        JMenuItem save = new JMenuItem("Save Game");
+        file.add(save);
+        JMenuItem load = new JMenuItem("Load Game");
+        file.add(load);
+        JMenuItem exit = new JMenuItem("Exit");
+        file.add(exit);
+        
+        JMenu help = new JMenu("Help");
+        JMenuItem about = new JMenuItem("About");
+        help.add(about);
+        JMenuItem instructions = new JMenuItem("Game Play Instructions");
+        help.add(instructions);
+        JMenuItem cheats = new JMenuItem("Cheats");
+        help.add(cheats);
+        
+        
+        myMenubar.add(file);
+        myMenubar.add(help);
+        setJMenuBar(myMenubar);
+    }
+    	
 }

@@ -113,6 +113,7 @@ public class DoorFactory {
 //            }
 //        }
 //    }
+   
     
 //    // would fill the remaining doors with new doors (maybe needed for arrayList doors)
 //    private Door[] fillRemainingDoors(Door[] theDoors) {

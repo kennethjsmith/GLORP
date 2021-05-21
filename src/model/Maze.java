@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Dimension;
 import java.util.Random;
 import view.GameIcon;
 
@@ -15,6 +16,9 @@ public class Maze {
 	
 	// The 2D array that stores each room
 	private Room[][] myMaze;
+	
+	// The player
+	private final Player myPlayer;
 	
 	// The room our Player is currently in
 	private Room myCurrentRoom;
@@ -44,8 +48,11 @@ public class Maze {
 	// The icon for start room
 	private final GameIcon myStartRoomIcon = new GameIcon("src/icons/start_room_for_map.png");
 	
-	// The icon for a win room
+	// The icon for the win room
 	private final GameIcon myWinRoomIcon = new GameIcon("src/icons/win_room_for_map.png");
+	
+	// The icon for the current room
+	private final GameIcon myCurrRoomIcon = new GameIcon("src/icons/current_room_for_map.png");
 	
 	// Creates the maze.
     private static final Maze THISMAZE = new Maze();
@@ -56,6 +63,9 @@ public class Maze {
 		
 		// Initialize with row-major: Room[rows][columns]
 		myMaze = new Room[LENGTH+BORDER_BUFFER][WIDTH+BORDER_BUFFER];
+		
+		// TODO Allow option for skin types
+		myPlayer = new Player();
 		
 		// Fills out the 2d array, myMaze, with rooms
 		addRooms();
@@ -82,12 +92,11 @@ public class Maze {
 	 * Creates and adds rooms to myMaze 
 	 */
 	private void addRooms() {
-		for(int i = 0; i < LENGTH+BORDER_BUFFER; i++) {
-			for(int j = 0; j < WIDTH+BORDER_BUFFER; j++) {
-				myMaze[i][j] = new Room(myPlainRoomIcon, myPlainRoomIcon);
+		for(int r = 0; r < LENGTH+BORDER_BUFFER; r++) {
+			for(int c = 0; c < WIDTH+BORDER_BUFFER; c++) {
+				myMaze[r][c] = new Room(myPlainRoomIcon, myPlainRoomIcon, r, c);
 			}
 		}
-		
 		designateWinStartRooms();
 		myCurrentRoom = myStartRoom;
 	}
@@ -156,21 +165,66 @@ public class Maze {
 	     // lowest val is (0) + theMin = theMin
 	 }
 
-	// Communicate to the controller what the start room for the game is
-	// So that the controller can set the icon for the start room
-	// Maybe find way to not pass room eventually
-	private Room getStartRoom() {
-		return myStartRoom;
+	 
+	// TODO Right now move in Maze uses Direction - we may want to make a custom direction class
+	// TODO add exception handeling to move method
+	public void move(Direction theDirection) {
+		Room tempCurrentRoom = myCurrentRoom;
+		RoomIndex currIndex = myCurrentRoom.getMyIndex();
+		int row = currIndex.getRow();
+		int col = currIndex.getCol();
+
+		if(theDirection.getLabel().equals("N") && row >= 2) {	// Go North
+			myCurrentRoom = myMaze[row-1][col];
+
+		} else if(theDirection.getLabel().equals("S") && row < LENGTH) {	// Go South
+			myCurrentRoom = myMaze[row+1][col];
+
+		} else if(theDirection.getLabel().equals("E") && col < WIDTH) {	// Go East
+			myCurrentRoom = myMaze[row][col+1];
+
+		} else if(theDirection.getLabel().equals("W") && col >= 2) {	// Go West
+			myCurrentRoom = myMaze[row][col-1];
+			
+		} else throw new IllegalArgumentException("You cannot move past the border of the maze");
+		
+		tempCurrentRoom.setLargeIcon(myPlainRoomIcon); // TODO Icon handling
+		tempCurrentRoom.setSmallIcon(myPlainRoomIcon);
+		tempCurrentRoom.setPlayer(null);
+		
+		myCurrentRoom.setLargeIcon(myCurrRoomIcon);
+		myCurrentRoom.setSmallIcon(myCurrRoomIcon);
+		myCurrentRoom.setPlayer(myPlayer); //TODO use add player instead when we have doors
 	}
 	
-	/*
-	 *  Returns the room at the provided index
-	 *  Logic is so the client does not know about the buffer
+	/**
+	 * Getter for the current room the player is in
+	 * @return
+	 */
+	public Room getCurrRoom() {
+	    return myCurrentRoom;
+	}
+	
+	/**
+	 * Getter for the Player
+	 * @return
+	 */
+	public Player getPlayer() {
+	    return myPlayer;
+	}
+
+	
+	/**
+	 * Returns the room at the provided row and column
+	 * @param theRow
+	 * @param theColumn
+	 * @return
 	 */
 	public Room getRoom(int theRow, int theColumn) {
+	 // Logic is so the client does not know about the buffer rooms and cannot access the buffer rooms
 		if(theRow < 0 || theColumn < 0) throw new 
 				IllegalArgumentException("getRoom error: The index of the rooms cannot be negative");
-		else if(theRow > (LENGTH - BORDER_BUFFER/2) || theColumn > (WIDTH - BORDER_BUFFER/2)) 
+		else if(theRow >= (LENGTH) || theColumn >= (WIDTH)) 
 		    throw new IllegalArgumentException("getRoom error: The index of the rooms cannot be greater than the size of the maze");
 		
 		return myMaze[theRow + BORDER_BUFFER/2][theColumn + BORDER_BUFFER/2];
@@ -192,6 +246,7 @@ public class Maze {
         return WIDTH;
     }
 	
+
 	// Returns true if the index contains a room, and false otherwise
 	// TODO containsRoom method is redundant unless we decide to make some spaces in the grid not exist as rooms.
 	public boolean containsRoom(int theRow, int theColumn) {
@@ -199,12 +254,17 @@ public class Maze {
 		else return false;
 	}
 	
-	// Searches from the current room to the win room to see if the user can still win the game
-	// Uses depth first traversal 
+	 
+	
+	/**
+	 * Searches for a path from the current room to the win room 
+	 * to see if the user can win the game
+	 * @return
+	 */
 	public boolean canWin() {
-		boolean [][] visited = new boolean[LENGTH + 2][WIDTH + 2];
+		boolean [][] visited = new boolean[LENGTH + BORDER_BUFFER][WIDTH + BORDER_BUFFER];
 		canAccessWinRoom = false;
-        depthFirstSearchMaze(1,  1, visited);     
+        depthFirstSearchMaze(BORDER_BUFFER/2,  BORDER_BUFFER/2, visited);     
         return canAccessWinRoom;
 	}
 	
@@ -223,9 +283,6 @@ public class Maze {
 	    if(!this.containsRoom(theRow, theColumn)){
 	    	return;
 	    }
-	    
-	    myCurrentRoom = this.getRoom(theRow, theColumn);
-		System.out.println(this);
 
 	    
 	    Room currentRoom = this.getRoom(theRow, theColumn);
@@ -277,7 +334,7 @@ public class Maze {
 		return inDoor.isBlocked();
 	}
 
-	private Door getSameDoor(Room theCurrRoom, Room theAdjRoom) throws IllegalArgumentException{
+	private Door getSameDoor(Room theCurrRoom, Room theAdjRoom) {
 		//Door[] inDoors = new Door[theCurrRoom.getDoors().length];
 		for(Door d : theCurrRoom.getDoors()) {
 			for(Door o : theAdjRoom.getDoors()) {
@@ -292,11 +349,11 @@ public class Maze {
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		for(int i = 1; i <= LENGTH; i++) {
-			for(int j = 1; j <= WIDTH; j++) {
-				Room currRoom = getRoom(i, j);
+		for(int row = 1; row <= LENGTH; row++) {
+			for(int col = 1; col <= WIDTH; col++) {
+				Room currRoom = getRoom(row, col);
 
-				if(getRoom(i, j).equals(myCurrentRoom)) {
+				if(getRoom(row, col).equals(myCurrentRoom)) {
 					sb.append(" current");
 				} else if (currRoom == myWinRoom) {
 					sb.append("  win   ");
