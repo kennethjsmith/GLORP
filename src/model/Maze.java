@@ -1,6 +1,5 @@
 package model;
 
-import java.awt.Dimension;
 import java.util.Random;
 import view.GameIcon;
 
@@ -45,8 +44,9 @@ public class Maze {
 	// The icon for a plain room
 	private final GameIcon myPlainRoomIcon = new GameIcon("src/icons/room_for_map.png"); 
 	
-	// The icon for start room
-	private final GameIcon myStartRoomIcon = new GameIcon("src/icons/start_room_for_map.png");
+	// changed to current room because the start room uses the old icon
+	// The icon for start room 
+	private final GameIcon myStartRoomIcon = new GameIcon("src/icons/current_room_for_map.png");
 	
 	// The icon for the win room
 	private final GameIcon myWinRoomIcon = new GameIcon("src/icons/win_room_for_map.png");

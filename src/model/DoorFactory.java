@@ -40,6 +40,17 @@ public class DoorFactory {
         injectDoors(); 
     }
     
+    /**
+     * Returns this door factories modified rooms, now filled with doors
+     * @return
+     */
+    public Room[][] getRooms(){
+        return myRooms;
+    }
+    
+    /*
+     * Checks that theRooms is nonNull and none of the internal rooms are null
+     */
     private void checkRoomsNonNull(Room[][] theRooms) throws NullPointerException{
         if(theRooms == null) {
             throw new NullPointerException("Cannot add doors to NullRooms");
@@ -52,14 +63,6 @@ public class DoorFactory {
                }
             }
         }
-    }
-
-    /**
-     * Returns this door factories modified rooms, now filled with doors
-     * @return
-     */
-    public Room[][] getRooms(){
-        return myRooms;
     }
     
     /*
@@ -92,38 +95,6 @@ public class DoorFactory {
                 myRooms[r][c].setDoors(inDoors); // fill the room with new door array
             }
         }
-    }
-    
-    
-//    /*
-//     * Blocks all doors along the boarder to simulate a wall
-//     */
-//    private void blockBoarderDoors() {
-//        for(int r = 0; r < myRooms.length; r++) {
-//            for(int c = 0; c < myRooms[0].length; c++) {
-//                if(r == 0) {
-//                    myRooms[r][c].getDoors()[TOP_INDEX].setBlocked();
-//                }else if(r == myRooms.length - 1) {
-//                    myRooms[r][c].getDoors()[BOTTOM_INDEX].setBlocked(); 
-//                }else if(c == 0) {
-//                    myRooms[r][c].getDoors()[LEFT_INDEX].setBlocked();
-//                }else if(c == myRooms[0].length - 1) {
-//                    myRooms[r][c].getDoors()[RIGHT_INDEX].setBlocked();
-//                } 
-//            }
-//        }
-//    }
-   
-    
-//    // would fill the remaining doors with new doors (maybe needed for arrayList doors)
-//    private Door[] fillRemainingDoors(Door[] theDoors) {
-////        for() { // for remaining doors unfilled, fill them
-////            
-////        }
-//        return theDoors;
-//    }
-
-    
-    
+    }  
 
 }

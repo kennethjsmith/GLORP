@@ -43,6 +43,8 @@ public class RoomPanel extends JPanel {
         setLayout(new FlowLayout());
         myRoom = Maze.getInstance().getCurrRoom();
         myCurrentPlayer = myRoom.getPlayer(); // TODO Getting instance of Maze in RoomPanel violates MVC?
+                                             // change so that its Maze.getInstance().getPlayer()? 
+                                            // why does room contain the player? 
     }
 
     @Override
@@ -82,7 +84,8 @@ public class RoomPanel extends JPanel {
     		myCurrentPlayer.getRoomIcon().paintIcon(this, g, (int)myCurrentPlayer.getCoordinate().getX(), (int)myCurrentPlayer.getCoordinate().getY());
     		//System.out.println(myCurrentPlayer.getRoomIcon());
     		//System.out.println(myCurrentPlayer);
-    	}
+    	}else
+    	    System.out.println("null player");
     }
 
 	/**
