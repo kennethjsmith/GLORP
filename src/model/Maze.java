@@ -247,11 +247,12 @@ public class Maze {
     }
 	
 
-	// Returns true if the index contains a room, and false otherwise
+	// Returns true if the row and column are valid, and false otherwise
 	// TODO containsRoom method is redundant unless we decide to make some spaces in the grid not exist as rooms.
 	public boolean containsRoom(int theRow, int theColumn) {
-		if(myMaze[theRow][theColumn] != null) return true;
-		else return false;
+	    if(theRow < 0 || theColumn < 0) return false;
+	    else if(theRow >= (LENGTH) || theColumn >= (WIDTH)) return false;
+		else return true;
 	}
 	
 	 
