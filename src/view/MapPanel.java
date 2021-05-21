@@ -17,9 +17,13 @@ import model.Maze;
 import model.Room;
 
 public class MapPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final String TITLE = "Map";
-	private final static int WIDTH = 300;
-	private final static int HEIGHT = 800;
+	private final static int WIDTH = 350;
+	private final static int HEIGHT = 300;
     private static final int ICON_SIZE = 100;
     private Maze myMaze;
     private Map <ImageIcon, Dimension> myRooms;

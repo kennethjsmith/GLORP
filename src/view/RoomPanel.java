@@ -29,7 +29,6 @@ public class RoomPanel extends JPanel {
     // fields
 	private static final long serialVersionUID = 1L;
     
-    private final String TITLE = "Room";
     private Room myCurrentRoom; //TODO: create setter, use this not myPlayer on this panel
     private Player myCurrentPlayer;
     private final static int SIZE = 500;
@@ -37,14 +36,10 @@ public class RoomPanel extends JPanel {
     
     public RoomPanel() {
         setPreferredSize(new Dimension(SIZE,SIZE));
-        // add border
+
         Border blackline = BorderFactory.createLineBorder(Color.black);
         setBorder(blackline);
-        JLabel label = new JLabel(TITLE, JLabel.LEFT);
         setLayout(new FlowLayout());
-        add(label); 
-        
-        //skipFrame = false;
     }
 
     @Override
