@@ -88,7 +88,7 @@ public class Maze {
 		// iterate through the 2d array
 		for(int row = 1; row <= LENGTH; row++) {
 			for(int col = 1; col <= WIDTH; col++) {
-				myMaze[row][col] = new Room(myPlainRoomIcon, myPlainRoomIcon, row, col);
+				myMaze[row][col] = new Room(row, col);
 			}
 		}
 		//DoorFactory theFactory = new DoorFactory(myMaze);
@@ -111,7 +111,7 @@ public class Maze {
 		
 		// Sets start room
 		myStartRoom = myMaze[startRow][startCol];
-		myStartRoom.setLargeIcon(myCurrRoomIcon);
+		//myStartRoom.setLargeIcon(myCurrRoomIcon);
 		myStartRoom.setSmallIcon(myCurrRoomIcon);
 		myStartRoom.setPlayer(myPlayer);
 		
@@ -125,7 +125,7 @@ public class Maze {
 		
 		// Sets win room
 		myWinRoom = myMaze[winRow][winCol];
-		myWinRoom.setLargeIcon(myWinRoomIcon);
+		//myWinRoom.setLargeIcon(myWinRoomIcon);
 		myWinRoom.setSmallIcon(myWinRoomIcon);
 		
 	}
@@ -179,11 +179,11 @@ public class Maze {
 			
 		} else throw new IllegalArgumentException("You cannot move past the border of the maze");
 		
-		tempCurrentRoom.setLargeIcon(myPlainRoomIcon); // TODO Icon handling
+		//tempCurrentRoom.setLargeIcon(myPlainRoomIcon); // TODO Icon handling
 		tempCurrentRoom.setSmallIcon(myPlainRoomIcon);
 		tempCurrentRoom.setPlayer(null);
 		
-		myCurrentRoom.setLargeIcon(myCurrRoomIcon);
+		//myCurrentRoom.setLargeIcon(myCurrRoomIcon);
 		myCurrentRoom.setSmallIcon(myCurrRoomIcon);
 		myCurrentRoom.setPlayer(myPlayer); //TODO use add player instead when we have doors
 	}

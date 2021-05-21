@@ -3,6 +3,7 @@ package model;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 
@@ -23,6 +24,11 @@ public class Room {
 	private GameIcon mySmallIcon;
 	private final RoomIndex myIndex;
 	
+	
+	private final static GameIcon[] FLOORS = loadFloors();
+	private final static GameIcon MAP_ICON = new GameIcon("src/icons/room_for_map.png");
+	private final static Random RAND = new Random();
+	
 	//Map<Door, Room> myDoors= new TreeMap<>();
 	//private boolean containsPlayer; //will be tracked by map (current room) 
 	//private boolean visitedFlag; // will be tracked by map? 
@@ -35,14 +41,17 @@ public class Room {
         myPlayer = null;
     }
     
-	public Room(GameIcon theLargeIcon, GameIcon theSmallIcon, int theRow, int theCol) { // how will rooms get their icons? And riddles? 
+
+	public Room(int theRow, int theCol) { // how will rooms get their icons? And riddles? 
 	    myItems = new ArrayList<Item>();
-	    myLargeIcon = theLargeIcon; 
-	    mySmallIcon = theSmallIcon; 
+	    setRandomFloor(); 
+	    mySmallIcon = MAP_ICON; 
 	    myIndex = new RoomIndex(theRow, theCol);
 	    myPlayer = null;
 	}
 	
+
+
 	/**
      * If this rooms doors have not been initailized already,
      * sets this rooms door array to the passed in door array.
@@ -138,10 +147,10 @@ public class Room {
 		return myPlayer;
 	}
 	
-	public void setLargeIcon(GameIcon theLargeIcon) {
-		Objects.requireNonNull(theLargeIcon);
-		myLargeIcon = theLargeIcon;
-	}
+//	public void setLargeIcon(GameIcon theLargeIcon) {
+//		Objects.requireNonNull(theLargeIcon);
+//		myLargeIcon = theLargeIcon;
+//	}
 	
 	public GameIcon getLargeIcon() {
 	    return myLargeIcon;
@@ -168,5 +177,17 @@ public class Room {
 //	    }
 //	    return inCoordinates;
 //	}
+	private static GameIcon[] loadFloors() {
+		GameIcon[] floorIcons = new GameIcon[12];
+		for (int i = 1; i <= 12; i++) { 
+		    String inFileName = ("src/icons/floor" + i + ".png");
+		    floorIcons[i-1] = new GameIcon(inFileName);
+		    floorIcons[i-1].resize(500);
+		}
+		return floorIcons;
+	}
 	
+	private void setRandomFloor() {
+		myLargeIcon = FLOORS[RAND.nextInt(12)];
+	}
 }
