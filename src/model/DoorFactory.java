@@ -74,10 +74,10 @@ public class DoorFactory {
                 myRooms[r][c].setDoors(inDoors); // fill the room with new door array
             }
         }
-        blockBoarderDoors();
+        blockBorderDoors();
     }
     
-    private void blockBoarderDoors() {
+    private void blockBorderDoors() {
         for(int r = 0; r < myRooms.length; r++) {
             for(int c = 0; c < myRooms[0].length; c++) {
                 if(r == 0) {

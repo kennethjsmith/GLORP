@@ -17,9 +17,13 @@ import model.Maze;
 import model.Room;
 
 public class MapPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final String TITLE = "Map";
-	private final static int WIDTH = 300;
-	private final static int HEIGHT = 8000;
+	private final static int WIDTH = 350;
+	private final static int HEIGHT = 300;
     private static final int ICON_SIZE = 100;
     private Maze myMaze;
     private Map <ImageIcon, Dimension> myRooms;
@@ -63,19 +67,6 @@ public class MapPanel extends JPanel {
 		}
 		repaint();
 	}
-	
-	 /**
-     * Helper for resizing single icon
-     */
-	//TODO this is a copy from roompanel class. Maybe there is a way to consolidate so we don't have duplicate code. 
-	//This code is not used here
-    private static void resizeImageIcon(ImageIcon theIcon) {
-    	Image inTempImage;
-    	//resize left facing standing icon
-    	inTempImage = theIcon.getImage(); // transform it 
-		inTempImage = inTempImage.getScaledInstance(ICON_SIZE, ICON_SIZE,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-		theIcon = new ImageIcon(inTempImage);  // transform it back
-    }
     
     @Override
     public void paintComponent(Graphics theGraphics) {
