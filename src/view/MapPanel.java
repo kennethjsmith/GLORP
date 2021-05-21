@@ -53,10 +53,10 @@ public class MapPanel extends JPanel {
 	
 	// Using the maze, adds all of the rooms to the myRooms map with their icon and dimension
 	private void addRooms() {
-		Room[][] myCurrentRooms = myMaze.getRooms();		
+		//Room[][] myCurrentRooms = myMaze.getRooms();		
 
-		for(int row = 0; row < myCurrentRooms.length; row++) {
-			for(int col = 0; col < myCurrentRooms[row].length; col++) {
+		for(int row = 0; row < myMaze.getLength(); row++) {
+			for(int col = 0; col < myMaze.getWidth(); col++) {
 				
 				// TODO Add on a if room.isvisited boolean here
 				if(myMaze.containsRoom(row, col)) {

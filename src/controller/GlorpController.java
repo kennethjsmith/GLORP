@@ -49,7 +49,7 @@ public class GlorpController implements KeyListener{
         Direction inDirection = Direction.generateDirection(myPressedKeys, myPlayer, 500);
         //System.out.println(inDirection);
         //System.out.println(myPlayer);
-		myPlayer.move(inDirection);
+        myPlayer.move(inDirection);
 		checkInteractions();
 		//System.out.println(myPlayer);
 		//myWindow.getRoomPanel().setCurrentRoom(myMaze.getCurrRoom());
@@ -62,36 +62,55 @@ public class GlorpController implements KeyListener{
     	if(myPlayer.getCoordinate().getX() == 400 &&
     			myPlayer.getCoordinate().getY() >= 150 &&
     				myPlayer.getCoordinate().getY() <= 250) {
-    		myPlayer.getCoordinate().setLocation(5, 200);
-    		myMaze.move(Direction.EAST);
+    	    if(attemptMapMove(Direction.EAST)) {
+    	        myPlayer.getCoordinate().setLocation(5, 200);
+    	    }
+    		
+    		
     	}
     	//west door zone
     	if(myPlayer.getCoordinate().getX() == 0 &&
     			myPlayer.getCoordinate().getY() >= 150 &&
     				myPlayer.getCoordinate().getY() <= 250) {
-    		myPlayer.getCoordinate().setLocation(395, 200);
-    		myMaze.move(Direction.WEST);
+    	    if(attemptMapMove(Direction.WEST)) {
+    	        myPlayer.getCoordinate().setLocation(395, 200);
+    	    }
+    		
     	}
     	//north door zone
     	if(myPlayer.getCoordinate().getY() == 0 &&
     			myPlayer.getCoordinate().getX() >= 150 &&
     				myPlayer.getCoordinate().getX() <= 250) {
-    		myPlayer.getCoordinate().setLocation(200, 395);
-    		myMaze.move(Direction.NORTH);
+    	    if(attemptMapMove(Direction.NORTH)) {
+    	        myPlayer.getCoordinate().setLocation(200, 395);
+    	    }
+    		
 
     	}
     	//south door zone
     	if(myPlayer.getCoordinate().getY() == 400 &&
     			myPlayer.getCoordinate().getX() >= 150 &&
     				myPlayer.getCoordinate().getX() <= 250) {
-    		myPlayer.getCoordinate().setLocation(200, 5);
-    		myMaze.move(Direction.SOUTH);
-
+    	    if(attemptMapMove(Direction.SOUTH)) {
+    	        myPlayer.getCoordinate().setLocation(200, 5);
+    	    }
     	}
     		
     		
 		
 	}
+    /*
+     * Returns a success boolean
+     */
+    private boolean attemptMapMove(Direction theDirection) {
+        if(myMaze.canMove(theDirection)) {
+            myMaze.move(theDirection);
+            return true;
+        }else { 
+//            System.out.println("Cannot move in that direction.");
+            return false;
+        }
+    }
 
 	@Override
     public void keyReleased(KeyEvent e) {
