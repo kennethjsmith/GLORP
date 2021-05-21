@@ -17,7 +17,8 @@ import view.GameIcon;
 //TODO: create subclasses (start and end rooms)
 public class Room {
     private Door[] myDoors; // for now... 4 doors each 
-	private ArrayList<GamePiece> myGamePieces; // array list, no max GamePieces
+	private ArrayList<Item> myItems; // array list, no max GamePieces
+	private Player myPlayer;
 	private GameIcon myLargeIcon;
 	private GameIcon mySmallIcon;
 	private final RoomIndex myIndex;
@@ -27,17 +28,19 @@ public class Room {
 	//private boolean visitedFlag; // will be tracked by map? 
 	
     public Room() {
-        myGamePieces = new ArrayList<GamePiece>();
+        myItems = new ArrayList<Item>();
         myLargeIcon = null; 
         mySmallIcon = null;
         myIndex = null;
+        myPlayer = null;
     }
     
 	public Room(GameIcon theLargeIcon, GameIcon theSmallIcon, int theRow, int theCol) { // how will rooms get their icons? And riddles? 
-	    myGamePieces = new ArrayList<GamePiece>();
+	    myItems = new ArrayList<Item>();
 	    myLargeIcon = theLargeIcon; 
 	    mySmallIcon = theSmallIcon; 
 	    myIndex = new RoomIndex(theRow, theCol);
+	    myPlayer = null;
 	}
 	
 	/**
@@ -116,11 +119,23 @@ public class Room {
 	 * Place an item in this room
 	 * @param myItem the myItem to set
 	 */
-	public void addGamePiece(GamePiece theGamePiece) throws NullPointerException{
+	public void addItem(Item theGamePiece) throws NullPointerException{
 	    if(theGamePiece == null) {
 	        throw new NullPointerException("GamePiece cannot be null.");
 	    }
-		myGamePieces.add(theGamePiece);
+		myItems.add(theGamePiece);
+	}
+	
+	/**
+	 * Place the player in this room
+	 * @param myItem the myItem to set
+	 */
+	public void setPlayer(Player thePlayer) {
+		myPlayer = thePlayer;
+	}
+	
+	public Player getPlayer() {
+		return myPlayer;
 	}
 	
 	public void setLargeIcon(GameIcon theLargeIcon) {

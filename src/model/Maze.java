@@ -19,6 +19,9 @@ public class Maze {
 	// The 2D array that stores each room
 	private Room[][] myMaze;
 	
+	// The player
+	private final Player myPlayer;
+	
 	// The room our Player is currently in
 	private Room myCurrentRoom;
 	
@@ -52,7 +55,6 @@ public class Maze {
 	
 	// The icon for the current room
 	private final GameIcon myCurrRoomIcon = new GameIcon("src/icons/current_room_for_map.png");
-
 	
 	// Creates the maze.
     private static final Maze THISMAZE = new Maze();
@@ -64,11 +66,16 @@ public class Maze {
 		// Initialize with row-major: Room[rows][columns]
 		myMaze = new Room[LENGTH+BORDER_BUFFER][WIDTH+BORDER_BUFFER];
 		
+		// TODO Allow option for skin types
+		myPlayer = new Player();
+		
 		// Fills out the 2d array, myMaze, with rooms
 		addRooms();
 		
 		// this is set to true initially
 		canAccessWinRoom = true;
+		
+
 	}
 	
 	// Returns the maze.
@@ -98,17 +105,17 @@ public class Maze {
 	private void designateWinStartRooms() {
 		
 		// Finds start room indexes
-		int startRow = 1;
-		startRow = generateRandomStartIndex(startRow, LENGTH);
 		int startCol = 1;
-		startCol = generateRandomStartIndex(startCol, WIDTH);
-		
-		System.out.println("Start Room: (" + startRow + ", " + startCol + ").");
+		startCol = generateRandomStartIndex(startCol, LENGTH);
+		int startRow = 1;
+		startRow = generateRandomStartIndex(startRow, WIDTH);
+		System.out.println("Start Room. Row: " + startRow + ", Column: " + startCol);
 		
 		// Sets start room
-		myStartRoom = this.getRoom(startRow, startCol);
+		myStartRoom = myMaze[startRow][startCol];
 		myStartRoom.setLargeIcon(myCurrRoomIcon);
 		myStartRoom.setSmallIcon(myCurrRoomIcon);
+		myStartRoom.setPlayer(myPlayer);
 		
 		// Finds win room indexes
 		int winRow = 1;
@@ -116,10 +123,10 @@ public class Maze {
 				int winCol = 1;
 		winCol = generateRandomWinIndex(winCol, WIDTH, startCol);
 		
-		System.out.println("Win Room: (" + winRow + ", " + winCol + ").");
+		System.out.println("Win Room. Row: " + winRow + ", Column: " + winCol);
 		
 		// Sets win room
-		myWinRoom = this.getRoom(winRow, winCol);
+		myWinRoom = myMaze[winRow][winCol];
 		myWinRoom.setLargeIcon(myWinRoomIcon);
 		myWinRoom.setSmallIcon(myWinRoomIcon);
 		
@@ -157,28 +164,46 @@ public class Maze {
 	public void move(Direction theDirection) {
 		myCurrentRoom.setLargeIcon(myPlainRoomIcon);
 		myCurrentRoom.setSmallIcon(myPlainRoomIcon);
+		myCurrentRoom.setPlayer(null);
 		
 		RoomIndex currIndex = myCurrentRoom.getMyIndex();
 		int row = currIndex.getRow();
 		int col = currIndex.getCol();
 		
-		System.out.println("Start room: " + row + ", " + col);
+		System.out.println();
+		System.out.println("Previous room. row: " + row + ", col: " + col);
 
+		// Go north
 		if(theDirection.getLabel().equals("N")) {
-			row = row + 1;
-			myCurrentRoom = myMaze[row][col];
-		} else if(theDirection.getLabel().equals("S")) {
 			row = row - 1;
 			myCurrentRoom = myMaze[row][col];
+			
+			System.out.println("We went North. New room: row: " + row + ", col: " + col);
+
+		// Go south
+		} else if(theDirection.getLabel().equals("S")) {
+			row = row + 1;
+			myCurrentRoom = myMaze[row][col];
+			System.out.println("We went South. New room: row: " + row + ", col: " + col);
+
+		// Go east
 		} else if(theDirection.getLabel().equals("E")) {
 			col = col + 1;
+			myCurrentRoom = myMaze[row][col];
+			System.out.println("We went East. New room: row: " + row + ", col: " + col);
+
+		// Go West
 		} else if(theDirection.getLabel().equals("W")) {
 			col = col - 1;
 			myCurrentRoom = myMaze[row][col];
+			System.out.println("We went West. New room: row: " + row + ", col: " + col);
+
 		}
 		
 		myCurrentRoom.setLargeIcon(myCurrRoomIcon);
 		myCurrentRoom.setSmallIcon(myCurrRoomIcon);
+		myCurrentRoom.setPlayer(myPlayer); //TODO use add player instead when we have doors
+		
 
 	}
 	
@@ -189,6 +214,10 @@ public class Maze {
 	
 	public Room getCurrRoom() {
 		return myCurrentRoom;
+	}
+	
+	public Player getPlayer() {
+		return myPlayer;
 	}
 	
 	// Returns the room at the provided index

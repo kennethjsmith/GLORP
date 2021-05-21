@@ -4,9 +4,9 @@ public class RoomIndex {
 	private int myRow;
 	private int myCol;
 	
-	protected RoomIndex(int theRow, int thecol) {
-		myRow = 0;
-		myCol = 0;
+	protected RoomIndex(int theRow, int theCol) {
+		myRow = theRow;
+		myCol = theCol;
 	}
 	
 	void setRow(int theRow) {

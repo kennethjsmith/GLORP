@@ -85,11 +85,6 @@ public class GlorpGUI extends JFrame {
         pack();
         repaint();
     }
-    //TODO: this method should pass a room to paint, not just a character
-    public void paintRoomPanel(Player thePlayer) {
-        myRoomPanel.setCurrentPlayer(thePlayer);
-        repaint();
-    }
 
     public void addMenuBar() {
     	JMenuBar myMenubar = new JMenuBar();

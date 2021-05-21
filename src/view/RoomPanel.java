@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
+import model.Maze;
 import model.Player;
 import model.Room;
 
@@ -29,8 +30,8 @@ public class RoomPanel extends JPanel {
     // fields
 	private static final long serialVersionUID = 1L;
     
-    private Room myCurrentRoom; //TODO: create setter, use this not myPlayer on this panel
     private Player myCurrentPlayer;
+    private Room myRoom;
     private final static int SIZE = 500;
     //private boolean skipFrame; //move to Player, or client???
     
@@ -40,6 +41,8 @@ public class RoomPanel extends JPanel {
         Border blackline = BorderFactory.createLineBorder(Color.black);
         setBorder(blackline);
         setLayout(new FlowLayout());
+        myRoom = Maze.getInstance().getCurrRoom();
+        myCurrentPlayer = myRoom.getPlayer(); // TODO Getting instance of Maze in RoomPanel violates MVC?
     }
 
     @Override
@@ -52,6 +55,7 @@ public class RoomPanel extends JPanel {
     	super.paintComponent(g);
     	//new ImageIcon().paintIcon(this,g,d,d);
     	if(myCurrentPlayer != null) {
+
     		//System.out.println((int)myCurrentPlayer.getCoordinate().getX());
     		//System.out.println((int)myCurrentPlayer.getCoordinate().getY());
     		//TODO: this floor icon will need to come from the room class
