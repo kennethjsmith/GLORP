@@ -84,6 +84,8 @@ public class Maze {
 				myMaze[i][j] = new Room(myPlainRoomIcon, myPlainRoomIcon);
 			}
 		}
+		DoorFactory theFactory = new DoorFactory(myMaze);
+		
 		designateWinStartRooms();
 		myCurrentRoom = myStartRoom;
 		

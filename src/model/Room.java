@@ -36,6 +36,7 @@ public class Room {
 	    myGamePieces = new ArrayList<GamePiece>();
 	    myLargeIcon = theLargeIcon; 
 	    mySmallIcon = theSmallIcon; 
+	    
 	}
 	
 	/**

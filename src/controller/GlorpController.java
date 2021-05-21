@@ -39,6 +39,8 @@ public class GlorpController implements KeyListener{
         
         myWindow.paintRoomPanel(myPlayer);
         
+        //System.out.println(myMaze.canWin());
+        
 	}
 	
 	@Override
