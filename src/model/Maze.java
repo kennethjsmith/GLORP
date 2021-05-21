@@ -1,8 +1,6 @@
 package model;
 
 import java.util.Random;
-import java.util.Stack;
-
 import view.GameIcon;
 
 /**
@@ -62,86 +60,101 @@ public class Maze {
 		// Fills out the 2d array, myMaze, with rooms
 		addRooms();
 		
-		DoorFactory inFactory = new DoorFactory(myMaze); // use door factory to fill rooms with doors
-		myMaze = inFactory.getRooms();
+		DoorFactory inFactory = new DoorFactory(myMaze); // fill rooms with doors
+        myMaze = inFactory.getRooms();
+        
+        blockBorderRooms(); // create "border wall" surounding map
 		
 		// this is set to true initially
 		canAccessWinRoom = true;
 	}
 	
-	// Returns the maze.
+	/**
+	 * Getter for the maze object instance
+	 * @return
+	 */
 	public static Maze getInstance() {
 		return THISMAZE;
     }
 	
 
-	//Creates and adds rooms to myMaze 
+	/*
+	 * Creates and adds rooms to myMaze 
+	 */
 	private void addRooms() {
-		
-		// iterate through the 2d array
-		for(int i = 1; i <= LENGTH; i++) {
-			for(int j = 1; j <= WIDTH; j++) {
+		for(int i = 0; i < LENGTH+BORDER_BUFFER; i++) {
+			for(int j = 0; j < WIDTH+BORDER_BUFFER; j++) {
 				myMaze[i][j] = new Room(myPlainRoomIcon, myPlainRoomIcon);
 			}
 		}
-		DoorFactory theFactory = new DoorFactory(myMaze);
 		
 		designateWinStartRooms();
 		myCurrentRoom = myStartRoom;
-		
 	}
+
+   /*
+   * Blocks all doors along the boarder to simulate a wall
+   */
+   private void blockBorderRooms() {
+       for(int r = 0; r < LENGTH+BORDER_BUFFER; r++) { 
+           blockDoors(myMaze[r][0]);
+           blockDoors(myMaze[r][WIDTH+BORDER_BUFFER - 1]);
+       }     
+       for(int c = 0; c < WIDTH+BORDER_BUFFER; c++) {
+           blockDoors(myMaze[0][c]);
+           blockDoors(myMaze[LENGTH+BORDER_BUFFER - 1][c]);
+       }
+    }
 	
-	// Randomly sets the WinRoom and StartRoom.
+   /*
+    * Block all doors in a room 
+    */
+   private void blockDoors(Room theRoom) {
+       for(Door d : theRoom.getDoors()) {
+           d.setBlocked();
+       }
+   }
+   
+	/*
+	 * Randomly sets the WinRoom and StartRoom coordinates 
+	 * so that they are not on the edge of the maze
+	 */
 	private void designateWinStartRooms() {
-		
-		int startRow = 1;
-		startRow = generateRandomStartIndex(startRow, LENGTH);
-		int startCol = 1;
-		startCol = generateRandomStartIndex(startCol, WIDTH);
-		
-		System.out.println("Start Room: (" + startRow + ", " + startCol + ").");
-		
-		myStartRoom = this.getRoom(startRow, startCol);
+	    int inStartRow = generateRandom(BORDER_BUFFER/2 + 1, LENGTH - 2);
+	    int inStartCol = generateRandom(BORDER_BUFFER/2 + 1, WIDTH - 2);
+	    
+		myStartRoom = this.getRoom(inStartRow, inStartCol);
 		myStartRoom.setLargeIcon(myStartRoomIcon);
 		myStartRoom.setSmallIcon(myStartRoomIcon);
 		
-		int winRow = 1;
-		winRow = generateRandomWinIndex(winRow, LENGTH, startRow);
-				int winCol = 1;
-		winCol = generateRandomWinIndex(winCol, WIDTH, startCol);
-		
-		System.out.println("Win Room: (" + winRow + ", " + winCol + ").");
-		
-		myWinRoom = this.getRoom(winRow, winCol);
+		int inWinRow = 0, inWinCol = 0;
+		// win and start room must be 1/3 of the maze away - helper method? 
+		while(inWinRow == 0 || Math.abs(inWinRow - inStartRow) < LENGTH / 3) {
+		    inWinRow = generateRandom(BORDER_BUFFER/2 + 1, LENGTH - 2);
+		    
+		}
+	    while(inWinCol == 0 || Math.abs(inWinCol - inStartCol) < WIDTH / 3) {
+	            inWinCol = generateRandom(BORDER_BUFFER/2 + 1, WIDTH - 2);
+	    }
+	    
+		myWinRoom = this.getRoom(inWinRow, inWinCol);
 		myWinRoom.setLargeIcon(myWinRoomIcon);
 		myWinRoom.setSmallIcon(myWinRoomIcon);
 		
-	}
-
-	// Finds a random index in the 2d grid for the start room. TheDiameter represents either the LENGTH or WIDTH.
-	private int generateRandomStartIndex(int theIndex, int theDiameter) {
-		Random rand = new Random();
-
-		// loops until theIndex is not on the edge of the maze.
-		while(theIndex == 1 || theIndex == theDiameter) {
-			// Uses random number generator to pick a spot for the start room. 
-			// theDiameter - 1 indicates the upper bound of the number generated.
-			// The +1 is to ensure that we do not go out of bounds on the lower bounds -> .nextInt has a lower bound of 0.
-			theIndex = rand.nextInt(theDiameter - 1) + 1;
-		}	
-		return theIndex;
-	}
-	
-	private int generateRandomWinIndex(int theIndex, int theDiameter, int theStartIndex) {
-		Random rand = new Random();
+       System.out.println("Win Room: (" + inStartRow + ", " + inStartCol + ").");
+       System.out.println("Win Room: (" + inWinRow + ", " + inWinCol + ").");
 		
-		// Loops until the win room is not on the border
-		// And is at least 1/4 the length of the maze away from the start room
-		while(theIndex == 1 || theIndex == theDiameter || Math.abs(theIndex - theStartIndex) < theDiameter / 3) {
-			theIndex = rand.nextInt(LENGTH - 1) + 1;
-		}
-		return theIndex;
 	}
+
+    /*
+	 * Generates a random index between two numbers (min val, max val) 
+	 */
+	 private int generateRandom(int theMin, int theMax) {
+	     Random rand = new Random();
+	     return rand.nextInt(theMax - theMin + 1) + theMin;
+	     // highest val is ((theMax - theMin + 1) - 1) + theMin = theMax
+	     // lowest val is (0) + theMin = theMin
+	 }
 
 	// Communicate to the controller what the start room for the game is
 	// So that the controller can set the icon for the start room
@@ -150,22 +163,34 @@ public class Maze {
 		return myStartRoom;
 	}
 	
-	// Returns the room at the provided index
+	/*
+	 *  Returns the room at the provided index
+	 *  Logic is so the client does not know about the buffer
+	 */
 	public Room getRoom(int theRow, int theColumn) {
-		//TODO clean up magic numbers in getRoom
-		if(theRow < 1 || theColumn < 1) throw new 
-				IllegalArgumentException("getRoom error: The index of the rooms cannot be less than (1,1)");
-		else if(theRow > LENGTH || theColumn > WIDTH) throw new 
-				IllegalArgumentException("getRoom error: The index of the rooms cannot be greater than the size of the maze");
+		if(theRow < 0 || theColumn < 0) throw new 
+				IllegalArgumentException("getRoom error: The index of the rooms cannot be negative");
+		else if(theRow > (LENGTH - BORDER_BUFFER/2) || theColumn > (WIDTH - BORDER_BUFFER/2)) 
+		    throw new IllegalArgumentException("getRoom error: The index of the rooms cannot be greater than the size of the maze");
 		
-		return myMaze[theRow][theColumn];
+		return myMaze[theRow + BORDER_BUFFER/2][theColumn + BORDER_BUFFER/2];
+	}
+
+	/**
+	 * Returns the length of this mazes 2D Room array 
+	 * @return
+	 */
+	public int getLength() {
+	    return LENGTH;
 	}
 	
-	// Returns the 2d array of all rooms.
-	// This is public right now so that the MapPanel can access the rooms. Maybe there is a way to change this?
-	public Room[][] getRooms(){
-		return myMaze;
-	}
+	/**
+     * Returns the length of this mazes 2D Room array 
+     * @return
+     */
+	public int getWidth() {
+        return WIDTH;
+    }
 	
 	// Returns true if the index contains a room, and false otherwise
 	// TODO containsRoom method is redundant unless we decide to make some spaces in the grid not exist as rooms.
