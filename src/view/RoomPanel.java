@@ -84,8 +84,7 @@ public class RoomPanel extends JPanel {
     		myCurrentPlayer.getRoomIcon().paintIcon(this, g, (int)myCurrentPlayer.getCoordinate().getX(), (int)myCurrentPlayer.getCoordinate().getY());
     		//System.out.println(myCurrentPlayer.getRoomIcon());
     		//System.out.println(myCurrentPlayer);
-    	}else
-    	    System.out.println("null player");
+    	}
     }
 
 	/**

@@ -73,7 +73,7 @@ public class Maze {
 		DoorFactory inFactory = new DoorFactory(myMaze); // fill rooms with doors
         myMaze = inFactory.getRooms();
         
-        blockBorderRooms(); // create "border wall" surounding map
+        blockBorderRooms(); // create "border wall" of completely blocked rooms surounding map
 		
 		// this is set to true initially
 		canAccessWinRoom = true;
@@ -135,6 +135,8 @@ public class Maze {
 		myStartRoom = this.getRoom(inStartRow, inStartCol);
 		myStartRoom.setLargeIcon(myStartRoomIcon);
 		myStartRoom.setSmallIcon(myStartRoomIcon);
+// okay to put this here? 
+		myStartRoom.setPlayer(myPlayer);
 		
 		int inWinRow = 0, inWinCol = 0;
 		// win and start room must be 1/3 of the maze away - helper method? 
@@ -164,29 +166,48 @@ public class Maze {
 	     // highest val is ((theMax - theMin + 1) - 1) + theMin = theMax
 	     // lowest val is (0) + theMin = theMin
 	 }
-
 	 
+	/**
+	 * Check if moving in a certain direction is valid.
+	 * Returns true if the move is valid.
+	 * @param theDirection
+	 * @return boolean canMove
+	 */
+	public boolean canMove(Direction theDirection) {
+	    RoomIndex currIndex = myCurrentRoom.getMyIndex();
+        int inRow = currIndex.getRow();
+        int inCol = currIndex.getCol();
+        
+	    return (theDirection.getLabel().equals("N") && inRow >= BORDER_BUFFER/2 + 1)||  // Go North
+        (theDirection.getLabel().equals("S") && inRow < LENGTH) ||  // Go South
+        (theDirection.getLabel().equals("E") && inCol < WIDTH) ||   // Go East
+        (theDirection.getLabel().equals("W") && inCol >= BORDER_BUFFER/2 + 1);    // Go West
+	}
+	
 	// TODO Right now move in Maze uses Direction - we may want to make a custom direction class
 	// TODO add exception handeling to move method
 	public void move(Direction theDirection) {
 		Room tempCurrentRoom = myCurrentRoom;
 		RoomIndex currIndex = myCurrentRoom.getMyIndex();
-		int row = currIndex.getRow();
-		int col = currIndex.getCol();
+		int inRow = currIndex.getRow();
+		int inCol = currIndex.getCol();
 
-		if(theDirection.getLabel().equals("N") && row >= 2) {	// Go North
-			myCurrentRoom = myMaze[row-1][col];
+		if(!(canMove(theDirection))) {
+			throw new IllegalArgumentException("You cannot move past the border of the maze");
+	    }
+		
+		if(theDirection.getLabel().equals("N")) { // Go North
+            myCurrentRoom = myMaze[inRow-1][inCol];
 
-		} else if(theDirection.getLabel().equals("S") && row < LENGTH) {	// Go South
-			myCurrentRoom = myMaze[row+1][col];
+        } else if(theDirection.getLabel().equals("S")) {  // Go South
+            myCurrentRoom = myMaze[inRow+1][inCol];
 
-		} else if(theDirection.getLabel().equals("E") && col < WIDTH) {	// Go East
-			myCurrentRoom = myMaze[row][col+1];
+        } else if(theDirection.getLabel().equals("E")) {   // Go East
+            myCurrentRoom = myMaze[inRow][inCol+1];
 
-		} else if(theDirection.getLabel().equals("W") && col >= 2) {	// Go West
-			myCurrentRoom = myMaze[row][col-1];
-			
-		} else throw new IllegalArgumentException("You cannot move past the border of the maze");
+        } else if(theDirection.getLabel().equals("W")) {    // Go West
+            myCurrentRoom = myMaze[inRow][inCol-1];  
+		}
 		
 		tempCurrentRoom.setLargeIcon(myPlainRoomIcon); // TODO Icon handling
 		tempCurrentRoom.setSmallIcon(myPlainRoomIcon);
