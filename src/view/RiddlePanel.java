@@ -10,6 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 
 public class RiddlePanel extends JPanel {
 	private final String TITLE = "Riddle";
@@ -20,14 +21,13 @@ public class RiddlePanel extends JPanel {
 	
 	public RiddlePanel() {
         setPreferredSize(new Dimension(WIDTH,HEIGHT));
-        JLabel label = new JLabel(TITLE, JLabel.LEFT);
         SPHINX.resize(200);
         SPEECH_BUBBLE.resize(300);
         // add border
-        Border border = BorderFactory.createLineBorder(Color.yellow);
+        TitledBorder border = BorderFactory.createTitledBorder(TITLE);
+        border.setTitleColor(Color.YELLOW);
         setBorder(border);
-        setLayout(new FlowLayout());
-        add(label); 
+        setLayout(new FlowLayout()); 
     }
 	
 	@Override

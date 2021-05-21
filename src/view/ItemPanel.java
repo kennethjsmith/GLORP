@@ -11,6 +11,7 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 
 import model.Room;
 
@@ -24,7 +25,8 @@ public class ItemPanel extends JPanel{
 	public ItemPanel() {
 		// Sets the size of the JPanel
         setPreferredSize(new Dimension(WIDTH,HEIGHT));
-        Border border = BorderFactory.createTitledBorder(TITLE);
+        TitledBorder border = BorderFactory.createTitledBorder(TITLE);
+        border.setTitleColor(Color.cyan);
         setBorder(border);
         setLayout(new FlowLayout());    
     }
