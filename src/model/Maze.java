@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Dimension;
 import java.util.Random;
 import java.util.Stack;
 
@@ -46,8 +47,12 @@ public class Maze {
 	// The icon for start room
 	private final GameIcon myStartRoomIcon = new GameIcon("src/icons/start_room_for_map.png");
 	
-	// The icon for a win room
+	// The icon for the win room
 	private final GameIcon myWinRoomIcon = new GameIcon("src/icons/win_room_for_map.png");
+	
+	// The icon for the current room
+	private final GameIcon myCurrRoomIcon = new GameIcon("src/icons/current_room_for_map.png");
+
 	
 	// Creates the maze.
     private static final Maze THISMAZE = new Maze();
@@ -76,12 +81,12 @@ public class Maze {
 	private void addRooms() {
 		
 		// iterate through the 2d array
-		for(int i = 1; i <= LENGTH; i++) {
-			for(int j = 1; j <= WIDTH; j++) {
-				myMaze[i][j] = new Room(myPlainRoomIcon, myPlainRoomIcon);
+		for(int row = 1; row <= LENGTH; row++) {
+			for(int col = 1; col <= WIDTH; col++) {
+				myMaze[row][col] = new Room(myPlainRoomIcon, myPlainRoomIcon, row, col);
 			}
 		}
-		DoorFactory theFactory = new DoorFactory(myMaze);
+		//DoorFactory theFactory = new DoorFactory(myMaze);
 		
 		designateWinStartRooms();
 		myCurrentRoom = myStartRoom;
@@ -92,6 +97,7 @@ public class Maze {
 	// Randomly sets the WinRoom and StartRoom.
 	private void designateWinStartRooms() {
 		
+		// Finds start room indexes
 		int startRow = 1;
 		startRow = generateRandomStartIndex(startRow, LENGTH);
 		int startCol = 1;
@@ -99,10 +105,12 @@ public class Maze {
 		
 		System.out.println("Start Room: (" + startRow + ", " + startCol + ").");
 		
+		// Sets start room
 		myStartRoom = this.getRoom(startRow, startCol);
-		myStartRoom.setLargeIcon(myStartRoomIcon);
-		myStartRoom.setSmallIcon(myStartRoomIcon);
+		myStartRoom.setLargeIcon(myCurrRoomIcon);
+		myStartRoom.setSmallIcon(myCurrRoomIcon);
 		
+		// Finds win room indexes
 		int winRow = 1;
 		winRow = generateRandomWinIndex(winRow, LENGTH, startRow);
 				int winCol = 1;
@@ -110,6 +118,7 @@ public class Maze {
 		
 		System.out.println("Win Room: (" + winRow + ", " + winCol + ").");
 		
+		// Sets win room
 		myWinRoom = this.getRoom(winRow, winCol);
 		myWinRoom.setLargeIcon(myWinRoomIcon);
 		myWinRoom.setSmallIcon(myWinRoomIcon);
@@ -130,22 +139,56 @@ public class Maze {
 		return theIndex;
 	}
 	
+	// Finds a random index in teh 2d grid for the win room.
+	// TheDiameter represents either LENGTH or WIDTH
 	private int generateRandomWinIndex(int theIndex, int theDiameter, int theStartIndex) {
 		Random rand = new Random();
 		
 		// Loops until the win room is not on the border
-		// And is at least 1/4 the length of the maze away from the start room
+		// And is at least 1/3 the length of the maze away from the start room (this is why it's "/ 3"
 		while(theIndex == 1 || theIndex == theDiameter || Math.abs(theIndex - theStartIndex) < theDiameter / 3) {
 			theIndex = rand.nextInt(LENGTH - 1) + 1;
 		}
 		return theIndex;
 	}
 
-	// Communicate to the controller what the start room for the game is
-	// So that the controller can set the icon for the start room
-	// Maybe find way to not pass room eventually
+	// TODO Right now move in Maze uses Direction - we may want to make a custom direction class
+	// TODO add exception handeling to move method
+	public void move(Direction theDirection) {
+		myCurrentRoom.setLargeIcon(myPlainRoomIcon);
+		myCurrentRoom.setSmallIcon(myPlainRoomIcon);
+		
+		RoomIndex currIndex = myCurrentRoom.getMyIndex();
+		int row = currIndex.getRow();
+		int col = currIndex.getCol();
+		
+		System.out.println("Start room: " + row + ", " + col);
+
+		if(theDirection.getLabel().equals("N")) {
+			row = row + 1;
+			myCurrentRoom = myMaze[row][col];
+		} else if(theDirection.getLabel().equals("S")) {
+			row = row - 1;
+			myCurrentRoom = myMaze[row][col];
+		} else if(theDirection.getLabel().equals("E")) {
+			col = col + 1;
+		} else if(theDirection.getLabel().equals("W")) {
+			col = col - 1;
+			myCurrentRoom = myMaze[row][col];
+		}
+		
+		myCurrentRoom.setLargeIcon(myCurrRoomIcon);
+		myCurrentRoom.setSmallIcon(myCurrRoomIcon);
+
+	}
+	
+	// Returns the start room
 	private Room getStartRoom() {
 		return myStartRoom;
+	}
+	
+	public Room getCurrRoom() {
+		return myCurrentRoom;
 	}
 	
 	// Returns the room at the provided index
@@ -197,8 +240,8 @@ public class Maze {
 	    	return;
 	    }
 	    
-	    myCurrentRoom = this.getRoom(theRow, theColumn);
-		System.out.println(this);
+//	    myCurrentRoom = this.getRoom(theRow, theColumn);
+//		System.out.println(this);
 
 	    
 	    Room currentRoom = this.getRoom(theRow, theColumn);
@@ -250,7 +293,7 @@ public class Maze {
 		return inDoor.isBlocked();
 	}
 
-	private Door getSameDoor(Room theCurrRoom, Room theAdjRoom) throws IllegalArgumentException{
+	private Door getSameDoor(Room theCurrRoom, Room theAdjRoom) {
 		//Door[] inDoors = new Door[theCurrRoom.getDoors().length];
 		for(Door d : theCurrRoom.getDoors()) {
 			for(Door o : theAdjRoom.getDoors()) {

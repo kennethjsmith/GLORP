@@ -19,10 +19,12 @@ import model.Room;
 public class MapPanel extends JPanel {
 	private final String TITLE = "Map";
 	private final static int WIDTH = 300;
-	private final static int HEIGHT = 8000;
+	private final static int HEIGHT = 800;
     private static final int ICON_SIZE = 100;
     private Maze myMaze;
     private Map <ImageIcon, Dimension> myRooms;
+    private final GameIcon currRoomOverlayIcon = new GameIcon("src/icons/alien_map_icon");
+    private Room myCurrentRoom;
     
     
     
@@ -42,6 +44,8 @@ public class MapPanel extends JPanel {
         // Creates a map of all the rooms
         myRooms = new HashMap<ImageIcon, Dimension>();
         addRooms();
+        
+        myCurrentRoom = myMaze.getCurrRoom();
     }
 	
 	// Using the maze, adds all of the rooms to the myRooms map with their icon and dimension
@@ -51,7 +55,7 @@ public class MapPanel extends JPanel {
 		for(int i = 0; i < myCurrentRooms.length; i++) {
 			for(int j = 0; j < myCurrentRooms[i].length; j++) {
 				
-				// Add on a if room.isvisited boolean here
+				// TODO Add on a if room.isvisited boolean here
 				if(myMaze.containsRoom(i, j)) {
 					ImageIcon currentIcon = myMaze.getRoom(i, j).getSmallIcon();
 					int iconWidth = currentIcon.getIconWidth();
@@ -63,19 +67,6 @@ public class MapPanel extends JPanel {
 		}
 		repaint();
 	}
-	
-	 /**
-     * Helper for resizing single icon
-     */
-	//TODO this is a copy from roompanel class. Maybe there is a way to consolidate so we don't have duplicate code. 
-	//This code is not used here
-    private static void resizeImageIcon(ImageIcon theIcon) {
-    	Image inTempImage;
-    	//resize left facing standing icon
-    	inTempImage = theIcon.getImage(); // transform it 
-		inTempImage = inTempImage.getScaledInstance(ICON_SIZE, ICON_SIZE,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-		theIcon = new ImageIcon(inTempImage);  // transform it back
-    }
     
     @Override
     public void paintComponent(Graphics theGraphics) {
@@ -84,8 +75,8 @@ public class MapPanel extends JPanel {
     	for(Map.Entry<ImageIcon, Dimension> theRoom : myRooms.entrySet()) {
 			int xCoordinate = theRoom.getValue().width;
 			int yCoordinate = theRoom.getValue().height;
-			Icon currIcon = theRoom.getKey();
-			currIcon.paintIcon(this, g2d, xCoordinate, yCoordinate);
-    	}
+			Icon roomIcon = theRoom.getKey();
+			roomIcon.paintIcon(this, g2d, xCoordinate, yCoordinate);
+    	}    	
     }	
 }

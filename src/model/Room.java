@@ -20,6 +20,7 @@ public class Room {
 	private ArrayList<GamePiece> myGamePieces; // array list, no max GamePieces
 	private GameIcon myLargeIcon;
 	private GameIcon mySmallIcon;
+	private final RoomIndex myIndex;
 	
 	//Map<Door, Room> myDoors= new TreeMap<>();
 	//private boolean containsPlayer; //will be tracked by map (current room) 
@@ -29,13 +30,14 @@ public class Room {
         myGamePieces = new ArrayList<GamePiece>();
         myLargeIcon = null; 
         mySmallIcon = null;
+        myIndex = null;
     }
     
-	public Room(GameIcon theLargeIcon, GameIcon theSmallIcon) { // how will rooms get their icons? And riddles? 
+	public Room(GameIcon theLargeIcon, GameIcon theSmallIcon, int theRow, int theCol) { // how will rooms get their icons? And riddles? 
 	    myGamePieces = new ArrayList<GamePiece>();
 	    myLargeIcon = theLargeIcon; 
 	    mySmallIcon = theSmallIcon; 
-	    
+	    myIndex = new RoomIndex(theRow, theCol);
 	}
 	
 	/**
@@ -139,6 +141,10 @@ public class Room {
 	public ImageIcon getSmallIcon() {
         return mySmallIcon;
     }
+	
+	public RoomIndex getMyIndex() {
+		return myIndex;
+	}
 	
 //	public Point[] getDoorCoordinates() {
 //	    Point[] inCoordinates = new Point[MAX_DOORS];

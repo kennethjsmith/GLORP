@@ -32,15 +32,13 @@ public class GlorpController implements KeyListener{
 		myPlayer = new Player();
 		
 		myWindow = new GlorpGUI();
+
         myWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         myWindow.setVisible(true);
         myWindow.setTitle("GLORP");
         myWindow.addKeyListener(this);
         
         myWindow.paintRoomPanel(myPlayer);
-        
-        //System.out.println(myMaze.canWin());
-        
 	}
 	
 	@Override
