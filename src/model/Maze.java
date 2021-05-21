@@ -74,8 +74,6 @@ public class Maze {
 		
 		// this is set to true initially
 		canAccessWinRoom = true;
-		
-
 	}
 	
 	// Returns the maze.
@@ -162,51 +160,34 @@ public class Maze {
 	// TODO Right now move in Maze uses Direction - we may want to make a custom direction class
 	// TODO add exception handeling to move method
 	public void move(Direction theDirection) {
-		myCurrentRoom.setLargeIcon(myPlainRoomIcon);
-		myCurrentRoom.setSmallIcon(myPlainRoomIcon);
-		myCurrentRoom.setPlayer(null);
-		
+		Room tempCurrentRoom = myCurrentRoom;
 		RoomIndex currIndex = myCurrentRoom.getMyIndex();
 		int row = currIndex.getRow();
 		int col = currIndex.getCol();
-		
-		System.out.println();
-		System.out.println("Previous room. row: " + row + ", col: " + col);
 
-		// Go north
-		if(theDirection.getLabel().equals("N")) {
-			row = row - 1;
-			myCurrentRoom = myMaze[row][col];
+		if(theDirection.getLabel().equals("N") && row >= 2) {	// Go North
+			myCurrentRoom = myMaze[row-1][col];
+
+		} else if(theDirection.getLabel().equals("S") && row < LENGTH) {	// Go South
+			myCurrentRoom = myMaze[row+1][col];
+
+		} else if(theDirection.getLabel().equals("E") && col < WIDTH) {	// Go East
+			myCurrentRoom = myMaze[row][col+1];
+
+		} else if(theDirection.getLabel().equals("W") && col >= 2) {	// Go West
+			myCurrentRoom = myMaze[row][col-1];
 			
-			System.out.println("We went North. New room: row: " + row + ", col: " + col);
-
-		// Go south
-		} else if(theDirection.getLabel().equals("S")) {
-			row = row + 1;
-			myCurrentRoom = myMaze[row][col];
-			System.out.println("We went South. New room: row: " + row + ", col: " + col);
-
-		// Go east
-		} else if(theDirection.getLabel().equals("E")) {
-			col = col + 1;
-			myCurrentRoom = myMaze[row][col];
-			System.out.println("We went East. New room: row: " + row + ", col: " + col);
-
-		// Go West
-		} else if(theDirection.getLabel().equals("W")) {
-			col = col - 1;
-			myCurrentRoom = myMaze[row][col];
-			System.out.println("We went West. New room: row: " + row + ", col: " + col);
-
-		}
+		} else throw new IllegalArgumentException("You cannot move past the border of the maze");
+		
+		tempCurrentRoom.setLargeIcon(myPlainRoomIcon); // TODO Icon handling
+		tempCurrentRoom.setSmallIcon(myPlainRoomIcon);
+		tempCurrentRoom.setPlayer(null);
 		
 		myCurrentRoom.setLargeIcon(myCurrRoomIcon);
 		myCurrentRoom.setSmallIcon(myCurrRoomIcon);
 		myCurrentRoom.setPlayer(myPlayer); //TODO use add player instead when we have doors
-		
-
 	}
-	
+		
 	// Returns the start room
 	private Room getStartRoom() {
 		return myStartRoom;
