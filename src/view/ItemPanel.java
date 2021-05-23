@@ -18,8 +18,8 @@ import model.Room;
 
 public class ItemPanel extends JPanel{
 	private final String TITLE = "Items";
-	private final static int WIDTH = 315;
-	private final static int HEIGHT = 185;
+	private final static int WIDTH =285;
+	private final static int HEIGHT = 215;
 
 	// Constructor 
 	public ItemPanel() {
@@ -28,14 +28,32 @@ public class ItemPanel extends JPanel{
         TitledBorder border = BorderFactory.createTitledBorder(TITLE);
         border.setTitleColor(Color.cyan);
         setBorder(border);
-        setLayout(new FlowLayout());    
+        setLayout(new FlowLayout(FlowLayout.CENTER));
+        
+        JPanel item1 = new JPanel();
+        JPanel item2 = new JPanel();
+        JPanel item3 = new JPanel();
+        item1.setPreferredSize(new Dimension(70,110));
+        item2.setPreferredSize(new Dimension(70,110));
+        item3.setPreferredSize(new Dimension(70,110));
+        
+        GameIcon key = new GameIcon("src/icons/anhk_key.png");
+        
+        JLabel item1Label = new JLabel(key);
+        JLabel item2Label = new JLabel(key);
+        JLabel item3Label = new JLabel(key);
+        
+        item1.add(item1Label);
+        item2.add(item2Label);
+        item3.add(item3Label);
+        
+        add(item1);
+        add(item2);
+        add(item3);
     }
 	
 	@Override
     public void paintComponent(Graphics g) {
     	super.paintComponent(g);
-    	//test
-    	GameIcon key = new GameIcon("src/icons/anhk_key.png");
-		key.paintIcon(this, g, 10, 40);	
     }
 }

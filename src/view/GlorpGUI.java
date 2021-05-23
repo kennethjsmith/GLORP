@@ -1,12 +1,20 @@
 package view;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
 public class GlorpGUI extends JFrame {
     
@@ -23,7 +31,8 @@ public class GlorpGUI extends JFrame {
     private static final String TITLE = "GLORP";
     
     private RoomPanel myRoomPanel;
-    private MapPanel myMapPanel;
+    private JPanel myMapPanel;
+    private MapView myMapView;
     private RiddlePanel myRiddlePanel;
     private ItemPanel myItemPanel;
     //TODO: add panels for maze map and sphinx/questions
@@ -31,18 +40,24 @@ public class GlorpGUI extends JFrame {
     public GlorpGUI() {
         super();
         setTitle(TITLE);
-        //sets frame background
-        //getContentPane().setBackground(Color.black);
-        //setPreferredSize(new Dimension(840, 860));
-        //setResizable(false);
+        setResizable(false);
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         
-        myMapPanel = new MapPanel();
+        myMapPanel = new JPanel(new FlowLayout());
         myMapPanel.setBackground(Color.darkGray);
+        myMapPanel.setPreferredSize(new Dimension(285,285));
+        
+        TitledBorder mapPanelTitleBorder = BorderFactory.createTitledBorder("Map");
+        mapPanelTitleBorder.setTitleColor(Color.WHITE);
+        myMapPanel.setBorder(mapPanelTitleBorder);
+        
         c.gridx = 0;
         c.gridy = 0;
+        
+        myMapView = new MapView();
+        myMapPanel.add(myMapView); //, BorderLayout.CENTER);
         add(myMapPanel, c);
         
         myItemPanel = new ItemPanel();

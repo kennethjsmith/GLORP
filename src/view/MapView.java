@@ -17,31 +17,29 @@ import javax.swing.JPanel;
 import model.Maze;
 import model.Room;
 
-public class MapPanel extends JPanel {
+public class MapView extends JPanel {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private final String TITLE = "Map";
-	private final static int WIDTH = 315;
-	private final static int HEIGHT = 315;
+	private final static int WIDTH = 245;
+	private final static int HEIGHT = 245;
     private Maze myMaze;
     private Map <Room, Point> myRooms;
     private Room myCurrentRoom;
     
-    
-    
 	// Constructor 
-	public MapPanel() {
+	public MapView() {
 		// Sets the size of the JPanel
-        setPreferredSize(new Dimension(WIDTH,HEIGHT));
+        setPreferredSize(new Dimension(245,245));
         
         // Gives the JLabel a name "Map"
-        JLabel label = new JLabel(TITLE, JLabel.LEFT);
-        setLayout(new FlowLayout());
-        add(label);
+//        JLabel label = new JLabel(TITLE, JLabel.LEFT);
+//        setLayout(new FlowLayout());
+//        add(label);
         
-        // Creates a new maze: TODO Should the MapPanel receive the Maze a parameter?
+        // Creates a new maze: TODO Should the MapView receive the Maze a parameter?
         myMaze = Maze.getInstance();
         
         // Creates a map of all the rooms
@@ -54,10 +52,8 @@ public class MapPanel extends JPanel {
 	// Using the maze, adds all of the rooms to the myRooms map with their icon and dimension
 	private void addRooms() {
 		//Room[][] myCurrentRooms = myMaze.getRooms();		
-
 		for(int row = 0; row < myMaze.getLength(); row++) {
-			for(int col = 0; col < myMaze.getWidth(); col++) {
-				
+			for(int col = 0; col < myMaze.getWidth(); col++) {			
 				// TODO Add on a if room.isvisited boolean here
 				if(myMaze.containsRoom(row, col)) {
 					ImageIcon currentIcon = myMaze.getRoom(row, col).getSmallIcon();
