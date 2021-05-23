@@ -33,15 +33,23 @@ public class ItemPanel extends JPanel{
         JPanel item1 = new JPanel();
         JPanel item2 = new JPanel();
         JPanel item3 = new JPanel();
-        item1.setPreferredSize(new Dimension(70,110));
-        item2.setPreferredSize(new Dimension(70,110));
-        item3.setPreferredSize(new Dimension(70,110));
         
-        GameIcon key = new GameIcon("src/icons/anhk_key.png");
+        item1.setBackground(Color.lightGray);
+        item2.setBackground(Color.lightGray);
+        item3.setBackground(Color.lightGray);
+        
+        item1.setPreferredSize(new Dimension(80,80));
+        item2.setPreferredSize(new Dimension(80,80));
+        item3.setPreferredSize(new Dimension(80,80));
+        
+        GameIcon key = new GameIcon("src/icons/key_item_icon.png");
+        GameIcon blank = new GameIcon("src/icons/blank_item_icon.png");
+        key.resize(75);
+        blank.resize(75);
         
         JLabel item1Label = new JLabel(key);
-        JLabel item2Label = new JLabel(key);
-        JLabel item3Label = new JLabel(key);
+        JLabel item2Label = new JLabel(blank);
+        JLabel item3Label = new JLabel(blank);
         
         item1.add(item1Label);
         item2.add(item2Label);
