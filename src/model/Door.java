@@ -74,7 +74,7 @@ public class Door {
 		return myRiddle;
 	}
 	
-	void setUnlocked() { //package, want limited access so only riddle can change this
+	public void setUnlocked() { //package, want limited access so only riddle can change this
         myUnlockedFlag = true;
     }
 	

@@ -17,11 +17,11 @@ public class RoomIndex {
 		myCol = theCol;
 	}
 	
-	int getRow() {
+	public int getRow() {
 		return myRow;
 	}
 	
-	int getCol() {
+	public int getCol() {
 		return myCol;
 	}
 }

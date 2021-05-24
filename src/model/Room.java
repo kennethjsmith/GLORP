@@ -2,6 +2,7 @@ package model;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
 
@@ -48,7 +49,7 @@ public class Room {
         myPlayer = null;
     }
 
-	public Room(int theRow, int theCol) { // how will rooms get their icons? And riddles? 
+	public Room(int theRow, int theCol) { // how will rooms get their riddles? 
 		loadIcons();
 		myItems = new ArrayList<Item>();
 	    setRandomFloor(); 
@@ -149,6 +150,10 @@ public class Room {
 		
 		if(isWinRoom) mySmallIcon = MAP_ICON_WIN;
 		else mySmallIcon = MAP_ICON;
+	}
+	
+	public String toString() {
+		return myIndex.toString();
 	}
 	
 //	public Point[] getDoorCoordinates() {
