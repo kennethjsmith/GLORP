@@ -3,6 +3,7 @@ package model;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 
@@ -16,29 +17,42 @@ import view.GameIcon;
  */
 //TODO: create subclasses (start and end rooms)
 public class Room {
+    private static int MAX_DOORS = 4;
     private Door[] myDoors; // for now... 4 doors each 
 	private ArrayList<Item> myItems; // array list, no max GamePieces
 	private Player myPlayer;
 	private GameIcon myLargeIcon;
 	private GameIcon mySmallIcon;
+	private boolean isCurrentRoom;
+	private boolean isWinRoom;
 	private final RoomIndex myIndex;
+	
+	
+	private static GameIcon[] FLOORS;
+	//TODO: should these be enumerated types? might help get rid of boolean fields upon refactor
+	private static GameIcon MAP_ICON = new GameIcon("src/icons/map_icon.png");
+	private static GameIcon MAP_ICON_CURRENT = new GameIcon("src/icons/map_icon_current.png");
+	private GameIcon MAP_ICON_WIN = new GameIcon("src/icons/map_icon_win.png");
+	private final static Random RAND = new Random();
 	
 	//Map<Door, Room> myDoors= new TreeMap<>();
 	//private boolean containsPlayer; //will be tracked by map (current room) 
 	//private boolean visitedFlag; // will be tracked by map? 
 	
     public Room() {
-        myItems = new ArrayList<Item>();
+    	loadIcons();
+    	myItems = new ArrayList<Item>();
         myLargeIcon = null; 
         mySmallIcon = null;
         myIndex = null;
         myPlayer = null;
     }
-    
-	public Room(GameIcon theLargeIcon, GameIcon theSmallIcon, int theRow, int theCol) { // how will rooms get their icons? And riddles? 
-	    myItems = new ArrayList<Item>();
-	    myLargeIcon = theLargeIcon; 
-	    mySmallIcon = theSmallIcon; 
+
+	public Room(int theRow, int theCol) { // how will rooms get their icons? And riddles? 
+		loadIcons();
+		myItems = new ArrayList<Item>();
+	    setRandomFloor(); 
+	    mySmallIcon = MAP_ICON; 
 	    myIndex = new RoomIndex(theRow, theCol);
 	    myPlayer = null;
 	}
@@ -56,7 +70,8 @@ public class Room {
     
     Door[] getDoors() throws NullPointerException{
         if(myDoors == null) { 
-            throw new NullPointerException("This room has no doors.");
+            //throw new NullPointerException("This room has no doors.");
+            return new Door[MAX_DOORS];
         }else
             return myDoors;
     }
@@ -74,46 +89,7 @@ public class Room {
 //	    return new Riddle[MAX_DOORS];
 //	}
 	
-	
 
-//	/**
-//	 * Get the item from this room.
-//	 * @return the myItem
-//	 */
-//	public GamePiece removeGamePiece(Point theCoordinates) throws IllegalArgumentException{ // pass in player coordinates? or player object?
-//	    //if not passing in GamePiece itself, create a dummy GamePiece 
-//	    GamePiece inDummy = new Player(); // doesnt really matter what implementation the GamePiece is
-//	    
-//	    for(GamePiece p : myGamePieces) {
-//	        if (((Player) p).compareTo(inDummy) == 0) { // will need to 
-//	            inDummy = p;
-//	        }
-//	    }
-//	    
-//	    if(!(myGamePieces.remove(inDummy))) { // if dummy was set to p, it will contain it and skip the below statement
-//	        throw new IllegalArgumentException("Error: no GamePiece at these coordinates.");
-//	    }
-//	    
-//		return inDummy; 
-//	}
-	
-	   /**
-     * Get the item from this room.
-     * @return Boolean indicator if the add was a success
-     */
-    public Boolean addPlayer(Player thePlayer, Door theUnlockedDoor) throws IllegalArgumentException{ // pass in player coordinates? or player object?
-        Boolean inSuccess = false;
-        if(theUnlockedDoor.isUnlocked()) { //first check if unlockedDoor is even unlocked
-            for(Door d : myDoors) {
-                if(theUnlockedDoor.equals(d)) {
-                    
-                    inSuccess = true;
-                }
-            }
-        }
-        return inSuccess;
-       
-    }
 
 	/**
 	 * Place an item in this room
@@ -135,13 +111,13 @@ public class Room {
 	}
 	
 	public Player getPlayer() {
-		return myPlayer;
+		return Objects.requireNonNull(myPlayer, "No player has been set in this room.");
 	}
 	
-	public void setLargeIcon(GameIcon theLargeIcon) {
-		Objects.requireNonNull(theLargeIcon);
-		myLargeIcon = theLargeIcon;
-	}
+//	public void setLargeIcon(GameIcon theLargeIcon) {
+//		Objects.requireNonNull(theLargeIcon);
+//		myLargeIcon = theLargeIcon;
+//	}
 	
 	public GameIcon getLargeIcon() {
 	    return myLargeIcon;
@@ -161,6 +137,20 @@ public class Room {
 		return myIndex;
 	}
 	
+	public void setCurrentRoom(boolean isCurrentRoom) {
+		this.isCurrentRoom = isCurrentRoom;
+		
+		if(isCurrentRoom) mySmallIcon = MAP_ICON_CURRENT;
+		else mySmallIcon = MAP_ICON;
+	}
+	
+	public void setWinRoom(boolean isWinRoom) {
+		this.isWinRoom = isWinRoom;
+		
+		if(isWinRoom) mySmallIcon = MAP_ICON_WIN;
+		else mySmallIcon = MAP_ICON;
+	}
+	
 //	public Point[] getDoorCoordinates() {
 //	    Point[] inCoordinates = new Point[MAX_DOORS];
 //	    for(int i = 0; i < MAX_DOORS; i++) {
@@ -168,5 +158,26 @@ public class Room {
 //	    }
 //	    return inCoordinates;
 //	}
+	private void loadIcons() {
+		FLOORS = loadFloors();
+		MAP_ICON.resize(35);
+		MAP_ICON_CURRENT.resize(35);
+		MAP_ICON_WIN.resize(35);
+	}
+	
+	private static GameIcon[] loadFloors() {
+		GameIcon[] floorIcons = new GameIcon[12];
+		for (int i = 1; i <= 12; i++) { 
+		    String inFileName = ("src/icons/floor" + i + ".png");
+		    floorIcons[i-1] = new GameIcon(inFileName);
+		    floorIcons[i-1].resize(500);
+		}
+		return floorIcons;
+	}
+	
+	private void setRandomFloor() {
+		myLargeIcon = FLOORS[RAND.nextInt(12)];
+	}
+	
 	
 }

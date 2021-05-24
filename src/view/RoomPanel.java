@@ -31,9 +31,7 @@ public class RoomPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
     
     private Player myCurrentPlayer;
-    private Room myRoom;
     private final static int SIZE = 500;
-    //private boolean skipFrame; //move to Player, or client???
     
     public RoomPanel() {
         setPreferredSize(new Dimension(SIZE,SIZE));
@@ -41,8 +39,7 @@ public class RoomPanel extends JPanel {
         Border blackline = BorderFactory.createLineBorder(Color.black);
         setBorder(blackline);
         setLayout(new FlowLayout());
-        myRoom = Maze.getInstance().getCurrRoom();
-        myCurrentPlayer = myRoom.getPlayer(); // TODO Getting instance of Maze in RoomPanel violates MVC?
+        myCurrentPlayer = Maze.getInstance().getPlayer(); // TODO Getting instance of Maze in RoomPanel violates MVC?
     }
 
     @Override
@@ -59,9 +56,7 @@ public class RoomPanel extends JPanel {
     		//System.out.println((int)myCurrentPlayer.getCoordinate().getX());
     		//System.out.println((int)myCurrentPlayer.getCoordinate().getY());
     		//TODO: this floor icon will need to come from the room class
-    		GameIcon floor = new GameIcon("src/icons/floor.jpg");
-    		floor.resize(500);
-    		floor.paintIcon(this, g, 0, 0);
+    		Maze.getInstance().getCurrRoom().getLargeIcon().paintIcon(this, g, 0, 0);
     		
     		//TODO: fix this HARDCODED doors
     		GameIcon westDoor = new GameIcon("src/icons/WE_door.png");
