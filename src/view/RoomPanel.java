@@ -16,6 +16,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
+import model.Direction;
+import model.Door;
 import model.Maze;
 import model.Player;
 import model.Room;
@@ -52,27 +54,35 @@ public class RoomPanel extends JPanel {
     	super.paintComponent(g);
     	//new ImageIcon().paintIcon(this,g,d,d);
     	if(myCurrentPlayer != null) {
+    		Room currRoom = Maze.getInstance().getCurrRoom();
 
     		//System.out.println((int)myCurrentPlayer.getCoordinate().getX());
     		//System.out.println((int)myCurrentPlayer.getCoordinate().getY());
     		//TODO: this floor icon will need to come from the room class
-    		Maze.getInstance().getCurrRoom().getLargeIcon().paintIcon(this, g, 0, 0);
+    		currRoom.getLargeIcon().paintIcon(this, g, 0, 0);
+    		
     		
     		//TODO: fix this HARDCODED doors
-    		GameIcon westDoor = new GameIcon("src/icons/WE_door.png");
-    		westDoor.resize(20,100);
-    		westDoor.paintIcon(this, g, 0, 200);
-    		GameIcon eastDoor = new GameIcon("src/icons/WE_door.png");
-    		westDoor.resize(20,100);
-    		eastDoor.paintIcon(this, g, 480, 200);
-    		GameIcon northDoor = new GameIcon("src/icons/NS_door.png");
-    		northDoor.resize(100, 20);
-    		northDoor.paintIcon(this, g, 200, 0);
-    		GameIcon southDoor = new GameIcon("src/icons/NS_door.png");
-    		northDoor.resize(100, 20);
-    		southDoor.paintIcon(this, g, 200, 480);
     		
+    		Door westDoor = currRoom.getDoors().get(Direction.WEST);
+			GameIcon westDoorIcon = westDoor.getMyIcon();
+			westDoorIcon.resize(20, 100);
+			westDoorIcon.paintIcon(this, g, 0, 200);
     		
+    		Door eastDoor = currRoom.getDoors().get(Direction.EAST);
+			GameIcon eastDoorIcon = eastDoor.getMyIcon();
+			eastDoorIcon.resize(20, 100);
+			eastDoorIcon.paintIcon(this, g, 480, 200);
+    		
+    		Door northDoor = currRoom.getDoors().get(Direction.NORTH);
+			GameIcon northDoorIcon = northDoor.getMyIcon();
+			northDoorIcon.resize(100, 20);
+			northDoorIcon.paintIcon(this, g, 200, 0);
+    		
+    		Door southDoor = currRoom.getDoors().get(Direction.SOUTH);
+    		GameIcon southDoorIcon = southDoor.getMyIcon();
+    		southDoorIcon.resize(100, 20);
+    		southDoorIcon.paintIcon(this, g, 200, 480);
     		
     		myCurrentPlayer.getRoomIcon().paintIcon(this, g, (int)myCurrentPlayer.getCoordinate().getX(), (int)myCurrentPlayer.getCoordinate().getY());
     		//System.out.println(myCurrentPlayer.getRoomIcon());

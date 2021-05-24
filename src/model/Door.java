@@ -4,6 +4,8 @@ import java.awt.Point;
 
 import javax.swing.ImageIcon;
 
+import view.GameIcon;
+
 /**
  * A Passage has a riddle, answering correctly unlocks the passage
  * answering incorrectly permanently blocks the passage.
@@ -12,11 +14,11 @@ import javax.swing.ImageIcon;
  */
 public class Door {
     // fields
-    Riddle myRiddle;
-    Point myCoordinate;
-    ImageIcon myIcon;
-    Boolean myUnlockedFlag;
-    Boolean myPermaBlockedFlag;
+    private Riddle myRiddle;
+    private final Point myCoordinate;
+    private GameIcon myIcon;
+	private Boolean myUnlockedFlag;
+    private Boolean myPermaBlockedFlag;
 
     // or will they just give their coordinates 
     // and room/maze uses those to decide how the item is attempting to leave the room
@@ -25,7 +27,8 @@ public class Door {
     public Door(){
         myRiddle = new Riddle();
         myCoordinate = new Point();
-        myIcon = new ImageIcon();
+        
+        myIcon = new GameIcon("src/icons/door_yellow.png");
         myUnlockedFlag = false;
         myPermaBlockedFlag = false; 
     }
@@ -33,7 +36,7 @@ public class Door {
     public Door(Point theCoordinate){
         myRiddle = new Riddle();
         myCoordinate = theCoordinate;
-        myIcon = new ImageIcon();
+        myIcon = new GameIcon("src/icons/door_yellow.png");
         myUnlockedFlag = false;
         myPermaBlockedFlag = false; 
     }
@@ -41,12 +44,12 @@ public class Door {
     public Door(Riddle theRiddle, Point theCoordinate) {  // for console based game
         myRiddle = theRiddle;
         myCoordinate = theCoordinate;
-        myIcon = new ImageIcon();
+        myIcon = new GameIcon("src/icons/door_yellow.png");
         myUnlockedFlag = false;
         myPermaBlockedFlag = false;
     }
     
-    public Door(Riddle theRiddle, Point theCoordinate, ImageIcon theIcon) {
+    public Door(Riddle theRiddle, Point theCoordinate, GameIcon theIcon) {
         myRiddle = theRiddle;
         myCoordinate = theCoordinate;
         myIcon = theIcon;
@@ -81,4 +84,12 @@ public class Door {
 	void setBlocked() { //package, want limited access so only riddle can change this
         myPermaBlockedFlag = true;
     }
+	
+    public GameIcon getMyIcon() {
+		return myIcon;
+	}
+
+	public void setMyIcon(GameIcon theIcon) {
+		this.myIcon = theIcon;
+	}
 }

@@ -49,7 +49,7 @@ class MazeTester {
     	Door northDoor = myMaze.getSameDoor(room, northRoom);
     	northDoor.setUnlocked();
     	
-    	assertTrue(myMaze.canMove(Direction.NORTH));
+    	assertTrue(myMaze.canMove(Direction.NORTH, room));
     }
     
     // Tests canMove method for one move south
@@ -63,7 +63,7 @@ class MazeTester {
     	Door southDoor = myMaze.getSameDoor(room, southRoom);
     	southDoor.setUnlocked();
     	
-    	assertTrue(myMaze.canMove(Direction.SOUTH));
+    	assertTrue(myMaze.canMove(Direction.SOUTH, room));
     }
     
     // Tests canMove method for one move west
@@ -77,7 +77,7 @@ class MazeTester {
     	Door westDoor = myMaze.getSameDoor(room, westRoom);
     	westDoor.setUnlocked();
     	
-    	assertTrue(myMaze.canMove(Direction.WEST));
+    	assertTrue(myMaze.canMove(Direction.WEST, room));
     }
     
     // Tests canMove method for one move west
@@ -91,39 +91,8 @@ class MazeTester {
     	Door eastDoor = myMaze.getSameDoor(room, eastRoom);
     	eastDoor.setUnlocked();
     	
-    	assertTrue(myMaze.canMove(Direction.EAST));
+    	assertTrue(myMaze.canMove(Direction.EAST, room));
     }
-    
-//    // Tests canWin method after one move south
-//    @Test
-//    void testcanWinMoveSouth() {
-//    	Maze myMaze = Maze.getInstance();
-//    	myMaze.move(Direction.SOUTH);
-//    	assertTrue(myMaze.canWin());
-//    }
-//    
-//    // Tests canWin method after one move east
-//    @Test
-//    void testcanWinMoveEast() {
-//    	Maze myMaze = Maze.getInstance();
-//    	myMaze.move(Direction.EAST);
-//    	assertTrue(myMaze.canWin());
-//    }
-//    
-//    // Tests canWin method at after one move west
-//    @Test
-//    void testcanWinMoveWest() {
-//    	Maze myMaze = Maze.getInstance();
-//    	myMaze.move(Direction.WEST);
-//    	assertTrue(myMaze.canWin());
-//    }
-//    
-//    @Test
-//    void canMoveNorthDoorUnlocked() {
-//    	Maze myMaze = Maze.getInstance();
-//    	myMaze.move(Direction.NORTH);
-//    	assertTrue(myMaze.canWin());
-//    }
     
 //    @Test
 //    void test() {

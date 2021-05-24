@@ -106,8 +106,9 @@ public class Maze {
     * Block all doors in a room 
     */
    private void blockDoors(Room theRoom) {
-       for(Door d : theRoom.getDoors()) {
+       for(Door d : theRoom.getDoors().values()) {
            d.setBlocked();
+           d.setMyIcon(new GameIcon("src/icons/door_red.png"));
        }
    }
    
@@ -117,7 +118,7 @@ public class Maze {
 	 */
 	private void designateWinStartRooms() {
 		
-		// Why is this divided by 2 + 1 and then length/width -2 ??
+		// Why is this divided by 2 + 1 and then length/width -2?
 	    int inStartRow = generateRandom(BORDER_BUFFER/2 + 1, LENGTH - 2);
 	    int inStartCol = generateRandom(BORDER_BUFFER/2 + 1, WIDTH - 2);
 	    
@@ -155,7 +156,7 @@ public class Maze {
 	 * @param theDirection
 	 * @return boolean canMove
 	 */
-	public boolean canMove(Direction theDirection) {
+	public boolean canMove(Direction theDirection, Room theRoom) {
 	    RoomIndex currIndex = myCurrentRoom.getMyIndex();
         int row = currIndex.getRow();
         int col = currIndex.getCol();
@@ -175,7 +176,7 @@ public class Maze {
 		int inRow = currIndex.getRow();
 		int inCol = currIndex.getCol();
 
-		if(!(canMove(theDirection))) {
+		if(!(canMove(theDirection, myCurrentRoom))) {
 			throw new IllegalArgumentException("You cannot move past the border of the maze");
 	    }
 		
@@ -384,8 +385,8 @@ public class Maze {
 	}
 
 	public Door getSameDoor(Room theCurrRoom, Room theAdjRoom) {
-		for(Door d : theCurrRoom.getDoors()) {
-			for(Door o : theAdjRoom.getDoors()) {
+		for(Door d : theCurrRoom.getDoors().values()) {
+			for(Door o : theAdjRoom.getDoors().values()) {
 				if(d == o) {
 					return d;
 				}

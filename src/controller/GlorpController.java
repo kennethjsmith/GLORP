@@ -4,13 +4,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
+import java.util.Scanner;
 import java.util.Set;
 
 import javax.swing.JFrame;
 
 import model.Direction;
+import model.Door;
 import model.Maze;
 import model.Player;
+import model.Room;
 import model.Skin;
 import model.SkinType;
 import view.GlorpGUI;
@@ -99,12 +102,36 @@ public class GlorpController implements KeyListener{
      * Returns a success boolean
      */
     private boolean attemptMapMove(Direction theDirection) {
-        if(myMaze.canMove(theDirection)) {
+        if(myMaze.canMove(theDirection, Maze.getInstance().getCurrRoom())) {
             myMaze.move(theDirection);
             return true;
         }else { 
-//            System.out.println("Cannot move in that direction.");
-            return false;
+        	
+            // TODO hardcoded unlocking of doors: This should all be handles by the riddle
+
+        	// ask them if they want to unlock the door
+        	Scanner scan = new Scanner(System.in);
+        	System.out.println("Woud you like to unlock this door?");
+        	String input = scan.next();
+        	if(input.toLowerCase().charAt(0) == 'y') {
+        		Room room = myMaze.getMyCurrentRoom();
+            	int row = room.getMyIndex().getRow();
+            	int col = room.getMyIndex().getCol();    	
+            	Room adjRoom = null;
+            	if(theDirection.getLabel() == "N" && row > 0) adjRoom = myMaze.getRoom(row - 1, col);
+            	else if(theDirection.getLabel() == "S" && row < myMaze.getLength()) adjRoom = myMaze.getRoom(row + 1, col);
+            	else if(theDirection.getLabel() == "E" && col < myMaze.getWidth()) adjRoom = myMaze.getRoom(row, col + 1);
+            	else if(theDirection.getLabel() == "W" && col > 0) adjRoom = myMaze.getRoom(row, col - 1);
+            	
+            	if(adjRoom != null) {
+            		Door adjDoor = myMaze.getSameDoor(room, adjRoom);
+            		adjDoor.setUnlocked();
+            		myMaze.move(theDirection);
+            		return true;
+            	}
+            	System.out.println("Sorry, you can't go that way : (");
+        	}
+        	return false;
         }
     }
 
