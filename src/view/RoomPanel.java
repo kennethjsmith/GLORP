@@ -36,8 +36,6 @@ public class RoomPanel extends JPanel {
     public RoomPanel() {
         setPreferredSize(new Dimension(SIZE,SIZE));
 
-        Border blackline = BorderFactory.createLineBorder(Color.black);
-        setBorder(blackline);
         setLayout(new FlowLayout());
         myCurrentPlayer = Maze.getInstance().getPlayer(); // TODO Getting instance of Maze in RoomPanel violates MVC?
     }

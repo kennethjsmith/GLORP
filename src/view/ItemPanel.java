@@ -18,17 +18,20 @@ import model.Room;
 
 public class ItemPanel extends JPanel{
 	private final String TITLE = "Items";
-	private final static int WIDTH =285;
-	private final static int HEIGHT = 215;
+	private final static int WIDTH = 285;
+	private final static int HEIGHT = 125;
 
 	// Constructor 
 	public ItemPanel() {
+		super();
 		// Sets the size of the JPanel
         setPreferredSize(new Dimension(WIDTH,HEIGHT));
         TitledBorder border = BorderFactory.createTitledBorder(TITLE);
         border.setTitleColor(Color.cyan);
         setBorder(border);
         setLayout(new FlowLayout(FlowLayout.CENTER));
+        
+        setBackground(Color.lightGray);
         
         JPanel item1 = new JPanel();
         JPanel item2 = new JPanel();

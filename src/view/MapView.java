@@ -23,8 +23,7 @@ public class MapView extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private final String TITLE = "Map";
-	private final static int WIDTH = 245;
-	private final static int HEIGHT = 245;
+	private final static int SIZE = 245;
     private Maze myMaze;
     private Map <Room, Point> myRooms;
     private Room myCurrentRoom;
@@ -32,16 +31,9 @@ public class MapView extends JPanel {
 	// Constructor 
 	public MapView() {
 		// Sets the size of the JPanel
-        setPreferredSize(new Dimension(245,245));
-        
-        // Gives the JLabel a name "Map"
-//        JLabel label = new JLabel(TITLE, JLabel.LEFT);
-//        setLayout(new FlowLayout());
-//        add(label);
-        
+        setPreferredSize(new Dimension(SIZE, SIZE));
         // Creates a new maze: TODO Should the MapView receive the Maze a parameter?
         myMaze = Maze.getInstance();
-        
         // Creates a map of all the rooms
         myRooms = new HashMap<Room, Point>();
         addRooms();
