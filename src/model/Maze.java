@@ -89,7 +89,7 @@ public class Maze {
 	}
 
    /*
-   * Blocks all doors along the boarder to simulate a wall
+   * Blocks all doors along the border to simulate a wall
    */
    private void blockBorderRooms() {
        for(int row = 0; row < LENGTH+BORDER_BUFFER; row++) { 
@@ -108,7 +108,6 @@ public class Maze {
    private void blockDoors(Room theRoom) {
        for(Door d : theRoom.getDoors().values()) {
            d.setBlocked();
-           d.setMyIcon(new GameIcon("src/icons/door_red.png"));
        }
    }
    
@@ -193,7 +192,6 @@ public class Maze {
             myCurrentRoom = myMaze[inRow][inCol-1];  
 		}
 		
-		// TODO Icon handling
 		tempCurrentRoom.setCurrentRoom(false);
 		tempCurrentRoom.setPlayer(null);
 		
@@ -226,7 +224,7 @@ public class Maze {
 	public Room getRoom(int theRow, int theColumn) {
 		if(theRow < 0 || theColumn < 0) throw new 
 				IllegalArgumentException("getRoom error: The index of the rooms cannot be negative");
-		else if(theRow >= (LENGTH) || theColumn >= (WIDTH)) 
+		else if(theRow > (LENGTH) || theColumn > (WIDTH)) 
 		    throw new IllegalArgumentException("getRoom error: The index of the rooms cannot be greater than the size of the maze");
 		
 		// Using the line below does not return the correct room for testing purposes.

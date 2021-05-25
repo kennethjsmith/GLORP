@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -28,7 +29,7 @@ public class MapView extends JPanel {
 	private final static int SIZE = 245;
     private Maze myMaze;
     private Map <Room, Point> myRooms;
-    //private Map <Door, Point> myDoors;
+    private Map <Direction, Door> myDoors;
     private Room myCurrentRoom;
     
 	// Constructor 
@@ -39,6 +40,7 @@ public class MapView extends JPanel {
         myMaze = Maze.getInstance();
         // Creates a map of all the rooms
         myRooms = new HashMap<Room, Point>();
+        myDoors = new HashMap<Direction, Door>();
         addRooms();
         
         myCurrentRoom = myMaze.getCurrRoom();
@@ -50,17 +52,17 @@ public class MapView extends JPanel {
 		for(int row = 0; row < myMaze.getLength(); row++) {
 			for(int col = 0; col < myMaze.getWidth(); col++) {			
 				// TODO Add on a if room.isvisited boolean here
-				if(myMaze.containsRoom(row, col)) {
-					ImageIcon currentIcon = myMaze.getRoom(row, col).getSmallIcon();
-					int iconCol = currentIcon.getIconWidth();
-					int iconRow = currentIcon.getIconHeight();
-					Point roomCoordinates = new Point(col * iconCol, row * iconRow);
-					myRooms.put(myMaze.getRoom(row, col), roomCoordinates);
-					
-//					for(Door d: myMaze.getRoom(row, col).getDoors().values()) {
-//						myDoors.put(d, roomCoordinates);
-//					}
-				}
+				ImageIcon currentIcon = myMaze.getRoom(row + 1, col + 1).getSmallIcon();
+				int iconCol = currentIcon.getIconWidth();
+				int iconRow = currentIcon.getIconHeight();
+				Point roomCoordinates = new Point(col * iconCol, row * iconRow);
+				myRooms.put(myMaze.getRoom(row + 1, col + 1), roomCoordinates);
+				
+//				HashMap<Direction, Door> doors = myMaze.getRoom(row, col).getDoors();
+//				for(Entry<Direction, Door> d : doors.entrySet()){
+//					myDoors.put(d.getKey(), d.getValue());
+//				}
+				
 			}
 		}
 		repaint();
@@ -107,8 +109,12 @@ public class MapView extends JPanel {
 			westDoorIcon.paintIcon(this, g2d, xCoordinate - 2, yCoordinate + doorIconPlacement);
     	}
     	
-//    	for(Door door : myDoors.keySet()) {
-//    		GameIcon doorIcon = door.getMyIcon();
+//    	for(Direction d : myDoors.keySet()) {
+//    		GameIcon doorIcon = myDoors.get(d).getMyIcon();
+//    		if(d.getLabel() == "N" || d.getLabel() == "S") {
+//    			doorIcon.resize(10, 3);
+//    			doorIcon.paintIcon(this, g2d, SIZE, SIZE);
+//    		}
 //    		doorIcon.resize(10, 3);
 //    		
 //    	}
