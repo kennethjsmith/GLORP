@@ -60,29 +60,10 @@ public class Room {
 	    myIndex = new RoomIndex(theRow, theCol);
 	    myPlayer = null;
 	}
-	
-//	/**
-//     * If this rooms doors have not been initailized already,
-//     * sets this rooms door array to the passed in door array.
-//     * @param Door[] theDoors
-//     */
-//    void setDoors(Door[] theDoors) {
-//        if(myDoors == null) {
-//            myDoors = theDoors;
-//        }
-//    }
     
     void setDoors(HashMap<Direction, Door> theDoors) {
     	myDoorMap = theDoors;
     }
-    
-//    Door[] getDoors() throws NullPointerException{
-//        if(myDoors == null) { 
-//            //throw new NullPointerException("This room has no doors.");
-//            return new Door[MAX_DOORS];
-//        }else
-//            return myDoors;
-//    }
     
     public HashMap<Direction, Door> getDoors() {
     	return myDoorMap;
