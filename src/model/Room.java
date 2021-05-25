@@ -30,19 +30,22 @@ public class Room {
 	private final RoomIndex myIndex;
 	
 	
-	private static GameIcon[] FLOORS;
+	
 	//TODO: should these be enumerated types? might help get rid of boolean fields upon refactor
-	private static GameIcon MAP_ICON = new GameIcon("src/icons/map_icon.png");
-	private static GameIcon MAP_ICON_CURRENT = new GameIcon("src/icons/map_icon_current.png");
-	private GameIcon MAP_ICON_WIN = new GameIcon("src/icons/map_icon_win.png");
+	private static final Carpet CARPETS = new Carpet();
+	private static final int MAP_ICON_SIZE = 35;
+	private static final GameIcon MAP_ICON = new GameIcon("src/icons/map_icon.png", MAP_ICON_SIZE);
+	private static final GameIcon MAP_ICON_CURRENT = new GameIcon("src/icons/map_icon_current.png", MAP_ICON_SIZE);
+	private static final GameIcon MAP_ICON_WIN = new GameIcon("src/icons/map_icon_win.png", MAP_ICON_SIZE);
+	
 	private final static Random RAND = new Random();
+	
 	
 	//Map<Door, Room> myDoors= new TreeMap<>();
 	//private boolean containsPlayer; //will be tracked by map (current room) 
 	//private boolean visitedFlag; // will be tracked by map? 
 	
     public Room() {
-    	loadIcons();
     	myDoorMap = null;
     	myItems = new ArrayList<Item>();
         myLargeIcon = null; 
@@ -53,7 +56,6 @@ public class Room {
 
 	public Room(int theRow, int theCol) { // how will rooms get their riddles? 
 		myDoorMap = null;
-		loadIcons();
 		myItems = new ArrayList<Item>();
 	    setRandomFloor(); 
 	    mySmallIcon = MAP_ICON; 
@@ -65,10 +67,10 @@ public class Room {
     	myDoorMap = theDoors;
     }
     
+
     public HashMap<Direction, Door> getDoors() {
     	return myDoorMap;
     }
-    
 	
 //	/*
 //	 * Retrieves Riddles from Game 
@@ -81,9 +83,7 @@ public class Room {
 //        // Injector type stuff? - riddles are a dependencie? 
 //	    return new Riddle[MAX_DOORS];
 //	}
-	
-
-
+    
 	/**
 	 * Place an item in this room
 	 * @param myItem the myItem to set
@@ -107,11 +107,6 @@ public class Room {
 		return Objects.requireNonNull(myPlayer, "No player has been set in this room.");
 	}
 	
-//	public void setLargeIcon(GameIcon theLargeIcon) {
-//		Objects.requireNonNull(theLargeIcon);
-//		myLargeIcon = theLargeIcon;
-//	}
-	
 	public GameIcon getLargeIcon() {
 	    return myLargeIcon;
 	}
@@ -122,7 +117,7 @@ public class Room {
 	}
 	
 	
-	public ImageIcon getSmallIcon() {
+	public GameIcon getSmallIcon() {
         return mySmallIcon;
     }
 	
@@ -144,36 +139,19 @@ public class Room {
 		else mySmallIcon = MAP_ICON;
 	}
 	
+	/**
+	 * @return the mapIconSize
+	 */
+	public static int getMapIconSize() {
+		return MAP_ICON_SIZE;
+	}
+
 	public String toString() {
 		return myIndex.toString();
 	}
 	
-//	public Point[] getDoorCoordinates() {
-//	    Point[] inCoordinates = new Point[MAX_DOORS];
-//	    for(int i = 0; i < MAX_DOORS; i++) {
-//	        inCoordinates[i] = myDoors[i].getCoordinate(); //will any of the doors ever be null? 
-//	    }
-//	    return inCoordinates;
-//	}
-	private void loadIcons() {
-		FLOORS = loadFloors();
-		MAP_ICON.resize(35);
-		MAP_ICON_CURRENT.resize(35);
-		MAP_ICON_WIN.resize(35);
-	}
-	
-	private static GameIcon[] loadFloors() {
-		GameIcon[] floorIcons = new GameIcon[12];
-		for (int i = 1; i <= 12; i++) { 
-		    String inFileName = ("src/icons/floor" + i + ".png");
-		    floorIcons[i-1] = new GameIcon(inFileName);
-		    floorIcons[i-1].resize(500);
-		}
-		return floorIcons;
-	}
-	
 	private void setRandomFloor() {
-		myLargeIcon = FLOORS[RAND.nextInt(12)];
+		myLargeIcon = CARPETS.getFloors()[RAND.nextInt(12)];
 	}
 	
 	

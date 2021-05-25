@@ -7,8 +7,10 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -29,8 +31,8 @@ public class MapView extends JPanel {
 	private final static int SIZE = 245;
     private Maze myMaze;
     private Map <Room, Point> myRooms;
-    private Map <Direction, Door> myDoors;
-    private Room myCurrentRoom;
+    private Map<Door, Point> myDoors;
+    //private Room myCurrentRoom;
     
 	// Constructor 
 	public MapView() {
@@ -38,85 +40,84 @@ public class MapView extends JPanel {
         setPreferredSize(new Dimension(SIZE, SIZE));
         // Creates a new maze: TODO Should the MapView receive the Maze a parameter?
         myMaze = Maze.getInstance();
-        // Creates a map of all the rooms
-        myRooms = new HashMap<Room, Point>();
-        myDoors = new HashMap<Direction, Door>();
-        addRooms();
+        // Creates a map of all the rooms and a map of the doors
+        myRooms = new HashMap<>();
+        myDoors = new HashMap<>();
+        initializeHashMaps();
         
-        myCurrentRoom = myMaze.getCurrRoom();
+        //myCurrentRoom = myMaze.getCurrRoom();
     }
 	
-	// Using the maze, adds all of the rooms to the myRooms map with their icon and dimension
-	private void addRooms() {
-		//Room[][] myCurrentRooms = myMaze.getRooms();		
+	// maps rooms to coordinates
+	// map doors to coordinates
+	private void initializeHashMaps() {
+		//Room[][] myCurrentRooms = myMaze.getRooms();
+		
+		// This is the buffer between the top right corner of the room, and the top right corner of the door icon
+    	// TODO generalize this so it's not just "-5", and can change based on window size.
+    	int doorIconPlacement = Room.getMapIconSize()/2 - 5;
+		
 		for(int row = 0; row < myMaze.getLength(); row++) {
 			for(int col = 0; col < myMaze.getWidth(); col++) {			
-				// TODO Add on a if room.isvisited boolean here
-				ImageIcon currentIcon = myMaze.getRoom(row + 1, col + 1).getSmallIcon();
-				int iconCol = currentIcon.getIconWidth();
-				int iconRow = currentIcon.getIconHeight();
-				Point roomCoordinates = new Point(col * iconCol, row * iconRow);
-				myRooms.put(myMaze.getRoom(row + 1, col + 1), roomCoordinates);
+				// TODO Add on a if room.isvisited boolean here to hide unvisited rooms (doesnt actually go here)
 				
-//				HashMap<Direction, Door> doors = myMaze.getRoom(row, col).getDoors();
-//				for(Entry<Direction, Door> d : doors.entrySet()){
-//					myDoors.put(d.getKey(), d.getValue());
-//				}
+				int x = col * Room.getMapIconSize();
+				int y = row * Room.getMapIconSize();
+				Point roomCoordinates = new Point(x, y);
+				Room currRoom = myMaze.getRoom(row+1, col+1);
+				myRooms.put(currRoom, roomCoordinates);
 				
+				Point doorCoordinates = null;
+				for(Direction d: currRoom.getDoors().keySet()) {
+					if(d == Direction.NORTH || d == Direction.SOUTH) {
+						doorCoordinates = new Point(x + doorIconPlacement, y - 2);
+					}
+					if(d == Direction.WEST || d == Direction.EAST) {
+						doorCoordinates = new Point(x - 2, y + doorIconPlacement);
+					}
+					myDoors.put(currRoom.getDoors().get(d), doorCoordinates);
+				}
 			}
 		}
-		repaint();
 	}
     
     @Override
     public void paintComponent(Graphics theGraphics) {
     	super.paintComponent(theGraphics);
     	final Graphics2D g2d = (Graphics2D) theGraphics;
-    	GameIcon lockedWEDoor = new GameIcon("src/icons/door_yellow.png");
-    	lockedWEDoor.resize(3, 10);
     	
-    	GameIcon lockedNSDoor = new GameIcon("src/icons/door_yellow.png");
-    	lockedNSDoor.resize(10, 3);
-    	
+    	// paint rooms
     	for(Room theRoom : myRooms.keySet()) {
 			int xCoordinate = myRooms.get(theRoom).x;
 			int yCoordinate = myRooms.get(theRoom).y;
-			Icon roomIcon = theRoom.getSmallIcon();
+			GameIcon roomIcon = theRoom.getSmallIcon();
 			
-
-			roomIcon.paintIcon(this, g2d, xCoordinate, yCoordinate);
-			
-			// Doors
-			// This is the buffer between the top right corner of the room, and the top right corner of the door icon
-			// TODO generalize this so it's not just "-5", and can change based on window size.
-			int doorIconPlacement = roomIcon.getIconWidth()/2 - 5;
-			//if(!Maze.getInstance().canMove(Direction.NORTH, theRoom))lockedNSDoor.paintIcon(this, g2d, xCoordinate + doorIconPlacement, yCoordinate - 2);
-			
-			GameIcon northDoorIcon = theRoom.getDoors().get(Direction.NORTH).getMyIcon();
-			northDoorIcon.resize(10, 3);
-			northDoorIcon.paintIcon(this, g2d, xCoordinate + doorIconPlacement, yCoordinate - 2);
-			
-			GameIcon eastDoorIcon = theRoom.getDoors().get(Direction.EAST).getMyIcon();
-			eastDoorIcon.resize(3, 10);
-			eastDoorIcon.paintIcon(this, g2d, xCoordinate - 2, yCoordinate + doorIconPlacement);
-			
-			GameIcon southDoorIcon = theRoom.getDoors().get(Direction.SOUTH).getMyIcon();
-			southDoorIcon.resize(10, 3);
-			southDoorIcon.paintIcon(this, g2d, xCoordinate + doorIconPlacement, yCoordinate - 2);
-			
-			GameIcon westDoorIcon = theRoom.getDoors().get(Direction.WEST).getMyIcon();
-			westDoorIcon.resize(3, 10);
-			westDoorIcon.paintIcon(this, g2d, xCoordinate - 2, yCoordinate + doorIconPlacement);
+			roomIcon.paintIcon(this, g2d, xCoordinate, yCoordinate);	
     	}
+    	//paint doors
     	
-//    	for(Direction d : myDoors.keySet()) {
-//    		GameIcon doorIcon = myDoors.get(d).getMyIcon();
-//    		if(d.getLabel() == "N" || d.getLabel() == "S") {
-//    			doorIcon.resize(10, 3);
-//    			doorIcon.paintIcon(this, g2d, SIZE, SIZE);
-//    		}
-//    		doorIcon.resize(10, 3);
-//    		
+    	
+    	for(Door currDoor : myDoors.keySet()) {
+    			currDoor.getMapIcon().paintIcon(this, g2d, myDoors.get(currDoor).x, myDoors.get(currDoor).y);
+    	}
+
+    	
+//    	for(Room theRoom : myRooms.keySet()) {
+//			int xCoordinate = myRooms.get(theRoom).x;
+//			int yCoordinate = myRooms.get(theRoom).y;
+//			
+//			
+//			GameIcon northDoorIcon = theRoom.getDoors().get(Direction.NORTH).getMyMapIcon();
+//			northDoorIcon.paintIcon(this, g2d, xCoordinate + doorIconPlacement, yCoordinate - 2);
+//			
+//			GameIcon eastDoorIcon = theRoom.getDoors().get(Direction.EAST).getMyMapIcon();
+//			eastDoorIcon.paintIcon(this, g2d, xCoordinate - 2, yCoordinate + doorIconPlacement);
+//			
+//			GameIcon southDoorIcon = theRoom.getDoors().get(Direction.SOUTH).getMyMapIcon();
+//			southDoorIcon.paintIcon(this, g2d, xCoordinate + doorIconPlacement, yCoordinate - 2);
+//			
+//			GameIcon westDoorIcon = theRoom.getDoors().get(Direction.WEST).getMyMapIcon();
+//			westDoorIcon.paintIcon(this, g2d, xCoordinate - 2, yCoordinate + doorIconPlacement);
 //    	}
     }	
 }
