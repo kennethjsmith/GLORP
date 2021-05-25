@@ -110,10 +110,10 @@ public class GlorpController implements KeyListener{
             // TODO hardcoded unlocking of doors: This should all be handles by the riddle
 
         	// ask them if they want to unlock the door
-        	Scanner scan = new Scanner(System.in);
-        	System.out.println("Woud you like to unlock this door?");
-        	String input = scan.next();
-        	if(input.toLowerCase().charAt(0) == 'y') {
+        	//Scanner scan = new Scanner(System.in);
+        	//System.out.println("Woud you like to unlock this door?");
+        	//String input = scan.next();
+        	//if(input.toLowerCase().charAt(0) == 'y') {
         		Room room = myMaze.getMyCurrentRoom();
             	int row = room.getMyIndex().getRow();
             	int col = room.getMyIndex().getCol();    	
@@ -130,7 +130,7 @@ public class GlorpController implements KeyListener{
             		return true;
             	}
             	System.out.println("Sorry, you can't go that way : (");
-        	}
+        	//}
         	return false;
         }
     }

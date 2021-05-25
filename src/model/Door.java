@@ -15,54 +15,63 @@ import view.GameIcon;
 public class Door {
     // fields
     private Riddle myRiddle;
-    private final Point myCoordinate;
-    private GameIcon myIcon;
+    private GameIcon myRoomIcon;
+    private GameIcon myMapIcon;
 	private Boolean myUnlockedFlag;
     private Boolean myPermaBlockedFlag;
+    private Direction myDirection; //North/South = NS door, and WEST/EAST = WE door
     
-    private static final GameIcon UNLOCKED_ICON = new GameIcon("src/icons/door_green.png");
-    private static final GameIcon LOCKED_ICON = new GameIcon("src/icons/door_yellow.png");
-    private static final GameIcon BLOCKED_ICON = new GameIcon("src/icons/door_red.png");
-
-
+    // green door icons
+    private static final GameIcon WE_ROOM_UNLOCKED_ICON = new GameIcon("src/icons/door_green.png", 20, 100);
+    private static final GameIcon NS_ROOM_UNLOCKED_ICON = new GameIcon("src/icons/door_green.png", 100, 20);
+    private static final GameIcon WE_MAP_UNLOCKED_ICON = new GameIcon("src/icons/door_green.png", 3, 10);
+    private static final GameIcon NS_MAP_UNLOCKED_ICON = new GameIcon("src/icons/door_green.png", 10, 3);
+    // yellow door icons
+    private static final GameIcon WE_ROOM_LOCKED_ICON = new GameIcon("src/icons/door_yellow.png", 20, 100);
+    private static final GameIcon NS_ROOM_LOCKED_ICON = new GameIcon("src/icons/door_yellow.png", 100, 20);
+    private static final GameIcon WE_MAP_LOCKED_ICON = new GameIcon("src/icons/door_yellow.png", 3, 10);
+    private static final GameIcon NS_MAP_LOCKED_ICON = new GameIcon("src/icons/door_yellow.png", 10, 3);
+    // red door icons
+    private static final GameIcon WE_ROOM_BLOCKED_ICON = new GameIcon("src/icons/door_red.png", 20, 100);
+    private static final GameIcon NS_ROOM_BLOCKED_ICON = new GameIcon("src/icons/door_red.png", 100, 20);
+    private static final GameIcon WE_MAP_BLOCKED_ICON = new GameIcon("src/icons/door_red.png", 3, 10);
+    private static final GameIcon NS_MAP_BLOCKED_ICON = new GameIcon("src/icons/door_red.png", 10, 3);
 
     // or will they just give their coordinates 
     // and room/maze uses those to decide how the item is attempting to leave the room
     // remove item, that call add item elsewhere 
     
-    public Door(){
+    private Door(){
         myRiddle = new Riddle();
-        myCoordinate = new Point();
+        myDirection = null;
+        myRoomIcon = null;
+        myMapIcon = null;
+        myUnlockedFlag = false;
+        myPermaBlockedFlag = false;
         
-        myIcon = LOCKED_ICON;
-        myUnlockedFlag = false;
-        myPermaBlockedFlag = false; 
     }
     
-    public Door(Point theCoordinate){
+    public Door(Direction theDirection){
         myRiddle = new Riddle();
-        myCoordinate = theCoordinate;
-        myIcon = LOCKED_ICON;
+        myDirection = theDirection;
+        initializeIcons(theDirection);
         myUnlockedFlag = false;
         myPermaBlockedFlag = false; 
     }
     
-    public Door(Riddle theRiddle, Point theCoordinate) {  // for console based game
-        myRiddle = theRiddle;
-        myCoordinate = theCoordinate;
-        myIcon = LOCKED_ICON;
-        myUnlockedFlag = false;
-        myPermaBlockedFlag = false;
-    }
-    
-    public Door(Riddle theRiddle, Point theCoordinate, GameIcon theIcon) {
-        myRiddle = theRiddle;
-        myCoordinate = theCoordinate;
-        myIcon = theIcon;
-        myUnlockedFlag = false;
-        myPermaBlockedFlag = false;
-    }
 	
+	private void initializeIcons(Direction theDirection) {
+		if(theDirection == Direction.NORTH || theDirection == Direction.SOUTH) {
+			myRoomIcon = NS_ROOM_LOCKED_ICON;
+			myMapIcon = NS_MAP_LOCKED_ICON;
+		}
+		if(theDirection == Direction.WEST || theDirection == Direction.EAST) {
+			myRoomIcon = WE_ROOM_LOCKED_ICON;
+			myMapIcon = WE_MAP_LOCKED_ICON;
+		}
+		
+	}
+
 	public Boolean isBlocked() {
 		return myPermaBlockedFlag;
 	}
@@ -70,10 +79,6 @@ public class Door {
     public Boolean isUnlocked() {
         return myUnlockedFlag;
     }
-	
-	public Point getCoordinate() {
-	    return myCoordinate;
-	}
 	
 	/**
 	 * @return the myRiddle
@@ -85,20 +90,38 @@ public class Door {
 	
 	public void setUnlocked() { //package, want limited access so only riddle can change this
         myUnlockedFlag = true;
-        myIcon = UNLOCKED_ICON;
+        System.out.println(this);
+        if(myDirection == Direction.NORTH || myDirection == Direction.SOUTH) {
+			myRoomIcon = NS_ROOM_UNLOCKED_ICON;
+			myMapIcon = NS_MAP_UNLOCKED_ICON;
+		}
+		if(myDirection == Direction.WEST || myDirection == Direction.EAST) {
+			myRoomIcon = WE_ROOM_UNLOCKED_ICON;
+			myMapIcon = WE_MAP_UNLOCKED_ICON;
+		}
     }
 	
 	void setBlocked() { //package, want limited access so only riddle can change this
         myPermaBlockedFlag = true;
-        myIcon = BLOCKED_ICON;
+        if(myDirection == Direction.NORTH || myDirection == Direction.SOUTH) {
+			myRoomIcon = NS_ROOM_BLOCKED_ICON;
+			myMapIcon = NS_MAP_BLOCKED_ICON;
+		}
+		if(myDirection == Direction.WEST || myDirection == Direction.EAST) {
+			myRoomIcon = WE_ROOM_BLOCKED_ICON;
+			myMapIcon = WE_MAP_BLOCKED_ICON;
+		}
     }
 	
-    public GameIcon getMyIcon() {
-		return myIcon;
+    public GameIcon getMapIcon() {
+		return myMapIcon;
 	}
-
-    // TODO get rid of this method ??
-	public void setMyIcon(GameIcon theIcon) {
-		this.myIcon = theIcon;
+    
+    public GameIcon getRoomIcon() {
+		return myRoomIcon;
 	}
+    
+    public String toString() {
+    	return "Unlocked: " + myUnlockedFlag + ", Direction: " + myDirection;
+    }
 }

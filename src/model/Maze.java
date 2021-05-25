@@ -96,7 +96,7 @@ public class Maze {
            blockDoors(myMaze[row][0]);
            blockDoors(myMaze[row][WIDTH+BORDER_BUFFER - 1]);
        }     
-       for(int col = 0; col < WIDTH+BORDER_BUFFER; col++) {
+       for(int col = 1; col < WIDTH+BORDER_BUFFER; col++) {
            blockDoors(myMaze[0][col]);
            blockDoors(myMaze[LENGTH+BORDER_BUFFER - 1][col]);
        }

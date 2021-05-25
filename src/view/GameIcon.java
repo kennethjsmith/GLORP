@@ -19,6 +19,16 @@ public class GameIcon extends ImageIcon{
 		super(theString);
 	}
 	
+	public GameIcon(String theString, int theSize) {
+		super(theString);
+		resize(theSize);
+	}
+	
+	public GameIcon(String theString, int theWidth, int theHeight) {
+		super(theString);
+		resize(theWidth, theHeight);
+	}
+	
 	public void resize(int theSize) {
 		Image inTempImage;
     	//resize left facing standing icon
@@ -28,11 +38,11 @@ public class GameIcon extends ImageIcon{
     
 	}
 	
-	public void resize(int theXSize, int theYSize) {
+	public void resize(int theWidth, int theHeight) {
 		Image inTempImage;
     	//resize left facing standing icon
     	inTempImage = this.getImage(); // transform it 
-		inTempImage = inTempImage.getScaledInstance(theXSize, theYSize,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+		inTempImage = inTempImage.getScaledInstance(theWidth, theHeight,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
 		this.setImage(inTempImage); // transform it back
     
 	}

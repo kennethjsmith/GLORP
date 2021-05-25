@@ -59,27 +59,16 @@ public class RoomPanel extends JPanel {
     		//TODO: this floor icon will need to come from the room class
     		currRoom.getLargeIcon().paintIcon(this, g, 0, 0);
     		
-    		
-    		//TODO: fix this HARDCODED doors
-    		
-    		Door westDoor = currRoom.getDoors().get(Direction.WEST);
-			GameIcon westDoorIcon = westDoor.getMyIcon();
-			westDoorIcon.resize(20, 100);
+			GameIcon westDoorIcon = currRoom.getDoors().get(Direction.WEST).getRoomIcon();
 			westDoorIcon.paintIcon(this, g, 0, 200);
     		
-    		Door eastDoor = currRoom.getDoors().get(Direction.EAST);
-			GameIcon eastDoorIcon = eastDoor.getMyIcon();
-			eastDoorIcon.resize(20, 100);
+			GameIcon eastDoorIcon = currRoom.getDoors().get(Direction.EAST).getRoomIcon();
 			eastDoorIcon.paintIcon(this, g, 480, 200);
     		
-    		Door northDoor = currRoom.getDoors().get(Direction.NORTH);
-			GameIcon northDoorIcon = northDoor.getMyIcon();
-			northDoorIcon.resize(100, 20);
+			GameIcon northDoorIcon = currRoom.getDoors().get(Direction.NORTH).getRoomIcon();
 			northDoorIcon.paintIcon(this, g, 200, 0);
     		
-    		Door southDoor = currRoom.getDoors().get(Direction.SOUTH);
-    		GameIcon southDoorIcon = southDoor.getMyIcon();
-    		southDoorIcon.resize(100, 20);
+    		GameIcon southDoorIcon = currRoom.getDoors().get(Direction.SOUTH).getRoomIcon();
     		southDoorIcon.paintIcon(this, g, 200, 480);
     		
     		myCurrentPlayer.getRoomIcon().paintIcon(this, g, (int)myCurrentPlayer.getCoordinate().getX(), (int)myCurrentPlayer.getCoordinate().getY());

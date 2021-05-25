@@ -13,21 +13,21 @@ import view.GameIcon;
  */
 public class DoorFactory {
     private static int MAX_DOORS = 4; 
-    // currently matching the doors according to position in array 
-    //[top, left, right, bottom] 
-    private static int TOP_INDEX = 0;
-    private static int LEFT_INDEX = 1;
-    private static int RIGHT_INDEX = 2;
-    private static int BOTTOM_INDEX = 3;
-    
-    // could make this an array list and connect according to coordinates
-   
-    // fix these so they make sense within a room panel 
-    // or can make getters for these (enums?), and let the panel interpret from there
-    private static Point TOP_COORDINATE = new Point(0,1);
-    private static Point BOTTOM_COORDINATE = new Point(0, -1);
-    private static Point LEFT_COORDINATE = new Point(-1, 0);
-    private static Point RIGHT_COORDINATE = new Point(1,0);
+//    // currently matching the doors according to position in array 
+//    //[top, left, right, bottom] 
+//    private static int TOP_INDEX = 0;
+//    private static int LEFT_INDEX = 1;
+//    private static int RIGHT_INDEX = 2;
+//    private static int BOTTOM_INDEX = 3;
+//    
+//    // could make this an array list and connect according to coordinates
+//   
+//    // fix these so they make sense within a room panel 
+//    // or can make getters for these (enums?), and let the panel interpret from there
+//    private static Point TOP_COORDINATE = new Point(0,1);
+//    private static Point BOTTOM_COORDINATE = new Point(0, -1);
+//    private static Point LEFT_COORDINATE = new Point(-1, 0);
+//    private static Point RIGHT_COORDINATE = new Point(1,0);
         
     private Room[][] myRooms;
     
@@ -83,16 +83,16 @@ public class DoorFactory {
                 	Door currDoor = myRooms[r-1][c].getDoors().get(Direction.SOUTH);
                 	doorMap.put(Direction.NORTH, currDoor);
                 	
-                } else doorMap.put(Direction.NORTH, new Door(TOP_COORDINATE));
+                } else doorMap.put(Direction.NORTH, new Door(Direction.NORTH));
                 
                 if(c > 0) { // if there is a connecting room to the left
                     //grab its right door for this rooms left door
                 	Door currDoor = myRooms[r][c-1].getDoors().get(Direction.EAST);
                 	doorMap.put(Direction.WEST, currDoor);                	
-                } else doorMap.put(Direction.WEST, new Door(LEFT_COORDINATE));
+                } else doorMap.put(Direction.WEST, new Door(Direction.WEST));
                 
-                doorMap.put(Direction.EAST, new Door(RIGHT_COORDINATE));
-                doorMap.put(Direction.SOUTH, new Door(BOTTOM_COORDINATE));
+                doorMap.put(Direction.EAST, new Door(Direction.EAST));
+                doorMap.put(Direction.SOUTH, new Door(Direction.SOUTH));
 
                 myRooms[r][c].setDoors(doorMap); // fill the room with new door array
             }
