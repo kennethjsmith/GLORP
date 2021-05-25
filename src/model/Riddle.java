@@ -30,7 +30,4 @@ public class Riddle {
 	public String getMyAnswer() {
 		return myAnswer;
 	}
-	
-
-	
 }

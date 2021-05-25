@@ -3,9 +3,11 @@ package model;
 import view.GameIcon;
 
 public class Carpet {
-	private GameIcon[] myIcons;
 
 	private static final int ROOM_ICON_SIZE = 500;
+	private GameIcon[] myIcons;
+	private final static GameIcon mySpecialIcon = new GameIcon("src/icons/dark_floor.png", ROOM_ICON_SIZE);
+
 	
 	public Carpet() {
 		myIcons = loadIcons();
@@ -25,5 +27,12 @@ public class Carpet {
 	 */
 	public GameIcon[] getFloors() {
 		return myIcons;
+	}
+
+	/**
+	 * @return the mySpecialIcon
+	 */
+	public static GameIcon getSpecialIcon() {
+		return mySpecialIcon;
 	}
 }

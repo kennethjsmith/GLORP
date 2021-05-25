@@ -27,16 +27,19 @@ public class Room {
 	private GameIcon mySmallIcon;
 	private boolean isCurrentRoom;
 	private boolean isWinRoom;
+	private boolean isVisited;
+
 	private final RoomIndex myIndex;
 	
 	
 	
 	//TODO: should these be enumerated types? might help get rid of boolean fields upon refactor
 	private static final Carpet CARPETS = new Carpet();
-	private static final int MAP_ICON_SIZE = 35;
+	private static final int MAP_ICON_SIZE = 36;
 	private static final GameIcon MAP_ICON = new GameIcon("src/icons/map_icon.png", MAP_ICON_SIZE);
 	private static final GameIcon MAP_ICON_CURRENT = new GameIcon("src/icons/map_icon_current.png", MAP_ICON_SIZE);
 	private static final GameIcon MAP_ICON_WIN = new GameIcon("src/icons/map_icon_win.png", MAP_ICON_SIZE);
+	private static final GameIcon MAP_ICON_CURRENT_WIN = new GameIcon("src/icons/map_icon_current_win.png", MAP_ICON_SIZE);
 	
 	private final static Random RAND = new Random();
 	
@@ -52,6 +55,7 @@ public class Room {
         mySmallIcon = null;
         myIndex = null;
         myPlayer = null;
+        isVisited = false;
     }
 
 	public Room(int theRow, int theCol) { // how will rooms get their riddles? 
@@ -61,6 +65,7 @@ public class Room {
 	    mySmallIcon = MAP_ICON; 
 	    myIndex = new RoomIndex(theRow, theCol);
 	    myPlayer = null;
+	    isVisited = false;
 	}
     
     void setDoors(HashMap<Direction, Door> theDoors) {
@@ -101,12 +106,20 @@ public class Room {
 	 */
 	public void setPlayer(Player thePlayer) {
 		myPlayer = thePlayer;
+		isVisited = true;
 	}
 	
 	public Player getPlayer() {
 		return Objects.requireNonNull(myPlayer, "No player has been set in this room.");
 	}
 	
+	/**
+	 * @param myLargeIcon the myLargeIcon to set
+	 */
+	public void setLargeIcon(GameIcon myLargeIcon) {
+		this.myLargeIcon = myLargeIcon;
+	}
+
 	public GameIcon getLargeIcon() {
 	    return myLargeIcon;
 	}
@@ -128,7 +141,11 @@ public class Room {
 	public void setCurrentRoom(boolean isCurrentRoom) {
 		this.isCurrentRoom = isCurrentRoom;
 		
-		if(isCurrentRoom) mySmallIcon = MAP_ICON_CURRENT;
+		if(isCurrentRoom) {
+			if(isWinRoom) mySmallIcon = MAP_ICON_CURRENT_WIN;
+			else mySmallIcon = MAP_ICON_CURRENT;
+		}
+		else if (isWinRoom) mySmallIcon = MAP_ICON_WIN;
 		else mySmallIcon = MAP_ICON;
 	}
 	
@@ -137,6 +154,13 @@ public class Room {
 		
 		if(isWinRoom) mySmallIcon = MAP_ICON_WIN;
 		else mySmallIcon = MAP_ICON;
+	}
+	
+	/**
+	 * @return the isVisited
+	 */
+	public boolean isVisited() {
+		return isVisited;
 	}
 	
 	/**
