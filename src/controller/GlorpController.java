@@ -118,10 +118,10 @@ public class GlorpController implements KeyListener{
             	int row = room.getMyIndex().getRow();
             	int col = room.getMyIndex().getCol();    	
             	Room adjRoom = null;
-            	if(theDirection.getLabel() == "N" && row > 0) adjRoom = myMaze.getRoom(row - 1, col);
+            	if(theDirection.getLabel() == "N" && row > 1) adjRoom = myMaze.getRoom(row - 1, col);
             	else if(theDirection.getLabel() == "S" && row < myMaze.getLength()) adjRoom = myMaze.getRoom(row + 1, col);
             	else if(theDirection.getLabel() == "E" && col < myMaze.getWidth()) adjRoom = myMaze.getRoom(row, col + 1);
-            	else if(theDirection.getLabel() == "W" && col > 0) adjRoom = myMaze.getRoom(row, col - 1);
+            	else if(theDirection.getLabel() == "W" && col > 1) adjRoom = myMaze.getRoom(row, col - 1);
             	
             	if(adjRoom != null) {
             		Door adjDoor = myMaze.getSameDoor(room, adjRoom);
@@ -129,7 +129,7 @@ public class GlorpController implements KeyListener{
             		myMaze.move(theDirection);
             		return true;
             	}
-            	System.out.println("Sorry, you can't go that way : (");
+            	System.out.println("Sorry, you can't go that way :(");
         	//}
         	return false;
         }

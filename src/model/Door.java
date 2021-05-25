@@ -24,18 +24,18 @@ public class Door {
     // green door icons
     private static final GameIcon WE_ROOM_UNLOCKED_ICON = new GameIcon("src/icons/door_green.png", 20, 100);
     private static final GameIcon NS_ROOM_UNLOCKED_ICON = new GameIcon("src/icons/door_green.png", 100, 20);
-    private static final GameIcon WE_MAP_UNLOCKED_ICON = new GameIcon("src/icons/door_green.png", 3, 10);
-    private static final GameIcon NS_MAP_UNLOCKED_ICON = new GameIcon("src/icons/door_green.png", 10, 3);
+    private static final GameIcon WE_MAP_UNLOCKED_ICON = new GameIcon("src/icons/door_green.png", 2, 10);
+    private static final GameIcon NS_MAP_UNLOCKED_ICON = new GameIcon("src/icons/door_green.png", 10, 2);
     // yellow door icons
     private static final GameIcon WE_ROOM_LOCKED_ICON = new GameIcon("src/icons/door_yellow.png", 20, 100);
     private static final GameIcon NS_ROOM_LOCKED_ICON = new GameIcon("src/icons/door_yellow.png", 100, 20);
-    private static final GameIcon WE_MAP_LOCKED_ICON = new GameIcon("src/icons/door_yellow.png", 3, 10);
-    private static final GameIcon NS_MAP_LOCKED_ICON = new GameIcon("src/icons/door_yellow.png", 10, 3);
+    private static final GameIcon WE_MAP_LOCKED_ICON = new GameIcon("src/icons/door_yellow.png", 2, 10);
+    private static final GameIcon NS_MAP_LOCKED_ICON = new GameIcon("src/icons/door_yellow.png", 10, 2);
     // red door icons
     private static final GameIcon WE_ROOM_BLOCKED_ICON = new GameIcon("src/icons/door_red.png", 20, 100);
     private static final GameIcon NS_ROOM_BLOCKED_ICON = new GameIcon("src/icons/door_red.png", 100, 20);
-    private static final GameIcon WE_MAP_BLOCKED_ICON = new GameIcon("src/icons/door_red.png", 3, 10);
-    private static final GameIcon NS_MAP_BLOCKED_ICON = new GameIcon("src/icons/door_red.png", 10, 3);
+    private static final GameIcon WE_MAP_BLOCKED_ICON = new GameIcon("src/icons/door_red.png", 2, 10);
+    private static final GameIcon NS_MAP_BLOCKED_ICON = new GameIcon("src/icons/door_red.png", 10, 2);
 
     // or will they just give their coordinates 
     // and room/maze uses those to decide how the item is attempting to leave the room

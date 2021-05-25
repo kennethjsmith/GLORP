@@ -137,6 +137,7 @@ public class Maze {
 	    
 		myWinRoom = this.getRoom(inWinRow, inWinCol);
 		myWinRoom.setWinRoom(true);
+		myWinRoom.setLargeIcon(Carpet.getSpecialIcon());
 	}
 
     /*
