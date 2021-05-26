@@ -52,7 +52,11 @@ public class GlorpController implements KeyListener{
         
         Direction validDirection = null;
 		try {
+			System.out.println("key pressed player area: " + myPlayer.getArea());
 			validDirection = myMaze.getCurrRoom().validateDirection(myPlayer, inDirection);
+			
+			// ADDED THE BELOW LINE -H
+			myPlayer.move(validDirection);
 		} catch (CloneNotSupportedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

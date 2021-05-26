@@ -219,6 +219,8 @@ public class Room {
 	 */
 	public Direction validateDirection(Player thePlayer, Direction theDirection) throws CloneNotSupportedException {
 		Player playerProjected = (Player) thePlayer.clone();
+		//playerProjected.setArea(thePlayer.getArea());
+		System.out.println("VD player area: " + playerProjected.getArea());
 		playerProjected.move(theDirection);
 		Direction validDirection = null;
 		
@@ -247,11 +249,13 @@ public class Room {
 //		int inXCoordinate = (int)thePoint.getX();
 //		int inYCoordinate = (int)thePoint.getY();
 		
+		// THIS IF STATEMENT IS NOT CORRECT/COMPLETE. THE PLAYER CANNOT MOVE WHEN THE IF IS UNCOMMENTED.
 		// check for out of room bounds
 		//TODO: give room a rectangle for easy bounds?
-		if(this.myArea.contains(playerProjected.getArea())) {
-			return false;
-		}
+//		if(this.myArea.contains(playerProjected.getArea())) {
+//			return false;
+//		}
+		
 //		if(inYCoordinate > (SIZE - Player.getSpeed() - Skin.getSize()) || inYCoordinate < Player.getSpeed()) {
 //			return false;
 //		}
@@ -261,8 +265,9 @@ public class Room {
 		//TODO: once this works, and printlns not needed, 
 		//combine both the if conditions into 1 statement
 		if(myFixture != null) {
-			System.out.println(myFixture.getBase());
-			System.out.println(myFixture.getBase().intersects(playerProjected.getArea()));
+			System.out.println("Chest area: " + myFixture.getBase());
+			System.out.println("Player area: " + playerProjected.getArea());
+			System.out.println("Do they intersect? " + myFixture.getBase().intersects(playerProjected.getArea()));
 			if(myFixture.getBase().intersects(playerProjected.getArea())) {
 				return false;
 			}

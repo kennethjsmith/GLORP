@@ -19,7 +19,7 @@ public abstract class GamePiece {
 	 private PiecePoint myCoordinate;
 	 private GameIcon myRoomIcon;
 	 private GameIcon myMapIcon;
-	 private static int SIZE;
+	 private int SIZE = 10;
 	 
 	 public GamePiece() {
 		 myCoordinate = new PiecePoint();
@@ -52,7 +52,7 @@ public abstract class GamePiece {
 		 
 	 }
 	 
-	 public static int getSize() {
+	 public int getSize() {
 		return SIZE;
 		 
 	 }
