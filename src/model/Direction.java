@@ -32,7 +32,7 @@ public enum Direction {
 	}
 	//TODO: magic number for wall boundary, consider if this is more controller functionality and 
 	//change location for alot of this code without breaking current functionality
-	public static Direction generateDirection(Set<Integer> thePressedKeys, Player thePlayer, int theRoomSize) {
+	public static Direction generateDirection(Set<Integer> thePressedKeys, Player thePlayer, Room theRoom) {
 		Direction inXDirection = null;
 		Direction inYDirection = null;
 		Direction inComboDirection;
@@ -45,7 +45,7 @@ public enum Direction {
 		// going east
 		if((thePressedKeys.contains(KeyEvent.VK_D) || thePressedKeys.contains(KeyEvent.VK_RIGHT)) &&
 				(!thePressedKeys.contains(KeyEvent.VK_A) || !thePressedKeys.contains(KeyEvent.VK_LEFT)) &&
-				thePlayer.getCoordinate().getX() <= theRoomSize -thePlayer.getSkin().getSize() - 5) {
+				thePlayer.getCoordinate().getX() <= theRoom.getSize() -thePlayer.getSkin().getSize() - 5) {
 			inXDirection = Direction.EAST;
 		}
 		// going north
@@ -57,7 +57,7 @@ public enum Direction {
 		// going south
 		if((thePressedKeys.contains(KeyEvent.VK_S) || thePressedKeys.contains(KeyEvent.VK_DOWN)) &&
 				(!thePressedKeys.contains(KeyEvent.VK_W) || !thePressedKeys.contains(KeyEvent.VK_UP)) &&
-				thePlayer.getCoordinate().getY() <= theRoomSize - thePlayer.getSkin().getSize() - 5) {
+				thePlayer.getCoordinate().getY() <= theRoom.getSize() - thePlayer.getSkin().getSize() - 5) {
 			inYDirection = Direction.SOUTH;
 		}
 		//System.out.println(inXDirection);

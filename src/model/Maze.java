@@ -56,7 +56,7 @@ public class Maze {
 		
 		// Fills out the 2d array, myMaze, with rooms
 		addRooms();
-		
+		placeItems();
 		DoorFactory inFactory = new DoorFactory(myMaze); // fill rooms with doors
         myMaze = inFactory.getRooms();
         
@@ -138,10 +138,12 @@ public class Maze {
 		myWinRoom = this.getRoom(inWinRow, inWinCol);
 		myWinRoom.setWinRoom(true);
 		myWinRoom.setLargeIcon(Carpet.getSpecialIcon());
+		myWinRoom.setFixture(new Fixture());
 	}
 
     /*
-	 * Generates a random index between two numbers (min val, max val) 
+	 * Generates a random index between two numbers (min val, max val)
+	 * make utility?? 
 	 */
 	 private int generateRandom(int theMin, int theMax) {
 	     Random rand = new Random();
@@ -157,7 +159,7 @@ public class Maze {
 	 * @return boolean canMove
 	 */
 	public boolean canMove(Direction theDirection, Room theRoom) {
-	    RoomIndex currIndex = myCurrentRoom.getMyIndex();
+	    RoomIndex currIndex = myCurrentRoom.getIndex();
         int row = currIndex.getRow();
         int col = currIndex.getCol();
         
@@ -172,7 +174,7 @@ public class Maze {
 	// TODO add exception handeling to move method
 	public void move(Direction theDirection) {
 		Room tempCurrentRoom = myCurrentRoom;
-		RoomIndex currIndex = myCurrentRoom.getMyIndex();
+		RoomIndex currIndex = myCurrentRoom.getIndex();
 		int inRow = currIndex.getRow();
 		int inCol = currIndex.getCol();
 
@@ -258,6 +260,11 @@ public class Maze {
 
 	public void setMyWinRoom(Room theWinRoom) {
 		this.myWinRoom = theWinRoom;
+	}
+	
+	//places an item at a random point in room 2, 2
+	public void placeItems() {
+		myMaze[2][2].addItem(new Item(), PiecePoint.randomPoint(Room.getSize(), Room.getSize()));
 	}
 
 	/**

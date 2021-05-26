@@ -48,7 +48,7 @@ public class GlorpController implements KeyListener{
 		int k = e.getKeyCode();
         myPressedKeys.add(k);
         //TODO: get the room size for this
-        Direction inDirection = Direction.generateDirection(myPressedKeys, myPlayer, 500);
+        Direction inDirection = Direction.generateDirection(myPressedKeys, myPlayer, myMaze.getCurrRoom());
         //System.out.println(inDirection);
         //System.out.println(myPlayer);
         myPlayer.move(inDirection);
@@ -115,8 +115,8 @@ public class GlorpController implements KeyListener{
         	//String input = scan.next();
         	//if(input.toLowerCase().charAt(0) == 'y') {
         		Room room = myMaze.getMyCurrentRoom();
-            	int row = room.getMyIndex().getRow();
-            	int col = room.getMyIndex().getCol();    	
+            	int row = room.getIndex().getRow();
+            	int col = room.getIndex().getCol();    	
             	Room adjRoom = null;
             	if(theDirection.getLabel() == "N" && row > 1) adjRoom = myMaze.getRoom(row - 1, col);
             	else if(theDirection.getLabel() == "S" && row < myMaze.getLength()) adjRoom = myMaze.getRoom(row + 1, col);

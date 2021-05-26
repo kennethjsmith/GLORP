@@ -3,6 +3,7 @@ package model;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
@@ -21,7 +22,8 @@ public class Room {
     private static int MAX_DOORS = 4;
     private Door[] myDoors; // for now... 4 doors each 
     private HashMap<Direction, Door> myDoorMap;
-	private ArrayList<Item> myItems; // array list, no max GamePieces
+	private Map<Item, PiecePoint> myItems; // array list, no max GamePieces
+	private Fixture myFixture;
 	private Player myPlayer;
 	private GameIcon myLargeIcon;
 	private GameIcon mySmallIcon;
@@ -30,7 +32,7 @@ public class Room {
 	private boolean isVisited;
 
 	private final RoomIndex myIndex;
-	
+	private final static int SIZE = 500;
 	
 	
 	//TODO: should these be enumerated types? might help get rid of boolean fields upon refactor
@@ -50,7 +52,8 @@ public class Room {
 	
     public Room() {
     	myDoorMap = null;
-    	myItems = new ArrayList<Item>();
+    	myItems = new HashMap<>();
+    	myFixture = null;
         myLargeIcon = null; 
         mySmallIcon = null;
         myIndex = null;
@@ -60,7 +63,7 @@ public class Room {
 
 	public Room(int theRow, int theCol) { // how will rooms get their riddles? 
 		myDoorMap = null;
-		myItems = new ArrayList<Item>();
+		myItems = new HashMap<>();
 	    setRandomFloor(); 
 	    mySmallIcon = MAP_ICON; 
 	    myIndex = new RoomIndex(theRow, theCol);
@@ -92,14 +95,21 @@ public class Room {
 //	}
     
 	/**
+	 * @return the myItems
+	 */
+	public Map<Item, PiecePoint> getItems() {
+		return myItems;
+	}
+
+	/**
 	 * Place an item in this room
 	 * @param myItem the myItem to set
 	 */
-	public void addItem(Item theGamePiece) throws NullPointerException{
+	public void addItem(Item theGamePiece, PiecePoint theCoordinates) throws NullPointerException{
 	    if(theGamePiece == null) {
 	        throw new NullPointerException("GamePiece cannot be null.");
 	    }
-		myItems.add(theGamePiece);
+		myItems.put(theGamePiece, theCoordinates);
 	}
 	
 	/**
@@ -136,10 +146,31 @@ public class Room {
         return mySmallIcon;
     }
 	
-	public RoomIndex getMyIndex() {
+	/**
+	 * @return the myFixture
+	 */
+	public Fixture getFixture() {
+		return myFixture;
+	}
+
+	/**
+	 * @param myFixture the myFixture to set
+	 */
+	public void setFixture(Fixture myFixture) {
+		this.myFixture = myFixture;
+	}
+
+	public RoomIndex getIndex() {
 		return myIndex;
 	}
 	
+	/**
+	 * @return the sIZE
+	 */
+	public static int getSize() {
+		return SIZE;
+	}
+
 	public void setCurrentRoom(boolean isCurrentRoom) {
 		this.isCurrentRoom = isCurrentRoom;
 		

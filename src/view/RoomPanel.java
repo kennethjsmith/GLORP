@@ -8,6 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -18,7 +20,10 @@ import javax.swing.border.Border;
 
 import model.Direction;
 import model.Door;
+import model.Fixture;
+import model.Item;
 import model.Maze;
+import model.PiecePoint;
 import model.Player;
 import model.Room;
 
@@ -58,6 +63,16 @@ public class RoomPanel extends JPanel {
     		//System.out.println((int)myCurrentPlayer.getCoordinate().getY());
     		//TODO: this floor icon will need to come from the room class
     		currRoom.getLargeIcon().paintIcon(this, g, 0, 0);
+    		
+    		// paint fixture
+    		Fixture inFixture = currRoom.getFixture();
+    		if(inFixture != null) inFixture.getIcon().paintIcon(this, g, 175, 200);
+    		
+    		// paint items
+    		Map<Item, PiecePoint> inItems = currRoom.getItems();
+    		for(Entry<Item, PiecePoint> entry : inItems.entrySet()) {
+    			entry.getKey().getRoomIcon().paintIcon(this, g, (int)entry.getValue().getX(),(int) entry.getValue().getY());
+    		}
     		
 			GameIcon westDoorIcon = currRoom.getDoors().get(Direction.WEST).getRoomIcon();
 			westDoorIcon.paintIcon(this, g, 0, 200);
