@@ -150,17 +150,17 @@ public class Maze {
        System.out.println("Win Room: (" + inWinRow + ", " + inWinCol + ").");
 		
 	}
-
-    /*
-	 * Generates a random index between two numbers (min val, max val) 
-	 */
-	 private int generateRandom(int theMin, int theMax) {
-	     Random rand = new Random();
-	     return rand.nextInt(theMax - theMin + 1) + theMin;
-	     // highest val is ((theMax - theMin + 1) - 1) + theMin = theMax
-	     // lowest val is (0) + theMin = theMin
-	 }
 	 
+    /*
+     * Generates a random index between two numbers (min val, max val) 
+     */
+     private static int generateRandom(int theMin, int theMax) {
+         Random rand = new Random();
+         return rand.nextInt(theMax - theMin + 1) + theMin;
+         // highest val is ((theMax - theMin + 1) - 1) + theMin = theMax
+         // lowest val is (0) + theMin = theMin
+     }
+     
 	/**
 	 * Check if moving in a certain direction is valid.
 	 * Returns true if the move is valid.
