@@ -59,16 +59,6 @@ public class Room {
 	    myPlayer = null;
 	}
 
-	// not needed? 
-	   public Room(GameIcon theLargeIcon, GameIcon theSmallIcon, int theRow, int theCol) { // how will rooms get their icons? And riddles? 
-	        myItems = new ArrayList<Item>();
-	        myLargeIcon = theLargeIcon; 
-	        mySmallIcon = theSmallIcon; 
-	        //myIndex = new RoomIndex(0,0);
-	        myIndex = new RoomIndex(theRow, theCol);
-	        myPlayer = null;
-	    }
-
 	/**
      * If this rooms doors have not been initailized already,
      * sets this rooms door array to the passed in door array.
