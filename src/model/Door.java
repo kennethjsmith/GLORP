@@ -88,7 +88,7 @@ public class Door {
 		return myRiddle;
 	}
 	
-	public void setUnlocked() { //package, want limited access so only riddle can change this
+	public void setUnlocked() { //change to package once we have riddle, want limited access so only riddle can change this 
         myUnlockedFlag = true;
         System.out.println(this);
         if(myDirection == Direction.NORTH || myDirection == Direction.SOUTH) {

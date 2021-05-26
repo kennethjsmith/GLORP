@@ -124,12 +124,12 @@ public class MapView extends JPanel {
 				}
     		}
     	}
-    	
-    	for(Door currDoor : myDoors.keySet()) {
-    			currDoor.getMapIcon().paintIcon(this, g2d, myDoors.get(currDoor).x, myDoors.get(currDoor).y);
-    	}
-
-    	
+//    	
+//    	for(Door currDoor : myDoors.keySet()) {
+//    			currDoor.getMapIcon().paintIcon(this, g2d, myDoors.get(currDoor).x, myDoors.get(currDoor).y);
+//    	}
+//
+//    	
 //    	for(Room theRoom : myRooms.keySet()) {
 //			int xCoordinate = myRooms.get(theRoom).x;
 //			int yCoordinate = myRooms.get(theRoom).y;
