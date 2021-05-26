@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +23,7 @@ public class Room {
     private static int MAX_DOORS = 4;
     private Door[] myDoors; // for now... 4 doors each 
     private HashMap<Direction, Door> myDoorMap;
-	private Map<Item, PiecePoint> myItems; // array list, no max GamePieces
+	private Map<Item, PiecePoint> myItems; 
 	private Fixture myFixture;
 	private Player myPlayer;
 	private GameIcon myLargeIcon;
@@ -165,7 +166,7 @@ public class Room {
 	}
 	
 	/**
-	 * @return the sIZE
+	 * @return the size
 	 */
 	public static int getSize() {
 		return SIZE;
@@ -210,6 +211,60 @@ public class Room {
 	private void setRandomFloor() {
 		myLargeIcon = CARPETS.getFloors()[RAND.nextInt(12)];
 	}
+
+	/*
+	 * Returns a valid direction
+	 */
+	public Direction validateDirection(Player thePlayer, Direction theDirection) {
+		PiecePoint tempPoint = (PiecePoint) thePlayer.getCoordinate().clone();
+		tempPoint.move(theDirection);
+		Direction validDirection = null;
+		
+		if(isValidLocation(tempPoint)) validDirection = theDirection;
+		// recursion for compound directions
+		else if(theDirection == Direction.NORTHEAST) {
+			validDirection = validateDirection(thePlayer, Direction.NORTH);
+			if(validDirection == null) validDirection = validateDirection(thePlayer, Direction.EAST);
+		}
+		else if(theDirection == Direction.NORTHWEST) {
+			validDirection = validateDirection(thePlayer, Direction.NORTH);
+			if(validDirection == null) validDirection = validateDirection(thePlayer, Direction.WEST);
+		}
+		else if(theDirection == Direction.SOUTHEAST) {
+			validDirection = validateDirection(thePlayer, Direction.SOUTH);
+			if(validDirection == null) validDirection = validateDirection(thePlayer, Direction.EAST);
+		}
+		else if(theDirection == Direction.SOUTHWEST) {
+			validDirection = validateDirection(thePlayer, Direction.SOUTH);
+			if(validDirection == null) validDirection = validateDirection(thePlayer, Direction.WEST);
+		}
+		return validDirection;
+	}
 	
-	
+	public boolean isValidLocation(PiecePoint thePoint) {
+		int inXCoordinate = (int)thePoint.getX();
+		int inYCoordinate = (int)thePoint.getY();
+		
+		// check for out of room bounds
+		//TODO: give room a rectangle for easy bounds?
+		if(inXCoordinate > (SIZE - Player.getSpeed() - Skin.getSize()) || inXCoordinate < Player.getSpeed()) {
+			return false;
+		}
+		if(inYCoordinate > (SIZE - Player.getSpeed() - Skin.getSize()) || inYCoordinate < Player.getSpeed()) {
+			return false;
+		}
+		
+		// check for fixture overlap
+		//TODO:why is it not finding that the rectangle contains the point?
+		//TODO: once this works, and printlns not needed, 
+		//combine both the if conditions into 1 statement
+		if(myFixture != null) {
+			System.out.println(myFixture.getRectangle());
+			System.out.println(myFixture.getRectangle().contains(thePoint));
+			if(myFixture.getRectangle().contains(thePoint)) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

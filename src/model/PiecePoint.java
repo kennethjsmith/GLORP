@@ -22,44 +22,14 @@ public class PiecePoint extends Point{
 		y = theY;
 	}
 	
-	//TODO: add borders
 	public void move(Direction theDirection) {
-		//System.out.println(theDirection);
-		//System.out.println(x);
-		//System.out.println(y); 
-//		if (theDirection == Direction.EAST) x = x+Player.getSpeed();
-//		if (theDirection == Direction.WEST) x = x-Player.getSpeed();
-//		if (theDirection == Direction.NORTH) y = y-Player.getSpeed();
-//		if (theDirection == Direction.SOUTH) y = y+Player.getSpeed();
-//		if (theDirection == Direction.NORTHEAST) {
-//			y = y-Player.getSpeed();
-//			x = x+Player.getSpeed();
-//		}
-//		if (theDirection == Direction.NORTHWEST) {
-//			y = y-Player.getSpeed();
-//			x = x-Player.getSpeed();
-//		}
-//		if (theDirection == Direction.SOUTHEAST) {
-//			y = y+Player.getSpeed();
-//			x = x+Player.getSpeed();
-//		}
-//		if (theDirection == Direction.SOUTHWEST) {
-//			y = y+Player.getSpeed();
-//			x = x-Player.getSpeed();
-//		}
+
 		if(theDirection != null) {
 			int inXVelocity = Player.getSpeed()*theDirection.getDXMultiplier();
 			int inYVelocity = Player.getSpeed()*theDirection.getDYMultiplier();
 			x = x + (inXVelocity);
 			y = y + (inYVelocity);
 		}
-		//TODO: use helper methods to establish borders
-		//if(xVelocity > 0 && canMoveRight())
-		
-		
-		
-		//System.out.println(x);
-		//System.out.println(y);
 	}
 	
 	public double getX() {
