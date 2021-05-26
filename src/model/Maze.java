@@ -41,19 +41,6 @@ public class Maze {
 	// This is 2 to account for the buffer on both sides.
 	private final int BORDER_BUFFER = 2;
 	
-	// The icon for a plain room
-	private final GameIcon myPlainRoomIcon = new GameIcon("src/icons/room_for_map.png"); 
-	
-	// changed to current room because the start room uses the old icon
-	// The icon for start room 
-	private final GameIcon myStartRoomIcon = new GameIcon("src/icons/current_room_for_map.png");
-	
-	// The icon for the win room
-	private final GameIcon myWinRoomIcon = new GameIcon("src/icons/win_room_for_map.png");
-	
-	// The icon for the current room
-	private final GameIcon myCurrRoomIcon = new GameIcon("src/icons/current_room_for_map.png");
-	
 	// Creates the maze.
     private static final Maze THISMAZE = new Maze();
 
@@ -92,9 +79,14 @@ public class Maze {
 	 * Creates and adds rooms to myMaze 
 	 */
 	private void addRooms() {
-		for(int r = 0; r < LENGTH+BORDER_BUFFER; r++) {
-			for(int c = 0; c < WIDTH+BORDER_BUFFER; c++) {
-				myMaze[r][c] = new Room(myPlainRoomIcon, myPlainRoomIcon, r, c);
+//<<<<<<< HEAD
+//		for(int r = 0; r < LENGTH+BORDER_BUFFER; r++) {
+//			for(int c = 0; c < WIDTH+BORDER_BUFFER; c++) {
+//				myMaze[r][c] = new Room(myPlainRoomIcon, myPlainRoomIcon, r, c);
+//=======
+		for(int row = 0; row < LENGTH+BORDER_BUFFER; row++) {
+			for(int col = 0; col < WIDTH+BORDER_BUFFER; col++) {
+				myMaze[row][col] = new Room(row, col);
 			}
 		}
 		designateWinStartRooms();
@@ -133,9 +125,7 @@ public class Maze {
 	    int inStartCol = generateRandom(BORDER_BUFFER/2 + 1, WIDTH - 2);
 	    
 		myStartRoom = this.getRoom(inStartRow, inStartCol);
-		myStartRoom.setLargeIcon(myStartRoomIcon);
-		myStartRoom.setSmallIcon(myStartRoomIcon);
-// okay to put this here? 
+		myStartRoom.setCurrentRoom(true);
 		myStartRoom.setPlayer(myPlayer);
 		
 		int inWinRow = 0, inWinCol = 0;
@@ -149,8 +139,12 @@ public class Maze {
 	    }
 	    
 		myWinRoom = this.getRoom(inWinRow, inWinCol);
-		myWinRoom.setLargeIcon(myWinRoomIcon);
-		myWinRoom.setSmallIcon(myWinRoomIcon);
+//<<<<<<< HEAD
+//		myWinRoom.setLargeIcon(myWinRoomIcon);
+//		myWinRoom.setSmallIcon(myWinRoomIcon);
+//=======
+		myWinRoom.setWinRoom(true);
+
 		
        System.out.println("Win Room: (" + inStartRow + ", " + inStartCol + ").");
        System.out.println("Win Room: (" + inWinRow + ", " + inWinCol + ").");
@@ -209,12 +203,11 @@ public class Maze {
             myCurrentRoom = myMaze[inRow][inCol-1];  
 		}
 		
-		//tempCurrentRoom.setLargeIcon(myPlainRoomIcon); // TODO Icon handling
-		tempCurrentRoom.setSmallIcon(myPlainRoomIcon);
+		// TODO Icon handling
+		tempCurrentRoom.setCurrentRoom(false);
 		tempCurrentRoom.setPlayer(null);
 		
-		//myCurrentRoom.setLargeIcon(myCurrRoomIcon);
-		myCurrentRoom.setSmallIcon(myCurrRoomIcon);
+		myCurrentRoom.setCurrentRoom(true);
 		myCurrentRoom.setPlayer(myPlayer); //TODO use add player instead when we have doors
 	}
 	

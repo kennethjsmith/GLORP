@@ -27,7 +27,6 @@ public class GlorpController implements KeyListener{
 	
 	public GlorpController(){
 		myMaze = Maze.getInstance();
-		
 		//hard ref to character for room panel work, should get player out of room
 		myPlayer = myMaze.getPlayer();
 		

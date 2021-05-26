@@ -32,16 +32,12 @@ public class RoomPanel extends JPanel {
     
     private Player myCurrentPlayer;
     private final static int SIZE = 500;
-    //private boolean skipFrame; //move to Player, or client???
     
     public RoomPanel() {
         setPreferredSize(new Dimension(SIZE,SIZE));
 
-        Border blackline = BorderFactory.createLineBorder(Color.black);
-        setBorder(blackline);
         setLayout(new FlowLayout());
         myCurrentPlayer = Maze.getInstance().getPlayer(); // TODO Getting instance of Maze in RoomPanel violates MVC?
-
     }
 
     @Override

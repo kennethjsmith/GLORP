@@ -3,26 +3,19 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JSlider;
-import javax.swing.Timer;
-
-import model.Player;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
 public class GlorpGUI extends JFrame {
     
@@ -40,45 +33,57 @@ public class GlorpGUI extends JFrame {
     
     private RoomPanel myRoomPanel;
     private MapPanel myMapPanel;
+    private MapView myMapView;
     private RiddlePanel myRiddlePanel;
     private ItemPanel myItemPanel;
+    private TitlePanel myTitlePanel;
     //TODO: add panels for maze map and sphinx/questions
 
     public GlorpGUI() {
         super();
         setTitle(TITLE);
-        //sets frame background
-        //getContentPane().setBackground(Color.black);
-        //setPreferredSize(new Dimension(840, 860));
-        //setResizable(false);
+        setResizable(false);
+        
+        //set layout
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         
-        myMapPanel = new MapPanel();
-        myMapPanel.setBackground(Color.black);
+        //TODO: make this titlepanel its own class
+        myTitlePanel = new TitlePanel();
         c.gridx = 0;
         c.gridy = 0;
-        add(myMapPanel, c);
+        add(myTitlePanel, c);
         
-        myItemPanel = new ItemPanel();
-        myItemPanel.setBackground(new Color(194,178,128)); //SAND COLOR
+        
+        // add map view to map panel, add to GUI
+        myMapPanel = new MapPanel();
+        myMapView = new MapView();
+        myMapPanel.add(myMapView);
         c.gridx = 0;
         c.gridy = 1;
+        add(myMapPanel, c);
+        
+        // add item panel to GUI
+        myItemPanel = new ItemPanel();
+        c.gridx = 0;
+        c.gridy = 2;
         add(myItemPanel, c);
         
+        // add room panel to GUI
         myRoomPanel = new RoomPanel();
         c.gridx = 1;
         c.gridy = 0;
-        c.gridheight = 2;
+        c.gridheight = 3;
         add(myRoomPanel, c);
         
+        // add riddle panel to GUI
         myRiddlePanel = new RiddlePanel();
-        myRiddlePanel.setBackground(new Color(194,178,128)); //SAND COLOR
         c.gridx = 2;
         c.gridy = 0;
-        c.gridheight = 2;
+        c.gridheight = 3;
         add(myRiddlePanel, c);
+        
         
         addMenuBar();
         
