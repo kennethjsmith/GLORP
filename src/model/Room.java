@@ -1,8 +1,11 @@
 package model;
 
+import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
@@ -21,16 +24,18 @@ public class Room {
     private static int MAX_DOORS = 4;
     private Door[] myDoors; // for now... 4 doors each 
     private HashMap<Direction, Door> myDoorMap;
-	private ArrayList<Item> myItems; // array list, no max GamePieces
+	private Map<Item, PiecePoint> myItems; 
+	private Fixture myFixture;
 	private Player myPlayer;
 	private GameIcon myLargeIcon;
 	private GameIcon mySmallIcon;
 	private boolean isCurrentRoom;
 	private boolean isWinRoom;
 	private boolean isVisited;
+	private Rectangle myArea;
 
 	private final RoomIndex myIndex;
-	
+	private final static int SIZE = 500;
 	
 	
 	//TODO: should these be enumerated types? might help get rid of boolean fields upon refactor
@@ -50,22 +55,25 @@ public class Room {
 	
     public Room() {
     	myDoorMap = null;
-    	myItems = new ArrayList<Item>();
+    	myItems = new HashMap<>();
+    	myFixture = null;
         myLargeIcon = null; 
         mySmallIcon = null;
         myIndex = null;
         myPlayer = null;
         isVisited = false;
+    	myArea = null;
     }
 
 	public Room(int theRow, int theCol) { // how will rooms get their riddles? 
 		myDoorMap = null;
-		myItems = new ArrayList<Item>();
+		myItems = new HashMap<>();
 	    setRandomFloor(); 
 	    mySmallIcon = MAP_ICON; 
 	    myIndex = new RoomIndex(theRow, theCol);
 	    myPlayer = null;
 	    isVisited = false;
+	    myArea = new Rectangle(new Point(0,0), new Dimension(SIZE,SIZE));
 	}
     
     void setDoors(HashMap<Direction, Door> theDoors) {
@@ -90,14 +98,21 @@ public class Room {
 //	}
     
 	/**
+	 * @return the myItems
+	 */
+	public Map<Item, PiecePoint> getItems() {
+		return myItems;
+	}
+
+	/**
 	 * Place an item in this room
 	 * @param myItem the myItem to set
 	 */
-	public void addItem(Item theGamePiece) throws NullPointerException{
+	public void addItem(Item theGamePiece, PiecePoint theCoordinates) throws NullPointerException{
 	    if(theGamePiece == null) {
 	        throw new NullPointerException("GamePiece cannot be null.");
 	    }
-		myItems.add(theGamePiece);
+		myItems.put(theGamePiece, theCoordinates);
 	}
 	
 	/**
@@ -134,10 +149,31 @@ public class Room {
         return mySmallIcon;
     }
 	
-	public RoomIndex getMyIndex() {
+	/**
+	 * @return the myFixture
+	 */
+	public Fixture getFixture() {
+		return myFixture;
+	}
+
+	/**
+	 * @param myFixture the myFixture to set
+	 */
+	public void setFixture(Fixture myFixture) {
+		this.myFixture = myFixture;
+	}
+
+	public RoomIndex getIndex() {
 		return myIndex;
 	}
 	
+	/**
+	 * @return the size
+	 */
+	public static int getSize() {
+		return SIZE;
+	}
+
 	public void setCurrentRoom(boolean isCurrentRoom) {
 		this.isCurrentRoom = isCurrentRoom;
 		
@@ -177,6 +213,60 @@ public class Room {
 	private void setRandomFloor() {
 		myLargeIcon = CARPETS.getFloors()[RAND.nextInt(12)];
 	}
+
+	/*
+	 * Returns a valid direction
+	 */
+	public Direction validateDirection(Player thePlayer, Direction theDirection) throws CloneNotSupportedException {
+		Player playerProjected = (Player) thePlayer.clone();
+		playerProjected.move(theDirection);
+		Direction validDirection = null;
+		
+		if(isValidLocation(playerProjected)) validDirection = theDirection;
+		// recursion for compound directions
+		else if(theDirection == Direction.NORTHEAST) {
+			validDirection = validateDirection(thePlayer, Direction.NORTH);
+			if(validDirection == null) validDirection = validateDirection(thePlayer, Direction.EAST);
+		}
+		else if(theDirection == Direction.NORTHWEST) {
+			validDirection = validateDirection(thePlayer, Direction.NORTH);
+			if(validDirection == null) validDirection = validateDirection(thePlayer, Direction.WEST);
+		}
+		else if(theDirection == Direction.SOUTHEAST) {
+			validDirection = validateDirection(thePlayer, Direction.SOUTH);
+			if(validDirection == null) validDirection = validateDirection(thePlayer, Direction.EAST);
+		}
+		else if(theDirection == Direction.SOUTHWEST) {
+			validDirection = validateDirection(thePlayer, Direction.SOUTH);
+			if(validDirection == null) validDirection = validateDirection(thePlayer, Direction.WEST);
+		}
+		return validDirection;
+	}
 	
-	
+	public boolean isValidLocation(Player playerProjected) {
+//		int inXCoordinate = (int)thePoint.getX();
+//		int inYCoordinate = (int)thePoint.getY();
+		
+		// check for out of room bounds
+		//TODO: give room a rectangle for easy bounds?
+		if(this.myArea.contains(playerProjected.getArea())) {
+			return false;
+		}
+//		if(inYCoordinate > (SIZE - Player.getSpeed() - Skin.getSize()) || inYCoordinate < Player.getSpeed()) {
+//			return false;
+//		}
+		
+		// check for fixture overlap
+		//TODO:why is it not finding that the rectangle contains the point?
+		//TODO: once this works, and printlns not needed, 
+		//combine both the if conditions into 1 statement
+		if(myFixture != null) {
+			System.out.println(myFixture.getBase());
+			System.out.println(myFixture.getBase().intersects(playerProjected.getArea()));
+			if(myFixture.getBase().intersects(playerProjected.getArea())) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

@@ -48,53 +48,71 @@ public class GlorpController implements KeyListener{
 		int k = e.getKeyCode();
         myPressedKeys.add(k);
         //TODO: get the room size for this
-        Direction inDirection = Direction.generateDirection(myPressedKeys, myPlayer, 500);
-        //System.out.println(inDirection);
-        //System.out.println(myPlayer);
-        myPlayer.move(inDirection);
-		checkInteractions();
+        Direction inDirection = Direction.generateDirection(myPressedKeys);
+        
+        Direction validDirection = null;
+		try {
+			validDirection = myMaze.getCurrRoom().validateDirection(myPlayer, inDirection);
+		} catch (CloneNotSupportedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        //myPlayer.move(validDirection);
 		//System.out.println(myPlayer);
-		//myWindow.getRoomPanel().setCurrentRoom(myMaze.getCurrRoom());
+        checkInteractions();
         myWindow.repaint();
     }
 
     private void checkInteractions() {
 		// TODO: fix this hardcoded door interaction
+    	//NOTES:
+    	//5 and 395 = Room.getSize()-Skin.getSize()-Player.getSpeed(): the plane through the door
+    	//150 and 250 = the sides of the door
+    	//^^ if within both, INTERACT
+    	
+    	//10 = 2x Player.getSpeed() (1 step away from reinteracting with door after going through)
+    	//390 == roomsize-skinsize-2xspeed (1 step away from reinteracting with door after going through)
+    	//150 and 250 = the sides of the door area
+    	
+    	//200 an x or y coordinate to place player in center of other door after going through
+    	
     	//east door zone
-    	if(myPlayer.getCoordinate().getX() == 400 &&
+    	if(myPlayer.getCoordinate().getX() == 395 &&
     			myPlayer.getCoordinate().getY() >= 150 &&
     				myPlayer.getCoordinate().getY() <= 250) {
     	    if(attemptMapMove(Direction.EAST)) {
-    	        myPlayer.getCoordinate().setLocation(5, 200);
-    	    }
-    		
-    		
+    	        myPlayer.getCoordinate().setLocation(10, 200);
+    	        myPlayer.updateArea();
+    	    }	
     	}
     	//west door zone
-    	if(myPlayer.getCoordinate().getX() == 0 &&
+    	else if(myPlayer.getCoordinate().getX() == 5 &&
     			myPlayer.getCoordinate().getY() >= 150 &&
     				myPlayer.getCoordinate().getY() <= 250) {
     	    if(attemptMapMove(Direction.WEST)) {
-    	        myPlayer.getCoordinate().setLocation(395, 200);
+    	        myPlayer.getCoordinate().setLocation(390, 200);
+    	        myPlayer.updateArea();
     	    }
     		
     	}
     	//north door zone
-    	if(myPlayer.getCoordinate().getY() == 0 &&
+    	else if(myPlayer.getCoordinate().getY() == 5 &&
     			myPlayer.getCoordinate().getX() >= 150 &&
     				myPlayer.getCoordinate().getX() <= 250) {
     	    if(attemptMapMove(Direction.NORTH)) {
-    	        myPlayer.getCoordinate().setLocation(200, 395);
+    	        myPlayer.getCoordinate().setLocation(200, 390);
+    	        myPlayer.updateArea();
     	    }
     		
 
     	}
     	//south door zone
-    	if(myPlayer.getCoordinate().getY() == 400 &&
+    	else if(myPlayer.getCoordinate().getY() == 395 &&
     			myPlayer.getCoordinate().getX() >= 150 &&
     				myPlayer.getCoordinate().getX() <= 250) {
     	    if(attemptMapMove(Direction.SOUTH)) {
-    	        myPlayer.getCoordinate().setLocation(200, 5);
+    	        myPlayer.getCoordinate().setLocation(200, 10);
+    	        myPlayer.updateArea();
     	    }
     	}
 	}
@@ -115,8 +133,8 @@ public class GlorpController implements KeyListener{
         	//String input = scan.next();
         	//if(input.toLowerCase().charAt(0) == 'y') {
         		Room room = myMaze.getMyCurrentRoom();
-            	int row = room.getMyIndex().getRow();
-            	int col = room.getMyIndex().getCol();    	
+            	int row = room.getIndex().getRow();
+            	int col = room.getIndex().getCol();    	
             	Room adjRoom = null;
             	if(theDirection.getLabel() == "N" && row > 1) adjRoom = myMaze.getRoom(row - 1, col);
             	else if(theDirection.getLabel() == "S" && row < myMaze.getLength()) adjRoom = myMaze.getRoom(row + 1, col);

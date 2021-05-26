@@ -27,19 +27,19 @@ public class ItemPanel extends JPanel{
 		// Sets the size of the JPanel
         setPreferredSize(new Dimension(WIDTH,HEIGHT));
         TitledBorder border = BorderFactory.createTitledBorder(TITLE);
-        border.setTitleColor(Color.cyan);
+        border.setTitleColor(Color.WHITE);
         setBorder(border);
         setLayout(new FlowLayout(FlowLayout.CENTER));
         
-        setBackground(Color.lightGray);
+        setBackground(Color.darkGray);
         
         JPanel item1 = new JPanel();
         JPanel item2 = new JPanel();
         JPanel item3 = new JPanel();
         
-        item1.setBackground(Color.lightGray);
-        item2.setBackground(Color.lightGray);
-        item3.setBackground(Color.lightGray);
+        item1.setBackground(Color.darkGray);
+        item2.setBackground(Color.darkGray);
+        item3.setBackground(Color.darkGray);
         
         item1.setPreferredSize(new Dimension(80,80));
         item2.setPreferredSize(new Dimension(80,80));

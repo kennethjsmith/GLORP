@@ -77,7 +77,7 @@ public class Skin {
 		return myRoomIconMap.get(theIconDirection)[theStride];
 	}
 	
-	public int getSize() {
+	public static int getSize() {
 		return DEFAULT_SIZE;
 	}
 }

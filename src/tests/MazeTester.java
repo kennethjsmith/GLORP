@@ -43,8 +43,8 @@ class MazeTester {
     void testcanMoveNorth() {
     	Maze myMaze = Maze.getInstance();
     	Room room = myMaze.getMyCurrentRoom();
-    	int row = room.getMyIndex().getRow();
-    	int col = room.getMyIndex().getCol();    	
+    	int row = room.getIndex().getRow();
+    	int col = room.getIndex().getCol();    	
     	Room northRoom = myMaze.getRoom(row - 1, col);
     	Door northDoor = myMaze.getSameDoor(room, northRoom);
     	northDoor.setUnlocked();
@@ -57,8 +57,8 @@ class MazeTester {
     void testcanMoveSouth() {
     	Maze myMaze = Maze.getInstance();
     	Room room = myMaze.getMyCurrentRoom();
-    	int row = room.getMyIndex().getRow();
-    	int col = room.getMyIndex().getCol();    	
+    	int row = room.getIndex().getRow();
+    	int col = room.getIndex().getCol();    	
     	Room southRoom = myMaze.getRoom(row + 1, col);
     	Door southDoor = myMaze.getSameDoor(room, southRoom);
     	southDoor.setUnlocked();
@@ -71,8 +71,8 @@ class MazeTester {
     void testcanMoveWest() {
     	Maze myMaze = Maze.getInstance();
     	Room room = myMaze.getMyCurrentRoom();
-    	int row = room.getMyIndex().getRow();
-    	int col = room.getMyIndex().getCol();    	
+    	int row = room.getIndex().getRow();
+    	int col = room.getIndex().getCol();    	
     	Room westRoom = myMaze.getRoom(row, col - 1);
     	Door westDoor = myMaze.getSameDoor(room, westRoom);
     	westDoor.setUnlocked();
@@ -85,8 +85,8 @@ class MazeTester {
     void testcanMoveEast() {
     	Maze myMaze = Maze.getInstance();
     	Room room = myMaze.getMyCurrentRoom();
-    	int row = room.getMyIndex().getRow();
-    	int col = room.getMyIndex().getCol();    	
+    	int row = room.getIndex().getRow();
+    	int col = room.getIndex().getCol();    	
     	Room eastRoom = myMaze.getRoom(row, col + 1);
     	Door eastDoor = myMaze.getSameDoor(room, eastRoom);
     	eastDoor.setUnlocked();
