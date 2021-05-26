@@ -1,5 +1,7 @@
 package model;
 
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -7,7 +9,7 @@ import javax.swing.ImageIcon;
 
 import view.GameIcon;
 
-public class Player extends GamePiece {
+public class Player extends GamePiece implements Cloneable{
 	
 	// fields
 	private PiecePoint myCoordinate;
@@ -18,7 +20,8 @@ public class Player extends GamePiece {
 	private Skin mySkin;
 	private IconDirection myIconDirection;
 	private int myStride; // 0 for standing, 1,2,3,4 for different run icons
-	private static boolean skipFrame;
+	private boolean skipFrame;
+	private Rectangle myArea;
 
 
 	private static final int SPEED = 5;
@@ -32,6 +35,7 @@ public class Player extends GamePiece {
 		myIconDirection = IconDirection.RIGHT;
 		myStride = 0;
 		myRoomIcon = mySkin.getIcon(myIconDirection, myStride);
+		setArea(new Rectangle(myCoordinate, new Dimension (GamePiece.getSize(), GamePiece.getSize())));
 	}
 	
 	public Player(Skin theSkin) {
@@ -62,9 +66,14 @@ public class Player extends GamePiece {
 		if(myStride > 4) myStride = 1;
 		updateRoomIcon();
 		// move coordinates
-		//System.out.println(myCoordinate);
+		System.out.println(myCoordinate);
 		myCoordinate.move(theDirection);
-		//System.out.println(myCoordinate);
+		System.out.println(myCoordinate);
+		updateArea();
+	}
+	
+	public void updateArea() {
+		myArea.setLocation(myCoordinate);
 	}
 	
 	public void updateRoomIcon() {
@@ -73,6 +82,20 @@ public class Player extends GamePiece {
 	}
 	
 	
+	/**
+	 * @return the myArea
+	 */
+	public Rectangle getArea() {
+		return myArea;
+	}
+
+	/**
+	 * @param myArea the myArea to set
+	 */
+	public void setArea(Rectangle myArea) {
+		this.myArea = myArea;
+	}
+
 	public GameIcon getRoomIcon() {
 		return myRoomIcon;	 
 	}
@@ -113,7 +136,27 @@ public class Player extends GamePiece {
 	 * @param skipFrame the skipFrame to set
 	 */
 	public void setSkipFrame(boolean skipFrame) {
-		Player.skipFrame = skipFrame;
+		this.skipFrame = skipFrame;
+	}
+	
+	/*
+	 * Create a deep clone
+	 */
+	@Override
+	protected Object clone(){
+		Player clone = null;
+	    try {
+	        clone = (Player) super.clone();
+	    } catch (CloneNotSupportedException e) {
+	        clone = new Player(this.getSkin());
+	    }
+	    clone.skipFrame = this.skipFrame;
+	    clone.myCoordinate = (PiecePoint) this.myCoordinate.clone();
+	    clone.myArea = (Rectangle) this.myArea.clone();
+	    clone.myIconDirection = this.myIconDirection;
+	    clone.myStride = this.myStride;
+
+	    return clone;
 	}
 
 	public String toString() {

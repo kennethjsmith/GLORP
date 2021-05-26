@@ -139,7 +139,7 @@ public class Maze {
 		myWinRoom.setWinRoom(true);
 		myWinRoom.setLargeIcon(Carpet.getSpecialIcon());
 		myWinRoom.setFixture(new Fixture(175, 200));
-		System.out.println(myWinRoom.getFixture().getRectangle());
+		System.out.println(myWinRoom.getFixture().getBase());
 	}
 
     /*

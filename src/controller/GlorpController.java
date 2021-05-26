@@ -50,9 +50,15 @@ public class GlorpController implements KeyListener{
         //TODO: get the room size for this
         Direction inDirection = Direction.generateDirection(myPressedKeys);
         
-        Direction validDirection = myMaze.getCurrRoom().validateDirection(myPlayer, inDirection);
-        myPlayer.move(validDirection);
-		System.out.println(myPlayer);
+        Direction validDirection = null;
+		try {
+			validDirection = myMaze.getCurrRoom().validateDirection(myPlayer, inDirection);
+		} catch (CloneNotSupportedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        //myPlayer.move(validDirection);
+		//System.out.println(myPlayer);
         checkInteractions();
         myWindow.repaint();
     }
@@ -76,6 +82,7 @@ public class GlorpController implements KeyListener{
     				myPlayer.getCoordinate().getY() <= 250) {
     	    if(attemptMapMove(Direction.EAST)) {
     	        myPlayer.getCoordinate().setLocation(10, 200);
+    	        myPlayer.updateArea();
     	    }	
     	}
     	//west door zone
@@ -84,6 +91,7 @@ public class GlorpController implements KeyListener{
     				myPlayer.getCoordinate().getY() <= 250) {
     	    if(attemptMapMove(Direction.WEST)) {
     	        myPlayer.getCoordinate().setLocation(390, 200);
+    	        myPlayer.updateArea();
     	    }
     		
     	}
@@ -93,6 +101,7 @@ public class GlorpController implements KeyListener{
     				myPlayer.getCoordinate().getX() <= 250) {
     	    if(attemptMapMove(Direction.NORTH)) {
     	        myPlayer.getCoordinate().setLocation(200, 390);
+    	        myPlayer.updateArea();
     	    }
     		
 
@@ -103,6 +112,7 @@ public class GlorpController implements KeyListener{
     				myPlayer.getCoordinate().getX() <= 250) {
     	    if(attemptMapMove(Direction.SOUTH)) {
     	        myPlayer.getCoordinate().setLocation(200, 10);
+    	        myPlayer.updateArea();
     	    }
     	}
 	}

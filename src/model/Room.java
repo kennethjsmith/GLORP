@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class Room {
 	private boolean isCurrentRoom;
 	private boolean isWinRoom;
 	private boolean isVisited;
+	private Rectangle myArea;
 
 	private final RoomIndex myIndex;
 	private final static int SIZE = 500;
@@ -60,6 +62,7 @@ public class Room {
         myIndex = null;
         myPlayer = null;
         isVisited = false;
+    	myArea = null;
     }
 
 	public Room(int theRow, int theCol) { // how will rooms get their riddles? 
@@ -70,6 +73,7 @@ public class Room {
 	    myIndex = new RoomIndex(theRow, theCol);
 	    myPlayer = null;
 	    isVisited = false;
+	    myArea = new Rectangle(new Point(0,0), new Dimension(SIZE,SIZE));
 	}
 	
     
@@ -215,12 +219,12 @@ public class Room {
 	/*
 	 * Returns a valid direction
 	 */
-	public Direction validateDirection(Player thePlayer, Direction theDirection) {
-		PiecePoint tempPoint = (PiecePoint) thePlayer.getCoordinate().clone();
-		tempPoint.move(theDirection);
+	public Direction validateDirection(Player thePlayer, Direction theDirection) throws CloneNotSupportedException {
+		Player playerProjected = (Player) thePlayer.clone();
+		playerProjected.move(theDirection);
 		Direction validDirection = null;
 		
-		if(isValidLocation(tempPoint)) validDirection = theDirection;
+		if(isValidLocation(playerProjected)) validDirection = theDirection;
 		// recursion for compound directions
 		else if(theDirection == Direction.NORTHEAST) {
 			validDirection = validateDirection(thePlayer, Direction.NORTH);
@@ -241,27 +245,27 @@ public class Room {
 		return validDirection;
 	}
 	
-	public boolean isValidLocation(PiecePoint thePoint) {
-		int inXCoordinate = (int)thePoint.getX();
-		int inYCoordinate = (int)thePoint.getY();
+	public boolean isValidLocation(Player playerProjected) {
+//		int inXCoordinate = (int)thePoint.getX();
+//		int inYCoordinate = (int)thePoint.getY();
 		
 		// check for out of room bounds
 		//TODO: give room a rectangle for easy bounds?
-		if(inXCoordinate > (SIZE - Player.getSpeed() - Skin.getSize()) || inXCoordinate < Player.getSpeed()) {
+		if(this.myArea.contains(playerProjected.getArea())) {
 			return false;
 		}
-		if(inYCoordinate > (SIZE - Player.getSpeed() - Skin.getSize()) || inYCoordinate < Player.getSpeed()) {
-			return false;
-		}
+//		if(inYCoordinate > (SIZE - Player.getSpeed() - Skin.getSize()) || inYCoordinate < Player.getSpeed()) {
+//			return false;
+//		}
 		
 		// check for fixture overlap
 		//TODO:why is it not finding that the rectangle contains the point?
 		//TODO: once this works, and printlns not needed, 
 		//combine both the if conditions into 1 statement
 		if(myFixture != null) {
-			System.out.println(myFixture.getRectangle());
-			System.out.println(myFixture.getRectangle().contains(thePoint));
-			if(myFixture.getRectangle().contains(thePoint)) {
+			System.out.println(myFixture.getBase());
+			System.out.println(myFixture.getBase().intersects(playerProjected.getArea()));
+			if(myFixture.getBase().intersects(playerProjected.getArea())) {
 				return false;
 			}
 		}

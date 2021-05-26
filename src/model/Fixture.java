@@ -8,7 +8,7 @@ public class Fixture extends GamePiece{
 	private final static int ICON_WIDTH = 150;
 	private final static int ICON_HEIGHT = 125;
 	private final static GameIcon ICON = new GameIcon("src/icons/chest_closed.png", ICON_WIDTH, ICON_HEIGHT);
-	private Rectangle myRectangle; // vicinity
+	private Rectangle myArea; // vicinity
 	
 	private int myIconXCoordinate;
 	private int myIconYCoordinate;
@@ -22,7 +22,7 @@ public class Fixture extends GamePiece{
 		super();
 		myIconXCoordinate = theXCoordinate;
 		myIconYCoordinate = theYCoordinate;
-		myRectangle = new Rectangle(theXCoordinate, theYCoordinate + (ICON_HEIGHT/2), ICON_WIDTH, ICON_HEIGHT/2);
+		myArea = new Rectangle(theXCoordinate, theYCoordinate + (ICON_HEIGHT/2), ICON_WIDTH, ICON_HEIGHT/2);
 	}
 
 	/**
@@ -35,8 +35,8 @@ public class Fixture extends GamePiece{
 	/**
 	 * @return the myRectangle
 	 */
-	public Rectangle getRectangle() {
-		return myRectangle;
+	public Rectangle getBase() {
+		return myArea;
 	}
 	
 }
