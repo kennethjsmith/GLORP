@@ -40,7 +40,9 @@ public class Door {
     // or will they just give their coordinates 
     // and room/maze uses those to decide how the item is attempting to leave the room
     // remove item, that call add item elsewhere 
-    
+    /**
+     * 
+     */
     private Door(){
         myRiddle = new Riddle();
         myDirection = null;
@@ -51,6 +53,9 @@ public class Door {
         
     }
     
+    /**
+     * @param theDirection
+     */
     public Door(Direction theDirection){
         myRiddle = new Riddle();
         myDirection = theDirection;
@@ -59,7 +64,10 @@ public class Door {
         myPermaBlockedFlag = false; 
     }
     
-	
+	/**
+	 * 
+	 * @param theDirection
+	 */
 	private void initializeIcons(Direction theDirection) {
 		if(theDirection == Direction.NORTH || theDirection == Direction.SOUTH) {
 			myRoomIcon = NS_ROOM_LOCKED_ICON;
@@ -72,6 +80,10 @@ public class Door {
 		
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public Boolean isBlocked() {
 		return myPermaBlockedFlag;
 	}
@@ -88,6 +100,9 @@ public class Door {
 		return myRiddle;
 	}
 	
+	/**
+	 * 
+	 */
 	public void setUnlocked() { //change to package once we have riddle, want limited access so only riddle can change this 
         myUnlockedFlag = true;
         System.out.println(this);
@@ -101,7 +116,10 @@ public class Door {
 		}
     }
 	
-	void setBlocked() { //package, want limited access so only riddle can change this
+	/**
+	 * 
+	 */
+	public void setBlocked() { //package, want limited access so only riddle can change this
         myPermaBlockedFlag = true;
         if(myDirection == Direction.NORTH || myDirection == Direction.SOUTH) {
 			myRoomIcon = NS_ROOM_BLOCKED_ICON;
@@ -113,14 +131,25 @@ public class Door {
 		}
     }
 	
+	/**
+	 * 
+	 * @return
+	 */
     public GameIcon getMapIcon() {
 		return myMapIcon;
 	}
     
+    /**
+     * 
+     * @return
+     */
     public GameIcon getRoomIcon() {
 		return myRoomIcon;
 	}
     
+    /**
+     * 
+     */
     public String toString() {
     	return "Unlocked: " + myUnlockedFlag + ", Direction: " + myDirection;
     }

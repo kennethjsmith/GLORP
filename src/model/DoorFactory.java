@@ -6,15 +6,14 @@ import java.util.HashMap;
 import view.GameIcon;
 
 /**
- * Create the doors for the maze 
- * and fill the mazes room with doors
- * @author katel
- *
+ * Create the doors for the maze. 
+ * @authors Heather Finch, Katelynn Oleson, Ken Smith
+ * @version
  */
 public class DoorFactory {
     private static int MAX_DOORS = 4; 
 //    // currently matching the doors according to position in array 
-//    //[top, left, right, bottom] 
+//    // [top, left, right, bottom] 
 //    private static int TOP_INDEX = 0;
 //    private static int LEFT_INDEX = 1;
 //    private static int RIGHT_INDEX = 2;
@@ -31,6 +30,9 @@ public class DoorFactory {
         
     private Room[][] myRooms;
     
+    /**
+     * Default constructor.
+     */
     public DoorFactory() {
         myRooms = new Room[0][0];
         injectDoors();
@@ -51,7 +53,7 @@ public class DoorFactory {
         return myRooms;
     }
     
-    /*
+    /**
      * Checks that theRooms is nonNull and none of the internal rooms are null
      */
     private void checkRoomsNonNull(Room[][] theRooms) throws NullPointerException{
@@ -68,9 +70,9 @@ public class DoorFactory {
         }
     }
 
-    /*
+    /**
      * Traverse the rooms to fill them so that 
-     * the doors of adjacent rooms coorespond correctly 
+     * the doors of adjacent rooms correspond correctly 
      */
     private void injectDoors() {
         for(int r = 0; r < myRooms.length; r++) {
@@ -86,7 +88,7 @@ public class DoorFactory {
                 } else doorMap.put(Direction.NORTH, new Door(Direction.NORTH));
                 
                 if(c > 0) { // if there is a connecting room to the left
-                    //grab its right door for this rooms left door
+                    // grab its right door for this rooms left door
                 	Door currDoor = myRooms[r][c-1].getDoors().get(Direction.EAST);
                 	doorMap.put(Direction.WEST, currDoor);                	
                 } else doorMap.put(Direction.WEST, new Door(Direction.WEST));

@@ -28,18 +28,20 @@ import model.Player;
 import model.Room;
 
 /**
- * ref: https://stackoverflow.com/questions/22766209/i-need-a-little-help-implementing-player-movement-on-java-grid
- * @author 12538
- *
+ * Displays the current room, the Player and all Items and Fixtures within.
+ * @author Ken Smith, Heather Finch, Katelynn Oleson 
+ * @version 
  */
 public class RoomPanel extends JPanel {
 
     // fields
 	private static final long serialVersionUID = 1L;
-    
     private Player myCurrentPlayer;
     private final static int SIZE = 500;
     
+    /**
+     * 
+     */
     public RoomPanel() {
         setPreferredSize(new Dimension(SIZE,SIZE));
 
@@ -47,11 +49,17 @@ public class RoomPanel extends JPanel {
         myCurrentPlayer = Maze.getInstance().getPlayer(); // TODO Getting instance of Maze in RoomPanel violates MVC?
     }
 
+    /**
+     * 
+     */
     @Override
     public void update(Graphics g) {
         paint(g);
     }
  
+    /**
+     * 
+     */
     @Override
     public void paintComponent(Graphics g) {  
     	super.paintComponent(g);

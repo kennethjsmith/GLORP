@@ -1,5 +1,9 @@
 package model;
-
+/**
+ * An enumerated type for different Skins, like ALIEN, MARIO, etc.
+ * @author Ken Smith, Heather Finch, Katelynn Oleson 
+ * @version 
+ */
 public enum SkinType {
 	ALIEN("ALIEN");
 	

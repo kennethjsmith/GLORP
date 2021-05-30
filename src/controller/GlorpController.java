@@ -19,56 +19,59 @@ import model.Skin;
 import model.SkinType;
 import view.GlorpGUI;
 
+/**
+ * The controller, mediates the maze model and GUI. 
+ * @authors Heather Finch, Katelynn Oleson, Ken Smith
+ * @version
+ */
 public class GlorpController implements KeyListener{
 	// fields
-	Maze myMaze;
-	//TODO: remover ref to player piece? this should be in the maze
-	Player myPlayer;
-	GlorpGUI myWindow; 
-	//TODO: these are temporary references to the door zones, may change later
-	
+	private Maze myMaze;
+	// TODO: remover ref to player piece ? can get from maze
+	private Player myPlayer;
+	private GlorpGUI myWindow; 
 	private final Set<Integer> myPressedKeys = new HashSet<Integer>();
 	
+	/**
+	 * Default constructor for GlorpController
+	 */
 	public GlorpController(){
 		myMaze = Maze.getInstance();
-		//hard ref to character for room panel work, should get player out of room
-		myPlayer = myMaze.getPlayer();
-		
+		myPlayer = myMaze.getPlayer();		
 		myWindow = new GlorpGUI();
-
         myWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         myWindow.setVisible(true);
         myWindow.setTitle("GLORP");
-        myWindow.addKeyListener(this);
-        
+        myWindow.addKeyListener(this);    
         myWindow.repaint();
     }
 	
+	/**
+	 * Adds the pressed key's KeyCode to the set of pressed keys. Generates and validates a direction from the set,
+	 * then moves the player.
+	 */
 	@Override
     public void keyPressed(KeyEvent e) {
 		int k = e.getKeyCode();
         myPressedKeys.add(k);
-        //TODO: get the room size for this
-        Direction inDirection = Direction.generateDirection(myPressedKeys);
         
+        Direction inDirection = Direction.generateDirection(myPressedKeys);
         Direction validDirection = null;
-		try {
+		
+        try {
 			validDirection = myMaze.getCurrRoom().validateDirection(myPlayer, inDirection);
-			
-			// ADDED THE BELOW LINE -H
 			myPlayer.move(validDirection);
 		} catch (CloneNotSupportedException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-        //myPlayer.move(validDirection);
-		//System.out.println(myPlayer);
         checkInteractions();
         myWindow.repaint();
     }
 
-	// TODO change name to check door interactions?
-	// Or helper methods, one for door, one for item
+	/**
+	 * A helper method, checks for item and door interactions after a key event.
+	 */
+	// TODO: split into multiple methods? deal with duplicate code
     private void checkInteractions() {
     	//check items
     	Item inItem = myMaze.getCurrRoom().getItem();
@@ -77,29 +80,29 @@ public class GlorpController implements KeyListener{
     		myMaze.getCurrRoom().setItem(null);
     		myWindow.updateItemPanel(myPlayer);
     	}
-    	//check doors
-    	//east door zone
+    	// check doors
+    	// east door zone
     	if(myPlayer.getIconArea().intersects(Room.getEastDoorZone())) {
     	    if(attemptMapMove(Direction.EAST)) {
     	        myPlayer.getCoordinate().setLocation(20, 200);
     	        myPlayer.updateRectangles();
     	    }	
     	}
-    	//west door zone
+    	// west door zone
     	else if(myPlayer.getIconArea().intersects(Room.getWestDoorZone())) {
     	    if(attemptMapMove(Direction.WEST)) {
     	        myPlayer.getCoordinate().setLocation(380, 200);
     	        myPlayer.updateRectangles();
     	    }	
     	}
-    	//north door zone
+    	// north door zone
     	else if(myPlayer.getIconArea().intersects(Room.getNorthDoorZone())) {
     	    if(attemptMapMove(Direction.NORTH)) {
     	        myPlayer.getCoordinate().setLocation(200, 380);
     	        myPlayer.updateRectangles();
     	    }
     	}
-    	//south door zone
+    	// south door zone
     	else if(myPlayer.getIconArea().intersects(Room.getSouthDoorZone())) {
     	    if(attemptMapMove(Direction.SOUTH)) {
     	        myPlayer.getCoordinate().setLocation(200, 20);
@@ -107,8 +110,11 @@ public class GlorpController implements KeyListener{
     	    }
     	}
 	}
-    /*
-     * Returns a success boolean
+    
+    // TODO: clean this up
+    /**
+     * A helper method, returns a boolean indicating if movement into a new room was successful.
+     * @param theDirection a direction to move within the maze
      */
     private boolean attemptMapMove(Direction theDirection) {
         if(myMaze.canMove(theDirection, Maze.getInstance().getCurrRoom())) {
@@ -116,13 +122,13 @@ public class GlorpController implements KeyListener{
             return true;
         }else { 
         	
-            // TODO hardcoded unlocking of doors: This should all be handles by the riddle
+            // TODO: hardcoded unlocking of doors: This should all be handles by the riddle
 
         	// ask them if they want to unlock the door
-        	//Scanner scan = new Scanner(System.in);
-        	//System.out.println("Woud you like to unlock this door?");
-        	//String input = scan.next();
-        	//if(input.toLowerCase().charAt(0) == 'y') {
+        	// Scanner scan = new Scanner(System.in);
+        	// System.out.println("Woud you like to unlock this door?");
+        	// String input = scan.next();
+        	// if(input.toLowerCase().charAt(0) == 'y') {
         		Room room = myMaze.getMyCurrentRoom();
             	int row = room.getIndex().getRow();
             	int col = room.getIndex().getCol();    	
@@ -143,7 +149,10 @@ public class GlorpController implements KeyListener{
         	return false;
         }
     }
-
+    
+    /**
+     * Removes the KeyCode from the set of pressed keys. Sets stride to 0 if no keys are pressed.
+     */
 	@Override
     public void keyReleased(KeyEvent e) {
 		int inKey = e.getKeyCode();
@@ -157,11 +166,11 @@ public class GlorpController implements KeyListener{
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub	
+		// TODO: Auto-generated method stub	
 	}
 
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
+		// TODO: Auto-generated method stub
 		
 	}
 

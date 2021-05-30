@@ -5,6 +5,11 @@ import java.awt.Rectangle;
 
 import view.GameIcon;
 
+/**
+ * This class represents Item and extends GamePiece.  
+ * @authors Heather Finch, Katelynn Oleson, Ken Smith
+ * @version
+ */
 public class Item  extends GamePiece{
 	private final static int WIDTH = 50;
 	private final static int HEIGHT = 75;
@@ -12,11 +17,19 @@ public class Item  extends GamePiece{
 	private final static GameIcon ITEM_PANEL_ICON = new GameIcon("src/icons/key_item_icon.png", 75);
 	private Rectangle myIconArea;
 	
+	// TODO: should this be private to prevent instantiation? Fixture too?
+	/**
+	 * A default constructor.
+	 */
 	public Item() {
 		super();
 		myIconArea = null;
 	}
 	
+	/**
+	 * Constructs an item at the given point.
+	 * @param thePoint
+	 */
 	public Item(PiecePoint thePoint) {
 		super();
 		myIconArea = new Rectangle(thePoint, new Dimension(WIDTH,HEIGHT));

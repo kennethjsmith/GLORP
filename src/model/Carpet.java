@@ -1,18 +1,28 @@
 package model;
 
 import view.GameIcon;
-
+/**
+ * The Carpet class holds all the Icons that might represent a rooms floor. 
+ * @authors Heather Finch, Katelynn Oleson, Ken Smith
+ * @version
+ */
 public class Carpet {
-
+	// fields
 	private static final int ROOM_ICON_SIZE = 500;
 	private GameIcon[] myIcons;
 	private final static GameIcon mySpecialIcon = new GameIcon("src/icons/dark_floor.png", ROOM_ICON_SIZE);
 
-	
+	/**
+	 * A default constructor
+	 */
 	public Carpet() {
 		myIcons = loadIcons();
 	}
 	
+	/**
+	 * Load all the icons into an array.
+	 * @return icons the array
+	 */
 	private static GameIcon[] loadIcons() {
 		GameIcon[] icons = new GameIcon[12];
 		for (int i = 1; i <= 12; i++) { 
@@ -23,14 +33,14 @@ public class Carpet {
 	}
 	
 	/**
-	 * @return the fLOORS
+	 * @return myIcons
 	 */
 	public GameIcon[] getFloors() {
 		return myIcons;
 	}
 
 	/**
-	 * @return the mySpecialIcon
+	 * @return mySpecialIcon
 	 */
 	public static GameIcon getSpecialIcon() {
 		return mySpecialIcon;

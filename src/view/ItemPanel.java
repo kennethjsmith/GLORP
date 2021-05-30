@@ -17,8 +17,13 @@ import model.Item;
 import model.Player;
 import model.Room;
 
-
+/**
+ * The panel for displaying a Player's inventory.
+ * @author Ken Smith, Heather Finch, Katelynn Oleson 
+ * @version 
+ */
 public class ItemPanel extends JPanel{
+	// fields
 	private final String TITLE = "Items";
 	private final static int WIDTH = 285;
 	private final static int HEIGHT = 125;
@@ -31,7 +36,9 @@ public class ItemPanel extends JPanel{
     JLabel item3Label;
 	
 
-	// Constructor 
+	/**
+	 * A default constructor. 
+	 */
 	public ItemPanel() {
 		super();
 		// Sets the size of the JPanel
@@ -70,12 +77,19 @@ public class ItemPanel extends JPanel{
         add(item3);
     }
 	
+	/**
+	 * 
+	 * @param thePlayer
+	 */
 	public void update(Player thePlayer) {
 		for(Item i : thePlayer.getInventory()) {
 			item1Label.setIcon(i.getItemPanelIcon());
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
     public void paintComponent(Graphics g) {
     	super.paintComponent(g);

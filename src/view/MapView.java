@@ -24,10 +24,14 @@ import model.Door;
 import model.Maze;
 import model.Room;
 
+// TODO: clean this up
+/**
+ * Displays the current map of the Maze.
+ * @author Ken Smith, Heather Finch, Katelynn Oleson 
+ * @version 
+ */
 public class MapView extends JPanel {
-	/**
-	 * 
-	 */
+	// fields
 	private static final long serialVersionUID = 1L;
 	private final String TITLE = "Map";
 	private final static int SIZE = 256;
@@ -36,7 +40,9 @@ public class MapView extends JPanel {
     private Map<Door, Point> myDoors;
     //private Room myCurrentRoom;
     
-	// Constructor 
+	/**
+	 * 
+	 */
 	public MapView() {
 		// Sets the size of the JPanel
         setPreferredSize(new Dimension(SIZE, SIZE));
@@ -53,6 +59,9 @@ public class MapView extends JPanel {
 	
 	// maps rooms to coordinates
 	// map doors to coordinates
+	/**
+	 * 
+	 */
 	private void initializeHashMaps() {
 		//Room[][] myCurrentRooms = myMaze.getRooms();
 		
@@ -84,6 +93,9 @@ public class MapView extends JPanel {
 		}
 	}
     
+	/**
+	 * 
+	 */
     @Override
     public void paintComponent(Graphics theGraphics) {
     	super.paintComponent(theGraphics);

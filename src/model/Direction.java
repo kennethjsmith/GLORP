@@ -3,6 +3,11 @@ package model;
 import java.awt.event.KeyEvent;
 import java.util.Set;
 
+/**
+ * An enum class representing cardinal and ordinal directions.
+ * @authors Heather Finch, Katelynn Oleson, Ken Smith
+ * @version
+ */
 public enum Direction {
 	NORTH("N", 0, -1),
 	NORTHEAST("NE", 1, -1),
@@ -17,7 +22,7 @@ public enum Direction {
 	private final int dxMultiplier;
 	private final int dyMultiplier;
 
-
+	
 	private Direction(String theLabel, int theDXMultiplier, int theDYMultiplier) {
     	myLabel = theLabel;
     	dxMultiplier = theDXMultiplier;
@@ -30,13 +35,17 @@ public enum Direction {
 	public String getLabel() {
 		return myLabel;
 	}
-	//TODO: magic number for wall boundary, consider if this is more controller functionality and 
-	//change location for alot of this code without breaking current functionality
+	
+	/**
+	 * A static method, generates a direction from a set of pressed keys.
+	 * @param thePressedKeys
+	 */
 	public static Direction generateDirection(Set<Integer> thePressedKeys) {
 		
 		Direction inXDirection = null;
 		Direction inYDirection = null;
 		Direction inComboDirection;
+		
 		// going west
 		if((thePressedKeys.contains(KeyEvent.VK_A) || thePressedKeys.contains(KeyEvent.VK_LEFT)) &&
 				(!thePressedKeys.contains(KeyEvent.VK_D) || !thePressedKeys.contains(KeyEvent.VK_RIGHT))) {
@@ -62,22 +71,27 @@ public enum Direction {
 		return inComboDirection;
 	}
 	
-	public static Direction getComboDirection(Direction theXDirection, Direction theYDirection) {
+	/**
+	 * A helper method, combines x and y directions.
+	 * @param theXDirection
+	 * @param theYDirection
+	 */
+	private static Direction getComboDirection(Direction theXDirection, Direction theYDirection) {
 		
-		//northwest or northeast
+		// northwest or northeast
 		if(theYDirection == Direction.NORTH) {
 			if(theXDirection == Direction.WEST) return Direction.NORTHWEST;
 			if(theXDirection == Direction.EAST) return Direction.NORTHEAST;
 		}
-		//southwest or southeast
+		// southwest or southeast
 		if(theYDirection == Direction.SOUTH) {
 			if(theXDirection == Direction.WEST) return Direction.SOUTHWEST;
 			if(theXDirection == Direction.EAST) return Direction.SOUTHEAST;
 		}
 		
-		//north or south
+		// north or south
 		if(theXDirection == null) return theYDirection;
-		//west or east
+		// west or east
 		if(theYDirection == null) return theXDirection;
 		
 		return null; //TODO: fix to better way. this return should never happen

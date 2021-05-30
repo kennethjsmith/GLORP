@@ -10,6 +10,11 @@ import javax.swing.ImageIcon;
 
 import view.GameIcon;
 
+/**
+ * Represents the player that the user will move throughout the maze.
+ * @author Ken Smith, Heather Finch, Katelynn Oleson 
+ * @version 
+ */
 public class Player extends GamePiece implements Cloneable {
 	
 	// fields
@@ -30,6 +35,9 @@ public class Player extends GamePiece implements Cloneable {
 	private static final int PLAYER_MAP_ICON_SIZE = 10;
 	private static final Skin DEFAULT_SKIN = new Skin(SkinType.ALIEN);
 	
+	/**
+	 * 
+	 */
 	public Player() {
 		super();
 		myInventory = new ArrayList<>();
@@ -42,6 +50,9 @@ public class Player extends GamePiece implements Cloneable {
 		myBase = new Rectangle((int)myCoordinate.getX()+10, (int)myCoordinate.getY()+(2*PLAYER_ROOM_ICON_SIZE/3), PLAYER_ROOM_ICON_SIZE-20, (PLAYER_ROOM_ICON_SIZE/3));
 	}
 	
+	/**
+	 * @param theSkin
+	 */
 	public Player(Skin theSkin) {
 		super();
 		myCoordinate = new PiecePoint();
@@ -52,14 +63,23 @@ public class Player extends GamePiece implements Cloneable {
 		skipFrame = false;
 	}
 	
+	/**
+	 * @param theItem
+	 */
 	public void dropItem(Item theItem){ 
 		myInventory.remove(theItem);
 	}
 	
+	/**
+	 * @return
+	 */
 	public ArrayList<Item> getInventory() {
 		return myInventory;
 	}
 	
+	/**
+	 * @param theDirection
+	 */
 	public void move(Direction theDirection){
 		// update room icon
 		myIconDirection = IconDirection.generateIconDirection(theDirection, myIconDirection);
@@ -73,11 +93,17 @@ public class Player extends GamePiece implements Cloneable {
 		updateRectangles();
 	}
 	
+	/**
+	 * 
+	 */
 	public void updateRectangles() {
 		myIconArea.setLocation((int)myCoordinate.getX(), (int)myCoordinate.getY());
 		myBase.setLocation((int)myCoordinate.getX()+10, (int)myCoordinate.getY() + (2*PLAYER_ROOM_ICON_SIZE/3));
 	}
 	
+	/**
+	 * 
+	 */
 	public void updateRoomIcon() {
 		myRoomIcon = mySkin.getIcon(myIconDirection, myStride);
 	}
@@ -97,14 +123,23 @@ public class Player extends GamePiece implements Cloneable {
 		return myBase;
 	}
 
+	/**
+	 *
+	 */
 	public GameIcon getRoomIcon() {
 		return myRoomIcon;	 
 	}
 	
+	/**
+	 *
+	 */
 	public GameIcon getMapIcon() {
 		return myMapIcon;
 	}
 	
+	/**
+	 *
+	 */
 	public PiecePoint getCoordinate() {
 		return myCoordinate;
 		
@@ -161,6 +196,9 @@ public class Player extends GamePiece implements Cloneable {
 	    return clone;
 	}
 
+	/**
+	 *
+	 */
 	public String toString() {
 		return myCoordinate.toString();
 	}

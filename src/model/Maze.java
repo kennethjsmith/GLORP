@@ -8,11 +8,9 @@ import view.GameIcon;
  * Maze uses a singleton pattern.
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
  * @version 5.14.21
- * Ask Heather if you have any questions about this class
- *
  */
 public class Maze {
-	
+	// fields
 	// The 2D array that stores each room
 	private Room[][] myMaze;
 	
@@ -44,14 +42,15 @@ public class Maze {
 	// Creates the maze.
     private static final Maze THISMAZE = new Maze();
 
-	
-    // Constructor is private due to singleton pattern.
-	private Maze() {
+    /**
+     * A private constructor due to singleton pattern.
+     */
+    private Maze() {
 		
 		// Initialize with row-major: Room[rows][columns]
 		myMaze = new Room[LENGTH+BORDER_BUFFER][WIDTH+BORDER_BUFFER];
 		
-		// TODO Allow option for skin types
+		// TODO: Allow option for skin type input
 		myPlayer = new Player();
 		
 		// Fills out the 2d array, myMaze, with rooms
@@ -67,7 +66,7 @@ public class Maze {
 	}
 	
 	/**
-	 * Getter for the maze object instance
+	 * Getter for the maze instance.
 	 * @return
 	 */
 	public static Maze getInstance() {
@@ -75,8 +74,8 @@ public class Maze {
     }
 	
 
-	/*
-	 * Creates and adds rooms to myMaze 
+	/**
+	 * Creates and adds rooms to myMaze. 
 	 */
 	private void addRooms() {
 		for(int row = 0; row < LENGTH+BORDER_BUFFER; row++) {
@@ -88,9 +87,9 @@ public class Maze {
 		myCurrentRoom = myStartRoom;
 	}
 
-   /*
-   * Blocks all doors along the border to simulate a wall
-   */
+   /**
+    * Blocks all doors along the border to simulate a wall.
+    */
    private void blockBorderRooms() {
        for(int row = 0; row < LENGTH+BORDER_BUFFER; row++) { 
            blockDoors(myMaze[row][0]);
@@ -102,8 +101,8 @@ public class Maze {
        }
     }
 	
-   /*
-    * Block all doors in a room 
+   /**
+    * Block all doors in a room. 
     */
    private void blockDoors(Room theRoom) {
        for(Door d : theRoom.getDoors().values()) {
@@ -111,13 +110,11 @@ public class Maze {
        }
    }
    
-	/*
+	/**
 	 * Randomly sets the WinRoom and StartRoom coordinates 
-	 * so that they are not on the edge of the maze
+	 * so that they are not on the edge of the maze. Adds chest fixture to win room
 	 */
 	private void designateWinStartRooms() {
-		
-		// Why is this divided by 2 + 1 and then length/width -2?
 	    int inStartRow = generateRandom(BORDER_BUFFER/2 + 1, LENGTH - 2);
 	    int inStartCol = generateRandom(BORDER_BUFFER/2 + 1, WIDTH - 2);
 	    
@@ -126,7 +123,7 @@ public class Maze {
 		myStartRoom.setPlayer(myPlayer);
 		
 		int inWinRow = 0, inWinCol = 0;
-		// win and start room must be 1/3 of the maze away - helper method? 
+		// TODO: win and start room must be 1/3 of the maze away - helper method? 
 		while(inWinRow == 0 || Math.abs(inWinRow - inStartRow) < LENGTH / 3) {
 		    inWinRow = generateRandom(BORDER_BUFFER/2 + 1, LENGTH - 2);
 		    
@@ -142,15 +139,13 @@ public class Maze {
 		System.out.println(myWinRoom.getFixture().getBase());
 	}
 
-    /*
-	 * Generates a random index between two numbers (min val, max val)
-	 * make utility?? 
-	 */
+	 // TODO: make this into a utility
+     /**
+	  * Generates a random index between two numbers (min val, max val)
+	  */
 	 private int generateRandom(int theMin, int theMax) {
 	     Random rand = new Random();
 	     return rand.nextInt(theMax - theMin + 1) + theMin;
-	     // highest val is ((theMax - theMin + 1) - 1) + theMin = theMax
-	     // lowest val is (0) + theMin = theMin
 	 }
 	 
 	/**
@@ -171,8 +166,13 @@ public class Maze {
 	
 	}
 	
-	// TODO Right now move in Maze uses Direction - we may want to make a custom direction class
-	// TODO add exception handeling to move method
+	
+	// TODO: Right now move in Maze uses Direction - we may want to make a custom direction class
+	// TODO: add exception handeling to move method
+	/**
+	 * Move in a direction through the maze.
+	 * @param theDirection
+	 */
 	public void move(Direction theDirection) {
 		Room tempCurrentRoom = myCurrentRoom;
 		RoomIndex currIndex = myCurrentRoom.getIndex();
@@ -239,32 +239,59 @@ public class Maze {
 		return myMaze[theRow][theColumn];
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public Room getMyStartRoom() {
 		return myStartRoom;
 	}
 
+	/**
+	 * 
+	 * @param theStartRoom
+	 */
 	public void setMyStartRoom(Room theStartRoom) {
 		this.myStartRoom = theStartRoom;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public Room getMyCurrentRoom() {
 		return myCurrentRoom;
 	}
-
+	
+	/**
+	 * 
+	 * @param myCurrentRoom
+	 */
 	public void setMyCurrentRoom(Room myCurrentRoom) {
 		this.myCurrentRoom = myCurrentRoom;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public Room getMyWinRoom() {
 		return myWinRoom;
 	}
 
+	/**
+	 * 
+	 * @param theWinRoom
+	 */
 	public void setMyWinRoom(Room theWinRoom) {
 		this.myWinRoom = theWinRoom;
 	}
 	
-	//places an item at a random point in room 2, 2
-	public void placeItems() {
+	// TODO: fix this, hardcoded item placement
+	/**
+	 * A helper method. Places an item in a room.
+	 */
+	private void placeItems() {
 		PiecePoint randomCoordinates = PiecePoint.randomPoint(Room.getSize()-Item.getWidth(), Room.getSize()-Item.getHeight());
 		myMaze[2][2].addItem(new Item(randomCoordinates), randomCoordinates);
 	}
@@ -287,7 +314,7 @@ public class Maze {
 	
 
 	// Returns true if the row and column are valid, and false otherwise
-	// TODO containsRoom method is redundant unless we decide to make some spaces in the grid not exist as rooms.
+	// TODO: containsRoom method is redundant unless we decide to make some spaces in the grid not exist as rooms.
 	public boolean containsRoom(int theRow, int theColumn) {
 	    if(theRow < 0 || theColumn < 0) return false;
 	    else if(theRow >= (LENGTH) || theColumn >= (WIDTH)) return false;

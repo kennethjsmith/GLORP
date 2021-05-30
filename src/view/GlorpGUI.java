@@ -21,7 +21,11 @@ import javax.swing.border.TitledBorder;
 import model.Item;
 import model.Maze;
 import model.Player;
-
+/**
+ * The main frame for the GUI.
+ * @author Ken Smith, Heather Finch, Katelynn Oleson 
+ * @version 
+ */
 public class GlorpGUI extends JFrame {
     
     // static final fields (class constants)
@@ -44,6 +48,9 @@ public class GlorpGUI extends JFrame {
     private TitlePanel myTitlePanel;
     //TODO: add panels for maze map and sphinx/questions
 
+    /**
+     * 
+     */
     public GlorpGUI() {
         super();
         setTitle(TITLE);
@@ -54,7 +61,7 @@ public class GlorpGUI extends JFrame {
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         
-        //TODO: make this titlepanel its own class
+        // TODO: make this titlepanel its own class
         myTitlePanel = new TitlePanel();
         c.gridx = 0;
         c.gridy = 0;
@@ -97,6 +104,9 @@ public class GlorpGUI extends JFrame {
         
     }
 
+    /**
+     * 
+     */
     public void addMenuBar() {
     	JMenuBar myMenubar = new JMenuBar();
         JMenu file = new JMenu("File");
@@ -123,6 +133,10 @@ public class GlorpGUI extends JFrame {
         setJMenuBar(myMenubar);
     }
     	
+    /**
+     * 
+     * @param thePlayer
+     */
     public void updateItemPanel(Player thePlayer) {
 		myItemPanel.update(thePlayer);
 	}

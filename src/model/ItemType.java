@@ -1,5 +1,9 @@
 package model;
-
+/**
+ * An enumerated type representing different Item types. 
+ * @authors Heather Finch, Katelynn Oleson, Ken Smith
+ * @version
+ */
 public enum ItemType {
 	KEY("KEY");
 	

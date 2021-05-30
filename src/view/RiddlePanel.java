@@ -16,9 +16,13 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
-
+/**
+ * Displays the Door's Riddle and also contains the Input Panel.
+ * @author Ken Smith, Heather Finch, Katelynn Oleson 
+ * @version 
+ */
 public class RiddlePanel extends JPanel {
-	
+	// fields
 	private InputPanel myInputPanel;
 	private final static int WIDTH = 300;
 	private final static int HEIGHT = 500;
@@ -27,7 +31,9 @@ public class RiddlePanel extends JPanel {
 	private final GameIcon SPEECH_BUBBLE = new GameIcon("src/icons/speech_bubble.png", 300);
 	private final GameIcon BACKGROUND = new GameIcon("src/icons/sand.png", WIDTH, HEIGHT);
 	
-	
+	/**
+	 * 
+	 */
 	public RiddlePanel() {
         setPreferredSize(new Dimension(WIDTH,HEIGHT));
         // add border
@@ -61,10 +67,13 @@ public class RiddlePanel extends JPanel {
         
     }
 	
+	/**
+	 * 
+	 */
 	@Override
     public void paintComponent(Graphics g) {  
     	super.paintComponent(g);
-    	//TODO: this is borrowed art from a game called PixelPeople. Its open source, ok to use with credit? (atleast for project)
+    	// TODO: the sphinx is "borrowed" art. lets replace it!
     	BACKGROUND.paintIcon(this, g, 0, 0);
     	SPEECH_BUBBLE.paintIcon(this, g, 0, 10);
     	SPHINX.paintIcon(this, g, 95, 200);

@@ -4,6 +4,11 @@ import java.awt.Rectangle;
 
 import view.GameIcon;
 
+/**
+ * This class represents Fixture GamePieces. They are immovable, and the player can walk behind them. 
+ * @authors Heather Finch, Katelynn Oleson, Ken Smith
+ * @version
+ */
 public class Fixture extends GamePiece{
 	private final static int ICON_WIDTH = 150;
 	private final static int ICON_HEIGHT = 100;
@@ -11,18 +16,21 @@ public class Fixture extends GamePiece{
 	private Rectangle myBase;
 	private Rectangle myIconArea;
 	
-	//private int myIconXCoordinate;
-	//private int myIconYCoordinate;
-
-	
+	/**
+	 * A default constructor.
+	 */
+	// TODO: initialize Rectangles???
 	public Fixture() {
 		super();
 	}
 	
+	/**
+	 * Constructs a fixture at the given coordinates.
+	 * @param theXCoordinate
+	 * @param theYCoordinate
+	 */
 	public Fixture(int theXCoordinate, int theYCoordinate) {
 		super();
-		//myIconXCoordinate = theXCoordinate;
-		//myIconYCoordinate = theYCoordinate;
 		myIconArea = new Rectangle(theXCoordinate, theYCoordinate, ICON_WIDTH, ICON_HEIGHT);
 		myBase = new Rectangle(theXCoordinate, theYCoordinate + (ICON_HEIGHT/2), ICON_WIDTH, (ICON_HEIGHT/2));
 	}

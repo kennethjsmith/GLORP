@@ -1,5 +1,9 @@
 package model;
-
+/**
+ * This enumerated type represents the directions that an icon can move. 
+ * @authors Heather Finch, Katelynn Oleson, Ken Smith
+ * @version
+ */
 public enum IconDirection {
 	LEFT("LEFT"),
 	RIGHT("RIGHT");
@@ -17,6 +21,12 @@ public enum IconDirection {
 		return myLabel;
 	}
 	
+	/**
+	 * Generates a new icon Direction.
+	 * @param theDirection
+	 * @param theCurrentIconDirection
+	 * @return
+	 */
 	public static IconDirection generateIconDirection(Direction theDirection, IconDirection theCurrentIconDirection) {
 		IconDirection inIconDirection = theCurrentIconDirection;
 		

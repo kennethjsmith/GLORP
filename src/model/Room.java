@@ -19,7 +19,7 @@ import view.GameIcon;
  * @author
  * @version
  */
-//TODO: create subclasses (start and end rooms)
+// TODO: create subclasses (start and end rooms)
 public class Room {
     private static int MAX_DOORS = 4;
     private Door[] myDoors; // for now... 4 doors each 
@@ -58,6 +58,9 @@ public class Room {
 	//private boolean containsPlayer; //will be tracked by map (current room) 
 	//private boolean visitedFlag; // will be tracked by map? 
 	
+    /**
+     * 
+     */
     public Room() {
     	myDoorMap = null;
     	myItem = null;
@@ -69,6 +72,10 @@ public class Room {
         isVisited = false;
     }
 
+	/**
+	 * @param theRow
+	 * @param theCol
+	 */
 	public Room(int theRow, int theCol) { // how will rooms get their riddles? 
 		myDoorMap = null;
 		myItem = null;
@@ -79,11 +86,17 @@ public class Room {
 	    isVisited = false;
 	}
     
-    void setDoors(HashMap<Direction, Door> theDoors) {
+    /**
+     * @param theDoors
+     */
+    public void setDoors(HashMap<Direction, Door> theDoors) {
     	myDoorMap = theDoors;
     }
     
 
+    /**
+     * @return
+     */
     public HashMap<Direction, Door> getDoors() {
     	return myDoorMap;
     }
@@ -145,16 +158,25 @@ public class Room {
 		this.myLargeIcon = myLargeIcon;
 	}
 
+	/**
+	 * @return
+	 */
 	public GameIcon getLargeIcon() {
 	    return myLargeIcon;
 	}
 	
+	/**
+	 * @param theSmallIcon
+	 */
 	public void setSmallIcon(GameIcon theSmallIcon) {
 		Objects.requireNonNull(theSmallIcon);
 		mySmallIcon = theSmallIcon;
 	}
 	
 	
+	/**
+	 * @return
+	 */
 	public GameIcon getSmallIcon() {
         return mySmallIcon;
     }
@@ -173,6 +195,9 @@ public class Room {
 		this.myFixture = myFixture;
 	}
 
+	/**
+	 * @return
+	 */
 	public RoomIndex getIndex() {
 		return myIndex;
 	}
@@ -184,6 +209,9 @@ public class Room {
 		return SIZE;
 	}
 
+	/**
+	 * @param isCurrentRoom
+	 */
 	public void setCurrentRoom(boolean isCurrentRoom) {
 		this.isCurrentRoom = isCurrentRoom;
 		
@@ -195,6 +223,9 @@ public class Room {
 		else mySmallIcon = MAP_ICON;
 	}
 	
+	/**
+	 * @param isWinRoom
+	 */
 	public void setWinRoom(boolean isWinRoom) {
 		this.isWinRoom = isWinRoom;
 		
@@ -244,10 +275,16 @@ public class Room {
 		return EAST_DOOR_ZONE;
 	}
 
+	/**
+	 *
+	 */
 	public String toString() {
 		return myIndex.toString();
 	}
 	
+	/**
+	 * 
+	 */
 	private void setRandomFloor() {
 		myLargeIcon = CARPETS.getFloors()[RAND.nextInt(12)];
 	}
@@ -282,6 +319,10 @@ public class Room {
 		return validDirection;
 	}
 	
+	/**
+	 * @param playerProjected
+	 * @return
+	 */
 	public boolean isValidLocation(Player playerProjected) {
 		// check for out of room bounds
 		if(!AREA.contains(playerProjected.getIconArea())) {
