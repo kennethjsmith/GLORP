@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 
 import model.Direction;
 import model.Door;
+import model.Item;
 import model.Maze;
 import model.Player;
 import model.Room;
@@ -69,55 +70,40 @@ public class GlorpController implements KeyListener{
 	// TODO change name to check door interactions?
 	// Or helper methods, one for door, one for item
     private void checkInteractions() {
-		// TODO: fix this hardcoded door interaction
-    	//NOTES:
-    	//5 and 395 = Room.getSize()-Skin.getSize()-Player.getSpeed(): the plane through the door
-    	//150 and 250 = the sides of the door
-    	//^^ if within both, INTERACT
-    	
-    	//10 = 2x Player.getSpeed() (1 step away from reinteracting with door after going through)
-    	//390 == roomsize-skinsize-2xspeed (1 step away from reinteracting with door after going through)
-    	//150 and 250 = the sides of the door area
-    	
-    	//200 an x or y coordinate to place player in center of other door after going through
-    	
+    	//check items
+    	Item inItem = myMaze.getCurrRoom().getItem();
+    	if(inItem != null && myPlayer.getIconArea().intersects(inItem.getIconArea())) {
+    		myPlayer.getInventory().add(myMaze.getCurrRoom().getItem());
+    		myMaze.getCurrRoom().setItem(null);
+    		myWindow.updateItemPanel(myPlayer);
+    	}
+    	//check doors
     	//east door zone
-    	if(myPlayer.getCoordinate().getX() == 395 &&
-    			myPlayer.getCoordinate().getY() >= 150 &&
-    				myPlayer.getCoordinate().getY() <= 250) {
+    	if(myPlayer.getIconArea().intersects(Room.getEastDoorZone())) {
     	    if(attemptMapMove(Direction.EAST)) {
-    	        myPlayer.getCoordinate().setLocation(10, 200);
-    	        myPlayer.updateArea();
+    	        myPlayer.getCoordinate().setLocation(20, 200);
+    	        myPlayer.updateRectangles();
     	    }	
     	}
     	//west door zone
-    	else if(myPlayer.getCoordinate().getX() == 5 &&
-    			myPlayer.getCoordinate().getY() >= 150 &&
-    				myPlayer.getCoordinate().getY() <= 250) {
+    	else if(myPlayer.getIconArea().intersects(Room.getWestDoorZone())) {
     	    if(attemptMapMove(Direction.WEST)) {
-    	        myPlayer.getCoordinate().setLocation(390, 200);
-    	        myPlayer.updateArea();
-    	    }
-    		
+    	        myPlayer.getCoordinate().setLocation(380, 200);
+    	        myPlayer.updateRectangles();
+    	    }	
     	}
     	//north door zone
-    	else if(myPlayer.getCoordinate().getY() == 5 &&
-    			myPlayer.getCoordinate().getX() >= 150 &&
-    				myPlayer.getCoordinate().getX() <= 250) {
+    	else if(myPlayer.getIconArea().intersects(Room.getNorthDoorZone())) {
     	    if(attemptMapMove(Direction.NORTH)) {
-    	        myPlayer.getCoordinate().setLocation(200, 390);
-    	        myPlayer.updateArea();
+    	        myPlayer.getCoordinate().setLocation(200, 380);
+    	        myPlayer.updateRectangles();
     	    }
-    		
-
     	}
     	//south door zone
-    	else if(myPlayer.getCoordinate().getY() == 395 &&
-    			myPlayer.getCoordinate().getX() >= 150 &&
-    				myPlayer.getCoordinate().getX() <= 250) {
+    	else if(myPlayer.getIconArea().intersects(Room.getSouthDoorZone())) {
     	    if(attemptMapMove(Direction.SOUTH)) {
-    	        myPlayer.getCoordinate().setLocation(200, 10);
-    	        myPlayer.updateArea();
+    	        myPlayer.getCoordinate().setLocation(200, 20);
+    	        myPlayer.updateRectangles();
     	    }
     	}
 	}

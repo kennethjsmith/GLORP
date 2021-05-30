@@ -21,8 +21,6 @@ public class TitlePanel extends JPanel{
 	public TitlePanel() {
 		super();
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        setBackground(Color.LIGHT_GRAY);
-		
 		setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(WIDTH,HEIGHT));
 		setBackground(Color.darkGray);

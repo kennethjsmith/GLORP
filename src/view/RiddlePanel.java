@@ -20,17 +20,16 @@ import javax.swing.border.TitledBorder;
 public class RiddlePanel extends JPanel {
 	
 	private InputPanel myInputPanel;
-	
-	private final String TITLE = "Riddle";
-	private final GameIcon SPHINX = new GameIcon("src/icons/sphinx.png");
-	private final GameIcon SPEECH_BUBBLE = new GameIcon("src/icons/speech_bubble.png");
 	private final static int WIDTH = 300;
 	private final static int HEIGHT = 500;
+	private final String TITLE = "Riddle";
+	private final GameIcon SPHINX = new GameIcon("src/icons/sphinx.png", 200);
+	private final GameIcon SPEECH_BUBBLE = new GameIcon("src/icons/speech_bubble.png", 300);
+	private final GameIcon BACKGROUND = new GameIcon("src/icons/sand.png", WIDTH, HEIGHT);
+	
 	
 	public RiddlePanel() {
         setPreferredSize(new Dimension(WIDTH,HEIGHT));
-        SPHINX.resize(200);
-        SPEECH_BUBBLE.resize(300);
         // add border
         TitledBorder border = BorderFactory.createTitledBorder(TITLE);
         border.setTitleColor(Color.YELLOW);
@@ -66,7 +65,9 @@ public class RiddlePanel extends JPanel {
     public void paintComponent(Graphics g) {  
     	super.paintComponent(g);
     	//TODO: this is borrowed art from a game called PixelPeople. Its open source, ok to use with credit? (atleast for project)
+    	BACKGROUND.paintIcon(this, g, 0, 0);
     	SPEECH_BUBBLE.paintIcon(this, g, 0, 10);
     	SPHINX.paintIcon(this, g, 95, 200);
+    	
     }
 }

@@ -22,22 +22,24 @@ public class Player extends GamePiece implements Cloneable {
 	private IconDirection myIconDirection;
 	private int myStride; // 0 for standing, 1,2,3,4 for different run icons
 	private boolean skipFrame;
-	private Rectangle myArea;
+	private Rectangle myIconArea;
+	private Rectangle myBase;
 
-
-	private static final int SPEED = 5;
+	private static final int SPEED = 20;
+	private static final int PLAYER_ROOM_ICON_SIZE = 100;
 	private static final int PLAYER_MAP_ICON_SIZE = 10;
 	private static final Skin DEFAULT_SKIN = new Skin(SkinType.ALIEN);
 	
 	public Player() {
 		super();
-		myCoordinate = new PiecePoint(5, 5);
+		myInventory = new ArrayList<>();
+		myCoordinate = new PiecePoint(200, 200);
 		mySkin = DEFAULT_SKIN;
 		myIconDirection = IconDirection.RIGHT;
 		myStride = 0;
 		myRoomIcon = mySkin.getIcon(myIconDirection, myStride);
-		myArea = new Rectangle(myCoordinate, new Dimension (this.getSize(), this.getSize()));
-		//setArea(new Rectangle(myCoordinate, new Dimension (this.getSize(), this.getSize())));
+		myIconArea = new Rectangle(myCoordinate, new Dimension (PLAYER_ROOM_ICON_SIZE, PLAYER_ROOM_ICON_SIZE));
+		myBase = new Rectangle((int)myCoordinate.getX()+10, (int)myCoordinate.getY()+(2*PLAYER_ROOM_ICON_SIZE/3), PLAYER_ROOM_ICON_SIZE-20, (PLAYER_ROOM_ICON_SIZE/3));
 	}
 	
 	public Player(Skin theSkin) {
@@ -67,35 +69,32 @@ public class Player extends GamePiece implements Cloneable {
 		skipFrame = !skipFrame;
 		if(myStride > 4) myStride = 1;
 		updateRoomIcon();
-		// move coordinates
-		System.out.println(myCoordinate);
 		myCoordinate.move(theDirection);
-		System.out.println(myCoordinate);
-		updateArea();
+		updateRectangles();
 	}
 	
-	public void updateArea() {
-		myArea.setLocation((int)myCoordinate.getX(), (int)myCoordinate.getY());
+	public void updateRectangles() {
+		myIconArea.setLocation((int)myCoordinate.getX(), (int)myCoordinate.getY());
+		myBase.setLocation((int)myCoordinate.getX()+10, (int)myCoordinate.getY() + (2*PLAYER_ROOM_ICON_SIZE/3));
 	}
 	
 	public void updateRoomIcon() {
 		myRoomIcon = mySkin.getIcon(myIconDirection, myStride);
-		//System.out.println(myRoomIcon);
 	}
 	
 	
 	/**
 	 * @return the myArea
 	 */
-	public Rectangle getArea() {
-		return myArea;
+	public Rectangle getIconArea() {
+		return myIconArea;
 	}
 
 	/**
-	 * @param myArea the myArea to set
+	 * @return the myBase
 	 */
-	public void setArea(Rectangle myArea) {
-		this.myArea = myArea;
+	public Rectangle getBase() {
+		return myBase;
 	}
 
 	public GameIcon getRoomIcon() {
@@ -154,7 +153,8 @@ public class Player extends GamePiece implements Cloneable {
 	    }
 	    clone.skipFrame = this.skipFrame;
 	    clone.myCoordinate = (PiecePoint) this.myCoordinate.clone();
-	    clone.myArea = (Rectangle) this.myArea.clone();
+	    clone.myIconArea = (Rectangle) this.myIconArea.clone();
+	    clone.myBase = (Rectangle) this.myBase.clone();
 	    clone.myIconDirection = this.myIconDirection;
 	    clone.myStride = this.myStride;
 

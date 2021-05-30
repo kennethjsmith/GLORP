@@ -9,6 +9,7 @@ import java.awt.GridBagLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -17,7 +18,9 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import model.Item;
 import model.Maze;
+import model.Player;
 
 public class GlorpGUI extends JFrame {
     
@@ -120,4 +123,7 @@ public class GlorpGUI extends JFrame {
         setJMenuBar(myMenubar);
     }
     	
+    public void updateItemPanel(Player thePlayer) {
+		myItemPanel.update(thePlayer);
+	}
 }

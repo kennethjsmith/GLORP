@@ -24,7 +24,7 @@ public class Room {
     private static int MAX_DOORS = 4;
     private Door[] myDoors; // for now... 4 doors each 
     private HashMap<Direction, Door> myDoorMap;
-	private Map<Item, PiecePoint> myItems; 
+	private Item myItem; 
 	private Fixture myFixture;
 	private Player myPlayer;
 	private GameIcon myLargeIcon;
@@ -32,10 +32,15 @@ public class Room {
 	private boolean isCurrentRoom;
 	private boolean isWinRoom;
 	private boolean isVisited;
-	private Rectangle myArea;
+	
+	private final static int SIZE = 500;
+	private static final Rectangle AREA = new Rectangle(new Point(0,0), new Dimension(SIZE,SIZE));
+	private static final Rectangle NORTH_DOOR_ZONE = new Rectangle(new Point(200,0), new Dimension(100,20));;
+	private static final Rectangle SOUTH_DOOR_ZONE = new Rectangle(new Point(200,480), new Dimension(100,20));;
+	private static final Rectangle WEST_DOOR_ZONE = new Rectangle(new Point(0,200), new Dimension(20,100));;
+	private static final Rectangle EAST_DOOR_ZONE = new Rectangle(new Point(480,200), new Dimension(20,100));;
 
 	private final RoomIndex myIndex;
-	private final static int SIZE = 500;
 	
 	
 	//TODO: should these be enumerated types? might help get rid of boolean fields upon refactor
@@ -55,25 +60,23 @@ public class Room {
 	
     public Room() {
     	myDoorMap = null;
-    	myItems = new HashMap<>();
+    	myItem = null;
     	myFixture = null;
         myLargeIcon = null; 
         mySmallIcon = null;
         myIndex = null;
         myPlayer = null;
         isVisited = false;
-    	myArea = null;
     }
 
 	public Room(int theRow, int theCol) { // how will rooms get their riddles? 
 		myDoorMap = null;
-		myItems = new HashMap<>();
+		myItem = null;
 	    setRandomFloor(); 
 	    mySmallIcon = MAP_ICON; 
 	    myIndex = new RoomIndex(theRow, theCol);
 	    myPlayer = null;
 	    isVisited = false;
-	    myArea = new Rectangle(new Point(0,0), new Dimension(SIZE,SIZE));
 	}
     
     void setDoors(HashMap<Direction, Door> theDoors) {
@@ -100,10 +103,17 @@ public class Room {
 	/**
 	 * @return the myItems
 	 */
-	public Map<Item, PiecePoint> getItems() {
-		return myItems;
+	public Item getItem() {
+		return myItem;
 	}
 
+	/**
+	 * 
+	 */
+	public void setItem(Item theItem) {
+		myItem = theItem;
+	}
+	
 	/**
 	 * Place an item in this room
 	 * @param myItem the myItem to set
@@ -112,7 +122,7 @@ public class Room {
 	    if(theGamePiece == null) {
 	        throw new NullPointerException("GamePiece cannot be null.");
 	    }
-		myItems.put(theGamePiece, theCoordinates);
+		myItem = theGamePiece;
 	}
 	
 	/**
@@ -206,6 +216,34 @@ public class Room {
 		return MAP_ICON_SIZE;
 	}
 
+	/**
+	 * @return the northDoorZone
+	 */
+	public static Rectangle getNorthDoorZone() {
+		return NORTH_DOOR_ZONE;
+	}
+
+	/**
+	 * @return the southDoorZone
+	 */
+	public static Rectangle getSouthDoorZone() {
+		return SOUTH_DOOR_ZONE;
+	}
+
+	/**
+	 * @return the westDoorZone
+	 */
+	public static Rectangle getWestDoorZone() {
+		return WEST_DOOR_ZONE;
+	}
+
+	/**
+	 * @return the eastDoorZone
+	 */
+	public static Rectangle getEastDoorZone() {
+		return EAST_DOOR_ZONE;
+	}
+
 	public String toString() {
 		return myIndex.toString();
 	}
@@ -245,30 +283,14 @@ public class Room {
 	}
 	
 	public boolean isValidLocation(Player playerProjected) {
-//		int inXCoordinate = (int)thePoint.getX();
-//		int inYCoordinate = (int)thePoint.getY();
-		
 		// check for out of room bounds
-		//TODO: give room a rectangle for easy bounds?
-		if(!this.myArea.contains(playerProjected.getArea())) {
+		if(!AREA.contains(playerProjected.getIconArea())) {
 			return false;
 		}
 		
-//		if(inYCoordinate > (SIZE - Player.getSpeed() - Skin.getSize()) || inYCoordinate < Player.getSpeed()) {
-//			return false;
-//		}
-		
 		// check for fixture overlap
-		//TODO:why is it not finding that the rectangle contains the point?
-		//TODO: once this works, and printlns not needed, 
-		//combine both the if conditions into 1 statement
-		if(myFixture != null) {
-			System.out.println("Chest area: " + myFixture.getBase());
-			System.out.println("Player area: " + playerProjected.getArea());
-			System.out.println("Do they intersect? " + myFixture.getBase().intersects(playerProjected.getArea()));
-			if(myFixture.getBase().intersects(playerProjected.getArea())) {
+		if(myFixture != null && myFixture.getBase().intersects(playerProjected.getBase())) {
 				return false;
-			}
 		}
 		return true;
 	}

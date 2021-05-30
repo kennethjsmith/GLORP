@@ -265,7 +265,8 @@ public class Maze {
 	
 	//places an item at a random point in room 2, 2
 	public void placeItems() {
-		myMaze[2][2].addItem(new Item(), PiecePoint.randomPoint(Room.getSize(), Room.getSize()));
+		PiecePoint randomCoordinates = PiecePoint.randomPoint(Room.getSize()-Item.getWidth(), Room.getSize()-Item.getHeight());
+		myMaze[2][2].addItem(new Item(randomCoordinates), randomCoordinates);
 	}
 
 	/**

@@ -6,12 +6,13 @@ import view.GameIcon;
 
 public class Fixture extends GamePiece{
 	private final static int ICON_WIDTH = 150;
-	private final static int ICON_HEIGHT = 125;
+	private final static int ICON_HEIGHT = 100;
 	private final static GameIcon ICON = new GameIcon("src/icons/chest_closed.png", ICON_WIDTH, ICON_HEIGHT);
-	private Rectangle myArea; // vicinity
+	private Rectangle myBase;
+	private Rectangle myIconArea;
 	
-	private int myIconXCoordinate;
-	private int myIconYCoordinate;
+	//private int myIconXCoordinate;
+	//private int myIconYCoordinate;
 
 	
 	public Fixture() {
@@ -20,9 +21,10 @@ public class Fixture extends GamePiece{
 	
 	public Fixture(int theXCoordinate, int theYCoordinate) {
 		super();
-		myIconXCoordinate = theXCoordinate;
-		myIconYCoordinate = theYCoordinate;
-		myArea = new Rectangle(theXCoordinate, theYCoordinate + (ICON_HEIGHT/2), ICON_WIDTH, ICON_HEIGHT/2);
+		//myIconXCoordinate = theXCoordinate;
+		//myIconYCoordinate = theYCoordinate;
+		myIconArea = new Rectangle(theXCoordinate, theYCoordinate, ICON_WIDTH, ICON_HEIGHT);
+		myBase = new Rectangle(theXCoordinate, theYCoordinate + (ICON_HEIGHT/2), ICON_WIDTH, (ICON_HEIGHT/2));
 	}
 
 	/**
@@ -36,7 +38,14 @@ public class Fixture extends GamePiece{
 	 * @return the myRectangle
 	 */
 	public Rectangle getBase() {
-		return myArea;
+		return myBase;
+	}
+
+	/**
+	 * @return the myIconArea
+	 */
+	public Rectangle getIconArea() {
+		return myIconArea;
 	}
 	
 }

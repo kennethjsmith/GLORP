@@ -64,16 +64,15 @@ public class RoomPanel extends JPanel {
     		//TODO: this floor icon will need to come from the room class
     		currRoom.getLargeIcon().paintIcon(this, g, 0, 0);
     		
-    		// paint fixture
-    		Fixture inFixture = currRoom.getFixture();
-    		if(inFixture != null) inFixture.getIcon().paintIcon(this, g, 175, 200);
-    		
-    		// paint items
-    		Map<Item, PiecePoint> inItems = currRoom.getItems();
-    		for(Entry<Item, PiecePoint> entry : inItems.entrySet()) {
-    			entry.getKey().getRoomIcon().paintIcon(this, g, (int)entry.getValue().getX(),(int) entry.getValue().getY());
+    		// paint items (we only have one item per room for now)
+//    		Map<Item, PiecePoint> inItems = currRoom.getItem();
+//    		for(Entry<Item, PiecePoint> entry : inItems.entrySet()) {
+//    			entry.getKey().getRoomIcon().paintIcon(this, g, (int)entry.getValue().getX(),(int) entry.getValue().getY());
+//    		}
+    		Item inItem = currRoom.getItem();
+    		if(inItem != null) {
+    			inItem.getRoomIcon().paintIcon(this, g, (int)inItem.getIconArea().getX(),(int)inItem.getIconArea().getY());
     		}
-    		
 			GameIcon westDoorIcon = currRoom.getDoors().get(Direction.WEST).getRoomIcon();
 			westDoorIcon.paintIcon(this, g, 0, 200);
     		
@@ -86,9 +85,17 @@ public class RoomPanel extends JPanel {
     		GameIcon southDoorIcon = currRoom.getDoors().get(Direction.SOUTH).getRoomIcon();
     		southDoorIcon.paintIcon(this, g, 200, 480);
     		
-    		myCurrentPlayer.getRoomIcon().paintIcon(this, g, (int)myCurrentPlayer.getCoordinate().getX(), (int)myCurrentPlayer.getCoordinate().getY());
-    		//System.out.println(myCurrentPlayer.getRoomIcon());
-    		//System.out.println(myCurrentPlayer);
+    		// paint fixture and player
+    		Fixture inFixture = currRoom.getFixture();
+    		if(inFixture != null && myCurrentPlayer.getBase().intersects(inFixture.getIconArea())) {
+    			myCurrentPlayer.getRoomIcon().paintIcon(this, g, (int)myCurrentPlayer.getCoordinate().getX(), (int)myCurrentPlayer.getCoordinate().getY());
+    			inFixture.getIcon().paintIcon(this, g, 175, 200);
+    		}
+    		else if(inFixture != null) {
+    			inFixture.getIcon().paintIcon(this, g, 175, 200);
+    			myCurrentPlayer.getRoomIcon().paintIcon(this, g, (int)myCurrentPlayer.getCoordinate().getX(), (int)myCurrentPlayer.getCoordinate().getY());
+    		}
+    		else myCurrentPlayer.getRoomIcon().paintIcon(this, g, (int)myCurrentPlayer.getCoordinate().getX(), (int)myCurrentPlayer.getCoordinate().getY());
     	}
     }
 

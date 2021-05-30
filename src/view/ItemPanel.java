@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
+import model.Item;
+import model.Player;
 import model.Room;
 
 
@@ -20,6 +22,14 @@ public class ItemPanel extends JPanel{
 	private final String TITLE = "Items";
 	private final static int WIDTH = 285;
 	private final static int HEIGHT = 125;
+	
+	private JPanel item1;
+    private JPanel item2;
+    private JPanel item3;
+    JLabel item1Label;
+    JLabel item2Label;
+    JLabel item3Label;
+	
 
 	// Constructor 
 	public ItemPanel() {
@@ -33,9 +43,9 @@ public class ItemPanel extends JPanel{
         
         setBackground(Color.darkGray);
         
-        JPanel item1 = new JPanel();
-        JPanel item2 = new JPanel();
-        JPanel item3 = new JPanel();
+        item1 = new JPanel();
+        item2 = new JPanel();
+        item3 = new JPanel();
         
         item1.setBackground(Color.darkGray);
         item2.setBackground(Color.darkGray);
@@ -45,14 +55,11 @@ public class ItemPanel extends JPanel{
         item2.setPreferredSize(new Dimension(80,80));
         item3.setPreferredSize(new Dimension(80,80));
         
-        GameIcon key = new GameIcon("src/icons/key_item_icon.png");
-        GameIcon blank = new GameIcon("src/icons/blank_item_icon.png");
-        key.resize(75);
-        blank.resize(75);
+        GameIcon blank = new GameIcon("src/icons/blank_item_icon.png", 75);
         
-        JLabel item1Label = new JLabel(key);
-        JLabel item2Label = new JLabel(blank);
-        JLabel item3Label = new JLabel(blank);
+        item1Label = new JLabel(blank);
+        item2Label = new JLabel(blank);
+        item3Label = new JLabel(blank);
         
         item1.add(item1Label);
         item2.add(item2Label);
@@ -62,6 +69,12 @@ public class ItemPanel extends JPanel{
         add(item2);
         add(item3);
     }
+	
+	public void update(Player thePlayer) {
+		for(Item i : thePlayer.getInventory()) {
+			item1Label.setIcon(i.getItemPanelIcon());
+		}
+	}
 	
 	@Override
     public void paintComponent(Graphics g) {
