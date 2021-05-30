@@ -220,7 +220,6 @@ public class Room {
 	public Direction validateDirection(Player thePlayer, Direction theDirection) throws CloneNotSupportedException {
 		Player playerProjected = (Player) thePlayer.clone();
 		//playerProjected.setArea(thePlayer.getArea());
-		System.out.println("VD player area: " + playerProjected.getArea());
 		playerProjected.move(theDirection);
 		Direction validDirection = null;
 		
@@ -249,12 +248,11 @@ public class Room {
 //		int inXCoordinate = (int)thePoint.getX();
 //		int inYCoordinate = (int)thePoint.getY();
 		
-		// THIS IF STATEMENT IS NOT CORRECT/COMPLETE. THE PLAYER CANNOT MOVE WHEN THE IF IS UNCOMMENTED.
 		// check for out of room bounds
 		//TODO: give room a rectangle for easy bounds?
-//		if(this.myArea.contains(playerProjected.getArea())) {
-//			return false;
-//		}
+		if(!this.myArea.contains(playerProjected.getArea())) {
+			return false;
+		}
 		
 //		if(inYCoordinate > (SIZE - Player.getSpeed() - Skin.getSize()) || inYCoordinate < Player.getSpeed()) {
 //			return false;

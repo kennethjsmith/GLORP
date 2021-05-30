@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Set;
@@ -9,7 +10,7 @@ import javax.swing.ImageIcon;
 
 import view.GameIcon;
 
-public class Player extends GamePiece implements Cloneable{
+public class Player extends GamePiece implements Cloneable {
 	
 	// fields
 	private PiecePoint myCoordinate;
@@ -30,12 +31,13 @@ public class Player extends GamePiece implements Cloneable{
 	
 	public Player() {
 		super();
-		myCoordinate = new PiecePoint();
+		myCoordinate = new PiecePoint(5, 5);
 		mySkin = DEFAULT_SKIN;
 		myIconDirection = IconDirection.RIGHT;
 		myStride = 0;
 		myRoomIcon = mySkin.getIcon(myIconDirection, myStride);
-		setArea(new Rectangle(myCoordinate, new Dimension (this.getSize(), this.getSize())));
+		myArea = new Rectangle(myCoordinate, new Dimension (this.getSize(), this.getSize()));
+		//setArea(new Rectangle(myCoordinate, new Dimension (this.getSize(), this.getSize())));
 	}
 	
 	public Player(Skin theSkin) {
@@ -72,16 +74,8 @@ public class Player extends GamePiece implements Cloneable{
 		updateArea();
 	}
 	
-	// THIS METHOD IS NOT WORKING - THE AREA IS NOT BEING UPDATED
 	public void updateArea() {
-		System.out.println("myCoordinate.getX(): " + (int)(myCoordinate.getX()));
-		System.out.println("myCoordinate.getY(): " + (int)(myCoordinate.getY()));
-
-		System.out.println("player updateArea x: " + myArea.x + ", y: " + myArea.y);
-		myArea.setBounds((int)myCoordinate.getX(), (int)myCoordinate.getY(), 10, 10);
-		myArea.setLocation(myCoordinate);
-		System.out.println("player updateArea x: " + myArea.x + ", y: " + myArea.y);
-
+		myArea.setLocation((int)myCoordinate.getX(), (int)myCoordinate.getY());
 	}
 	
 	public void updateRoomIcon() {

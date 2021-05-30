@@ -17,6 +17,8 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import model.Maze;
+
 public class GlorpGUI extends JFrame {
     
     // static final fields (class constants)
@@ -86,9 +88,10 @@ public class GlorpGUI extends JFrame {
         
         
         addMenuBar();
-        
+              
         pack();
         repaint();
+        
     }
 
     public void addMenuBar() {

@@ -12,12 +12,10 @@ public class PiecePoint extends Point{
 	
 	public PiecePoint() {
 		super();
-		x = 5;
-		y = 5;
 	}
 	
 	public PiecePoint(int theX, int theY) {
-		super();
+		super(theX, theY);
 		x = theX;
 		y = theY;
 	}

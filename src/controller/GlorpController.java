@@ -52,7 +52,6 @@ public class GlorpController implements KeyListener{
         
         Direction validDirection = null;
 		try {
-			System.out.println("key pressed player area: " + myPlayer.getArea());
 			validDirection = myMaze.getCurrRoom().validateDirection(myPlayer, inDirection);
 			
 			// ADDED THE BELOW LINE -H
@@ -67,6 +66,8 @@ public class GlorpController implements KeyListener{
         myWindow.repaint();
     }
 
+	// TODO change name to check door interactions?
+	// Or helper methods, one for door, one for item
     private void checkInteractions() {
 		// TODO: fix this hardcoded door interaction
     	//NOTES:
