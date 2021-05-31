@@ -27,8 +27,8 @@ public class RiddlePanel extends JPanel {
 	private final static int WIDTH = 300;
 	private final static int HEIGHT = 500;
 	private final String TITLE = "Riddle";
-	private final GameIcon SPHINX = new GameIcon("src/icons/sphinx.png", 200);
-	private final GameIcon SPEECH_BUBBLE = new GameIcon("src/icons/speech_bubble.png", 300);
+	private final GameIcon SPHINX = new GameIcon("src/icons/sphinx.png", 225,162);
+	private final GameIcon SPEECH_BUBBLE = new GameIcon("src/icons/speech_bubble.png", 290, 250);
 	private final GameIcon BACKGROUND = new GameIcon("src/icons/sand.png", WIDTH, HEIGHT);
 	
 	/**
@@ -75,8 +75,8 @@ public class RiddlePanel extends JPanel {
     	super.paintComponent(g);
     	// TODO: the sphinx is "borrowed" art. lets replace it!
     	BACKGROUND.paintIcon(this, g, 0, 0);
-    	SPEECH_BUBBLE.paintIcon(this, g, 0, 10);
-    	SPHINX.paintIcon(this, g, 95, 200);
+    	SPEECH_BUBBLE.paintIcon(this, g, 5, 20);
+    	SPHINX.paintIcon(this, g, 70, 200);
     	
     }
 }
