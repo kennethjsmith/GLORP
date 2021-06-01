@@ -30,7 +30,7 @@ public class Player extends GamePiece implements Cloneable {
 	private Rectangle myIconArea;
 	private Rectangle myBase;
 
-	private static final int SPEED = 20;
+	private static final int SPEED = 10;
 	private static final int PLAYER_ROOM_ICON_SIZE = 100;
 	private static final int PLAYER_MAP_ICON_SIZE = 10;
 	private static final Skin DEFAULT_SKIN = new Skin(SkinType.ALIEN);
@@ -46,6 +46,7 @@ public class Player extends GamePiece implements Cloneable {
 		myIconDirection = IconDirection.RIGHT;
 		myStride = 0;
 		myRoomIcon = mySkin.getIcon(myIconDirection, myStride);
+		skipFrame = false;
 		myIconArea = new Rectangle(myCoordinate, new Dimension (PLAYER_ROOM_ICON_SIZE, PLAYER_ROOM_ICON_SIZE));
 		myBase = new Rectangle((int)myCoordinate.getX()+10, (int)myCoordinate.getY()+(PLAYER_ROOM_ICON_SIZE-20), PLAYER_ROOM_ICON_SIZE-20, 20);
 	}
@@ -53,14 +54,18 @@ public class Player extends GamePiece implements Cloneable {
 	/**
 	 * @param theSkin
 	 */
-	public Player(Skin theSkin) {
+	public Player(SkinType theSkinType) {
 		super();
-		myCoordinate = new PiecePoint();
-		mySkin = theSkin;
+		myInventory = new ArrayList<>();
+		myCoordinate = new PiecePoint(200,300);
+		mySkin = new Skin(theSkinType);
 		myIconDirection = IconDirection.RIGHT;
 		myStride = 0;
 		myRoomIcon = mySkin.getIcon(myIconDirection, myStride);
 		skipFrame = false;
+		myIconArea = new Rectangle(myCoordinate, new Dimension (PLAYER_ROOM_ICON_SIZE, PLAYER_ROOM_ICON_SIZE));
+		myBase = new Rectangle((int)myCoordinate.getX()+10, (int)myCoordinate.getY()+(PLAYER_ROOM_ICON_SIZE-20), PLAYER_ROOM_ICON_SIZE-20, 20);
+	
 	}
 	
 	/**
@@ -184,7 +189,7 @@ public class Player extends GamePiece implements Cloneable {
 	    try {
 	        clone = (Player) super.clone();
 	    } catch (CloneNotSupportedException e) {
-	        clone = new Player(this.getSkin());
+	        clone = new Player(this.getSkin().getType());
 	    }
 	    clone.skipFrame = this.skipFrame;
 	    clone.myCoordinate = (PiecePoint) this.myCoordinate.clone();

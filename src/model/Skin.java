@@ -14,6 +14,8 @@ public class Skin {
 	// fields
 	private SkinType myType;
 	private GameIcon myMapIcon;
+	GameIcon[] myLeftIcons;
+	GameIcon[] myRightIcons;
 	private Map<IconDirection, GameIcon[]> myRoomIconMap;
 	// TODO: add front/rear facing icons
 	private static final int DEFAULT_SIZE = 100;
@@ -24,8 +26,8 @@ public class Skin {
 	public Skin(SkinType theType){
     	myType = theType;
         myRoomIconMap = new HashMap<>();
-        GameIcon[] myLeftIcons = loadRoomIcons(IconDirection.LEFT, myType);
-        GameIcon[] myRightIcons = loadRoomIcons(IconDirection.RIGHT, myType);
+        myLeftIcons = loadRoomIcons(IconDirection.LEFT, myType);
+        myRightIcons = loadRoomIcons(IconDirection.RIGHT, myType);
         myRoomIconMap.put(IconDirection.LEFT, myLeftIcons);
         myRoomIconMap.put(IconDirection.RIGHT, myRightIcons);
         myMapIcon = loadMapIcon(theType);
@@ -38,8 +40,7 @@ public class Skin {
 		GameIcon[] inRoomIcons = new GameIcon[5];
 		for (int i = 0; i <= 4; i++) { 
 		    String inFileName = getRoomIconFileName(theIconDirection.getLabel(), theSkinType.getLabel(), i);
-		    inRoomIcons[i] = new GameIcon(inFileName);
-		    inRoomIcons[i].resize(DEFAULT_SIZE);
+		    inRoomIcons[i] = new GameIcon(inFileName, theSkinType.getMyWidth(), theSkinType.getMyHeight());
 		}
 		return inRoomIcons;
 	}
@@ -93,5 +94,24 @@ public class Skin {
 	 */
 	public static int getSize() {
 		return DEFAULT_SIZE;
+	}
+
+	/**
+	 * @return the myType
+	 */
+	public SkinType getType() {
+		return myType;
+	}
+
+	/**
+	 * @param myType the myType to set
+	 */
+	public void setType(SkinType theType) {
+		myType = theType;
+		myLeftIcons = loadRoomIcons(IconDirection.LEFT, theType);
+        myRightIcons = loadRoomIcons(IconDirection.RIGHT, theType);
+        myRoomIconMap.put(IconDirection.LEFT, myLeftIcons);
+        myRoomIconMap.put(IconDirection.RIGHT, myRightIcons);
+        myMapIcon = loadMapIcon(theType);
 	}
 }

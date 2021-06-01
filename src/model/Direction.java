@@ -18,7 +18,7 @@ public enum Direction {
 	WEST("W", -1, 0),
 	NORTHWEST("NW", -1, -1);
 
-	public final String myLabel;
+	private final String myLabel;
 	private final int dxMultiplier;
 	private final int dyMultiplier;
 

@@ -57,7 +57,7 @@ public class Maze {
 		myMaze = new Room[LENGTH+BORDER_BUFFER][WIDTH+BORDER_BUFFER];
 		
 		// TODO: Allow option for skin type input
-		myPlayer = new Player();
+		myPlayer = new Player(SkinType.MOONINITE);
 		
 		// Fills out the 2d array, myMaze, with rooms
 		addRooms();

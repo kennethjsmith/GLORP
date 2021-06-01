@@ -5,17 +5,35 @@ package model;
  * @version 
  */
 public enum SkinType {
-	ALIEN("ALIEN");
+	MOONINITE("IGNIGNOKT", 110, 100),
+	ALIEN("ALIEN", 100, 100);
 	
-	public final String myLabel;
+	private final String myLabel;
+	private final int myWidth;
+	private final int myHeight;
+	
 
-    private SkinType(String theLabel) {
+    private SkinType(String theLabel, int theWidth, int theHeight) {
     	myLabel = theLabel;
+    	myWidth = theWidth;
+    	myHeight = theHeight;
     }
     /**
 	 * @return the myLabel
 	 */
 	public String getLabel() {
 		return myLabel;
+	}
+	/**
+	 * @return the myWidth
+	 */
+	public int getMyWidth() {
+		return myWidth;
+	}
+	/**
+	 * @return the myHeight
+	 */
+	public int getMyHeight() {
+		return myHeight;
 	}
 }

@@ -340,8 +340,6 @@ public class Room {
 		if(!AREA.contains(playerProjected.getIconArea())) {
 			return false;
 		}
-		if(myFixture != null) System.out.println(myFixture.getBase());
-		System.out.println(playerProjected.getBase());
 		// check for fixture overlap
 		if(myFixture != null && myFixture.getBase().intersects(playerProjected.getBase())) {
 				return false;
