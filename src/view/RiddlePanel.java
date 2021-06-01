@@ -37,9 +37,14 @@ public class RiddlePanel extends JPanel {
 	public RiddlePanel() {
         setPreferredSize(new Dimension(WIDTH,HEIGHT));
         // add border
-        TitledBorder border = BorderFactory.createTitledBorder(TITLE);
-        border.setTitleColor(Color.YELLOW);
-        setBorder(border);
+//        TitledBorder border = BorderFactory.createTitledBorder(TITLE);
+//        border.setTitleColor(Color.YELLOW);
+//        border.setTitleJustification(TitledBorder.CENTER);
+//        setBorder(border);
+        Border raisedbevel = BorderFactory.createRaisedBevelBorder();
+		Border loweredbevel = BorderFactory.createLoweredBevelBorder();
+		Border compound = BorderFactory.createCompoundBorder(raisedbevel, loweredbevel);
+		setBorder(compound);
         
         setLayout(new GridBagLayout()); 
         GridBagConstraints c = new GridBagConstraints();

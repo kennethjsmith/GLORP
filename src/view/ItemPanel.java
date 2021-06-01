@@ -45,8 +45,9 @@ public class ItemPanel extends JPanel{
         setPreferredSize(new Dimension(WIDTH,HEIGHT));
         TitledBorder border = BorderFactory.createTitledBorder(TITLE);
         border.setTitleColor(Color.WHITE);
+        border.setTitleJustification(TitledBorder.CENTER);
         setBorder(border);
-        setLayout(new FlowLayout(FlowLayout.CENTER));
+        setLayout(new FlowLayout(FlowLayout.LEADING, 8, 0)); //better solution?
         
         setBackground(Color.darkGray);
         
