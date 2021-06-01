@@ -21,8 +21,6 @@ import view.GameIcon;
  */
 // TODO: create subclasses (start and end rooms)
 public class Room {
-    private static int MAX_DOORS = 4;
-    private Door[] myDoors; // for now... 4 doors each 
     private HashMap<Direction, Door> myDoorMap;
 	private Item myItem; 
 	private Fixture myFixture;

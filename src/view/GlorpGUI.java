@@ -46,7 +46,6 @@ public class GlorpGUI extends JFrame {
     private RiddlePanel myRiddlePanel;
     private ItemPanel myItemPanel;
     private TitlePanel myTitlePanel;
-    //TODO: add panels for maze map and sphinx/questions
 
     /**
      * 
@@ -124,8 +123,15 @@ public class GlorpGUI extends JFrame {
         help.add(about);
         JMenuItem instructions = new JMenuItem("Game Play Instructions");
         help.add(instructions);
-        JMenuItem cheats = new JMenuItem("Cheats");
+        JMenu cheats = new JMenu("Cheats");
+        //JMenuItem cheats = new JMenuItem("Cheats");
         help.add(cheats);
+        JMenuItem unlockAllDoors = new JMenuItem("Unlock all doors");
+        cheats.add(unlockAllDoors);
+        unlockAllDoors.addActionListener(e ->{
+        	Maze.getInstance().unlockedAllDoors();
+        	this.repaint();
+        });
         
         
         myMenubar.add(file);
