@@ -124,6 +124,7 @@ public class Maze {
 	    
 		myStartRoom = this.getRoom(inStartRow, inStartCol);
 		myStartRoom.setCurrentRoom(true);
+		myStartRoom.setFixture(new Fixture(150, 100, FixtureType.SHIP)); // Add ship
 		myStartRoom.setPlayer(myPlayer);
 		
 		int inWinRow = 0, inWinCol = 0;
@@ -139,7 +140,7 @@ public class Maze {
 		myWinRoom = this.getRoom(inWinRow, inWinCol);
 		myWinRoom.setWinRoom(true);
 		myWinRoom.setLargeIcon(Carpet.getSpecialIcon());
-		myWinRoom.setFixture(new Fixture(175, 200)); // Add chest
+		myWinRoom.setFixture(new Fixture(175, 200, FixtureType.CHEST)); // Add chest
 		placeItems(inStartRow, inStartCol, inWinRow, inWinCol);
 	}
 	
@@ -158,6 +159,7 @@ public class Maze {
 		}
 		myMaze[keyRow][keyCol].addItem(new Item(randomCoordinates), randomCoordinates);
 		myKeyRoom = myMaze[keyRow][keyCol];
+		myKeyRoom.setSmallIcon(Room.getKeyMapIcon());
 
 	}
 
@@ -426,7 +428,7 @@ public class Maze {
 
 	// CHEAT METHOD
 	// Unlocks every door in the maze except doors that lead to border rooms
-	public void unlockedAllDoors() {
+	public void unlockAllDoors() {
 		
 		// Unlocks all doors in the middle group of rooms
 		for(int i = 2; i < LENGTH; i++) {

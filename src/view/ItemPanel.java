@@ -26,7 +26,7 @@ public class ItemPanel extends JPanel{
 	// fields
 	private final String TITLE = "Items";
 	private final static int WIDTH = 285;
-	private final static int HEIGHT = 125;
+	private final static int HEIGHT = 115;
 	
 	private JPanel item1;
     private JPanel item2;

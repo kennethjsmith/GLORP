@@ -78,6 +78,7 @@ public class GlorpController implements KeyListener{
     	if(inItem != null && myPlayer.getIconArea().intersects(inItem.getIconArea())) {
     		myPlayer.getInventory().add(myMaze.getCurrRoom().getItem());
     		myMaze.getCurrRoom().setItem(null);
+    		myMaze.getCurrRoom().setCurrentRoom(true);
     		myWindow.updateItemPanel(myPlayer);
     	}
     	// check doors

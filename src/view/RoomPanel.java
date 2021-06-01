@@ -97,10 +97,10 @@ public class RoomPanel extends JPanel {
     		Fixture inFixture = currRoom.getFixture();
     		if(inFixture != null && myCurrentPlayer.getBase().intersects(inFixture.getIconArea())) {
     			myCurrentPlayer.getRoomIcon().paintIcon(this, g, (int)myCurrentPlayer.getCoordinate().getX(), (int)myCurrentPlayer.getCoordinate().getY());
-    			inFixture.getIcon().paintIcon(this, g, 175, 200);
+    			inFixture.getIcon().paintIcon(this, g, inFixture.getMyXCoordinate(), inFixture.getMyYCoordinate());
     		}
     		else if(inFixture != null) {
-    			inFixture.getIcon().paintIcon(this, g, 175, 200);
+    			inFixture.getIcon().paintIcon(this, g, inFixture.getMyXCoordinate(), inFixture.getMyYCoordinate());
     			myCurrentPlayer.getRoomIcon().paintIcon(this, g, (int)myCurrentPlayer.getCoordinate().getX(), (int)myCurrentPlayer.getCoordinate().getY());
     		}
     		else myCurrentPlayer.getRoomIcon().paintIcon(this, g, (int)myCurrentPlayer.getCoordinate().getX(), (int)myCurrentPlayer.getCoordinate().getY());

@@ -48,7 +48,8 @@ public class Room {
 	private static final GameIcon MAP_ICON_CURRENT = new GameIcon("src/icons/map_icon_current.png", MAP_ICON_SIZE);
 	private static final GameIcon MAP_ICON_WIN = new GameIcon("src/icons/map_icon_win.png", MAP_ICON_SIZE);
 	private static final GameIcon MAP_ICON_CURRENT_WIN = new GameIcon("src/icons/map_icon_current_win.png", MAP_ICON_SIZE);
-	
+	private static final GameIcon MAP_ICON_KEY = new GameIcon("src/icons/map_icon_key.png", MAP_ICON_SIZE);
+	private static final GameIcon MAP_ICON_CURRENT_KEY = new GameIcon("src/icons/map_icon_current_key.png", MAP_ICON_SIZE);
 	private final static Random RAND = new Random();
 	
 	
@@ -123,6 +124,7 @@ public class Room {
 	 */
 	public void setItem(Item theItem) {
 		myItem = theItem;
+		if (theItem == null) mySmallIcon = MAP_ICON_KEY;
 	}
 	
 	/**
@@ -215,10 +217,14 @@ public class Room {
 		
 		if(isCurrentRoom) {
 			if(isWinRoom) mySmallIcon = MAP_ICON_CURRENT_WIN;
+			else if (myItem != null) mySmallIcon = MAP_ICON_CURRENT_KEY;
 			else mySmallIcon = MAP_ICON_CURRENT;
 		}
-		else if (isWinRoom) mySmallIcon = MAP_ICON_WIN;
-		else mySmallIcon = MAP_ICON;
+		else {
+			if (isWinRoom) mySmallIcon = MAP_ICON_WIN;
+			else if (myItem != null) mySmallIcon = MAP_ICON_KEY;
+			else mySmallIcon = MAP_ICON;
+		}
 	}
 	
 	/**
@@ -229,6 +235,14 @@ public class Room {
 		
 		if(isWinRoom) mySmallIcon = MAP_ICON_WIN;
 		else mySmallIcon = MAP_ICON;
+	}
+	
+	/**
+	 * @return the map icon with the key in it
+	 */
+	public static GameIcon getKeyMapIcon() {
+		return MAP_ICON_KEY;
+
 	}
 	
 	/**
@@ -326,7 +340,8 @@ public class Room {
 		if(!AREA.contains(playerProjected.getIconArea())) {
 			return false;
 		}
-		
+		if(myFixture != null) System.out.println(myFixture.getBase());
+		System.out.println(playerProjected.getBase());
 		// check for fixture overlap
 		if(myFixture != null && myFixture.getBase().intersects(playerProjected.getBase())) {
 				return false;

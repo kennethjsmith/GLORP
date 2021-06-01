@@ -73,7 +73,6 @@ public class RiddlePanel extends JPanel {
 	@Override
     public void paintComponent(Graphics g) {  
     	super.paintComponent(g);
-    	// TODO: the sphinx is "borrowed" art. lets replace it!
     	BACKGROUND.paintIcon(this, g, 0, 0);
     	SPEECH_BUBBLE.paintIcon(this, g, 5, 20);
     	SPHINX.paintIcon(this, g, 70, 200);

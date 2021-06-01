@@ -41,13 +41,13 @@ public class Player extends GamePiece implements Cloneable {
 	public Player() {
 		super();
 		myInventory = new ArrayList<>();
-		myCoordinate = new PiecePoint(200, 200);
+		myCoordinate = new PiecePoint(200, 300);
 		mySkin = DEFAULT_SKIN;
 		myIconDirection = IconDirection.RIGHT;
 		myStride = 0;
 		myRoomIcon = mySkin.getIcon(myIconDirection, myStride);
 		myIconArea = new Rectangle(myCoordinate, new Dimension (PLAYER_ROOM_ICON_SIZE, PLAYER_ROOM_ICON_SIZE));
-		myBase = new Rectangle((int)myCoordinate.getX()+10, (int)myCoordinate.getY()+(2*PLAYER_ROOM_ICON_SIZE/3), PLAYER_ROOM_ICON_SIZE-20, (PLAYER_ROOM_ICON_SIZE/3));
+		myBase = new Rectangle((int)myCoordinate.getX()+10, (int)myCoordinate.getY()+(PLAYER_ROOM_ICON_SIZE-20), PLAYER_ROOM_ICON_SIZE-20, 20);
 	}
 	
 	/**

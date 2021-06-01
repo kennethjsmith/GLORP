@@ -10,11 +10,15 @@ import view.GameIcon;
  * @version
  */
 public class Fixture extends GamePiece{
-	private final static int ICON_WIDTH = 150;
-	private final static int ICON_HEIGHT = 100;
-	private final static GameIcon ICON = new GameIcon("src/icons/chest_closed.png", ICON_WIDTH, ICON_HEIGHT);
 	private Rectangle myBase;
 	private Rectangle myIconArea;
+	private FixtureType myType;
+	private int myWidth;
+	private int myHeight;
+	private int myXCoordinate;
+	private int myYCoordinate;
+	private GameIcon myIcon;
+	
 	
 	/**
 	 * A default constructor.
@@ -29,17 +33,29 @@ public class Fixture extends GamePiece{
 	 * @param theXCoordinate
 	 * @param theYCoordinate
 	 */
-	public Fixture(int theXCoordinate, int theYCoordinate) {
+	public Fixture(int theXCoordinate, int theYCoordinate, FixtureType theFixtureType) {
 		super();
-		myIconArea = new Rectangle(theXCoordinate, theYCoordinate, ICON_WIDTH, ICON_HEIGHT);
-		myBase = new Rectangle(theXCoordinate, theYCoordinate + (ICON_HEIGHT/2), ICON_WIDTH, (ICON_HEIGHT/2));
+		myXCoordinate = theXCoordinate;
+		myYCoordinate = theYCoordinate;
+		
+		if(theFixtureType == FixtureType.CHEST) {
+			myIcon = FixtureType.getChestIcon();
+			myIconArea = new Rectangle(theXCoordinate, theYCoordinate, myIcon.getIconWidth(), myIcon.getIconHeight());
+			myBase = new Rectangle(theXCoordinate, theYCoordinate + (myIcon.getIconHeight()/2), myIcon.getIconWidth(), (myIcon.getIconHeight()/2));
+		
+		}
+		if(theFixtureType == FixtureType.SHIP) {
+			myIcon = FixtureType.getShipIcon();
+			myIconArea = new Rectangle(theXCoordinate, theYCoordinate, myIcon.getIconWidth(), myIcon.getIconHeight()-50);
+			myBase = new Rectangle(theXCoordinate, theYCoordinate + (myIcon.getIconHeight()-30), myIcon.getIconWidth(), 20);
+		}
 	}
 
 	/**
 	 * @return the myIcon
 	 */
 	public GameIcon getIcon() {
-		return ICON;
+		return myIcon;
 	}
 
 	/**
@@ -54,6 +70,20 @@ public class Fixture extends GamePiece{
 	 */
 	public Rectangle getIconArea() {
 		return myIconArea;
+	}
+
+	/**
+	 * @return the myXCoordinate
+	 */
+	public int getMyXCoordinate() {
+		return myXCoordinate;
+	}
+
+	/**
+	 * @return the myYCoordinate
+	 */
+	public int getMyYCoordinate() {
+		return myYCoordinate;
 	}
 	
 }

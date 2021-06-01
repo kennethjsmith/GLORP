@@ -126,10 +126,10 @@ public class GlorpGUI extends JFrame {
         JMenu cheats = new JMenu("Cheats");
         //JMenuItem cheats = new JMenuItem("Cheats");
         help.add(cheats);
-        JMenuItem unlockAllDoors = new JMenuItem("Unlock all doors");
+        JMenuItem unlockAllDoors = new JMenuItem("Unlock All Doors");
         cheats.add(unlockAllDoors);
         unlockAllDoors.addActionListener(e ->{
-        	Maze.getInstance().unlockedAllDoors();
+        	Maze.getInstance().unlockAllDoors();
         	this.repaint();
         });
         
