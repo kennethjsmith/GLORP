@@ -35,10 +35,10 @@ public class TitlePanel extends JPanel{
 		setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(WIDTH,HEIGHT));
 		setBackground(Color.darkGray);
-		Border raisedbevel = BorderFactory.createRaisedBevelBorder();
-		Border loweredbevel = BorderFactory.createLoweredBevelBorder();
-		Border compound = BorderFactory.createCompoundBorder(raisedbevel, loweredbevel);
-		setBorder(compound);
+//		Border raisedbevel = BorderFactory.createRaisedBevelBorder();
+//		Border loweredbevel = BorderFactory.createLoweredBevelBorder();
+//		Border compound = BorderFactory.createCompoundBorder(raisedbevel, loweredbevel);
+//		setBorder(compound);
 
 	}
 	
