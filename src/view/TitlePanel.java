@@ -48,7 +48,7 @@ public class TitlePanel extends JPanel{
 	@Override
     public void paintComponent(Graphics g) {
     	super.paintComponent(g);
-    	BACKGROUND_ICON.paintIcon(this, g, 0, 0);
+    	//BACKGROUND_ICON.paintIcon(this, g, 0, 0);
     	TITLE_ICON.paintIcon(this, g, 15, 0);
     }
 
