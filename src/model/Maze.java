@@ -182,10 +182,10 @@ public class Maze {
         int row = currIndex.getRow();
         int col = currIndex.getCol();
         
-	    return (theDirection.getLabel().equals("N") && row >= BORDER_BUFFER/2 + 1 && isNorthDoorUnlocked(row, col))||  // Go North
-        (theDirection.getLabel().equals("S") && row < LENGTH && isSouthDoorUnlocked(row, col)) ||  // Go South
-        (theDirection.getLabel().equals("E") && col < WIDTH && isEastDoorUnlocked(row, col)) ||   // Go East
-        (theDirection.getLabel().equals("W") && col >= BORDER_BUFFER/2 + 1 && isWestDoorUnlocked(row, col));    // Go West
+	    return (theDirection.getLabel().equals("N") && row >= BORDER_BUFFER/2 + 1 && theRoom.getDoors().get(Direction.NORTH).isUnlocked())||  // Go North
+        (theDirection.getLabel().equals("S") && row < LENGTH && theRoom.getDoors().get(Direction.SOUTH).isUnlocked()) ||  // Go South
+        (theDirection.getLabel().equals("E") && col < WIDTH && theRoom.getDoors().get(Direction.EAST).isUnlocked()) ||   // Go East
+        (theDirection.getLabel().equals("W") && col >= BORDER_BUFFER/2 + 1 && theRoom.getDoors().get(Direction.WEST).isUnlocked());    // Go West
 	
 	}
 	
@@ -348,11 +348,13 @@ public class Maze {
 		// TODO NOTE if we add more items we will need to use .contains to see if the inventory contains the items we are checking for
 		// check if key has been picked up
 		if(myPlayer.getInventory().size() == 0) {
+			// check if we can access the room with the key
 			myCanAccessKeyRoom = false;
 	        depthFirstSearchMaze(myCurrentRoom.getIndex().getRow(),  myCurrentRoom.getIndex().getCol(), visited, "key", myKeyRoom);  	        
 	        if(myCanAccessKeyRoom == false) return false;
 		}
 		
+		// check if we can access the win room
 		visited = new boolean[LENGTH + BORDER_BUFFER][WIDTH + BORDER_BUFFER];
 		myCanAccessWinRoom = false;
         depthFirstSearchMaze(myCurrentRoom.getIndex().getRow(),  myCurrentRoom.getIndex().getCol(), visited, "win", myWinRoom);     
@@ -392,73 +394,18 @@ public class Maze {
 		    theVisitedRooms[theRow][theColumn] = true;
 		    
 		    // if the right door is unlocked:
-		    if(!isEastDoorBlocked(theRow, theColumn)) depthFirstSearchMaze(theRow, theColumn + 1, theVisitedRooms, theRoom, theGoalRoom); // go right
+		    if(!currentRoom.getDoors().get(Direction.EAST).isBlocked()) depthFirstSearchMaze(theRow, theColumn + 1, theVisitedRooms, theRoom, theGoalRoom); // go right
 		    		    
 		    // if the left door is unlocked:
-		    if(!isWestDoorBlocked(theRow, theColumn)) depthFirstSearchMaze(theRow, theColumn - 1, theVisitedRooms, theRoom, theGoalRoom); //go left
+		    if(!currentRoom.getDoors().get(Direction.WEST).isBlocked()) depthFirstSearchMaze(theRow, theColumn - 1, theVisitedRooms, theRoom, theGoalRoom); //go left
 		    
 		    // if the bottom door is unlocked:
-		    if(!isSouthDoorBlocked(theRow, theColumn))	depthFirstSearchMaze(theRow + 1, theColumn, theVisitedRooms, theRoom, theGoalRoom); //go down
+		    if(!currentRoom.getDoors().get(Direction.SOUTH).isBlocked())	depthFirstSearchMaze(theRow + 1, theColumn, theVisitedRooms, theRoom, theGoalRoom); //go down
 		    
 		    // if the top door is unlocked:
-		    if(!isNorthDoorBlocked(theRow, theColumn)) depthFirstSearchMaze(theRow - 1, theColumn, theVisitedRooms, theRoom, theGoalRoom); // go up
+		    if(!currentRoom.getDoors().get(Direction.NORTH).isBlocked()) depthFirstSearchMaze(theRow - 1, theColumn, theVisitedRooms, theRoom, theGoalRoom); // go up
 		}
 	}
-	
-
-	
-	private boolean isEastDoorBlocked(int theRow, int theColumn) {
-		Door door = getSameDoor(myMaze[theRow][theColumn], myMaze[theRow][theColumn+1]);
-		return door.isBlocked();
-	}
-	
-	private boolean isWestDoorBlocked(int theRow, int theColumn) {
-		Door door = getSameDoor(myMaze[theRow][theColumn], myMaze[theRow][theColumn-1]);
-		return door.isBlocked();
-	}
-	
-	private boolean isNorthDoorBlocked(int theRow, int theColumn) {
-		Door door = getSameDoor(myMaze[theRow][theColumn], myMaze[theRow-1][theColumn]);
-		return door.isBlocked();
-	}
-
-	private boolean isSouthDoorBlocked(int theRow, int theColumn) {
-		Door door = getSameDoor(myMaze[theRow][theColumn], myMaze[theRow+1][theColumn]);
-		return door.isBlocked();
-	}
-	
-	private boolean isEastDoorUnlocked(int theRow, int theColumn) {
-		Door door = getSameDoor(myMaze[theRow][theColumn], myMaze[theRow][theColumn+1]);
-		return door.isUnlocked();
-	}
-	
-	private boolean isWestDoorUnlocked(int theRow, int theColumn) {
-		Door door = getSameDoor(myMaze[theRow][theColumn], myMaze[theRow][theColumn-1]);
-		return door.isUnlocked();
-	}
-	
-	private boolean isNorthDoorUnlocked(int theRow, int theColumn) {
-		Door door = getSameDoor(myMaze[theRow][theColumn], myMaze[theRow-1][theColumn]);
-		return door.isUnlocked();
-	}
-
-	private boolean isSouthDoorUnlocked(int theRow, int theColumn) {
-		Door door = getSameDoor(myMaze[theRow][theColumn], myMaze[theRow+1][theColumn]);
-		return door.isUnlocked();
-	}
-
-	public Door getSameDoor(Room theCurrRoom, Room theAdjRoom) {
-		for(Door d : theCurrRoom.getDoors().values()) {
-			for(Door o : theAdjRoom.getDoors().values()) {
-				if(d == o) {
-					return d;
-				}
-			}
-		}
-		
-		throw new IllegalArgumentException("There is no shared door between these rooms.");
-	}
-
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -476,4 +423,59 @@ public class Maze {
 		}
 		return sb.toString();
 	}
+
+	// CHEAT METHOD
+	// Unlocks every door in the maze except doors that lead to border rooms
+	public void unlockedAllDoors() {
+		
+		// Unlocks all doors in the middle group of rooms
+		for(int i = 2; i < LENGTH; i++) {
+			for(int j = 2; j < WIDTH; j++) {
+				Room currRoom = myMaze[i][j];
+				currRoom.setPlayer(myPlayer);
+				for(Door currDoor : currRoom.getDoors().values()) {
+					currDoor.setUnlocked();
+				}
+			}
+		}
+		
+		// TODO consolidate cheat method with helper methods?
+		// Unlocks north/south doors in the first and last col (not incl border rooms).  
+		for(int i = 2; i < LENGTH; i++) {
+			Room firstCol = myMaze[i][1];
+			Room lastCol = myMaze[i][WIDTH];
+			firstCol.setPlayer(myPlayer);
+			lastCol.setPlayer(myPlayer);
+			
+			firstCol.getDoors().get(Direction.NORTH).setUnlocked();
+
+			lastCol.getDoors().get(Direction.NORTH).setUnlocked();
+
+			firstCol.getDoors().get(Direction.SOUTH).setUnlocked();
+
+			lastCol.getDoors().get(Direction.SOUTH).setUnlocked();
+		}
+		
+		// Unlocks east/west doors in the first and last row (not incl border rooms).  
+		for(int i = 2; i < WIDTH; i++) {
+			Room firstRow = myMaze[1][i];
+			Room lastRow= myMaze[LENGTH][i];
+			firstRow.setPlayer(myPlayer);
+			lastRow.setPlayer(myPlayer);
+			
+			firstRow.getDoors().get(Direction.EAST).setUnlocked();
+			
+			lastRow.getDoors().get(Direction.EAST).setUnlocked();
+			
+			firstRow.getDoors().get(Direction.WEST).setUnlocked();
+
+			lastRow.getDoors().get(Direction.WEST).setUnlocked();
+		}
+		
+		getRoom(1, 1).setPlayer(myPlayer);
+		getRoom(1, WIDTH).setPlayer(myPlayer);
+		getRoom(LENGTH, 1).setPlayer(myPlayer);
+		getRoom(LENGTH, WIDTH).setPlayer(myPlayer);
+	}
+
 }
