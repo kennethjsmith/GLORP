@@ -22,12 +22,18 @@ public class Maze {
 
 	// The room the player starts in
 	private Room myStartRoom;
+	
+	// The room that contains the key (used to unlock chest in win room)
+	private Room myKeyRoom;
 
 	// The room the player must get to so that they can win
 	private Room myWinRoom;
-
-	// True if the Player can still access the winroom via unlocked or locked doors
-	private boolean canAccessWinRoom;
+	
+	// Provides information about whether we can access the win room
+	private boolean myCanAccessWinRoom;
+	
+	// Provides information about whether we can access the key room
+	private boolean myCanAccessKeyRoom;
 	
 	// The number of rows in the maze that store rooms
 	private final int LENGTH = 7;
@@ -55,14 +61,12 @@ public class Maze {
 		
 		// Fills out the 2d array, myMaze, with rooms
 		addRooms();
-		placeItems();
 		DoorFactory inFactory = new DoorFactory(myMaze); // fill rooms with doors
         myMaze = inFactory.getRooms();
-        
         blockBorderRooms(); // create "border wall" of completely blocked rooms surounding map
-		
-		// this is set to true initially
-		canAccessWinRoom = true;
+        myCanAccessWinRoom = true;
+        myCanAccessKeyRoom = true;
+  
 	}
 	
 	/**
@@ -83,7 +87,7 @@ public class Maze {
 				myMaze[row][col] = new Room(row, col);
 			}
 		}
-		designateWinStartRooms();
+		designateWinStartKeyRooms();
 		myCurrentRoom = myStartRoom;
 	}
 
@@ -114,9 +118,9 @@ public class Maze {
 	 * Randomly sets the WinRoom and StartRoom coordinates 
 	 * so that they are not on the edge of the maze. Adds chest fixture to win room
 	 */
-	private void designateWinStartRooms() {
-	    int inStartRow = generateRandom(BORDER_BUFFER/2 + 1, LENGTH - 2);
-	    int inStartCol = generateRandom(BORDER_BUFFER/2 + 1, WIDTH - 2);
+	private void designateWinStartKeyRooms() {
+	    int inStartRow = generateRandom(BORDER_BUFFER, LENGTH - 2);
+	    int inStartCol = generateRandom(BORDER_BUFFER, WIDTH - 2);
 	    
 		myStartRoom = this.getRoom(inStartRow, inStartCol);
 		myStartRoom.setCurrentRoom(true);
@@ -125,19 +129,38 @@ public class Maze {
 		int inWinRow = 0, inWinCol = 0;
 		// TODO: win and start room must be 1/3 of the maze away - helper method? 
 		while(inWinRow == 0 || Math.abs(inWinRow - inStartRow) < LENGTH / 3) {
-		    inWinRow = generateRandom(BORDER_BUFFER/2 + 1, LENGTH - 2);
+		    inWinRow = generateRandom(BORDER_BUFFER, LENGTH - 2);
 		    
 		}
 	    while(inWinCol == 0 || Math.abs(inWinCol - inStartCol) < WIDTH / 3) {
-	            inWinCol = generateRandom(BORDER_BUFFER/2 + 1, WIDTH - 2);
+	            inWinCol = generateRandom(BORDER_BUFFER, WIDTH - 2);
 	    }
 	    
 		myWinRoom = this.getRoom(inWinRow, inWinCol);
 		myWinRoom.setWinRoom(true);
 		myWinRoom.setLargeIcon(Carpet.getSpecialIcon());
-		myWinRoom.setFixture(new Fixture(175, 200));
-		System.out.println(myWinRoom.getFixture().getBase());
+		myWinRoom.setFixture(new Fixture(175, 200)); // Add chest
+		placeItems(inStartRow, inStartCol, inWinRow, inWinCol);
 	}
+	
+	/**
+	 * A helper method. Places a key item in a room.
+	 */
+	private void placeItems(int theStartRow, int theStartCol, int theWinRow, int theWinCol) {
+		PiecePoint randomCoordinates = PiecePoint.randomPoint(Room.getSize()-Item.getWidth(), Room.getSize()-Item.getHeight());
+		int keyRow = theStartRow;
+		int keyCol = theStartCol;
+		while(keyRow == theStartRow || keyRow == theWinRow) {
+			keyRow = generateRandom(BORDER_BUFFER, LENGTH - 2);
+		}
+		while(keyCol == theStartCol || keyCol == theWinCol) {
+			keyCol = generateRandom(BORDER_BUFFER, LENGTH - 2);
+		}
+		myMaze[keyRow][keyCol].addItem(new Item(randomCoordinates), randomCoordinates);
+		myKeyRoom = myMaze[keyRow][keyCol];
+
+	}
+
 
 	 // TODO: make this into a utility
      /**
@@ -287,15 +310,6 @@ public class Maze {
 		this.myWinRoom = theWinRoom;
 	}
 	
-	// TODO: fix this, hardcoded item placement
-	/**
-	 * A helper method. Places an item in a room.
-	 */
-	private void placeItems() {
-		PiecePoint randomCoordinates = PiecePoint.randomPoint(Room.getSize()-Item.getWidth(), Room.getSize()-Item.getHeight());
-		myMaze[2][2].addItem(new Item(randomCoordinates), randomCoordinates);
-	}
-
 	/**
 	 * Returns the length of this mazes 2D Room array 
 	 * @return
@@ -330,17 +344,31 @@ public class Maze {
 	 */
 	public boolean canWin() {
 		boolean [][] visited = new boolean[LENGTH + BORDER_BUFFER][WIDTH + BORDER_BUFFER];
-		canAccessWinRoom = false;
-        depthFirstSearchMaze(BORDER_BUFFER/2,  BORDER_BUFFER/2, visited);     
-        return canAccessWinRoom;
+		
+		// TODO NOTE if we add more items we will need to use .contains to see if the inventory contains the items we are checking for
+		// check if key has been picked up
+		if(myPlayer.getInventory().size() == 0) {
+			myCanAccessKeyRoom = false;
+	        depthFirstSearchMaze(myCurrentRoom.getIndex().getRow(),  myCurrentRoom.getIndex().getCol(), visited, "key", myKeyRoom);  	        
+	        if(myCanAccessKeyRoom == false) return false;
+		}
+		
+		visited = new boolean[LENGTH + BORDER_BUFFER][WIDTH + BORDER_BUFFER];
+		myCanAccessWinRoom = false;
+        depthFirstSearchMaze(myCurrentRoom.getIndex().getRow(),  myCurrentRoom.getIndex().getCol(), visited, "win", myWinRoom);     
+  
+        return myCanAccessWinRoom;
 	}
 	
 	
 	// Helper method for canWin. Uses depth first search to see if the win room is accessible
-	private void depthFirstSearchMaze(int theRow, int theColumn, boolean[][] theVisitedRooms) {		
+	private void depthFirstSearchMaze(int theRow, int theColumn, boolean[][] theVisitedRooms, String theRoom, Room theGoalRoom) {				
 		
-	    // return if we've hit the end of the maze.
-	    if (theRow <= 0 || theColumn <= 0 || theRow > LENGTH || theColumn > WIDTH || theVisitedRooms[theRow][theColumn]) {
+		if(theRoom.equals("key") && myCanAccessKeyRoom == true) return;
+		else if(theRoom.equals("win") && myCanAccessWinRoom == true) return;		
+		
+		// return if we've hit the end of the maze.
+	    if (theRow <= 0 || theColumn <= 0 || theRow > LENGTH - 1 || theColumn > WIDTH - 1 || theVisitedRooms[theRow][theColumn]) {
 	    	return;
 	    }
 	    
@@ -348,15 +376,15 @@ public class Maze {
 	    if(!this.containsRoom(theRow, theColumn)){
 	    	return;
 	    }
-
 	    
-	    Room currentRoom = this.getRoom(theRow, theColumn);
+	    Room currentRoom = myMaze[theRow][theColumn];
 	    
 	    // return if we've found the win room
 	    // TODO, should I use a "break" to exit the depthFirstSearchMaze method once the winRoom has been found?
 	    // Otherwise the DFS could recurse further.
-	    if(currentRoom == myWinRoom) {
-	    	canAccessWinRoom = true;
+	    if(currentRoom == theGoalRoom) {
+	    	if(theRoom.equals("key")) myCanAccessKeyRoom = true;
+	    	else myCanAccessWinRoom = true;
 	    	return;
 	    } else {
 	
@@ -364,17 +392,17 @@ public class Maze {
 		    theVisitedRooms[theRow][theColumn] = true;
 		    
 		    // if the right door is unlocked:
-		    if(!isEastDoorBlocked(theRow, theColumn)) depthFirstSearchMaze(theRow, theColumn + 1, theVisitedRooms); // go right
+		    if(!isEastDoorBlocked(theRow, theColumn)) depthFirstSearchMaze(theRow, theColumn + 1, theVisitedRooms, theRoom, theGoalRoom); // go right
 		    		    
 		    // if the left door is unlocked:
-		    if(!isWestDoorBlocked(theRow, theColumn)) depthFirstSearchMaze(theRow, theColumn - 1, theVisitedRooms); //go left
+		    if(!isWestDoorBlocked(theRow, theColumn)) depthFirstSearchMaze(theRow, theColumn - 1, theVisitedRooms, theRoom, theGoalRoom); //go left
 		    
 		    // if the bottom door is unlocked:
-		    if(!isSouthDoorBlocked(theRow, theColumn))	depthFirstSearchMaze(theRow + 1, theColumn, theVisitedRooms); //go down
+		    if(!isSouthDoorBlocked(theRow, theColumn))	depthFirstSearchMaze(theRow + 1, theColumn, theVisitedRooms, theRoom, theGoalRoom); //go down
 		    
 		    // if the top door is unlocked:
-		    if(!isNorthDoorBlocked(theRow, theColumn)) depthFirstSearchMaze(theRow - 1, theColumn, theVisitedRooms); // go up
-		}	
+		    if(!isNorthDoorBlocked(theRow, theColumn)) depthFirstSearchMaze(theRow - 1, theColumn, theVisitedRooms, theRoom, theGoalRoom); // go up
+		}
 	}
 	
 
