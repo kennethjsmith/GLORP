@@ -57,7 +57,7 @@ public class Maze {
 		myMaze = new Room[LENGTH+BORDER_BUFFER][WIDTH+BORDER_BUFFER];
 		
 		// TODO: Allow option for skin type input
-		myPlayer = new Player(SkinType.MOONINITE);
+		myPlayer = new Player(SkinType.ALIEN);
 		
 		// Fills out the 2d array, myMaze, with rooms
 		addRooms();
@@ -124,7 +124,7 @@ public class Maze {
 	    
 		myStartRoom = this.getRoom(inStartRow, inStartCol);
 		myStartRoom.setCurrentRoom(true);
-		myStartRoom.setFixture(new Fixture(150, 100, FixtureType.SHIP)); // Add ship
+		myStartRoom.setFixture(new Fixture(150, 150, FixtureType.SHIP)); // Add ship
 		myStartRoom.setPlayer(myPlayer);
 		
 		int inWinRow = 0, inWinCol = 0;

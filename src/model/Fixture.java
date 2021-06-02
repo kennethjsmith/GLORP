@@ -40,12 +40,18 @@ public class Fixture extends GamePiece{
 		
 		if(theFixtureType == FixtureType.CHEST) {
 			myIcon = FixtureType.getChestIcon();
-			myIconArea = new Rectangle(theXCoordinate, theYCoordinate, myIcon.getIconWidth(), myIcon.getIconHeight());
+			myIconArea = new Rectangle(theXCoordinate, theYCoordinate-5, myIcon.getIconWidth(), myIcon.getIconHeight()+5);
 			myBase = new Rectangle(theXCoordinate, theYCoordinate + (myIcon.getIconHeight()/2), myIcon.getIconWidth(), (myIcon.getIconHeight()/2));
 		
 		}
 		if(theFixtureType == FixtureType.SHIP) {
 			myIcon = FixtureType.getShipIcon();
+			myIconArea = new Rectangle(theXCoordinate, theYCoordinate, myIcon.getIconWidth(), myIcon.getIconHeight()-50);
+			myBase = new Rectangle(theXCoordinate, theYCoordinate + (myIcon.getIconHeight()-30), myIcon.getIconWidth(), 20);
+		}
+		
+		if(theFixtureType == FixtureType.ALTSHIP) {
+			myIcon = FixtureType.getAltShipIcon();
 			myIconArea = new Rectangle(theXCoordinate, theYCoordinate, myIcon.getIconWidth(), myIcon.getIconHeight()-50);
 			myBase = new Rectangle(theXCoordinate, theYCoordinate + (myIcon.getIconHeight()-30), myIcon.getIconWidth(), 20);
 		}

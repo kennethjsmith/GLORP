@@ -164,6 +164,13 @@ public class Player extends GamePiece implements Cloneable {
 	public Skin getSkin() {
 		return mySkin;
 	}
+	
+	/**
+	 * 
+	 */
+	public void setSkin(SkinType theType) {
+		mySkin = new Skin(theType);
+	}
 
 	/**
 	 * @param myStride the myStride to set

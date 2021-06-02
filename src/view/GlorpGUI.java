@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -13,14 +15,21 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
+import javax.swing.SwingUtilities;
+import javax.swing.border.Border; 
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import javax.sound.sampled.*;
 
+import model.Direction;
+import model.Fixture;
+import model.FixtureType;
 import model.Item;
 import model.Maze;
 import model.Player;
+import model.SkinType;
 /**
  * The main frame for the GUI.
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
@@ -46,6 +55,7 @@ public class GlorpGUI extends JFrame {
     private RiddlePanel myRiddlePanel;
     private ItemPanel myItemPanel;
     private TitlePanel myTitlePanel;
+    private Clip myBackgroundMusic;
 
     /**
      * 
@@ -54,6 +64,25 @@ public class GlorpGUI extends JFrame {
         super();
         setTitle(TITLE);
         setResizable(false);
+        // music
+        try {
+			myBackgroundMusic = AudioSystem.getClip();
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        try {
+			music(new File("src/sounds/harp_michael_levy.wav"));
+		} catch (LineUnavailableException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (UnsupportedAudioFileException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
         
         //set layout
         this.setLayout(new GridBagLayout());
@@ -126,6 +155,7 @@ public class GlorpGUI extends JFrame {
         JMenu cheats = new JMenu("Cheats");
         //JMenuItem cheats = new JMenuItem("Cheats");
         help.add(cheats);
+        
         JMenuItem unlockAllDoors = new JMenuItem("Unlock All Doors");
         cheats.add(unlockAllDoors);
         unlockAllDoors.addActionListener(e ->{
@@ -133,6 +163,68 @@ public class GlorpGUI extends JFrame {
         	this.repaint();
         });
         
+        JMenu skins = new JMenu("Skins");
+        
+        JMenuItem glorp = new JMenuItem("Glorp");
+        glorp.addActionListener(e ->{
+        	Player tempPlayer = Maze.getInstance().getPlayer();
+        	tempPlayer.setSkin(SkinType.ALIEN);
+        	tempPlayer.updateRoomIcon();
+        	Maze.getInstance().getMyStartRoom().setFixture(new Fixture(150, 150, FixtureType.SHIP));
+        	//move player out of fixture base if needed
+        	if(Maze.getInstance().getCurrRoom().getFixture() != null) {
+        		while(tempPlayer.getBase().intersects(Maze.getInstance().getCurrRoom().getFixture().getBase())) {
+        			tempPlayer.move(Direction.SOUTH);
+        		}	
+        	}
+        	this.repaint();
+        	try {
+        		myBackgroundMusic.close();
+				music(new File("src/sounds/harp_michael_levy.wav"));
+			} catch (LineUnavailableException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (UnsupportedAudioFileException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+        });
+        
+        JMenuItem ignignokt = new JMenuItem("Ignignokt");
+        ignignokt.addActionListener(e ->{
+        	Player tempPlayer = Maze.getInstance().getPlayer();
+        	tempPlayer.setSkin(SkinType.MOONINITE);
+        	tempPlayer.updateRoomIcon();
+        	Maze.getInstance().getMyStartRoom().setFixture(new Fixture(150, 100, FixtureType.ALTSHIP));
+        	//move player out of fixture base if needed
+        	if(Maze.getInstance().getCurrRoom().getFixture() != null) {
+        		while(tempPlayer.getBase().intersects(Maze.getInstance().getCurrRoom().getFixture().getBase())) {
+        			tempPlayer.move(Direction.SOUTH);
+        		}	
+        	}
+        	this.repaint();
+        	
+        	try {
+        		myBackgroundMusic.close();
+    			music(new File("src/sounds/athf.wav"));
+    		} catch (UnsupportedAudioFileException e1) {
+    			// TODO Auto-generated catch block
+    			e1.printStackTrace();
+    		} catch (IOException e1) {
+    			// TODO Auto-generated catch block
+    			e1.printStackTrace();
+    		} catch (LineUnavailableException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+        });
+        
+        help.add(skins);
+        skins.add(glorp);
+        skins.add(ignignokt);
         
         myMenubar.add(file);
         myMenubar.add(help);
@@ -146,4 +238,13 @@ public class GlorpGUI extends JFrame {
     public void updateItemPanel(Player thePlayer) {
 		myItemPanel.update(thePlayer);
 	}
+    
+    public void music(File theAudioFile) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+	    if(theAudioFile == null) myBackgroundMusic.close();
+	    else {
+		    AudioInputStream ais = AudioSystem.getAudioInputStream(theAudioFile);
+		    myBackgroundMusic.open(ais);
+		    myBackgroundMusic.loop(Clip.LOOP_CONTINUOUSLY);
+	    }
+    }
 }
