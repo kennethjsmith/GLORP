@@ -46,7 +46,7 @@ class MazeTester {
     	Door northDoor = room.getDoors().get(Direction.NORTH);
     	northDoor.setUnlocked();
     	
-    	assertTrue(myMaze.canMove(Direction.NORTH, room));
+    	assertTrue(myMaze.isValidMove(Direction.NORTH, room));
     }
     
     // Tests canMove method for one move south
@@ -57,7 +57,7 @@ class MazeTester {
     	Door southDoor = room.getDoors().get(Direction.SOUTH);
     	southDoor.setUnlocked();
     	
-    	assertTrue(myMaze.canMove(Direction.SOUTH, room));
+    	assertTrue(myMaze.isValidMove(Direction.SOUTH, room));
     }
     
     // Tests canMove method for one move west
@@ -68,7 +68,7 @@ class MazeTester {
     	Door westDoor = room.getDoors().get(Direction.WEST);
     	westDoor.setUnlocked();
     	
-    	assertTrue(myMaze.canMove(Direction.WEST, room));
+    	assertTrue(myMaze.isValidMove(Direction.WEST, room));
     }
     
     // Tests canMove method for one move west
@@ -79,7 +79,7 @@ class MazeTester {
     	Door eastDoor = room.getDoors().get(Direction.EAST);
     	eastDoor.setUnlocked();
     	
-    	assertTrue(myMaze.canMove(Direction.EAST, room));
+    	assertTrue(myMaze.isValidMove(Direction.EAST, room));
     }
     
 //    @Test

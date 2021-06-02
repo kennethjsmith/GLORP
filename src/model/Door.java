@@ -44,7 +44,7 @@ public class Door {
      * 
      */
     private Door(){
-        myRiddle = new Riddle();
+        myRiddle = null;
         myDirection = null;
         myRoomIcon = null;
         myMapIcon = null;
@@ -56,8 +56,8 @@ public class Door {
     /**
      * @param theDirection
      */
-    public Door(Direction theDirection){
-        myRiddle = new Riddle();
+    public Door(Direction theDirection, Riddle theRiddle){
+        myRiddle = theRiddle;
         myDirection = theDirection;
         initializeIcons(theDirection);
         myUnlockedFlag = false;

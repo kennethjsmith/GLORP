@@ -175,19 +175,20 @@ public class Maze {
 	 
 	/**
 	 * Check if moving in a certain direction is valid.
-	 * Returns true if the move is valid.
+	 * Returns true if the user is not only the border of the maze AND if the door is not blocked
+	 * Does not check if the door is locked or unlocked
 	 * @param theDirection
 	 * @return boolean canMove
 	 */
-	public boolean canMove(Direction theDirection, Room theRoom) {
+	public boolean isValidMove(Direction theDirection, Room theRoom) {
 	    RoomIndex currIndex = myCurrentRoom.getIndex();
         int row = currIndex.getRow();
         int col = currIndex.getCol();
         
-	    return (theDirection.getLabel().equals("N") && row >= BORDER_BUFFER/2 + 1 && theRoom.getDoors().get(Direction.NORTH).isUnlocked())||  // Go North
-        (theDirection.getLabel().equals("S") && row < LENGTH && theRoom.getDoors().get(Direction.SOUTH).isUnlocked()) ||  // Go South
-        (theDirection.getLabel().equals("E") && col < WIDTH && theRoom.getDoors().get(Direction.EAST).isUnlocked()) ||   // Go East
-        (theDirection.getLabel().equals("W") && col >= BORDER_BUFFER/2 + 1 && theRoom.getDoors().get(Direction.WEST).isUnlocked());    // Go West
+	    return (theDirection.getLabel().equals("N") && row >= BORDER_BUFFER/2 + 1 && !theRoom.getDoors().get(Direction.NORTH).isBlocked())||  // Go North
+        (theDirection.getLabel().equals("S") && row < LENGTH && !theRoom.getDoors().get(Direction.SOUTH).isBlocked()) ||  // Go South
+        (theDirection.getLabel().equals("E") && col < WIDTH && !theRoom.getDoors().get(Direction.EAST).isBlocked()) ||   // Go East
+        (theDirection.getLabel().equals("W") && col >= BORDER_BUFFER/2 + 1 && !theRoom.getDoors().get(Direction.WEST).isBlocked());    // Go West
 	
 	}
 	
@@ -204,8 +205,9 @@ public class Maze {
 		int inRow = currIndex.getRow();
 		int inCol = currIndex.getCol();
 
-		if(!(canMove(theDirection, myCurrentRoom))) {
-			throw new IllegalArgumentException("You cannot move past the border of the maze");
+		// Checks if the move is valid and the door is unlocked
+		if(!(isValidMove(theDirection, myCurrentRoom) || !myCurrentRoom.getDoors().get(theDirection).isUnlocked())) {
+			throw new IllegalArgumentException("You cannot move that way");
 	    }
 		
 		if(theDirection.getLabel().equals("N")) { // Go North

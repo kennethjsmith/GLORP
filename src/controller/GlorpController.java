@@ -14,6 +14,7 @@ import model.Door;
 import model.Item;
 import model.Maze;
 import model.Player;
+import model.Riddle;
 import model.Room;
 import model.Skin;
 import model.SkinType;
@@ -112,43 +113,39 @@ public class GlorpController implements KeyListener{
     	}
 	}
     
-    // TODO: clean this up
+    // TODO: clean this up. Should some of this go in maze????
     /**
      * A helper method, returns a boolean indicating if movement into a new room was successful.
      * @param theDirection a direction to move within the maze
      */
     private boolean attemptMapMove(Direction theDirection) {
-        if(myMaze.canMove(theDirection, Maze.getInstance().getCurrRoom())) {
-            myMaze.move(theDirection);
-            return true;
-        }else { 
-//        	
-//            // TODO: hardcoded unlocking of doors: This should all be handles by the riddle
-//
-//        	// ask them if they want to unlock the door
-//        	// Scanner scan = new Scanner(System.in);
-//        	// System.out.println("Woud you like to unlock this door?");
-//        	// String input = scan.next();
-//        	// if(input.toLowerCase().charAt(0) == 'y') {
-//        		Room room = myMaze.getMyCurrentRoom();
-//            	int row = room.getIndex().getRow();
-//            	int col = room.getIndex().getCol();    	
-//            	Room adjRoom = null;
-//            	if(theDirection.getLabel() == "N" && row > 1) adjRoom = myMaze.getRoom(row - 1, col);
-//            	else if(theDirection.getLabel() == "S" && row < myMaze.getLength()) adjRoom = myMaze.getRoom(row + 1, col);
-//            	else if(theDirection.getLabel() == "E" && col < myMaze.getWidth()) adjRoom = myMaze.getRoom(row, col + 1);
-//            	else if(theDirection.getLabel() == "W" && col > 1) adjRoom = myMaze.getRoom(row, col - 1);
-//            	
-//            	if(adjRoom != null) {
-//            		Door adjDoor = myMaze.getSameDoor(room, adjRoom);
-//            		adjDoor.setUnlocked();
-//            		myMaze.move(theDirection);
-//            		return true;
-//            	}
-//            	System.out.println("Sorry, you can't go that way :(");
-//        	//}
-        	return false;
-        }
+        if(myMaze.isValidMove(theDirection, myMaze.getCurrRoom())) { // If the move is valid
+        	
+        	// Grab the relevant Door
+        	Door currDoor = myMaze.getCurrRoom().getDoors().get(theDirection);
+        	
+        	// If the door is unlocked, move that direction
+        	if(currDoor.isUnlocked()) {
+        		myMaze.move(theDirection);
+        		return true;
+        	}
+        	
+        	// The door was locked. Give user the riddle
+        	Riddle currRiddle = myMaze.getCurrRoom().getDoors().get(theDirection).getMyRiddle();
+        	System.out.println(currRiddle.getMyQuestion());
+        	Scanner scan = new Scanner(System.in);
+        	String input = scan.next();
+        	
+        	// If the riddle answer is correct, unlock door and move that direction
+        	if(currRiddle.verifyAnswer(input)) {
+        		currDoor.setUnlocked();
+                myMaze.move(theDirection);
+                return true;
+        	} else { // Riddle answer was not correct, block the door
+        		currDoor.setBlocked();
+        		return false;
+        	}
+        } else return false;  // move was not valid 
     }
     
     /**
