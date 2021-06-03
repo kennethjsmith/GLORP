@@ -176,6 +176,7 @@ public class GlorpGUI extends JFrame {
         
         //create help menu
         JMenu help = new JMenu("Help");
+        // TODO make this window singleton
         JMenuItem about = new JMenuItem("About");
         about.addActionListener(e ->{
         	JFrame aboutWindow = new JFrame();
@@ -189,6 +190,7 @@ public class GlorpGUI extends JFrame {
             aboutWindow.pack();
             aboutWindow.setLocationRelativeTo(this);
             aboutWindow.setVisible(true);
+            aboutWindow.setAlwaysOnTop(true);
         });
         
         JMenuItem instructions = new JMenuItem("Game Play Instructions");
