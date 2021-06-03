@@ -9,7 +9,7 @@ public enum FixtureType {
 	
 	public final String myLabel;
 	
-	private final static GameIcon CHEST_ICON = new GameIcon("src/icons/chest_closed.png", 150, 100);
+	private final static GameIcon CHEST_ICON = new GameIcon("src/icons/chest.png", 150, 100);
 	private final static GameIcon SHIP_ICON = new GameIcon("src/icons/ship.png", 200, 150);
 	private final static GameIcon ALT_SHIP_ICON = new GameIcon("src/icons/altship.png", 200, 250);
 	
