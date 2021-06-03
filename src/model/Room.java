@@ -29,6 +29,7 @@ public class Room {
 	private GameIcon mySmallIcon;
 	private boolean isCurrentRoom;
 	private boolean isWinRoom;
+	private boolean isStartRoom;
 	private boolean isVisited;
 	
 	private final static int SIZE = 500;
@@ -50,6 +51,10 @@ public class Room {
 	private static final GameIcon MAP_ICON_CURRENT_WIN = new GameIcon("src/icons/map_icon_current_win.png", MAP_ICON_SIZE);
 	private static final GameIcon MAP_ICON_KEY = new GameIcon("src/icons/map_icon_key.png", MAP_ICON_SIZE);
 	private static final GameIcon MAP_ICON_CURRENT_KEY = new GameIcon("src/icons/map_icon_current_key.png", MAP_ICON_SIZE);
+	private static final GameIcon MAP_ICON_START = new GameIcon("src/icons/map_icon_start.png", MAP_ICON_SIZE);
+	private static final GameIcon MAP_ICON_CURRENT_START = new GameIcon("src/icons/map_icon_current_start.png", MAP_ICON_SIZE);
+	
+
 	private final static Random RAND = new Random();
 	
 	
@@ -217,23 +222,39 @@ public class Room {
 		
 		if(isCurrentRoom) {
 			if(isWinRoom) mySmallIcon = MAP_ICON_CURRENT_WIN;
+			else if(isStartRoom) mySmallIcon = MAP_ICON_CURRENT_START;
 			else if (myItem != null) mySmallIcon = MAP_ICON_CURRENT_KEY;
 			else mySmallIcon = MAP_ICON_CURRENT;
 		}
 		else {
 			if (isWinRoom) mySmallIcon = MAP_ICON_WIN;
+			else if(isStartRoom) mySmallIcon = MAP_ICON_START;
 			else if (myItem != null) mySmallIcon = MAP_ICON_KEY;
 			else mySmallIcon = MAP_ICON;
 		}
 	}
 	
 	/**
+	 * 
+	 */
+	public void designateStartRoom() {
+		isStartRoom = true;
+		mySmallIcon = MAP_ICON_START;
+		setCurrentRoom(true);
+		setFixture(new Fixture(150, 150, FixtureType.SHIP)); // Add ship
+		setPlayer(myPlayer);
+	}
+	
+	/**
 	 * @param isWinRoom
 	 */
-	public void setWinRoom(boolean isWinRoom) {
+	public void designateWinRoom(boolean isWinRoom) {
 		this.isWinRoom = isWinRoom;
 		
-		if(isWinRoom) mySmallIcon = MAP_ICON_WIN;
+		if(isWinRoom) {
+			mySmallIcon = MAP_ICON_WIN;
+			setLargeIcon(Carpet.getSpecialIcon());
+		}
 		else mySmallIcon = MAP_ICON;
 	}
 	

@@ -123,9 +123,7 @@ public class Maze {
 	    int inStartCol = generateRandom(BORDER_BUFFER, WIDTH - 2);
 	    
 		myStartRoom = this.getRoom(inStartRow, inStartCol);
-		myStartRoom.setCurrentRoom(true);
-		myStartRoom.setFixture(new Fixture(150, 150, FixtureType.SHIP)); // Add ship
-		myStartRoom.setPlayer(myPlayer);
+		myStartRoom.designateStartRoom();
 		
 		int inWinRow = 0, inWinCol = 0;
 		// TODO: win and start room must be 1/3 of the maze away - helper method? 
@@ -138,8 +136,7 @@ public class Maze {
 	    }
 	    
 		myWinRoom = this.getRoom(inWinRow, inWinCol);
-		myWinRoom.setWinRoom(true);
-		myWinRoom.setLargeIcon(Carpet.getSpecialIcon());
+		myWinRoom.designateWinRoom(true);
 		myWinRoom.setFixture(new Fixture(175, 200, FixtureType.CHEST)); // Add chest
 		placeItems(inStartRow, inStartCol, inWinRow, inWinCol);
 	}
@@ -180,7 +177,7 @@ public class Maze {
 	 * @param theDirection
 	 * @return boolean canMove
 	 */
-	public boolean isValidMove(Direction theDirection, Room theRoom) {
+	public boolean isValidTraversal(Direction theDirection, Room theRoom) {
 	    RoomIndex currIndex = myCurrentRoom.getIndex();
         int row = currIndex.getRow();
         int col = currIndex.getCol();
@@ -199,14 +196,14 @@ public class Maze {
 	 * Move in a direction through the maze.
 	 * @param theDirection
 	 */
-	public void move(Direction theDirection) {
+	public void traverseMaze(Direction theDirection) {
 		Room tempCurrentRoom = myCurrentRoom;
 		RoomIndex currIndex = myCurrentRoom.getIndex();
 		int inRow = currIndex.getRow();
 		int inCol = currIndex.getCol();
 
 		// Checks if the move is valid and the door is unlocked
-		if(!(isValidMove(theDirection, myCurrentRoom) || !myCurrentRoom.getDoors().get(theDirection).isUnlocked())) {
+		if(!(isValidTraversal(theDirection, myCurrentRoom) || !myCurrentRoom.getDoors().get(theDirection).isUnlocked())) {
 			throw new IllegalArgumentException("You cannot move that way");
 	    }
 		

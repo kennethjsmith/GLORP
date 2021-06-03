@@ -124,28 +124,28 @@ public class GlorpController implements KeyListener{
     	// check doors
     	// east door zone
     	if(myPlayer.getIconArea().intersects(Room.getEastDoorZone())) {
-    	    if(attemptMapMove(Direction.EAST)) {
+    	    if(attemptMapTraversal(Direction.EAST)) {
     	        myPlayer.getCoordinate().setLocation(20, 200);
     	        myPlayer.updateRectangles();
     	    }	
     	}
     	// west door zone
     	else if(myPlayer.getIconArea().intersects(Room.getWestDoorZone())) {
-    	    if(attemptMapMove(Direction.WEST)) {
+    	    if(attemptMapTraversal(Direction.WEST)) {
     	        myPlayer.getCoordinate().setLocation(380, 200);
     	        myPlayer.updateRectangles();
     	    }	
     	}
     	// north door zone
     	else if(myPlayer.getIconArea().intersects(Room.getNorthDoorZone())) {
-    	    if(attemptMapMove(Direction.NORTH)) {
+    	    if(attemptMapTraversal(Direction.NORTH)) {
     	        myPlayer.getCoordinate().setLocation(200, 380);
     	        myPlayer.updateRectangles();
     	    }
     	}
     	// south door zone
     	else if(myPlayer.getIconArea().intersects(Room.getSouthDoorZone())) {
-    	    if(attemptMapMove(Direction.SOUTH)) {
+    	    if(attemptMapTraversal(Direction.SOUTH)) {
     	        myPlayer.getCoordinate().setLocation(200, 20);
     	        myPlayer.updateRectangles();
     	    }
@@ -157,15 +157,15 @@ public class GlorpController implements KeyListener{
      * A helper method, returns a boolean indicating if movement into a new room was successful.
      * @param theDirection a direction to move within the maze
      */
-    private boolean attemptMapMove(Direction theDirection) {
-        if(myMaze.isValidMove(theDirection, myMaze.getCurrRoom())) { // If the move is valid
+    private boolean attemptMapTraversal(Direction theDirection) {
+        if(myMaze.isValidTraversal(theDirection, myMaze.getCurrRoom())) { // If the move is valid
         	
         	// Grab the relevant Door
         	Door currDoor = myMaze.getCurrRoom().getDoors().get(theDirection);
         	
         	// If the door is unlocked, move that direction
         	if(currDoor.isUnlocked()) {
-        		myMaze.move(theDirection);
+        		myMaze.traverseMaze(theDirection);
         		return true;
         	}
         	
@@ -178,7 +178,7 @@ public class GlorpController implements KeyListener{
         	// If the riddle answer is correct, unlock door and move that direction
         	if(currRiddle.verifyAnswer(input)) {
         		currDoor.setUnlocked();
-                myMaze.move(theDirection);
+                myMaze.traverseMaze(theDirection);
                 return true;
         	} else { // Riddle answer was not correct, block the door
         		currDoor.setBlocked();
