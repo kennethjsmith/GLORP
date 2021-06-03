@@ -8,6 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -16,23 +18,30 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
+import model.Direction;
+import model.Door;
+import model.Fixture;
+import model.Item;
 import model.Maze;
+import model.PiecePoint;
 import model.Player;
 import model.Room;
 
 /**
- * ref: https://stackoverflow.com/questions/22766209/i-need-a-little-help-implementing-player-movement-on-java-grid
- * @author 12538
- *
+ * Displays the current room, the Player and all Items and Fixtures within.
+ * @author Ken Smith, Heather Finch, Katelynn Oleson 
+ * @version 
  */
 public class RoomPanel extends JPanel {
 
     // fields
 	private static final long serialVersionUID = 1L;
-    
     private Player myCurrentPlayer;
     private final static int SIZE = 500;
     
+    /**
+     * 
+     */
     public RoomPanel() {
         setPreferredSize(new Dimension(SIZE,SIZE));
 
@@ -40,41 +49,61 @@ public class RoomPanel extends JPanel {
         myCurrentPlayer = Maze.getInstance().getPlayer(); // TODO Getting instance of Maze in RoomPanel violates MVC?
     }
 
+    /**
+     * 
+     */
     @Override
     public void update(Graphics g) {
         paint(g);
     }
  
+    /**
+     * 
+     */
     @Override
     public void paintComponent(Graphics g) {  
     	super.paintComponent(g);
     	//new ImageIcon().paintIcon(this,g,d,d);
     	if(myCurrentPlayer != null) {
+    		Room currRoom = Maze.getInstance().getCurrRoom();
 
     		//System.out.println((int)myCurrentPlayer.getCoordinate().getX());
     		//System.out.println((int)myCurrentPlayer.getCoordinate().getY());
     		//TODO: this floor icon will need to come from the room class
-    		Maze.getInstance().getCurrRoom().getLargeIcon().paintIcon(this, g, 0, 0);
+    		currRoom.getLargeIcon().paintIcon(this, g, 0, 0);
     		
-    		//TODO: fix this HARDCODED doors
-    		GameIcon westDoor = new GameIcon("src/icons/WE_door.png");
-    		westDoor.resize(20,100);
-    		westDoor.paintIcon(this, g, 0, 200);
-    		GameIcon eastDoor = new GameIcon("src/icons/WE_door.png");
-    		westDoor.resize(20,100);
-    		eastDoor.paintIcon(this, g, 480, 200);
-    		GameIcon northDoor = new GameIcon("src/icons/NS_door.png");
-    		northDoor.resize(100, 20);
-    		northDoor.paintIcon(this, g, 200, 0);
-    		GameIcon southDoor = new GameIcon("src/icons/NS_door.png");
-    		northDoor.resize(100, 20);
-    		southDoor.paintIcon(this, g, 200, 480);
+    		// paint items (we only have one item per room for now)
+//    		Map<Item, PiecePoint> inItems = currRoom.getItem();
+//    		for(Entry<Item, PiecePoint> entry : inItems.entrySet()) {
+//    			entry.getKey().getRoomIcon().paintIcon(this, g, (int)entry.getValue().getX(),(int) entry.getValue().getY());
+//    		}
+    		Item inItem = currRoom.getItem();
+    		if(inItem != null) {
+    			inItem.getRoomIcon().paintIcon(this, g, (int)inItem.getIconArea().getX(),(int)inItem.getIconArea().getY());
+    		}
+			GameIcon westDoorIcon = currRoom.getDoors().get(Direction.WEST).getRoomIcon();
+			westDoorIcon.paintIcon(this, g, 0, 200);
     		
+			GameIcon eastDoorIcon = currRoom.getDoors().get(Direction.EAST).getRoomIcon();
+			eastDoorIcon.paintIcon(this, g, 480, 200);
     		
+			GameIcon northDoorIcon = currRoom.getDoors().get(Direction.NORTH).getRoomIcon();
+			northDoorIcon.paintIcon(this, g, 200, 0);
     		
-    		myCurrentPlayer.getRoomIcon().paintIcon(this, g, (int)myCurrentPlayer.getCoordinate().getX(), (int)myCurrentPlayer.getCoordinate().getY());
-    		//System.out.println(myCurrentPlayer.getRoomIcon());
-    		//System.out.println(myCurrentPlayer);
+    		GameIcon southDoorIcon = currRoom.getDoors().get(Direction.SOUTH).getRoomIcon();
+    		southDoorIcon.paintIcon(this, g, 200, 480);
+    		
+    		// paint fixture and player
+    		Fixture inFixture = currRoom.getFixture();
+    		if(inFixture != null && myCurrentPlayer.getBase().intersects(inFixture.getIconArea())) {
+    			myCurrentPlayer.getRoomIcon().paintIcon(this, g, (int)myCurrentPlayer.getCoordinate().getX(), (int)myCurrentPlayer.getCoordinate().getY());
+    			inFixture.getIcon().paintIcon(this, g, inFixture.getMyXCoordinate(), inFixture.getMyYCoordinate());
+    		}
+    		else if(inFixture != null) {
+    			inFixture.getIcon().paintIcon(this, g, inFixture.getMyXCoordinate(), inFixture.getMyYCoordinate());
+    			myCurrentPlayer.getRoomIcon().paintIcon(this, g, (int)myCurrentPlayer.getCoordinate().getX(), (int)myCurrentPlayer.getCoordinate().getY());
+    		}
+    		else myCurrentPlayer.getRoomIcon().paintIcon(this, g, (int)myCurrentPlayer.getCoordinate().getX(), (int)myCurrentPlayer.getCoordinate().getY());
     	}
     }
 

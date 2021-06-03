@@ -13,46 +13,61 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
+import model.Item;
+import model.Player;
 import model.Room;
 
-
+/**
+ * The panel for displaying a Player's inventory.
+ * @author Ken Smith, Heather Finch, Katelynn Oleson 
+ * @version 
+ */
 public class ItemPanel extends JPanel{
+	// fields
 	private final String TITLE = "Items";
 	private final static int WIDTH = 285;
-	private final static int HEIGHT = 125;
+	private final static int HEIGHT = 115;
+	
+	private JPanel item1;
+    private JPanel item2;
+    private JPanel item3;
+    JLabel item1Label;
+    JLabel item2Label;
+    JLabel item3Label;
+	
 
-	// Constructor 
+	/**
+	 * A default constructor. 
+	 */
 	public ItemPanel() {
 		super();
 		// Sets the size of the JPanel
         setPreferredSize(new Dimension(WIDTH,HEIGHT));
         TitledBorder border = BorderFactory.createTitledBorder(TITLE);
-        border.setTitleColor(Color.cyan);
+        border.setTitleColor(Color.WHITE);
+        border.setTitleJustification(TitledBorder.CENTER);
         setBorder(border);
-        setLayout(new FlowLayout(FlowLayout.CENTER));
+        setLayout(new FlowLayout(FlowLayout.LEADING, 8, 0)); //better solution?
         
-        setBackground(Color.lightGray);
+        setBackground(Color.darkGray);
         
-        JPanel item1 = new JPanel();
-        JPanel item2 = new JPanel();
-        JPanel item3 = new JPanel();
+        item1 = new JPanel();
+        item2 = new JPanel();
+        item3 = new JPanel();
         
-        item1.setBackground(Color.lightGray);
-        item2.setBackground(Color.lightGray);
-        item3.setBackground(Color.lightGray);
+        item1.setBackground(Color.darkGray);
+        item2.setBackground(Color.darkGray);
+        item3.setBackground(Color.darkGray);
         
         item1.setPreferredSize(new Dimension(80,80));
         item2.setPreferredSize(new Dimension(80,80));
         item3.setPreferredSize(new Dimension(80,80));
         
-        GameIcon key = new GameIcon("src/icons/key_item_icon.png");
-        GameIcon blank = new GameIcon("src/icons/blank_item_icon.png");
-        key.resize(75);
-        blank.resize(75);
+        GameIcon blank = new GameIcon("src/icons/blank_item_icon.png", 75);
         
-        JLabel item1Label = new JLabel(key);
-        JLabel item2Label = new JLabel(blank);
-        JLabel item3Label = new JLabel(blank);
+        item1Label = new JLabel(blank);
+        item2Label = new JLabel(blank);
+        item3Label = new JLabel(blank);
         
         item1.add(item1Label);
         item2.add(item2Label);
@@ -63,6 +78,19 @@ public class ItemPanel extends JPanel{
         add(item3);
     }
 	
+	/**
+	 * 
+	 * @param thePlayer
+	 */
+	public void update(Player thePlayer) {
+		for(Item i : thePlayer.getInventory()) {
+			item1Label.setIcon(i.getItemPanelIcon());
+		}
+	}
+	
+	/**
+	 * 
+	 */
 	@Override
     public void paintComponent(Graphics g) {
     	super.paintComponent(g);

@@ -10,53 +10,71 @@ import view.GameIcon;
 import view.GameIcon;
 
 /**
- * @author 12538
- *
+ * This abstract class represents GamePieces; including Item, Player, and Fixture.  
+ * @authors Heather Finch, Katelynn Oleson, Ken Smith
+ * @version
  */
 public abstract class GamePiece {
 	 // fields
-
 	 private PiecePoint myCoordinate;
 	 private GameIcon myRoomIcon;
 	 private GameIcon myMapIcon;
-	 private int mySize;
 	 
+	 /**
+	  * 
+	  */
 	 public GamePiece() {
 		 myCoordinate = new PiecePoint();
 	 }
 	 
+	 /**
+	  * 
+	  */
 	 public Point getCoordinate() {
 		return myCoordinate;
 		 
 	 }
 	 
+	 /**
+	  * 
+	  */
 	 public void setCoordinate() {
 		 
 	 }
 	 
+	 /**
+	  * 
+	  */
 	 public GameIcon getRoomIcon() {
 		return myRoomIcon;
 		 
 	 }
 	 
-	 public void setRoomIcon() {
-		 
+	 /**
+	  * 
+	  */
+	 public void setRoomIcon(GameIcon theIcon) {
+		 myRoomIcon = theIcon;
 	 }
 	 
+	 /**
+	  * 
+	  */
 	 public GameIcon getMapIcon() {
 		return myMapIcon; 
 		 
 	 }
 	 
+	 /**
+	  * 
+	  */
 	 public void setMapIcon() { 
 		 
 	 }
 	 
-	 public int getSize() {
-		return mySize;
-		 
-	 }
-	 
+	 /**
+	  * 
+	  */
 	 public void setSize() {
 		 
 	 }

@@ -1,116 +1,195 @@
 package controller;
 
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
+import java.util.Scanner;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JFrame;
 
 import model.Direction;
+import model.Door;
+import model.Fixture;
+import model.Item;
 import model.Maze;
 import model.Player;
+import model.Riddle;
+import model.Room;
 import model.Skin;
 import model.SkinType;
+import view.GameIcon;
 import view.GlorpGUI;
 
+/**
+ * The controller, mediates the maze model and GUI. 
+ * @authors Heather Finch, Katelynn Oleson, Ken Smith
+ * @version
+ */
 public class GlorpController implements KeyListener{
 	// fields
-	Maze myMaze;
-	//TODO: remover ref to player piece? this should be in the maze
-	Player myPlayer;
-	GlorpGUI myWindow; 
-	//TODO: these are temporary references to the door zones, may change later
-	
+	private Maze myMaze;
+	// TODO: remover ref to player piece ? can get from maze
+	private Player myPlayer;
+	private GlorpGUI myWindow; 
 	private final Set<Integer> myPressedKeys = new HashSet<Integer>();
 	
+	/**
+	 * Default constructor for GlorpController
+	 */
 	public GlorpController(){
 		myMaze = Maze.getInstance();
-		//hard ref to character for room panel work, should get player out of room
-		myPlayer = myMaze.getPlayer();
-		
+		myPlayer = myMaze.getPlayer();		
 		myWindow = new GlorpGUI();
-
         myWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         myWindow.setVisible(true);
         myWindow.setTitle("GLORP");
-        myWindow.addKeyListener(this);
-        
+        myWindow.addKeyListener(this);    
         myWindow.repaint();
     }
 	
+	/**
+	 * Adds the pressed key's KeyCode to the set of pressed keys. Generates and validates a direction from the set,
+	 * then moves the player.
+	 */
 	@Override
     public void keyPressed(KeyEvent e) {
 		int k = e.getKeyCode();
         myPressedKeys.add(k);
-        //TODO: get the room size for this
-        Direction inDirection = Direction.generateDirection(myPressedKeys, myPlayer, 500);
-        //System.out.println(inDirection);
-        //System.out.println(myPlayer);
-        myPlayer.move(inDirection);
-		checkInteractions();
-		//System.out.println(myPlayer);
-		//myWindow.getRoomPanel().setCurrentRoom(myMaze.getCurrRoom());
+        
+        Direction inDirection = Direction.generateDirection(myPressedKeys);
+        Direction validDirection = null;
+		
+        try {
+			validDirection = myMaze.getCurrRoom().validateDirection(myPlayer, inDirection);
+			myPlayer.move(validDirection);
+		} catch (CloneNotSupportedException e1) {
+			e1.printStackTrace();
+		}
+        checkInteractions();
         myWindow.repaint();
     }
 
+	/**
+	 * A helper method, checks for item, fixture, and door interactions after a key event.
+	 */
+	// TODO: split into multiple methods? deal with duplicate code
     private void checkInteractions() {
-		// TODO: fix this hardcoded door interaction
-    	//east door zone
-    	if(myPlayer.getCoordinate().getX() == 400 &&
-    			myPlayer.getCoordinate().getY() >= 150 &&
-    				myPlayer.getCoordinate().getY() <= 250) {
-    	    if(attemptMapMove(Direction.EAST)) {
-    	        myPlayer.getCoordinate().setLocation(5, 200);
-    	    }
-    		
-    		
+    	// check items
+    	Item inItem = myMaze.getCurrRoom().getItem();
+    	if(inItem != null && myPlayer.getIconArea().intersects(inItem.getIconArea())) {
+    		myPlayer.getInventory().add(myMaze.getCurrRoom().getItem());
+    		myMaze.getCurrRoom().setItem(null);
+    		myMaze.getCurrRoom().setCurrentRoom(true);
+    		myWindow.updateItemPanel(myPlayer);
     	}
-    	//west door zone
-    	if(myPlayer.getCoordinate().getX() == 0 &&
-    			myPlayer.getCoordinate().getY() >= 150 &&
-    				myPlayer.getCoordinate().getY() <= 250) {
-    	    if(attemptMapMove(Direction.WEST)) {
-    	        myPlayer.getCoordinate().setLocation(395, 200);
-    	    }
-    		
-    	}
-    	//north door zone
-    	if(myPlayer.getCoordinate().getY() == 0 &&
-    			myPlayer.getCoordinate().getX() >= 150 &&
-    				myPlayer.getCoordinate().getX() <= 250) {
-    	    if(attemptMapMove(Direction.NORTH)) {
-    	        myPlayer.getCoordinate().setLocation(200, 395);
-    	    }
-    		
+    	
+    	// check fixtures
+    	Fixture inFixture = myMaze.getCurrRoom().getFixture();
+    	if(inFixture != null && inFixture.getInteractionZone() != null && myPlayer.getIconArea().intersects(inFixture.getInteractionZone())) {
+    		if(!myPlayer.getInventory().isEmpty()) {
+    			System.out.println("you win");
+    			//myPlayer.getInventory().remove(0);
+    			//myWindow.updateItemPanel(myPlayer);
+    			inFixture.setBase(new Rectangle(new Dimension(0,0)));
+    			inFixture.setIconArea(new Rectangle(new Dimension(0,0)));
+    			inFixture.setInteractionZone(new Rectangle(new Dimension(0,0)));
+    			inFixture.setMyYCoordinate(inFixture.getMyYCoordinate()-50);
+    			TimerTask task = new TimerTask() {
+    		        int i = 0;
+    		        @Override
+    		        public void run() {
+    		            if (i <= 15) {
+    		            	inFixture.setIcon(new GameIcon("src/icons/explosion/frame_" + i + ".png", 200, 250));
+    	    				myWindow.repaint();
+    		                i++;
+    		            }
+    		            else {
+    		                cancel();
+    		            }
+    		        }
+    		    };
 
+    		    Timer timer = new Timer();
+    		    timer.scheduleAtFixedRate(task, 0, 100);
+    			
+    		}
     	}
-    	//south door zone
-    	if(myPlayer.getCoordinate().getY() == 400 &&
-    			myPlayer.getCoordinate().getX() >= 150 &&
-    				myPlayer.getCoordinate().getX() <= 250) {
-    	    if(attemptMapMove(Direction.SOUTH)) {
-    	        myPlayer.getCoordinate().setLocation(200, 5);
+    	
+    	// check doors
+    	// east door zone
+    	if(myPlayer.getIconArea().intersects(Room.getEastDoorZone())) {
+    	    if(attemptMapMove(Direction.EAST)) {
+    	        myPlayer.getCoordinate().setLocation(20, 200);
+    	        myPlayer.updateRectangles();
+    	    }	
+    	}
+    	// west door zone
+    	else if(myPlayer.getIconArea().intersects(Room.getWestDoorZone())) {
+    	    if(attemptMapMove(Direction.WEST)) {
+    	        myPlayer.getCoordinate().setLocation(380, 200);
+    	        myPlayer.updateRectangles();
+    	    }	
+    	}
+    	// north door zone
+    	else if(myPlayer.getIconArea().intersects(Room.getNorthDoorZone())) {
+    	    if(attemptMapMove(Direction.NORTH)) {
+    	        myPlayer.getCoordinate().setLocation(200, 380);
+    	        myPlayer.updateRectangles();
     	    }
     	}
-    		
-    		
-		
+    	// south door zone
+    	else if(myPlayer.getIconArea().intersects(Room.getSouthDoorZone())) {
+    	    if(attemptMapMove(Direction.SOUTH)) {
+    	        myPlayer.getCoordinate().setLocation(200, 20);
+    	        myPlayer.updateRectangles();
+    	    }
+    	}
 	}
-    /*
-     * Returns a success boolean
+    
+    // TODO: clean this up. Should some of this go in maze????
+    /**
+     * A helper method, returns a boolean indicating if movement into a new room was successful.
+     * @param theDirection a direction to move within the maze
      */
     private boolean attemptMapMove(Direction theDirection) {
-        if(myMaze.canMove(theDirection)) {
-            myMaze.move(theDirection);
-            return true;
-        }else { 
-//            System.out.println("Cannot move in that direction.");
-            return false;
-        }
+        if(myMaze.isValidMove(theDirection, myMaze.getCurrRoom())) { // If the move is valid
+        	
+        	// Grab the relevant Door
+        	Door currDoor = myMaze.getCurrRoom().getDoors().get(theDirection);
+        	
+        	// If the door is unlocked, move that direction
+        	if(currDoor.isUnlocked()) {
+        		myMaze.move(theDirection);
+        		return true;
+        	}
+        	
+        	// The door was locked. Give user the riddle
+        	Riddle currRiddle = myMaze.getCurrRoom().getDoors().get(theDirection).getMyRiddle();
+        	System.out.println(currRiddle.getQuestion());
+        	Scanner scan = new Scanner(System.in);
+        	String input = scan.next();
+        	
+        	// If the riddle answer is correct, unlock door and move that direction
+        	if(currRiddle.verifyAnswer(input)) {
+        		currDoor.setUnlocked();
+                myMaze.move(theDirection);
+                return true;
+        	} else { // Riddle answer was not correct, block the door
+        		currDoor.setBlocked();
+        		return false;
+        	}
+        } else return false;  // move was not valid 
     }
-
+    
+    /**
+     * Removes the KeyCode from the set of pressed keys. Sets stride to 0 if no keys are pressed.
+     */
 	@Override
     public void keyReleased(KeyEvent e) {
 		int inKey = e.getKeyCode();
@@ -120,16 +199,15 @@ public class GlorpController implements KeyListener{
 			myPlayer.setStride(0);
 			myPlayer.setSkipFrame(false);
 		}
-		
 		myWindow.repaint();
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub	
+		// TODO: Auto-generated method stub	
 	}
 
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
+		// TODO: Auto-generated method stub
 		
 	}
 

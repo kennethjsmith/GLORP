@@ -8,11 +8,9 @@ import view.GameIcon;
  * Maze uses a singleton pattern.
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
  * @version 5.14.21
- * Ask Heather if you have any questions about this class
- *
  */
 public class Maze {
-	
+	// fields
 	// The 2D array that stores each room
 	private Room[][] myMaze;
 	
@@ -21,15 +19,21 @@ public class Maze {
 	
 	// The room our Player is currently in
 	private Room myCurrentRoom;
-	
+
 	// The room the player starts in
 	private Room myStartRoom;
 	
+	// The room that contains the key (used to unlock chest in win room)
+	private Room myKeyRoom;
+
 	// The room the player must get to so that they can win
 	private Room myWinRoom;
 	
-	// True if the Player can still access the winroom via unlocked or locked doors
-	private boolean canAccessWinRoom;
+	// Provides information about whether we can access the win room
+	private boolean myCanAccessWinRoom;
+	
+	// Provides information about whether we can access the key room
+	private boolean myCanAccessKeyRoom;
 	
 	// The number of rows in the maze that store rooms
 	private final int LENGTH = 7;
@@ -44,30 +48,29 @@ public class Maze {
 	// Creates the maze.
     private static final Maze THISMAZE = new Maze();
 
-	
-    // Constructor is private due to singleton pattern.
-	private Maze() {
+    /**
+     * A private constructor due to singleton pattern.
+     */
+    private Maze() {
 		
 		// Initialize with row-major: Room[rows][columns]
 		myMaze = new Room[LENGTH+BORDER_BUFFER][WIDTH+BORDER_BUFFER];
 		
-		// TODO Allow option for skin types
-		myPlayer = new Player();
+		// TODO: Allow option for skin type input
+		myPlayer = new Player(SkinType.ALIEN);
 		
 		// Fills out the 2d array, myMaze, with rooms
 		addRooms();
-		
 		DoorFactory inFactory = new DoorFactory(myMaze); // fill rooms with doors
         myMaze = inFactory.getRooms();
-        
         blockBorderRooms(); // create "border wall" of completely blocked rooms surounding map
-		
-		// this is set to true initially
-		canAccessWinRoom = true;
+        myCanAccessWinRoom = true;
+        myCanAccessKeyRoom = true;
+  
 	}
 	
 	/**
-	 * Getter for the maze object instance
+	 * Getter for the maze instance.
 	 * @return
 	 */
 	public static Maze getInstance() {
@@ -75,8 +78,8 @@ public class Maze {
     }
 	
 
-	/*
-	 * Creates and adds rooms to myMaze 
+	/**
+	 * Creates and adds rooms to myMaze. 
 	 */
 	private void addRooms() {
 //<<<<<<< HEAD
@@ -89,105 +92,137 @@ public class Maze {
 				myMaze[row][col] = new Room(row, col);
 			}
 		}
-		designateWinStartRooms();
+		designateWinStartKeyRooms();
 		myCurrentRoom = myStartRoom;
 	}
 
-   /*
-   * Blocks all doors along the boarder to simulate a wall
-   */
+   /**
+    * Blocks all doors along the border to simulate a wall.
+    */
    private void blockBorderRooms() {
-       for(int r = 0; r < LENGTH+BORDER_BUFFER; r++) { 
-           blockDoors(myMaze[r][0]);
-           blockDoors(myMaze[r][WIDTH+BORDER_BUFFER - 1]);
+       for(int row = 0; row < LENGTH+BORDER_BUFFER; row++) { 
+           blockDoors(myMaze[row][0]);
+           blockDoors(myMaze[row][WIDTH+BORDER_BUFFER - 1]);
        }     
-       for(int c = 0; c < WIDTH+BORDER_BUFFER; c++) {
-           blockDoors(myMaze[0][c]);
-           blockDoors(myMaze[LENGTH+BORDER_BUFFER - 1][c]);
+       for(int col = 1; col < WIDTH+BORDER_BUFFER; col++) {
+           blockDoors(myMaze[0][col]);
+           blockDoors(myMaze[LENGTH+BORDER_BUFFER - 1][col]);
        }
     }
 	
-   /*
-    * Block all doors in a room 
+   /**
+    * Block all doors in a room. 
     */
    private void blockDoors(Room theRoom) {
-       for(Door d : theRoom.getDoors()) {
+       for(Door d : theRoom.getDoors().values()) {
            d.setBlocked();
        }
    }
    
-	/*
+	/**
 	 * Randomly sets the WinRoom and StartRoom coordinates 
-	 * so that they are not on the edge of the maze
+	 * so that they are not on the edge of the maze. Adds chest fixture to win room
 	 */
-	private void designateWinStartRooms() {
-	    int inStartRow = generateRandom(BORDER_BUFFER/2 + 1, LENGTH - 2);
-	    int inStartCol = generateRandom(BORDER_BUFFER/2 + 1, WIDTH - 2);
+	private void designateWinStartKeyRooms() {
+	    int inStartRow = generateRandom(BORDER_BUFFER, LENGTH - 2);
+	    int inStartCol = generateRandom(BORDER_BUFFER, WIDTH - 2);
 	    
 		myStartRoom = this.getRoom(inStartRow, inStartCol);
 		myStartRoom.setCurrentRoom(true);
+		myStartRoom.setFixture(new Fixture(150, 150, FixtureType.SHIP)); // Add ship
 		myStartRoom.setPlayer(myPlayer);
 		
 		int inWinRow = 0, inWinCol = 0;
-		// win and start room must be 1/3 of the maze away - helper method? 
+		// TODO: win and start room must be 1/3 of the maze away - helper method? 
 		while(inWinRow == 0 || Math.abs(inWinRow - inStartRow) < LENGTH / 3) {
-		    inWinRow = generateRandom(BORDER_BUFFER/2 + 1, LENGTH - 2);
+		    inWinRow = generateRandom(BORDER_BUFFER, LENGTH - 2);
 		    
 		}
 	    while(inWinCol == 0 || Math.abs(inWinCol - inStartCol) < WIDTH / 3) {
-	            inWinCol = generateRandom(BORDER_BUFFER/2 + 1, WIDTH - 2);
+	            inWinCol = generateRandom(BORDER_BUFFER, WIDTH - 2);
 	    }
 	    
 		myWinRoom = this.getRoom(inWinRow, inWinCol);
-//<<<<<<< HEAD
-//		myWinRoom.setLargeIcon(myWinRoomIcon);
-//		myWinRoom.setSmallIcon(myWinRoomIcon);
-//=======
 		myWinRoom.setWinRoom(true);
-
-		
-       System.out.println("Win Room: (" + inStartRow + ", " + inStartCol + ").");
-       System.out.println("Win Room: (" + inWinRow + ", " + inWinCol + ").");
-		
+		myWinRoom.setLargeIcon(Carpet.getSpecialIcon());
+		myWinRoom.setFixture(new Fixture(175, 200, FixtureType.CHEST)); // Add chest
+		placeItems(inStartRow, inStartCol, inWinRow, inWinCol);
 	}
+	
+	/**
+	 * A helper method. Places a key item in a room.
+	 */
+	private void placeItems(int theStartRow, int theStartCol, int theWinRow, int theWinCol) {
+		PiecePoint randomCoordinates = PiecePoint.randomPoint(Room.getSize()-Item.getWidth(), Room.getSize()-Item.getHeight());
+		int keyRow = theStartRow;
+		int keyCol = theStartCol;
+		while(keyRow == theStartRow || keyRow == theWinRow) {
+			keyRow = generateRandom(BORDER_BUFFER, LENGTH - 2);
+		}
+		while(keyCol == theStartCol || keyCol == theWinCol) {
+			keyCol = generateRandom(BORDER_BUFFER, LENGTH - 2);
+		}
+		myMaze[keyRow][keyCol].addItem(new Item(randomCoordinates), randomCoordinates);
+		myKeyRoom = myMaze[keyRow][keyCol];
+		myKeyRoom.setSmallIcon(Room.getKeyMapIcon());
+
+	}
+
+
+	 // TODO: make this into a utility
+     /**
+	  * Generates a random index between two numbers (min val, max val)
+	  */
+	 private int generateRandom(int theMin, int theMax) {
+	     Random rand = new Random();
+	     return rand.nextInt(theMax - theMin + 1) + theMin;
+	 }
 	 
-    /*
-     * Generates a random index between two numbers (min val, max val) 
-     */
-     private static int generateRandom(int theMin, int theMax) {
-         Random rand = new Random();
-         return rand.nextInt(theMax - theMin + 1) + theMin;
-         // highest val is ((theMax - theMin + 1) - 1) + theMin = theMax
-         // lowest val is (0) + theMin = theMin
-     }
+//    /*
+//     * Generates a random index between two numbers (min val, max val) 
+//     */
+//     private static int generateRandom(int theMin, int theMax) {
+//         Random rand = new Random();
+//         return rand.nextInt(theMax - theMin + 1) + theMin;
+//         // highest val is ((theMax - theMin + 1) - 1) + theMin = theMax
+//         // lowest val is (0) + theMin = theMin
+//     }
      
 	/**
 	 * Check if moving in a certain direction is valid.
-	 * Returns true if the move is valid.
+	 * Returns true if the user is not only the border of the maze AND if the door is not blocked
+	 * Does not check if the door is locked or unlocked
 	 * @param theDirection
 	 * @return boolean canMove
 	 */
-	public boolean canMove(Direction theDirection) {
-	    RoomIndex currIndex = myCurrentRoom.getMyIndex();
-        int inRow = currIndex.getRow();
-        int inCol = currIndex.getCol();
+	public boolean isValidMove(Direction theDirection, Room theRoom) {
+	    RoomIndex currIndex = myCurrentRoom.getIndex();
+        int row = currIndex.getRow();
+        int col = currIndex.getCol();
         
-	    return (theDirection.getLabel().equals("N") && inRow >= BORDER_BUFFER/2 + 1)||  // Go North
-        (theDirection.getLabel().equals("S") && inRow < LENGTH) ||  // Go South
-        (theDirection.getLabel().equals("E") && inCol < WIDTH) ||   // Go East
-        (theDirection.getLabel().equals("W") && inCol >= BORDER_BUFFER/2 + 1);    // Go West
+	    return (theDirection.getLabel().equals("N") && row >= BORDER_BUFFER/2 + 1 && !theRoom.getDoors().get(Direction.NORTH).isBlocked())||  // Go North
+        (theDirection.getLabel().equals("S") && row < LENGTH && !theRoom.getDoors().get(Direction.SOUTH).isBlocked()) ||  // Go South
+        (theDirection.getLabel().equals("E") && col < WIDTH && !theRoom.getDoors().get(Direction.EAST).isBlocked()) ||   // Go East
+        (theDirection.getLabel().equals("W") && col >= BORDER_BUFFER/2 + 1 && !theRoom.getDoors().get(Direction.WEST).isBlocked());    // Go West
+	
 	}
 	
-	// TODO Right now move in Maze uses Direction - we may want to make a custom direction class
-	// TODO add exception handeling to move method
+	
+	// TODO: Right now move in Maze uses Direction - we may want to make a custom direction class
+	// TODO: add exception handeling to move method
+	/**
+	 * Move in a direction through the maze.
+	 * @param theDirection
+	 */
 	public void move(Direction theDirection) {
 		Room tempCurrentRoom = myCurrentRoom;
-		RoomIndex currIndex = myCurrentRoom.getMyIndex();
+		RoomIndex currIndex = myCurrentRoom.getIndex();
 		int inRow = currIndex.getRow();
 		int inCol = currIndex.getCol();
 
-		if(!(canMove(theDirection))) {
-			throw new IllegalArgumentException("You cannot move past the border of the maze");
+		// Checks if the move is valid and the door is unlocked
+		if(!(isValidMove(theDirection, myCurrentRoom) || !myCurrentRoom.getDoors().get(theDirection).isUnlocked())) {
+			throw new IllegalArgumentException("You cannot move that way");
 	    }
 		
 		if(theDirection.getLabel().equals("N")) { // Go North
@@ -203,7 +238,6 @@ public class Maze {
             myCurrentRoom = myMaze[inRow][inCol-1];  
 		}
 		
-		// TODO Icon handling
 		tempCurrentRoom.setCurrentRoom(false);
 		tempCurrentRoom.setPlayer(null);
 		
@@ -226,7 +260,6 @@ public class Maze {
 	public Player getPlayer() {
 	    return myPlayer;
 	}
-
 	
 	/**
 	 * Returns the room at the provided row and column
@@ -235,15 +268,67 @@ public class Maze {
 	 * @return
 	 */
 	public Room getRoom(int theRow, int theColumn) {
-	 // Logic is so the client does not know about the buffer rooms and cannot access the buffer rooms
 		if(theRow < 0 || theColumn < 0) throw new 
 				IllegalArgumentException("getRoom error: The index of the rooms cannot be negative");
-		else if(theRow >= (LENGTH) || theColumn >= (WIDTH)) 
+		else if(theRow > (LENGTH) || theColumn > (WIDTH)) 
 		    throw new IllegalArgumentException("getRoom error: The index of the rooms cannot be greater than the size of the maze");
 		
-		return myMaze[theRow + BORDER_BUFFER/2][theColumn + BORDER_BUFFER/2];
+		// Using the line below does not return the correct room for testing purposes.
+		// Not sure if this method will be needed anywhere else. 
+		// Logic is so the client does not know about the buffer rooms and cannot access the buffer rooms
+		//return myMaze[theRow + BORDER_BUFFER/2][theColumn + BORDER_BUFFER/2];
+	
+		return myMaze[theRow][theColumn];
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Room getMyStartRoom() {
+		return myStartRoom;
 	}
 
+	/**
+	 * 
+	 * @param theStartRoom
+	 */
+	public void setMyStartRoom(Room theStartRoom) {
+		this.myStartRoom = theStartRoom;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Room getMyCurrentRoom() {
+		return myCurrentRoom;
+	}
+	
+	/**
+	 * 
+	 * @param myCurrentRoom
+	 */
+	public void setMyCurrentRoom(Room myCurrentRoom) {
+		this.myCurrentRoom = myCurrentRoom;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Room getMyWinRoom() {
+		return myWinRoom;
+	}
+
+	/**
+	 * 
+	 * @param theWinRoom
+	 */
+	public void setMyWinRoom(Room theWinRoom) {
+		this.myWinRoom = theWinRoom;
+	}
+	
 	/**
 	 * Returns the length of this mazes 2D Room array 
 	 * @return
@@ -262,7 +347,7 @@ public class Maze {
 	
 
 	// Returns true if the row and column are valid, and false otherwise
-	// TODO containsRoom method is redundant unless we decide to make some spaces in the grid not exist as rooms.
+	// TODO: containsRoom method is redundant unless we decide to make some spaces in the grid not exist as rooms.
 	public boolean containsRoom(int theRow, int theColumn) {
 	    if(theRow < 0 || theColumn < 0) return false;
 	    else if(theRow >= (LENGTH) || theColumn >= (WIDTH)) return false;
@@ -278,19 +363,33 @@ public class Maze {
 	 */
 	public boolean canWin() {
 		boolean [][] visited = new boolean[LENGTH + BORDER_BUFFER][WIDTH + BORDER_BUFFER];
-		canAccessWinRoom = false;
-        depthFirstSearchMaze(BORDER_BUFFER/2,  BORDER_BUFFER/2, visited);     
-        return canAccessWinRoom;
+		
+		// TODO NOTE if we add more items we will need to use .contains to see if the inventory contains the items we are checking for
+		// check if key has been picked up
+		if(myPlayer.getInventory().size() == 0) {
+			// check if we can access the room with the key
+			myCanAccessKeyRoom = false;
+	        depthFirstSearchMaze(myCurrentRoom.getIndex().getRow(),  myCurrentRoom.getIndex().getCol(), visited, "key", myKeyRoom);  	        
+	        if(myCanAccessKeyRoom == false) return false;
+		}
+		
+		// check if we can access the win room
+		visited = new boolean[LENGTH + BORDER_BUFFER][WIDTH + BORDER_BUFFER];
+		myCanAccessWinRoom = false;
+        depthFirstSearchMaze(myCurrentRoom.getIndex().getRow(),  myCurrentRoom.getIndex().getCol(), visited, "win", myWinRoom);     
+  
+        return myCanAccessWinRoom;
 	}
 	
 	
 	// Helper method for canWin. Uses depth first search to see if the win room is accessible
-	private void depthFirstSearchMaze(int theRow, int theColumn, boolean[][] theVisitedRooms) {
-		System.out.println("the row: " + theRow + " the column: " + theColumn);
+	private void depthFirstSearchMaze(int theRow, int theColumn, boolean[][] theVisitedRooms, String theRoom, Room theGoalRoom) {				
 		
+		if(theRoom.equals("key") && myCanAccessKeyRoom == true) return;
+		else if(theRoom.equals("win") && myCanAccessWinRoom == true) return;		
 		
-	    // return if we've hit the end of the maze.
-	    if (theRow < 0 || theColumn < 0 || theRow > LENGTH || theColumn > WIDTH || theVisitedRooms[theRow][theColumn]) {
+		// return if we've hit the end of the maze.
+	    if (theRow <= 0 || theColumn <= 0 || theRow > LENGTH - 1 || theColumn > WIDTH - 1 || theVisitedRooms[theRow][theColumn]) {
 	    	return;
 	    }
 	    
@@ -298,15 +397,15 @@ public class Maze {
 	    if(!this.containsRoom(theRow, theColumn)){
 	    	return;
 	    }
-
 	    
-	    Room currentRoom = this.getRoom(theRow, theColumn);
+	    Room currentRoom = myMaze[theRow][theColumn];
 	    
 	    // return if we've found the win room
 	    // TODO, should I use a "break" to exit the depthFirstSearchMaze method once the winRoom has been found?
 	    // Otherwise the DFS could recurse further.
-	    if(currentRoom == myWinRoom) {
-	    	canAccessWinRoom = true;
+	    if(currentRoom == theGoalRoom) {
+	    	if(theRoom.equals("key")) myCanAccessKeyRoom = true;
+	    	else myCanAccessWinRoom = true;
 	    	return;
 	    } else {
 	
@@ -314,53 +413,18 @@ public class Maze {
 		    theVisitedRooms[theRow][theColumn] = true;
 		    
 		    // if the right door is unlocked:
-		    if(!isEastDoorBlocked(theRow, theColumn)) depthFirstSearchMaze(theRow+ 1, theColumn, theVisitedRooms); // go right
+		    if(!currentRoom.getDoors().get(Direction.EAST).isBlocked()) depthFirstSearchMaze(theRow, theColumn + 1, theVisitedRooms, theRoom, theGoalRoom); // go right
 		    		    
 		    // if the left door is unlocked:
-		    if(!isWestDoorBlocked(theRow, theColumn)) depthFirstSearchMaze(theRow - 1, theColumn, theVisitedRooms); //go left
+		    if(!currentRoom.getDoors().get(Direction.WEST).isBlocked()) depthFirstSearchMaze(theRow, theColumn - 1, theVisitedRooms, theRoom, theGoalRoom); //go left
 		    
 		    // if the bottom door is unlocked:
-		    if(!isSouthDoorBlocked(theRow, theColumn))	depthFirstSearchMaze(theRow, theColumn + 1, theVisitedRooms); //go down
+		    if(!currentRoom.getDoors().get(Direction.SOUTH).isBlocked())	depthFirstSearchMaze(theRow + 1, theColumn, theVisitedRooms, theRoom, theGoalRoom); //go down
 		    
 		    // if the top door is unlocked:
-		    if(!isNorthDoorBlocked(theRow, theColumn)) depthFirstSearchMaze(theRow, theColumn - 1, theVisitedRooms); // go up
-		}	
-	}
-	
-
-	
-	private boolean isEastDoorBlocked(int theRow, int theColumn) {
-		Door inDoor = getSameDoor(myMaze[theRow][theColumn], myMaze[theRow][theColumn+1]);
-		return inDoor.isBlocked();
-	}
-	
-	private boolean isWestDoorBlocked(int theRow, int theColumn) {
-		Door inDoor = getSameDoor(myMaze[theRow][theColumn], myMaze[theRow][theColumn-1]);
-		return inDoor.isBlocked();
-	}
-	
-	private boolean isNorthDoorBlocked(int theRow, int theColumn) {
-		Door inDoor = getSameDoor(myMaze[theRow][theColumn], myMaze[theRow+1][theColumn]);
-		return inDoor.isBlocked();
-	}
-
-	private boolean isSouthDoorBlocked(int theRow, int theColumn) {
-		Door inDoor = getSameDoor(myMaze[theRow][theColumn], myMaze[theRow-1][theColumn]);
-		return inDoor.isBlocked();
-	}
-
-	private Door getSameDoor(Room theCurrRoom, Room theAdjRoom) {
-		//Door[] inDoors = new Door[theCurrRoom.getDoors().length];
-		for(Door d : theCurrRoom.getDoors()) {
-			for(Door o : theAdjRoom.getDoors()) {
-				if(d == o) {
-					return d;
-				}
-			}
+		    if(!currentRoom.getDoors().get(Direction.NORTH).isBlocked()) depthFirstSearchMaze(theRow - 1, theColumn, theVisitedRooms, theRoom, theGoalRoom); // go up
 		}
-		throw new IllegalArgumentException("There is no shared door between these rooms.");
 	}
-
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -378,4 +442,59 @@ public class Maze {
 		}
 		return sb.toString();
 	}
+
+	// CHEAT METHOD
+	// Unlocks every door in the maze except doors that lead to border rooms
+	public void unlockAllDoors() {
+		
+		// Unlocks all doors in the middle group of rooms
+		for(int i = 2; i < LENGTH; i++) {
+			for(int j = 2; j < WIDTH; j++) {
+				Room currRoom = myMaze[i][j];
+				currRoom.setPlayer(myPlayer);
+				for(Door currDoor : currRoom.getDoors().values()) {
+					currDoor.setUnlocked();
+				}
+			}
+		}
+		
+		// TODO consolidate cheat method with helper methods?
+		// Unlocks north/south doors in the first and last col (not incl border rooms).  
+		for(int i = 2; i < LENGTH; i++) {
+			Room firstCol = myMaze[i][1];
+			Room lastCol = myMaze[i][WIDTH];
+			firstCol.setPlayer(myPlayer);
+			lastCol.setPlayer(myPlayer);
+			
+			firstCol.getDoors().get(Direction.NORTH).setUnlocked();
+
+			lastCol.getDoors().get(Direction.NORTH).setUnlocked();
+
+			firstCol.getDoors().get(Direction.SOUTH).setUnlocked();
+
+			lastCol.getDoors().get(Direction.SOUTH).setUnlocked();
+		}
+		
+		// Unlocks east/west doors in the first and last row (not incl border rooms).  
+		for(int i = 2; i < WIDTH; i++) {
+			Room firstRow = myMaze[1][i];
+			Room lastRow= myMaze[LENGTH][i];
+			firstRow.setPlayer(myPlayer);
+			lastRow.setPlayer(myPlayer);
+			
+			firstRow.getDoors().get(Direction.EAST).setUnlocked();
+			
+			lastRow.getDoors().get(Direction.EAST).setUnlocked();
+			
+			firstRow.getDoors().get(Direction.WEST).setUnlocked();
+
+			lastRow.getDoors().get(Direction.WEST).setUnlocked();
+		}
+		
+		getRoom(1, 1).setPlayer(myPlayer);
+		getRoom(1, WIDTH).setPlayer(myPlayer);
+		getRoom(LENGTH, 1).setPlayer(myPlayer);
+		getRoom(LENGTH, WIDTH).setPlayer(myPlayer);
+	}
+
 }

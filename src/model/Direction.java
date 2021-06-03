@@ -3,6 +3,11 @@ package model;
 import java.awt.event.KeyEvent;
 import java.util.Set;
 
+/**
+ * An enum class representing cardinal and ordinal directions.
+ * @authors Heather Finch, Katelynn Oleson, Ken Smith
+ * @version
+ */
 public enum Direction {
 	NORTH("N", 0, -1),
 	NORTHEAST("NE", 1, -1),
@@ -13,11 +18,11 @@ public enum Direction {
 	WEST("W", -1, 0),
 	NORTHWEST("NW", -1, -1);
 
-	public final String myLabel;
+	private final String myLabel;
 	private final int dxMultiplier;
 	private final int dyMultiplier;
 
-
+	
 	private Direction(String theLabel, int theDXMultiplier, int theDYMultiplier) {
     	myLabel = theLabel;
     	dxMultiplier = theDXMultiplier;
@@ -30,59 +35,63 @@ public enum Direction {
 	public String getLabel() {
 		return myLabel;
 	}
-	//TODO: magic number for wall boundary, consider if this is more controller functionality and 
-	//change location for alot of this code without breaking current functionality
-	public static Direction generateDirection(Set<Integer> thePressedKeys, Player thePlayer, int theRoomSize) {
+	
+	/**
+	 * A static method, generates a direction from a set of pressed keys.
+	 * @param thePressedKeys
+	 */
+	public static Direction generateDirection(Set<Integer> thePressedKeys) {
+		
 		Direction inXDirection = null;
 		Direction inYDirection = null;
 		Direction inComboDirection;
+		
 		// going west
 		if((thePressedKeys.contains(KeyEvent.VK_A) || thePressedKeys.contains(KeyEvent.VK_LEFT)) &&
-				(!thePressedKeys.contains(KeyEvent.VK_D) || !thePressedKeys.contains(KeyEvent.VK_RIGHT)) &&
-					thePlayer.getCoordinate().getX() >= 5) {
+				(!thePressedKeys.contains(KeyEvent.VK_D) || !thePressedKeys.contains(KeyEvent.VK_RIGHT))) {
 			inXDirection = Direction.WEST;
 		}
 		// going east
 		if((thePressedKeys.contains(KeyEvent.VK_D) || thePressedKeys.contains(KeyEvent.VK_RIGHT)) &&
-				(!thePressedKeys.contains(KeyEvent.VK_A) || !thePressedKeys.contains(KeyEvent.VK_LEFT)) &&
-				thePlayer.getCoordinate().getX() <= theRoomSize -thePlayer.getSkin().getSize() - 5) {
+				(!thePressedKeys.contains(KeyEvent.VK_A) || !thePressedKeys.contains(KeyEvent.VK_LEFT))) {
 			inXDirection = Direction.EAST;
 		}
 		// going north
 		if((thePressedKeys.contains(KeyEvent.VK_W) || thePressedKeys.contains(KeyEvent.VK_UP)) &&
-				(!thePressedKeys.contains(KeyEvent.VK_S) || !thePressedKeys.contains(KeyEvent.VK_DOWN)) &&
-				thePlayer.getCoordinate().getY() >= 5) {
+				(!thePressedKeys.contains(KeyEvent.VK_S) || !thePressedKeys.contains(KeyEvent.VK_DOWN))) {
 			inYDirection = Direction.NORTH;
 		}
 		// going south
 		if((thePressedKeys.contains(KeyEvent.VK_S) || thePressedKeys.contains(KeyEvent.VK_DOWN)) &&
-				(!thePressedKeys.contains(KeyEvent.VK_W) || !thePressedKeys.contains(KeyEvent.VK_UP)) &&
-				thePlayer.getCoordinate().getY() <= theRoomSize - thePlayer.getSkin().getSize() - 5) {
+				(!thePressedKeys.contains(KeyEvent.VK_W) || !thePressedKeys.contains(KeyEvent.VK_UP))) {
 			inYDirection = Direction.SOUTH;
 		}
-		//System.out.println(inXDirection);
-		//System.out.println(inYDirection);
+		
 		inComboDirection = getComboDirection(inXDirection, inYDirection);
-		//System.out.println(inComboDirection);
 		return inComboDirection;
 	}
-
-	public static Direction getComboDirection(Direction theXDirection, Direction theYDirection) {
+	
+	/**
+	 * A helper method, combines x and y directions.
+	 * @param theXDirection
+	 * @param theYDirection
+	 */
+	private static Direction getComboDirection(Direction theXDirection, Direction theYDirection) {
 		
-		//northwest or northeast
+		// northwest or northeast
 		if(theYDirection == Direction.NORTH) {
 			if(theXDirection == Direction.WEST) return Direction.NORTHWEST;
 			if(theXDirection == Direction.EAST) return Direction.NORTHEAST;
 		}
-		//southwest or southeast
+		// southwest or southeast
 		if(theYDirection == Direction.SOUTH) {
 			if(theXDirection == Direction.WEST) return Direction.SOUTHWEST;
 			if(theXDirection == Direction.EAST) return Direction.SOUTHEAST;
 		}
 		
-		//north or south
+		// north or south
 		if(theXDirection == null) return theYDirection;
-		//west or east
+		// west or east
 		if(theYDirection == null) return theXDirection;
 		
 		return null; //TODO: fix to better way. this return should never happen

@@ -2,6 +2,11 @@ package controller;
 
 import java.awt.EventQueue;
 
+/**
+ * The main, runs the game and creates the controller. 
+ * @authors Heather Finch, Katelynn Oleson, Ken Smith
+ * @version
+ */
 public class GlorpMain {
     /**
      * Private constructor to prevent construction of instances.
@@ -19,7 +24,7 @@ public class GlorpMain {
     	EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-            GlorpController game = new GlorpController();
+            GlorpController controller = new GlorpController();
         }});
 
     }

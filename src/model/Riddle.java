@@ -1,32 +1,50 @@
 package model;
+
+import java.util.ArrayList;
+
 /**
  * A Riddle is a question/answer pair.
- * @author
- * @version
+ * @author Ken Smith, Heather Finch, Katelynn Oleson 
+ * @version 
  */
-public class Riddle {
+
+// TODO should this be an interface instead?
+public class Riddle { // doesnt really need to be abstract
+
+	// fields
 	private String myQuestion;
-	private String[] myWrongOptions;
-	private String myAnswer;
+	private String myAnswer; 
+	private ArrayList<String> myWrongOptions; //array list may be better bc easier to eliminate half the options
+	private RiddleType myType; // not really needed
 	
+	/**
+	 * Constructor creates a riddle based off of the question, answer, and type of riddle. 
+	 */
+	public Riddle (String theQuestion, String theAnswer, ArrayList<String> theWrongOptions, RiddleType theType) {
+		myQuestion = theQuestion;
+		myAnswer = theAnswer;
+		myWrongOptions = theWrongOptions;
+		myType = theType;
+	}
+
 	/**
 	 * Default for testing purposes
 	 */
 	public Riddle() {
         myQuestion = "Test Question";
         myAnswer = "correct Answer";
-        myWrongOptions = new String[2];
-            myWrongOptions[0] = "wrong answer 1";
-            myWrongOptions[1] = "wrong answer 2";
+        myWrongOptions = new ArrayList<String>();
+            myWrongOptions.add("wrong answer 1");
+            myWrongOptions.add("wrong answer 2");
     }
 	
 	public Riddle(String theQuestion, String theAnswer) {
 	    myQuestion = theQuestion;
 	    myAnswer = theAnswer;
-	    myWrongOptions = new String[0];
+	    myWrongOptions = new ArrayList<String>();
 	}
 	
-	public Riddle(String theQuestion, String theAnswer, String[] theWrongOptions) {
+	public Riddle(String theQuestion, String theAnswer, ArrayList<String> theWrongOptions) {
 	    myQuestion = theQuestion;
         myAnswer = theAnswer;
         myWrongOptions = theWrongOptions;
@@ -45,7 +63,7 @@ public class Riddle {
 	 * if returns an empty list, then the riddle is open answer
 	 * @return theWrongOptions
 	 */
-	public String[] getWrongOptions() {
+	public ArrayList<String> getWrongOptions() {
 	    return myWrongOptions; // deep copy? 
 	     // or shallow copy for items that allow elimination of wrong answers (50/50 item)
 	}
@@ -80,5 +98,28 @@ public class Riddle {
 	    return myAnswer;
 	}
 
+
+	 /**
+	  * return array list of answer options
+	  * wrong options + the correct answer
+	 */
+	public ArrayList<String> getAnswerOptions(){
+	    ArrayList<String> inAnswers = (ArrayList<String>) myWrongOptions.clone();
+	    inAnswers.add(myAnswer);
+		return inAnswers;
+	}
+
 	
+	/**
+	 * @return type of riddle enum
+	 */
+	public RiddleType getType() {
+		return myType;
+	}
+	
+	public boolean verifyAnswer(String thePlayersAnswer) {
+		System.out.println("The players answer: " + thePlayersAnswer + ", correct answer: " + myAnswer);
+		if(thePlayersAnswer.toLowerCase().equals(myAnswer)) return true;
+		return false;
+	}
 }

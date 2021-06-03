@@ -1,7 +1,11 @@
 package model;
 
+import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
@@ -15,11 +19,11 @@ import view.GameIcon;
  * @author
  * @version
  */
-//TODO: create subclasses (start and end rooms)
+// TODO: create subclasses (start and end rooms)
 public class Room {
-    private static int MAX_DOORS = 4;
-    private Door[] myDoors; // for now... 4 doors each 
-	private ArrayList<Item> myItems; // array list, no max GamePieces
+    private HashMap<Direction, Door> myDoorMap;
+	private Item myItem; 
+	private Fixture myFixture;
 	private Player myPlayer;
     // why does room contain the player? 
 	
@@ -27,57 +31,79 @@ public class Room {
 	private GameIcon mySmallIcon;
 	private boolean isCurrentRoom;
 	private boolean isWinRoom;
+	private boolean isVisited;
+	
+	private final static int SIZE = 500;
+	private static final Rectangle AREA = new Rectangle(new Point(0,0), new Dimension(SIZE,SIZE));
+	private static final Rectangle NORTH_DOOR_ZONE = new Rectangle(new Point(200,0), new Dimension(100,20));;
+	private static final Rectangle SOUTH_DOOR_ZONE = new Rectangle(new Point(200,480), new Dimension(100,20));;
+	private static final Rectangle WEST_DOOR_ZONE = new Rectangle(new Point(0,200), new Dimension(20,100));;
+	private static final Rectangle EAST_DOOR_ZONE = new Rectangle(new Point(480,200), new Dimension(20,100));;
+
 	private final RoomIndex myIndex;
 	
 	
-	private static GameIcon[] FLOORS;
 	//TODO: should these be enumerated types? might help get rid of boolean fields upon refactor
-	private static GameIcon MAP_ICON = new GameIcon("src/icons/map_icon.png");
-	private static GameIcon MAP_ICON_CURRENT = new GameIcon("src/icons/map_icon_current.png");
-	private GameIcon MAP_ICON_WIN = new GameIcon("src/icons/map_icon_win.png");
+	private static final Carpet CARPETS = new Carpet();
+	private static final int MAP_ICON_SIZE = 36;
+	private static final GameIcon MAP_ICON = new GameIcon("src/icons/map_icon.png", MAP_ICON_SIZE);
+	private static final GameIcon MAP_ICON_CURRENT = new GameIcon("src/icons/map_icon_current.png", MAP_ICON_SIZE);
+	private static final GameIcon MAP_ICON_WIN = new GameIcon("src/icons/map_icon_win.png", MAP_ICON_SIZE);
+	private static final GameIcon MAP_ICON_CURRENT_WIN = new GameIcon("src/icons/map_icon_current_win.png", MAP_ICON_SIZE);
+	private static final GameIcon MAP_ICON_KEY = new GameIcon("src/icons/map_icon_key.png", MAP_ICON_SIZE);
+	private static final GameIcon MAP_ICON_CURRENT_KEY = new GameIcon("src/icons/map_icon_current_key.png", MAP_ICON_SIZE);
 	private final static Random RAND = new Random();
+	
 	
 	//Map<Door, Room> myDoors= new TreeMap<>();
 	//private boolean containsPlayer; //will be tracked by map (current room) 
 	//private boolean visitedFlag; // will be tracked by map? 
 	
+    /**
+     * 
+     */
     public Room() {
-    	loadIcons();
-    	myItems = new ArrayList<Item>();
+    	myDoorMap = null;
+    	myItem = null;
+    	myFixture = null;
         myLargeIcon = null; 
         mySmallIcon = null;
         myIndex = null;
         myPlayer = null;
+        isVisited = false;
     }
 
-	public Room(int theRow, int theCol) { // how will rooms get their icons? And riddles? 
-		loadIcons();
-		myItems = new ArrayList<Item>();
+	/**
+	 * @param theRow
+	 * @param theCol
+	 */
+	public Room(int theRow, int theCol) { // how will rooms get their riddles? 
+		myDoorMap = null;
+		myItem = null;
 	    setRandomFloor(); 
 	    mySmallIcon = MAP_ICON; 
 	    myIndex = new RoomIndex(theRow, theCol);
 	    myPlayer = null;
+	    isVisited = false;
 	}
+
 
 	/**
      * If this rooms doors have not been initailized already,
      * sets this rooms door array to the passed in door array.
      * @param Door[] theDoors
      */
-    void setDoors(Door[] theDoors) {
-        if(myDoors == null) {
-            myDoors = theDoors;
-        }
+    public void setDoors(HashMap<Direction, Door> theDoors) {
+    	myDoorMap = theDoors;
     }
     
-    Door[] getDoors() throws NullPointerException{
-        if(myDoors == null) { 
-            //throw new NullPointerException("This room has no doors.");
-            return new Door[MAX_DOORS];
-        }else
-            return myDoors;
+
+    /**
+     * @return
+     */
+    public HashMap<Direction, Door> getDoors() {
+    	return myDoorMap;
     }
-    
 	
 //	/*
 //	 * Retrieves Riddles from Game 
@@ -90,18 +116,31 @@ public class Room {
 //        // Injector type stuff? - riddles are a dependencie? 
 //	    return new Riddle[MAX_DOORS];
 //	}
+    
+	/**
+	 * @return the myItems
+	 */
+	public Item getItem() {
+		return myItem;
+	}
+
+	/**
+	 * 
+	 */
+	public void setItem(Item theItem) {
+		myItem = theItem;
+		if (theItem == null) mySmallIcon = MAP_ICON_KEY;
+	}
 	
-
-
 	/**
 	 * Place an item in this room
 	 * @param myItem the myItem to set
 	 */
-	public void addItem(Item theGamePiece) throws NullPointerException{
+	public void addItem(Item theGamePiece, PiecePoint theCoordinates) throws NullPointerException{
 	    if(theGamePiece == null) {
 	        throw new NullPointerException("GamePiece cannot be null.");
 	    }
-		myItems.add(theGamePiece);
+		myItem = theGamePiece;
 	}
 	
 	/**
@@ -110,47 +149,94 @@ public class Room {
 	 */
 	public void setPlayer(Player thePlayer) {
 		myPlayer = thePlayer;
+		isVisited = true;
 	}
 	
 	public Player getPlayer() {
 		return Objects.requireNonNull(myPlayer, "No player has been set in this room.");
 	}
 	
-//	public void setLargeIcon(GameIcon theLargeIcon) {
-//		Objects.requireNonNull(theLargeIcon);
-//		myLargeIcon = theLargeIcon;
-//	}
-	
+	/**
+	 * @return
+	 */
 	public GameIcon getLargeIcon() {
 	    return myLargeIcon;
 	}
 	
+	/**
+     * @param myLargeIcon the myLargeIcon to set
+     */
 	public void setLargeIcon(GameIcon theLargeIcon) {
 	    Objects.requireNonNull(theLargeIcon);
 	    myLargeIcon = theLargeIcon;
 	}
 	   
+
+	/**
+	 * @param theSmallIcon
+	 */
 	public void setSmallIcon(GameIcon theSmallIcon) {
 		Objects.requireNonNull(theSmallIcon);
 		mySmallIcon = theSmallIcon;
 	}
 	
 	
-	public ImageIcon getSmallIcon() {
+	/**
+	 * @return
+	 */
+	public GameIcon getSmallIcon() {
         return mySmallIcon;
     }
 	
-	public RoomIndex getMyIndex() {
+	/**
+	 * @return the myFixture
+	 */
+	public Fixture getFixture() {
+		return myFixture;
+	}
+
+	/**
+	 * @param myFixture the myFixture to set
+	 */
+	public void setFixture(Fixture myFixture) {
+		this.myFixture = myFixture;
+	}
+
+	/**
+	 * @return
+	 */
+	public RoomIndex getIndex() {
 		return myIndex;
 	}
 	
+	/**
+	 * @return the size
+	 */
+	public static int getSize() {
+		return SIZE;
+	}
+
+	/**
+	 * @param isCurrentRoom
+	 */
 	public void setCurrentRoom(boolean isCurrentRoom) {
 		this.isCurrentRoom = isCurrentRoom;
 		
-		if(isCurrentRoom) mySmallIcon = MAP_ICON_CURRENT;
-		else mySmallIcon = MAP_ICON;
+		if(isCurrentRoom) {
+			if(isWinRoom) mySmallIcon = MAP_ICON_CURRENT_WIN;
+			else if (myItem != null) mySmallIcon = MAP_ICON_CURRENT_KEY;
+			else mySmallIcon = MAP_ICON_CURRENT;
+		}
+		else {
+			if (isWinRoom) mySmallIcon = MAP_ICON_WIN;
+			else if (myItem != null) mySmallIcon = MAP_ICON_KEY;
+			else mySmallIcon = MAP_ICON;
+		}
 	}
 	
+	/**
+	 * @param isWinRoom
+	 */
 	public void setWinRoom(boolean isWinRoom) {
 		this.isWinRoom = isWinRoom;
 		
@@ -158,33 +244,113 @@ public class Room {
 		else mySmallIcon = MAP_ICON;
 	}
 	
-//	public Point[] getDoorCoordinates() {
-//	    Point[] inCoordinates = new Point[MAX_DOORS];
-//	    for(int i = 0; i < MAX_DOORS; i++) {
-//	        inCoordinates[i] = myDoors[i].getCoordinate(); //will any of the doors ever be null? 
-//	    }
-//	    return inCoordinates;
-//	}
-	private void loadIcons() {
-		FLOORS = loadFloors();
-		MAP_ICON.resize(35);
-		MAP_ICON_CURRENT.resize(35);
-		MAP_ICON_WIN.resize(35);
+	/**
+	 * @return the map icon with the key in it
+	 */
+	public static GameIcon getKeyMapIcon() {
+		return MAP_ICON_KEY;
+
 	}
 	
-	private static GameIcon[] loadFloors() {
-		GameIcon[] floorIcons = new GameIcon[12];
-		for (int i = 1; i <= 12; i++) { 
-		    String inFileName = ("src/icons/floor" + i + ".png");
-		    floorIcons[i-1] = new GameIcon(inFileName);
-		    floorIcons[i-1].resize(500);
-		}
-		return floorIcons;
+	/**
+	 * @return the isVisited
+	 */
+	public boolean isVisited() {
+		return isVisited;
 	}
 	
+	/**
+	 * @return the mapIconSize
+	 */
+	public static int getMapIconSize() {
+		return MAP_ICON_SIZE;
+	}
+
+	/**
+	 * @return the northDoorZone
+	 */
+	public static Rectangle getNorthDoorZone() {
+		return NORTH_DOOR_ZONE;
+	}
+
+	/**
+	 * @return the southDoorZone
+	 */
+	public static Rectangle getSouthDoorZone() {
+		return SOUTH_DOOR_ZONE;
+	}
+
+	/**
+	 * @return the westDoorZone
+	 */
+	public static Rectangle getWestDoorZone() {
+		return WEST_DOOR_ZONE;
+	}
+
+	/**
+	 * @return the eastDoorZone
+	 */
+	public static Rectangle getEastDoorZone() {
+		return EAST_DOOR_ZONE;
+	}
+
+	/**
+	 *
+	 */
+	public String toString() {
+		return myIndex.toString();
+	}
+	
+	/**
+	 * 
+	 */
 	private void setRandomFloor() {
-		myLargeIcon = FLOORS[RAND.nextInt(12)];
+		myLargeIcon = CARPETS.getFloors()[RAND.nextInt(12)];
+	}
+
+	/*
+	 * Returns a valid direction
+	 */
+	public Direction validateDirection(Player thePlayer, Direction theDirection) throws CloneNotSupportedException {
+		Player playerProjected = (Player) thePlayer.clone();
+		//playerProjected.setArea(thePlayer.getArea());
+		playerProjected.move(theDirection);
+		Direction validDirection = null;
+		
+		if(isValidLocation(playerProjected)) validDirection = theDirection;
+		// recursion for compound directions
+		else if(theDirection == Direction.NORTHEAST) {
+			validDirection = validateDirection(thePlayer, Direction.NORTH);
+			if(validDirection == null) validDirection = validateDirection(thePlayer, Direction.EAST);
+		}
+		else if(theDirection == Direction.NORTHWEST) {
+			validDirection = validateDirection(thePlayer, Direction.NORTH);
+			if(validDirection == null) validDirection = validateDirection(thePlayer, Direction.WEST);
+		}
+		else if(theDirection == Direction.SOUTHEAST) {
+			validDirection = validateDirection(thePlayer, Direction.SOUTH);
+			if(validDirection == null) validDirection = validateDirection(thePlayer, Direction.EAST);
+		}
+		else if(theDirection == Direction.SOUTHWEST) {
+			validDirection = validateDirection(thePlayer, Direction.SOUTH);
+			if(validDirection == null) validDirection = validateDirection(thePlayer, Direction.WEST);
+		}
+		return validDirection;
 	}
 	
-	
+	/**
+	 * @param playerProjected
+	 * @return
+	 */
+	public boolean isValidLocation(Player playerProjected) {
+		// check for out of room bounds
+		if(!AREA.contains(playerProjected.getIconArea())) {
+			return false;
+		}
+		// check for fixture overlap
+		if(myFixture != null && myFixture.getBase().intersects(playerProjected.getBase())) {
+				return false;
+		}
+		return true;
+	}
 }
