@@ -104,9 +104,6 @@ public class DoorFactory {
     }
     
     private Riddle getNextRiddle(RiddleType theType) {
-    	// Here we need to handle the riddleSet.next() method
-    	// using a while loop
-    	// and using the right while loop for each riddle
     	Riddle currRiddle = null;
     	try {
 	    	if(theType.getLabel().equals("tf") && tfRiddleSet.next()){
