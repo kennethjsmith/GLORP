@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.Item;
+import model.ItemType;
 import model.Player;
 
 //TODO: clean this up
@@ -76,21 +77,21 @@ public class ItemView extends JPanel {
 		itemLabel2.setIcon(BLANK);
 		itemLabel3.setIcon(BLANK);
 		
-		Item tempItem;
+		ItemType tempItem;
 		
 		if(thePlayer.getInventory().size() >= 1) {
 			tempItem = thePlayer.getInventory().get(0);
-			if (tempItem != null) itemLabel1.setIcon(tempItem.getItemPanelIcon());
+			if (tempItem != null) itemLabel1.setIcon(ItemType.getItemPanelIcon(tempItem));
 		}
 		
 		if(thePlayer.getInventory().size() >= 2) {
 			tempItem = thePlayer.getInventory().get(1);
-			if (tempItem != null) itemLabel2.setIcon(tempItem.getItemPanelIcon());
+			if (tempItem != null) itemLabel2.setIcon(ItemType.getItemPanelIcon(tempItem));
 		}
 		
 		if(thePlayer.getInventory().size() >= 3) {
 			tempItem = thePlayer.getInventory().get(2);
-			if (tempItem != null) itemLabel3.setIcon(tempItem.getItemPanelIcon());
+			if (tempItem != null) itemLabel3.setIcon(ItemType.getItemPanelIcon(tempItem));
 		}
 	}
 	

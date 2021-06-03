@@ -22,7 +22,7 @@ public class Player extends GamePiece implements Cloneable {
 	private GameIcon myRoomIcon;
 	private final GameIcon myMapIcon = new GameIcon("src/icons/alien_map_icon.png"); //TODO: add mapIcon
 	
-	private ArrayList<Item> myInventory;
+	private ArrayList<ItemType> myInventory;
 	private Skin mySkin;
 	private IconDirection myIconDirection;
 	private int myStride; // 0 for standing, 1,2,3,4 for different run icons
@@ -77,7 +77,7 @@ public class Player extends GamePiece implements Cloneable {
 	/**
 	 * @return
 	 */
-	public ArrayList<Item> getInventory() {
+	public ArrayList<ItemType> getInventory() {
 		return myInventory;
 	}
 	
@@ -212,5 +212,26 @@ public class Player extends GamePiece implements Cloneable {
 	 */
 	public String toString() {
 		return myCoordinate.toString();
+	}
+
+	/**
+	 * 
+	 * @param inFixture
+	 * @return boolean
+	 */
+	public boolean canInteract(Fixture inFixture) {
+		if((inFixture.getType() == FixtureType.ALTSHIP
+				|| inFixture.getType() == FixtureType.SHIP)) {
+			for(ItemType type : myInventory) {
+				if(type.getLabel().equals("GEM")) return true;
+			}
+		}
+		if(inFixture.getType() == FixtureType.CHEST) {
+			for(ItemType type : myInventory) {
+				if(type.equals(ItemType.KEY)) return true;
+			}
+		}
+		
+		return false;
 	}
 }

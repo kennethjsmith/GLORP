@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import model.Direction;
 import model.Door;
 import model.Fixture;
+import model.FixtureType;
 import model.Item;
 import model.ItemType;
 import model.Maze;
@@ -85,7 +86,7 @@ public class GlorpController implements KeyListener{
     	// check items
     	Item inItem = myMaze.getCurrRoom().getItem();
     	if(inItem != null && myPlayer.getIconArea().intersects(inItem.getIconArea())) {
-    		myPlayer.getInventory().add(myMaze.getCurrRoom().getItem());
+    		myPlayer.getInventory().add(myMaze.getCurrRoom().getItem().getType());
     		myMaze.getCurrRoom().setItem(null);
     		myMaze.getCurrRoom().setCurrentRoom(true);
     		myWindow.getItemView().update(myPlayer);
@@ -93,10 +94,11 @@ public class GlorpController implements KeyListener{
     	
     	// check fixtures
     	Fixture inFixture = myMaze.getCurrRoom().getFixture();
-    	if(inFixture != null && inFixture.getInteractionZone() != null && myPlayer.getIconArea().intersects(inFixture.getInteractionZone())) {
-    		if(!myPlayer.getInventory().isEmpty()) {
+    	if(inFixture != null && myPlayer.canInteract(inFixture) && myPlayer.getIconArea().intersects(inFixture.getInteractionZone())) {
+    		if(myPlayer.getInventory().contains(ItemType.KEY) 
+    				&& inFixture.getType() == FixtureType.CHEST) {
+    			myPlayer.getInventory().remove(ItemType.KEY);
     			myMaze.getCurrRoom().addItem(new Item(new PiecePoint(250,250), ItemType.GEM));
-    			myPlayer.getInventory().remove(0);
     			myWindow.getItemView().update(myPlayer);
     			inFixture.setBase(new Rectangle(new Dimension(0,0)));
     			inFixture.setIconArea(new Rectangle(new Dimension(0,0)));
@@ -117,10 +119,23 @@ public class GlorpController implements KeyListener{
     		            }
     		        }
     		    };
-
     		    Timer timer = new Timer();
     		    timer.scheduleAtFixedRate(task, 0, 100);
-    			
+    		}
+    		
+    		if(myPlayer.getInventory().contains(ItemType.GEM) 
+    			&& inFixture.getType() == FixtureType.ALTSHIP){
+    			// TODO: this vvv doesn't really belong here
+    			inFixture.setIcon(new GameIcon("src/icons/alt_ship_fixed.png", 200, 275));	
+    			myPlayer.getInventory().clear();
+    			myWindow.getItemView().update(myPlayer);
+    		}
+
+    		if(myPlayer.getInventory().contains(ItemType.GEM) 
+        		&& inFixture.getType() == FixtureType.SHIP){
+        		inFixture.setIcon(new GameIcon("src/icons/ship_fixed.png", 200, 150));	
+        		myPlayer.getInventory().clear();
+        		myWindow.getItemView().update(myPlayer);
     		}
     	}
     	
