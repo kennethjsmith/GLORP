@@ -5,7 +5,8 @@ package model;
  * @version
  */
 public enum ItemType {
-	KEY("KEY");
+	KEY("KEY"),
+	GEM("GEM");
 	
 	public final String myLabel;
 

@@ -145,7 +145,7 @@ public class Maze {
 	 * A helper method. Places a key item in a room.
 	 */
 	private void placeItems(int theStartRow, int theStartCol, int theWinRow, int theWinCol) {
-		PiecePoint randomCoordinates = PiecePoint.randomPoint(Room.getSize()-Item.getWidth(), Room.getSize()-Item.getHeight());
+		PiecePoint randomCoordinates = PiecePoint.randomPoint(Room.getSize()-Item.getMaxSize(), Room.getSize()-Item.getMaxSize());
 		int keyRow = theStartRow;
 		int keyCol = theStartCol;
 		while(keyRow == theStartRow || keyRow == theWinRow) {
@@ -154,7 +154,7 @@ public class Maze {
 		while(keyCol == theStartCol || keyCol == theWinCol) {
 			keyCol = generateRandom(BORDER_BUFFER, LENGTH - 2);
 		}
-		myMaze[keyRow][keyCol].addItem(new Item(randomCoordinates), randomCoordinates);
+		myMaze[keyRow][keyCol].addItem(new Item(randomCoordinates, ItemType.KEY));
 		myKeyRoom = myMaze[keyRow][keyCol];
 		myKeyRoom.setSmallIcon(Room.getKeyMapIcon());
 

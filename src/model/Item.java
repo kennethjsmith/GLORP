@@ -11,11 +11,20 @@ import view.GameIcon;
  * @version
  */
 public class Item  extends GamePiece{
-	private final static int WIDTH = 50;
-	private final static int HEIGHT = 75;
-	private final static GameIcon ROOM_ICON = new GameIcon("src/icons/anhk_key.png", WIDTH, HEIGHT);
-	private final static GameIcon ITEM_PANEL_ICON = new GameIcon("src/icons/key_item_icon.png", 75);
+	// fields
 	private Rectangle myIconArea;
+	private GameIcon myRoomIcon;
+	private GameIcon myItemPanelIcon;
+	
+	private final static int KEY_WIDTH = 50;
+	private final static int KEY_HEIGHT = 75;
+	private final static int GEM_SIZE = 25;
+	private final static int MAX_SIZE = 75;
+	private final static int ITEM_PANEL_ICON_SIZE = 75;
+	private final static GameIcon KEY_ROOM_ICON = new GameIcon("src/icons/anhk_key.png", KEY_WIDTH, KEY_HEIGHT);
+	private final static GameIcon GEM_ROOM_ICON = new GameIcon("src/icons/gem.png", GEM_SIZE);
+	private final static GameIcon KEY_ITEM_PANEL_ICON = new GameIcon("src/icons/item_icon_key.png", ITEM_PANEL_ICON_SIZE);
+	private final static GameIcon GEM_ITEM_PANEL_ICON = new GameIcon("src/icons/item_icon_gem.png", ITEM_PANEL_ICON_SIZE);
 	
 	// TODO: should this be private to prevent instantiation? Fixture too?
 	/**
@@ -30,23 +39,32 @@ public class Item  extends GamePiece{
 	 * Constructs an item at the given point.
 	 * @param thePoint
 	 */
-	public Item(PiecePoint thePoint) {
+	public Item(PiecePoint thePoint, ItemType theType) {
 		super();
-		myIconArea = new Rectangle(thePoint, new Dimension(WIDTH,HEIGHT));
+		if(theType == ItemType.GEM) {
+			myRoomIcon = GEM_ROOM_ICON;
+			myItemPanelIcon = GEM_ITEM_PANEL_ICON;
+			myIconArea = new Rectangle(thePoint, new Dimension(GEM_SIZE,GEM_SIZE));
+		}
+		if(theType == ItemType.KEY) {
+			myRoomIcon = KEY_ROOM_ICON;
+			myItemPanelIcon = KEY_ITEM_PANEL_ICON;
+			myIconArea = new Rectangle(thePoint, new Dimension(KEY_WIDTH,KEY_HEIGHT));
+		}
 	}
 
 	/**
 	 * @return the ROOM_ICON
 	 */
 	public GameIcon getRoomIcon() {
-		return ROOM_ICON;
+		return myRoomIcon;
 	}
 	
 	/**
 	 * @return the ITEM_PANEL_ICON
 	 */
 	public GameIcon getItemPanelIcon() {
-		return ITEM_PANEL_ICON;
+		return myItemPanelIcon;
 	}
 
 	/**
@@ -57,16 +75,10 @@ public class Item  extends GamePiece{
 	}
 
 	/**
-	 * @return the width
+	 * @return the max size
 	 */
-	public static int getWidth() {
-		return WIDTH;
+	public static int getMaxSize() {
+		return MAX_SIZE;
 	}
 
-	/**
-	 * @return the height
-	 */
-	public static int getHeight() {
-		return HEIGHT;
-	}
 }

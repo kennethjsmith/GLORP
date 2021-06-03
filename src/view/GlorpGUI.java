@@ -58,6 +58,7 @@ public class GlorpGUI extends JFrame {
     private MapView myMapView;
     private RiddlePanel myRiddlePanel;
     private ItemPanel myItemPanel;
+    private ItemView myItemView;
     private TitlePanel myTitlePanel;
     private Clip myBackgroundMusic;
     private FloatControl myGainControl;
@@ -114,6 +115,8 @@ public class GlorpGUI extends JFrame {
         
         // add item panel to GUI
         myItemPanel = new ItemPanel();
+        myItemView = new ItemView();
+        myItemPanel.add(myItemView, BorderLayout.NORTH);
         c.gridx = 0;
         c.gridy = 2;
         add(myItemPanel, c);
@@ -283,14 +286,6 @@ public class GlorpGUI extends JFrame {
         myMenubar.add(help);
         setJMenuBar(myMenubar);
     }
-    	
-    /**
-     * 
-     * @param thePlayer
-     */
-    public void updateItemPanel(Player thePlayer) {
-		myItemPanel.update(thePlayer);
-	}
     
     public void music(File theAudioFile) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
 	    if(theAudioFile == null) myBackgroundMusic.close();
@@ -300,4 +295,11 @@ public class GlorpGUI extends JFrame {
 		    myBackgroundMusic.loop(Clip.LOOP_CONTINUOUSLY);
 	    }
     }
+
+	/**
+	 * @return the myItemView
+	 */
+	public ItemView getItemView() {
+		return myItemView;
+	}
 }

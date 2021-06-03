@@ -136,7 +136,7 @@ public class Room {
 	 * Place an item in this room
 	 * @param myItem the myItem to set
 	 */
-	public void addItem(Item theGamePiece, PiecePoint theCoordinates) throws NullPointerException{
+	public void addItem(Item theGamePiece) throws NullPointerException{
 	    if(theGamePiece == null) {
 	        throw new NullPointerException("GamePiece cannot be null.");
 	    }

@@ -20,12 +20,12 @@ import javax.swing.border.Border;
  */
 public class TitlePanel extends JPanel{
 	// fields
-	private final static int WIDTH = 275;
-	private final static int HEIGHT = 100;
-	private JLabel myTitleLabel;
-	private JLabel myBackgroundLabel;
-	private GameIcon TITLE_ICON = new GameIcon("src/icons/title.png",250,100);
-	private GameIcon BACKGROUND_ICON = new GameIcon("src/icons/stars.png",285,100);
+	private final static int WIDTH = 285;
+	private final static int HEIGHT = 81;
+	private final static int TITLE_WIDTH = 260;
+	private final static int TITLE_HEIGHT = 90;
+	private GameIcon TITLE_ICON = new GameIcon("src/icons/title.png",250, HEIGHT+10);
+	private GameIcon BACKGROUND_ICON = new GameIcon("src/icons/stars.png",WIDTH,HEIGHT);
 	
 	/**
 	 * 
@@ -35,12 +35,9 @@ public class TitlePanel extends JPanel{
 		setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(WIDTH,HEIGHT));
 		setBackground(Color.darkGray);
-//		Border raisedbevel = BorderFactory.createRaisedBevelBorder();
-//		Border loweredbevel = BorderFactory.createLoweredBevelBorder();
-//		Border compound = BorderFactory.createCompoundBorder(raisedbevel, loweredbevel);
-//		setBorder(compound);
-
 	}
+	
+	
 	
 	/**
 	 * 
@@ -48,8 +45,8 @@ public class TitlePanel extends JPanel{
 	@Override
     public void paintComponent(Graphics g) {
     	super.paintComponent(g);
-    	//BACKGROUND_ICON.paintIcon(this, g, 0, 0);
-    	TITLE_ICON.paintIcon(this, g, 15, 0);
+    	BACKGROUND_ICON.paintIcon(this, g, 0, 0);
+    	TITLE_ICON.paintIcon(this, g, 10, -5);
     }
 
 }

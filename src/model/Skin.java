@@ -14,6 +14,9 @@ public class Skin {
 	// fields
 	private SkinType myType;
 	private GameIcon myMapIcon;
+	private int myIconWidth;
+	private int myIconHeight;
+
 	GameIcon[] myLeftIcons;
 	GameIcon[] myRightIcons;
 	private Map<IconDirection, GameIcon[]> myRoomIconMap;
@@ -31,6 +34,8 @@ public class Skin {
         myRoomIconMap.put(IconDirection.LEFT, myLeftIcons);
         myRoomIconMap.put(IconDirection.RIGHT, myRightIcons);
         myMapIcon = loadMapIcon(theType);
+        myIconWidth = theType.getMyWidth();
+        myIconHeight = theType.getMyHeight();
 	}
 	
 	/*
@@ -94,6 +99,20 @@ public class Skin {
 	 */
 	public static int getSize() {
 		return DEFAULT_SIZE;
+	}
+
+	/**
+	 * @return the myIconWidth
+	 */
+	public int getIconWidth() {
+		return myIconWidth;
+	}
+	
+	/**
+	 * @return the myIconHeight
+	 */
+	public int getIconHeight() {
+		return myIconHeight;
 	}
 
 	/**

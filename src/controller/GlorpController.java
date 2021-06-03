@@ -17,7 +17,9 @@ import model.Direction;
 import model.Door;
 import model.Fixture;
 import model.Item;
+import model.ItemType;
 import model.Maze;
+import model.PiecePoint;
 import model.Player;
 import model.Riddle;
 import model.Room;
@@ -86,20 +88,21 @@ public class GlorpController implements KeyListener{
     		myPlayer.getInventory().add(myMaze.getCurrRoom().getItem());
     		myMaze.getCurrRoom().setItem(null);
     		myMaze.getCurrRoom().setCurrentRoom(true);
-    		myWindow.updateItemPanel(myPlayer);
+    		myWindow.getItemView().update(myPlayer);
     	}
     	
     	// check fixtures
     	Fixture inFixture = myMaze.getCurrRoom().getFixture();
     	if(inFixture != null && inFixture.getInteractionZone() != null && myPlayer.getIconArea().intersects(inFixture.getInteractionZone())) {
     		if(!myPlayer.getInventory().isEmpty()) {
-    			System.out.println("you win");
-    			//myPlayer.getInventory().remove(0);
-    			//myWindow.updateItemPanel(myPlayer);
+    			myMaze.getCurrRoom().addItem(new Item(new PiecePoint(250,250), ItemType.GEM));
+    			myPlayer.getInventory().remove(0);
+    			myWindow.getItemView().update(myPlayer);
     			inFixture.setBase(new Rectangle(new Dimension(0,0)));
     			inFixture.setIconArea(new Rectangle(new Dimension(0,0)));
     			inFixture.setInteractionZone(new Rectangle(new Dimension(0,0)));
-    			inFixture.setMyYCoordinate(inFixture.getMyYCoordinate()-50);
+    			inFixture.setMyYCoordinate(inFixture.getMyYCoordinate()-60);
+    			inFixture.setMyXCoordinate(inFixture.getMyXCoordinate()-10);
     			TimerTask task = new TimerTask() {
     		        int i = 0;
     		        @Override

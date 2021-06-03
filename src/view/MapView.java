@@ -38,7 +38,7 @@ public class MapView extends JPanel {
     private Maze myMaze;
     private Map <Room, Point> myRooms;
     private Map<Door, Point> myDoors;
-    //private Room myCurrentRoom;
+    private static final Color OFF_BLACK = new Color(15,15,15);
     
 	/**
 	 * 
@@ -46,7 +46,7 @@ public class MapView extends JPanel {
 	public MapView() {
 		// Sets the size of the JPanel
         setPreferredSize(new Dimension(SIZE, SIZE));
-        setBackground(Color.darkGray);
+        setBackground(OFF_BLACK);
         // Creates a new maze: TODO Should the MapView receive the Maze a parameter?
         myMaze = Maze.getInstance();
         // Creates a map of all the rooms and a map of the doors

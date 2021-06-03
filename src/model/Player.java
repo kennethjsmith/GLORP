@@ -47,8 +47,8 @@ public class Player extends GamePiece implements Cloneable {
 		myStride = 0;
 		myRoomIcon = mySkin.getIcon(myIconDirection, myStride);
 		skipFrame = false;
-		myIconArea = new Rectangle(myCoordinate, new Dimension (PLAYER_ROOM_ICON_SIZE, PLAYER_ROOM_ICON_SIZE));
-		myBase = new Rectangle((int)myCoordinate.getX()+10, (int)myCoordinate.getY()+(PLAYER_ROOM_ICON_SIZE-20), PLAYER_ROOM_ICON_SIZE-20, 20);
+		myIconArea = new Rectangle(myCoordinate, new Dimension (mySkin.getIconWidth(), mySkin.getIconHeight()));
+		myBase = new Rectangle((int)myCoordinate.getX()+10, (int)myCoordinate.getY()+(mySkin.getIconHeight()-20), mySkin.getIconWidth()-20, 20);
 	}
 	
 	/**
@@ -63,9 +63,8 @@ public class Player extends GamePiece implements Cloneable {
 		myStride = 0;
 		myRoomIcon = mySkin.getIcon(myIconDirection, myStride);
 		skipFrame = false;
-		myIconArea = new Rectangle(myCoordinate, new Dimension (PLAYER_ROOM_ICON_SIZE, PLAYER_ROOM_ICON_SIZE));
-		myBase = new Rectangle((int)myCoordinate.getX()+10, (int)myCoordinate.getY()+(PLAYER_ROOM_ICON_SIZE-20), PLAYER_ROOM_ICON_SIZE-20, 20);
-	
+		myIconArea = new Rectangle(myCoordinate, new Dimension (mySkin.getIconWidth(), mySkin.getIconHeight()));
+		myBase = new Rectangle((int)myCoordinate.getX()+10, (int)myCoordinate.getY()+(mySkin.getIconHeight()-20), mySkin.getIconWidth()-20, 20);
 	}
 	
 	/**
