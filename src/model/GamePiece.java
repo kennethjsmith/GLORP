@@ -53,8 +53,8 @@ public abstract class GamePiece {
 	 /**
 	  * 
 	  */
-	 public void setRoomIcon() {
-		 
+	 public void setRoomIcon(GameIcon theIcon) {
+		 myRoomIcon = theIcon;
 	 }
 	 
 	 /**

@@ -1,22 +1,28 @@
 package controller;
 
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JFrame;
 
 import model.Direction;
 import model.Door;
+import model.Fixture;
 import model.Item;
 import model.Maze;
 import model.Player;
 import model.Room;
 import model.Skin;
 import model.SkinType;
+import view.GameIcon;
 import view.GlorpGUI;
 
 /**
@@ -69,11 +75,11 @@ public class GlorpController implements KeyListener{
     }
 
 	/**
-	 * A helper method, checks for item and door interactions after a key event.
+	 * A helper method, checks for item, fixture, and door interactions after a key event.
 	 */
 	// TODO: split into multiple methods? deal with duplicate code
     private void checkInteractions() {
-    	//check items
+    	// check items
     	Item inItem = myMaze.getCurrRoom().getItem();
     	if(inItem != null && myPlayer.getIconArea().intersects(inItem.getIconArea())) {
     		myPlayer.getInventory().add(myMaze.getCurrRoom().getItem());
@@ -81,6 +87,39 @@ public class GlorpController implements KeyListener{
     		myMaze.getCurrRoom().setCurrentRoom(true);
     		myWindow.updateItemPanel(myPlayer);
     	}
+    	
+    	// check fixtures
+    	Fixture inFixture = myMaze.getCurrRoom().getFixture();
+    	if(inFixture != null && inFixture.getInteractionZone() != null && myPlayer.getIconArea().intersects(inFixture.getInteractionZone())) {
+    		if(!myPlayer.getInventory().isEmpty()) {
+    			System.out.println("you win");
+    			//myPlayer.getInventory().remove(0);
+    			//myWindow.updateItemPanel(myPlayer);
+    			inFixture.setBase(new Rectangle(new Dimension(0,0)));
+    			inFixture.setIconArea(new Rectangle(new Dimension(0,0)));
+    			inFixture.setInteractionZone(new Rectangle(new Dimension(0,0)));
+    			inFixture.setMyYCoordinate(inFixture.getMyYCoordinate()-50);
+    			TimerTask task = new TimerTask() {
+    		        int i = 0;
+    		        @Override
+    		        public void run() {
+    		            if (i <= 15) {
+    		            	inFixture.setIcon(new GameIcon("src/icons/explosion/frame_" + i + ".png", 200, 250));
+    	    				myWindow.repaint();
+    		                i++;
+    		            }
+    		            else {
+    		                cancel();
+    		            }
+    		        }
+    		    };
+
+    		    Timer timer = new Timer();
+    		    timer.scheduleAtFixedRate(task, 0, 100);
+    			
+    		}
+    	}
+    	
     	// check doors
     	// east door zone
     	if(myPlayer.getIconArea().intersects(Room.getEastDoorZone())) {

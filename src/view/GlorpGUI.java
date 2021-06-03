@@ -17,6 +17,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border; 
 import javax.swing.border.EmptyBorder;
@@ -56,6 +60,8 @@ public class GlorpGUI extends JFrame {
     private ItemPanel myItemPanel;
     private TitlePanel myTitlePanel;
     private Clip myBackgroundMusic;
+    private FloatControl myGainControl;
+	
 
     /**
      * 
@@ -72,7 +78,7 @@ public class GlorpGUI extends JFrame {
 			e.printStackTrace();
 		}
         try {
-			music(new File("src/sounds/harp_michael_levy.wav"));
+			music(new File("src/sounds/wlae.wav"));
 		} catch (LineUnavailableException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -83,6 +89,8 @@ public class GlorpGUI extends JFrame {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+        myGainControl = (FloatControl) myBackgroundMusic.getControl(FloatControl.Type.MASTER_GAIN);
+        myGainControl.setValue(-30f);
         
         //set layout
         this.setLayout(new GridBagLayout());
@@ -132,32 +140,62 @@ public class GlorpGUI extends JFrame {
         
     }
 
+    // TODO: move this into builder pattern
     /**
      * 
      */
     public void addMenuBar() {
     	JMenuBar myMenubar = new JMenuBar();
-        JMenu file = new JMenu("File");
         
-        
+        // create file menu
+    	JMenu file = new JMenu("File");
+    	JMenuItem restart = new JMenuItem("Restart");
         JMenuItem save = new JMenuItem("Save Game");
-        file.add(save);
         JMenuItem load = new JMenuItem("Load Game");
-        file.add(load);
         JMenuItem exit = new JMenuItem("Exit");
-        file.add(exit);
+        exit.addActionListener(e ->{
+        	System.exit(ABORT);
+        });
         
+        //create settings menu
+        JMenu settings = new JMenu("Settings");
+        JMenu sound = new JMenu("Sound");
+        JSlider volume = new JSlider(0,100,60);
+        volume.setPaintTicks(true);
+        volume.setPaintLabels(true);
+        volume.setMajorTickSpacing(20);
+        volume.setMinorTickSpacing(5);
+        // TODO: fix the scale, is this logarithmic?
+        volume.addChangeListener(e ->{
+			if(myBackgroundMusic.isOpen()) {
+				float range = myGainControl.getMaximum() - myGainControl.getMinimum();
+				float gain =(range * (float)volume.getValue()/volume.getMaximum()) + myGainControl.getMinimum();
+				myGainControl.setValue(gain);
+			}
+        });
+        
+        //create help menu
         JMenu help = new JMenu("Help");
         JMenuItem about = new JMenuItem("About");
-        help.add(about);
+        about.addActionListener(e ->{
+        	JFrame aboutWindow = new JFrame();
+        	aboutWindow.setLayout(new FlowLayout());
+        	aboutWindow.setPreferredSize(new Dimension(200,200));
+        	JTextArea text = new JTextArea();
+            text.setText("Glorp: Revenge of the Sphinx \n"
+            		+ "Version 1.0 \n \n"
+            		+ "Glorp is a simple java game developed by \n");
+            aboutWindow.add(text);
+            aboutWindow.pack();
+            aboutWindow.setLocationRelativeTo(this);
+            aboutWindow.setVisible(true);
+        });
+        
         JMenuItem instructions = new JMenuItem("Game Play Instructions");
-        help.add(instructions);
         JMenu cheats = new JMenu("Cheats");
-        //JMenuItem cheats = new JMenuItem("Cheats");
-        help.add(cheats);
         
         JMenuItem unlockAllDoors = new JMenuItem("Unlock All Doors");
-        cheats.add(unlockAllDoors);
+        
         unlockAllDoors.addActionListener(e ->{
         	Maze.getInstance().unlockAllDoors();
         	this.repaint();
@@ -180,7 +218,7 @@ public class GlorpGUI extends JFrame {
         	this.repaint();
         	try {
         		myBackgroundMusic.close();
-				music(new File("src/sounds/harp_michael_levy.wav"));
+				music(new File("src/sounds/wlae.wav"));
 			} catch (LineUnavailableException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -222,11 +260,24 @@ public class GlorpGUI extends JFrame {
 			}
         });
         
+        file.add(restart);
+        file.add(save);
+        file.add(load);
+        file.add(exit);
+        
+        settings.add(sound);
+        sound.add(volume);
+        
+        help.add(about);
+        help.add(instructions);
+        help.add(cheats);
+        cheats.add(unlockAllDoors);
         help.add(skins);
         skins.add(glorp);
         skins.add(ignignokt);
         
         myMenubar.add(file);
+        myMenubar.add(settings);
         myMenubar.add(help);
         setJMenuBar(myMenubar);
     }

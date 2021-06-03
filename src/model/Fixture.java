@@ -1,6 +1,9 @@
 package model;
 
+import java.awt.Image;
 import java.awt.Rectangle;
+import java.io.InputStream;
+import java.util.Timer;
 
 import view.GameIcon;
 
@@ -12,6 +15,7 @@ import view.GameIcon;
 public class Fixture extends GamePiece{
 	private Rectangle myBase;
 	private Rectangle myIconArea;
+	private Rectangle myInteractionZone = null;
 	private FixtureType myType;
 	private int myWidth;
 	private int myHeight;
@@ -42,7 +46,7 @@ public class Fixture extends GamePiece{
 			myIcon = FixtureType.getChestIcon();
 			myIconArea = new Rectangle(theXCoordinate, theYCoordinate-5, myIcon.getIconWidth(), myIcon.getIconHeight()+5);
 			myBase = new Rectangle(theXCoordinate, theYCoordinate + (myIcon.getIconHeight()/2), myIcon.getIconWidth(), (myIcon.getIconHeight()/2));
-		
+			myInteractionZone = new Rectangle(theXCoordinate, theYCoordinate + myIcon.getIconHeight(), myIcon.getIconWidth(), (myIcon.getIconHeight()/5));
 		}
 		if(theFixtureType == FixtureType.SHIP) {
 			myIcon = FixtureType.getShipIcon();
@@ -65,17 +69,52 @@ public class Fixture extends GamePiece{
 	}
 
 	/**
-	 * @return the myRectangle
+	 * @param myIcon the myIcon to set
+	 */
+	public void setIcon(GameIcon theIcon) {
+		myIcon = theIcon;
+	}
+
+	/**
+	 * @return the myBase
 	 */
 	public Rectangle getBase() {
 		return myBase;
 	}
+	
+	/**
+	 * @param myBase the myBase to set
+	 */
+	public void setBase(Rectangle theBase) {
+		myBase = theBase;
+	}
 
+	/**
+	 * @return the myRectangle
+	 */
+	public Rectangle getInteractionZone() {
+		return myInteractionZone;
+	}
+
+	/**
+	 * @param
+	 */
+	public void setInteractionZone(Rectangle theInteractionZone) {
+		myInteractionZone = theInteractionZone;
+	}
+	
 	/**
 	 * @return the myIconArea
 	 */
 	public Rectangle getIconArea() {
 		return myIconArea;
+	}
+	
+	/**
+	 * @param
+	 */
+	public void setIconArea(Rectangle theIconArea) {
+		myIconArea = theIconArea;
 	}
 
 	/**
@@ -83,6 +122,13 @@ public class Fixture extends GamePiece{
 	 */
 	public int getMyXCoordinate() {
 		return myXCoordinate;
+	}
+	
+	/**
+	 * 
+	 */
+	public void setMyXCoordinate(int theXCoordinate) {
+		myXCoordinate = theXCoordinate;
 	}
 
 	/**
@@ -92,4 +138,10 @@ public class Fixture extends GamePiece{
 		return myYCoordinate;
 	}
 	
+	/**
+	 * 
+	 */
+	public void setMyYCoordinate(int theYCoordinate) {
+		myYCoordinate = theYCoordinate;
+	}
 }
