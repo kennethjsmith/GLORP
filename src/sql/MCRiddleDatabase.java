@@ -24,7 +24,7 @@ public class MCRiddleDatabase {
 		  statement.setQueryTimeout(30);  // set timeout to 30 sec.
 		
 		  DatabaseMetaData md = myConnection.getMetaData();
-		  ResultSet rs = md.getTables(null, null, "tfriddles", null);
+		  ResultSet rs = md.getTables(null, null, "mcriddles", null);
 		  rs.next();
 		  if(!(rs.getRow() > 0)) addRiddles(statement);
 		} catch(SQLException e) {
@@ -32,7 +32,7 @@ public class MCRiddleDatabase {
 		  // it probably means no database file is found
 		  System.err.println(e.getMessage());
 	    }
-		closeConnection();
+		//closeConnection();
 	}
 		
 	private void addRiddles(Statement theStatement) {

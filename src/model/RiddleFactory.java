@@ -1,0 +1,112 @@
+package model;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
+
+import sql.FBRiddleDatabase;
+import sql.MCRiddleDatabase;
+import sql.TFRiddleDatabase;
+
+public class RiddleFactory {
+    /*
+     * Ex: how each would look
+     * 
+     * Question: "T/F Question"
+     * Answer: "True"
+     * Wrong Answers: "False"    
+     * NOTE:   myWrongOptions.length == 1
+     * 
+     * Question: "Multi Choice Question"
+     * Answer: "Correct Answer"
+     * Wrong Answers: "Wrong Answer 1", "Wrong Answer 2", "Wrong Answer 3" 
+     * NOTE:  myWrongOptions.length > 1
+     * 
+     * Question: "Open Ended Answer"
+     * Answer: "The Answer"
+     * Wrong Answers: 
+     * NOTE:   myWrongOptions.length == 0
+     * 
+     */
+    
+	private final TFRiddleDatabase myTrueFalseRiddles;
+	private final MCRiddleDatabase myMultipleChoiceRiddles;
+	private final FBRiddleDatabase myFillInBlankRiddles;
+	
+    private final ResultSet myTFRiddleSet;
+    private final ResultSet myMCRiddleSet;
+    private final ResultSet myFBRiddleSet;
+    
+    private int TF_RIDDLE_COUNT = 0;
+    private int MC_RIDDLE_COUNT = 0;
+    private int FB_RIDDLE_COUNT = 0;
+
+
+    public RiddleFactory() {
+        
+        myTrueFalseRiddles = new TFRiddleDatabase();
+        myTFRiddleSet = myTrueFalseRiddles.getTFRiddleSet();
+        
+        myMultipleChoiceRiddles = new MCRiddleDatabase();
+        myMCRiddleSet = myMultipleChoiceRiddles.getMCRiddleSet();
+        
+        myFillInBlankRiddles = new FBRiddleDatabase();
+        myFBRiddleSet = myFillInBlankRiddles.getFBRiddleSet();
+
+    	//trueFalseRiddles.closeConnection();
+
+    }
+             
+    public Riddle getNextRiddle() {
+    	int randomNum = generateRandom(); //TODO be sure to select riddles in a way that is balanced
+    	Riddle currRiddle = null;
+    	try {
+    		// If it is a true/false riddle
+	    	if(randomNum == 0 && myTFRiddleSet.next()){
+	    		currRiddle = new Riddle(myTFRiddleSet.getString("question"), myTFRiddleSet.getString("answer"), 
+	    				new ArrayList<String>(Arrays.asList(myTFRiddleSet.getString("wrong_answer"))), RiddleType.TRUE_FALSE);
+    			TF_RIDDLE_COUNT++;
+			// If it is a multiple choice riddle
+	    	} else if(randomNum == 1 && myMCRiddleSet.next()) {
+				currRiddle = new Riddle(myMCRiddleSet.getString("question"), myMCRiddleSet.getString("answer"), 
+	    				new ArrayList<String>(Arrays.asList(myMCRiddleSet.getString("wrong_answer1"), 
+	    				myMCRiddleSet.getString("wrong_answer2"), myMCRiddleSet.getString("wrong_answer2"))), 
+	    				RiddleType.MULTIPLE_CHOICE);
+				MC_RIDDLE_COUNT++;
+			// If it is a fill-in-the-blank riddle
+	    	} else if(randomNum == 2 && myFBRiddleSet.next()) {
+	    		currRiddle = new Riddle(myFBRiddleSet.getString("question"), myMCRiddleSet.getString("answer"), 
+	    				new ArrayList<String>(), RiddleType.FILL_IN_BLANK);
+	    		FB_RIDDLE_COUNT++;
+	    	}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+    	return currRiddle; // TODO null handling
+    }
+    
+	 // TODO: make this into a utility
+    /**
+	  * Generates a random index between two numbers (min val, max val)
+	  */
+	 private int generateRandom() {
+	     Random rand = new Random();
+	     return rand.nextInt(3);
+	 }
+    
+    public void close() {
+    	myTrueFalseRiddles.closeConnection();
+    	myMultipleChoiceRiddles.closeConnection();
+    	myFillInBlankRiddles.closeConnection();
+    	
+    	System.out.println("True false riddle count: " + TF_RIDDLE_COUNT);
+    	System.out.println("Multiple choice riddle count: " + MC_RIDDLE_COUNT);
+    	System.out.println("Fill in the blank riddle count: " + FB_RIDDLE_COUNT);
+
+    	
+    }
+
+}

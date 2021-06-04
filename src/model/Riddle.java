@@ -8,12 +8,12 @@ import java.util.ArrayList;
  * @version 
  */
 // TODO should this be an interface instead?
-public abstract class Riddle {
+public class Riddle {
 
 	// fields
 	private String myQuestion;
 	private String myAnswer; 
-	private ArrayList<String> myAnswerOptions;
+	private ArrayList<String> myWrongAnswerOptions;
 	private RiddleType myType;
 	
 	/**
@@ -22,7 +22,7 @@ public abstract class Riddle {
 	public Riddle (String theQuestion, String theAnswer, ArrayList<String> theAnswerOptions, RiddleType theType) {
 		myQuestion = theQuestion;
 		myAnswer = theAnswer;
-		myAnswerOptions = theAnswerOptions;
+		myWrongAnswerOptions = theAnswerOptions;
 		myType = theType;
 	}
 
@@ -44,8 +44,8 @@ public abstract class Riddle {
 	/**
 	 * @return array list of answer options
 	 */
-	public ArrayList<String> getAnswerOptions(){
-		return myAnswerOptions;
+	public ArrayList<String> getWrongAnswerOptions(){
+		return myWrongAnswerOptions;
 	}
 	
 	/**

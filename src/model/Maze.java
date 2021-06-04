@@ -161,7 +161,7 @@ public class Maze {
 	}
 
 
-	 // TODO: make this into a utility
+	 // TODO: make this into a utility, it also exists in Riddle Factory
      /**
 	  * Generates a random index between two numbers (min val, max val)
 	  */
