@@ -57,11 +57,6 @@ public class Room {
 
 	private final static Random RAND = new Random();
 	
-	
-	//Map<Door, Room> myDoors= new TreeMap<>();
-	//private boolean containsPlayer; //will be tracked by map (current room) 
-	//private boolean visitedFlag; // will be tracked by map? 
-	
     /**
      * 
      */
@@ -104,18 +99,6 @@ public class Room {
     public HashMap<Direction, Door> getDoors() {
     	return myDoorMap;
     }
-	
-//	/*
-//	 * Retrieves Riddles from Game 
-//	 */
-//	private Riddle[] getRiddles() {
-//	    // scanner? 
-//        // Game Model or Maze has file name for data base of riddles 
-//        // When Room is created, room prompts the Maze MAX_DOORS times for number of needed riddles (SCANNER)
-//        // Maze reads 
-//        // Injector type stuff? - riddles are a dependencie? 
-//	    return new Riddle[MAX_DOORS];
-//	}
     
 	/**
 	 * @return the myItems
