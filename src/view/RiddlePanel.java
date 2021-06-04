@@ -143,6 +143,9 @@ public class RiddlePanel extends JPanel{
 	    
 	    if(theRiddlePromptStatus) {
 	        myCurrentRiddle = theRiddle;  
+	    }else {
+	        // closing down 
+	        myInputPanel.reset();
 	    }
 	}
 	
@@ -159,7 +162,7 @@ public class RiddlePanel extends JPanel{
     	    myQuestion.setText(myCurrentRiddle.getQuestion()); 
     	    myInputPanel.setAnswerOptions(setUpAnswers(myCurrentRiddle.getAnswerOptions()));
     	    System.out.println("Riddle Prompt displayed");
-    	}
+    	} 
     	
     	myQuestionPanel.setVisible(myRiddleStatus);
         myInputPanel.setVisible(myRiddleStatus);
@@ -167,6 +170,10 @@ public class RiddlePanel extends JPanel{
     	SPHINX.paintIcon(this, g, 70, 200);
     	
     }
+	
+	public boolean hasRetreated() {
+	    return myInputPanel.hasRetreated();
+	}
 
     public boolean hasAnswer() {
         return myInputPanel.hasSubmitted();

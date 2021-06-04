@@ -101,6 +101,8 @@ public class InputPanel extends JPanel{
             this.remove(c);
         }
         
+        reset(); // reset answer flags
+        
         myAnswerOptions = theAnswerOptions;
         
         for(Component c : theAnswerOptions) { //add new answer options

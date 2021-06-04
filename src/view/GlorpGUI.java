@@ -309,17 +309,24 @@ public class GlorpGUI extends JFrame {
         repaint(); //repaint the riddlePrompt ... not repainting???
         
         if(theRiddlePromptStatus) {
-            System.out.println("Riddle Prompt displayed");
+            System.out.println("Riddle Prompt displayed ****");
         }
         
         String inAnswer = null;
         
 //        while(!(myRiddlePanel.hasAnswer())) { //while answer not ready
-//            System.out.println("Waiting for answer");
-//            inAnswer = myRiddlePanel.getAnswer();
+//            //System.out.println("Waiting for answer");
+//            try {
+//                Thread.sleep(50);
+//            } catch (InterruptedException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
 //        }
         
-        System.out.println("Answer retreived");
+        inAnswer = myRiddlePanel.getAnswer();
+        
+        System.out.println("Answer retreived *******************");
         
         return inAnswer;
     }
