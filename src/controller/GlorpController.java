@@ -37,7 +37,6 @@ import view.GlorpGUI;
 public class GlorpController implements KeyListener{
 	// fields
 	private Maze myMaze;
-	// TODO: remover ref to player piece ? can get from maze
 	private Player myPlayer;
 	private GlorpGUI myWindow; 
 	private final Set<Integer> myPressedKeys = new HashSet<Integer>();
@@ -67,15 +66,16 @@ public class GlorpController implements KeyListener{
         
         Direction inDirection = Direction.generateDirection(myPressedKeys);
         Direction validDirection = null;
-		
-        try {
-			validDirection = myMaze.getCurrRoom().validateDirection(myPlayer, inDirection);
-			myPlayer.move(validDirection);
-		} catch (CloneNotSupportedException e1) {
-			e1.printStackTrace();
+		if(!myPlayer.getFixed()) {
+	        try {
+				validDirection = myMaze.getCurrRoom().validateDirection(myPlayer, inDirection);
+				myPlayer.move(validDirection);
+			} catch (CloneNotSupportedException e1) {
+				e1.printStackTrace();
+			}
+	        checkInteractions();
+	        myWindow.repaint();
 		}
-        checkInteractions();
-        myWindow.repaint();
     }
 
 	/**
@@ -122,18 +122,63 @@ public class GlorpController implements KeyListener{
     		    Timer timer = new Timer();
     		    timer.scheduleAtFixedRate(task, 0, 100);
     		}
-    		
+    		// TODO: clean this up, 2 near identical sections of spaghetti
+    		// also, this is messy, I use the player piece's icon to display the win message
+    		// I also added a field and methods to fix his location
     		if(myPlayer.getInventory().contains(ItemType.GEM) 
     			&& inFixture.getType() == FixtureType.ALTSHIP){
-    			// TODO: this vvv doesn't really belong here
-    			inFixture.setIcon(new GameIcon("src/icons/alt_ship_fixed.png", 200, 275));	
-    			myPlayer.getInventory().clear();
-    			myWindow.getItemView().update(myPlayer);
+    			inFixture.setIcon(new GameIcon("src/icons/alt_ship_win.png", 200, 275));
+        		//inFixture.setBase(new Rectangle(new Dimension(0,0)));
+        		//inFixture.setIconArea(new Rectangle(new Dimension(0,0)));
+        		//inFixture.setInteractionZone(new Rectangle(new Dimension(0,0)));
+        		myPlayer.setCoordinate(new PiecePoint(150,175));
+        		myPlayer.setRoomIcon(new GameIcon("src/icons/win_message_icon.png", 220, 150));
+        		myPlayer.setFixed(true);
+    			TimerTask task = new TimerTask() {
+    		        int i = 0;
+    		        @Override
+    		        public void run() {
+    		            if (i <= 50) {
+    		            	inFixture.setMyYCoordinate(inFixture.getMyYCoordinate()-10);
+    		            	myWindow.repaint();
+    		                i++;
+    		            }
+    		            else {
+    		                cancel();
+    		            }
+    		        }
+    		    };
+    		    Timer timer = new Timer();
+    		    timer.scheduleAtFixedRate(task, 0, 100);
+        		myPlayer.getInventory().clear();
+        		myWindow.getItemView().update(myPlayer);
     		}
 
     		if(myPlayer.getInventory().contains(ItemType.GEM) 
         		&& inFixture.getType() == FixtureType.SHIP){
-        		inFixture.setIcon(new GameIcon("src/icons/ship_fixed.png", 200, 150));	
+        		inFixture.setIcon(new GameIcon("src/icons/ship_win.png", 200, 150));
+        		//inFixture.setBase(new Rectangle(new Dimension(0,0)));
+        		//inFixture.setIconArea(new Rectangle(new Dimension(0,0)));
+        		//inFixture.setInteractionZone(new Rectangle(new Dimension(0,0)));
+        		myPlayer.setCoordinate(new PiecePoint(150,175));
+        		myPlayer.setRoomIcon(new GameIcon("src/icons/win_message_icon.png", 220, 150));
+        		myPlayer.setFixed(true);
+    			TimerTask task = new TimerTask() {
+    		        int i = 0;
+    		        @Override
+    		        public void run() {
+    		            if (i <= 50) {
+    		            	inFixture.setMyYCoordinate(inFixture.getMyYCoordinate()-10);
+    		            	myWindow.repaint();
+    		                i++;
+    		            }
+    		            else {
+    		                cancel();
+    		            }
+    		        }
+    		    };
+    		    Timer timer = new Timer();
+    		    timer.scheduleAtFixedRate(task, 0, 100);
         		myPlayer.getInventory().clear();
         		myWindow.getItemView().update(myPlayer);
     		}

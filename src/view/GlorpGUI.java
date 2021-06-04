@@ -185,15 +185,20 @@ public class GlorpGUI extends JFrame {
         	JFrame aboutWindow = new JFrame();
         	aboutWindow.setLayout(new FlowLayout());
         	aboutWindow.setPreferredSize(new Dimension(200,200));
-        	JTextArea text = new JTextArea();
-            text.setText("Glorp: Revenge of the Sphinx \n"
-            		+ "Version 1.0 \n \n"
-            		+ "Glorp is a simple java game developed by \n");
-            aboutWindow.add(text);
+        	JLabel text1 = new JLabel();
+            text1.setText("Glorp: Revenge of the Sphinx");
+            JLabel text2 = new JLabel();
+            text2.setText("Version 1.0");
+            JLabel text3 = new JLabel();
+            text2.setText("Authors: Heather Finch, Katelynn Oleson, Ken Smith");
+            aboutWindow.add(text1);
+            aboutWindow.add(text2);
+            aboutWindow.add(text3);
             aboutWindow.pack();
             aboutWindow.setLocationRelativeTo(this);
             aboutWindow.setVisible(true);
             aboutWindow.setAlwaysOnTop(true);
+            //JOptionPane.showMessageDialog
         });
         
         JMenuItem instructions = new JMenuItem("Game Play Instructions");

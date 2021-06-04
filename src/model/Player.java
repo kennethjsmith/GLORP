@@ -29,6 +29,7 @@ public class Player extends GamePiece implements Cloneable {
 	private boolean skipFrame;
 	private Rectangle myIconArea;
 	private Rectangle myBase;
+	private boolean isFixed;
 
 	private static final int SPEED = 10;
 	private static final int PLAYER_ROOM_ICON_SIZE = 100;
@@ -49,6 +50,7 @@ public class Player extends GamePiece implements Cloneable {
 		skipFrame = false;
 		myIconArea = new Rectangle(myCoordinate, new Dimension (mySkin.getIconWidth(), mySkin.getIconHeight()));
 		myBase = new Rectangle((int)myCoordinate.getX()+10, (int)myCoordinate.getY()+(mySkin.getIconHeight()-20), mySkin.getIconWidth()-20, 20);
+		isFixed = false;
 	}
 	
 	/**
@@ -109,7 +111,7 @@ public class Player extends GamePiece implements Cloneable {
 	 * 
 	 */
 	public void updateRoomIcon() {
-		myRoomIcon = mySkin.getIcon(myIconDirection, myStride);
+		if(!isFixed) myRoomIcon = mySkin.getIcon(myIconDirection, myStride);
 	}
 	
 	
@@ -148,6 +150,13 @@ public class Player extends GamePiece implements Cloneable {
 		return myCoordinate;
 		
 	}
+	
+	/**
+	 * 
+	 */
+	 public void setCoordinate(PiecePoint theCoordinate) {
+		myCoordinate = theCoordinate; 
+	 }
 	
 	/**
 	 * @return the speed
@@ -206,13 +215,15 @@ public class Player extends GamePiece implements Cloneable {
 
 	    return clone;
 	}
-
+	
 	/**
-	 *
-	 */
-	public String toString() {
-		return myCoordinate.toString();
-	}
+	  * 
+	  */
+	 public void setRoomIcon(GameIcon theIcon) {
+		 if(!isFixed) myRoomIcon = theIcon;
+	 }
+
+	
 
 	/**
 	 * 
@@ -233,5 +244,26 @@ public class Player extends GamePiece implements Cloneable {
 		}
 		
 		return false;
+	}
+
+	/**
+	 * 
+	 */
+	public boolean getFixed() {
+		return isFixed;
+	}
+	
+	/**
+	 * 
+	 */
+	public void setFixed(boolean isFixed) {
+		this.isFixed = isFixed;
+	}
+	
+	/**
+	 *
+	 */
+	public String toString() {
+		return myCoordinate.toString();
 	}
 }

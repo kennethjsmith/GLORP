@@ -24,6 +24,7 @@ public class Fixture extends GamePiece{
 	private GameIcon myIcon;
 	
 	
+	
 	/**
 	 * A default constructor.
 	 */
