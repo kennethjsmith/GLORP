@@ -2,15 +2,18 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -29,8 +32,11 @@ import model.Riddle;
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
  * @version 
  */
-public class RiddlePanel extends JPanel {
+public class RiddlePanel extends JPanel implements Runnable{
 	// fields
+    /** The size of the increase/decrease buttons. */
+    private static final Dimension BUTTON_SIZE = new Dimension(26, 26);
+    
 	private final static int WIDTH = 300;
 	private final static int HEIGHT = 500;
 	private final String TITLE = "Riddle";
@@ -41,7 +47,8 @@ public class RiddlePanel extends JPanel {
 	private boolean myRiddleStatus;
 	private Riddle myCurrentRiddle;
 	private InputPanel myInputPanel;
-	private JPanel myQuestionPanel; // maybe change so this is just a part of the image 
+	private JPanel myQuestionPanel; 
+	//private	SubmitPanel mySubmitPanel;
 	private JLabel myQuestion;
 	//private ArrayList<JRadioButton> myAnswerOptions; 
 	
@@ -50,7 +57,7 @@ public class RiddlePanel extends JPanel {
 	 */
 	public RiddlePanel() {   
 	    myRiddleStatus = false;
-	    myCurrentRiddle = null; // change to be mock null riddle object
+	    myCurrentRiddle = null; // TODO: change to be mock null riddle object
 	  //  myAnswerOptions = new ArrayList<JRadioButton>();
 	    
         setPreferredSize(new Dimension(WIDTH,HEIGHT));
@@ -73,13 +80,13 @@ public class RiddlePanel extends JPanel {
         // helpers to set up question and answer panels? 
         myQuestionPanel = new JPanel();
         myQuestionPanel.setBackground(Color.WHITE);
-//        JLabel inTitle = new JLabel("Question title here"); 
-//  //      later figure out how to nicely arrange title and question
+        JLabel inTitle = new JLabel("My inquiry for you is ..."); 
+  //      later figure out how to nicely arrange title and question
         myQuestion = new JLabel("No Question yet");
        
-//        inTitle.setBackground(Color.WHITE);
-//        inTitle.setOpaque(true);
-//        myRiddle.add(inTitle);
+        inTitle.setBackground(Color.WHITE);
+        inTitle.setOpaque(true);
+        myQuestionPanel.add(inTitle);
         myQuestionPanel.add(myQuestion);
         c.insets = new Insets(20,0,0,0);
         c.gridx = 0;
@@ -95,20 +102,32 @@ public class RiddlePanel extends JPanel {
         add(myInputPanel, c);
         myInputPanel.setVisible(false); // replace with a block or something, so looks like sphinx sitting on table
         
+//        mySubmitPanel = new SubmitPanel();
+//        c.gridx = 0;
+//        c.gridy = 3;
+//        c.insets = new Insets(300,0,0,0);
+//        c.anchor = GridBagConstraints.PAGE_END;
+//        add(mySubmitPanel, c);
+//        mySubmitPanel.setVisible(false);
+        
     }
+
 	
-	private void setUpAnswers(ArrayList<String> theAnswers) {
-	 //   myInputPanel.removeAll(); //first clear old options
+	private ArrayList<Component> setUpAnswers(ArrayList<String> theAnswers) {
+	    ArrayList<Component> inComponents = new ArrayList<Component>();
+	    
 	    if(theAnswers.size() > 1) { 
+	        ButtonGroup inAnswerOptions = new ButtonGroup();
 	        for(String s : theAnswers) {
-	            //JButtonGroup
-	            myInputPanel.add(new JRadioButton(s)); //figure out how to only allow one selection
+	            JRadioButton inButton = new JRadioButton(s);
+	            inAnswerOptions.add(inButton); //figure out how to only allow one selection
+	            inComponents.add(inButton);
 	        }
 	    }else { 
 	        // open ended, display a text box
 	    }
 	    
-	    // add submit and go back buttons // maybe put in their own panel & use grid bag layout 
+	    return inComponents;
 	}
 	
 	//lambda statements for submit button listeners 
@@ -119,14 +138,13 @@ public class RiddlePanel extends JPanel {
 	 * Check the status of the player and 
 	 * update the panel accordingly
 	 */
-	public void update(boolean theRiddlePromptStatus, Player thePlayer) {
-	    myRiddleStatus = theRiddlePromptStatus;
+	public void update(boolean theRiddlePromptStatus, Riddle theRiddle) {
+	    myRiddleStatus = theRiddlePromptStatus; 
+	    
 	    if(theRiddlePromptStatus) {
-	        myCurrentRiddle = thePlayer.getRiddle(); 
+	        myCurrentRiddle = theRiddle;  
 	    }
 	}
-	
-	
 	
 	/**
 	 * 
@@ -138,8 +156,9 @@ public class RiddlePanel extends JPanel {
 
     	if(myRiddleStatus) {
     	    SPEECH_BUBBLE.paintIcon(this, g, 5, 20); // incorporate this into the riddle status? 
-    	    myQuestion.setText(myCurrentRiddle.getQuestion()); // change to helpers? 
-    	    setUpAnswers(myCurrentRiddle.getAnswerOptions());
+    	    myQuestion.setText(myCurrentRiddle.getQuestion()); 
+    	    myInputPanel.setAnswerOptions(setUpAnswers(myCurrentRiddle.getAnswerOptions()));
+    	    System.out.println("Riddle Prompt displayed");
     	}
     	
     	myQuestionPanel.setVisible(myRiddleStatus);
@@ -148,4 +167,43 @@ public class RiddlePanel extends JPanel {
     	SPHINX.paintIcon(this, g, 70, 200);
     	
     }
+
+    public boolean hasAnswer() {
+        return myInputPanel.hasSubmitted();
+    }
+
+    public String getAnswer() {
+        return myInputPanel.getAnswer();
+    }
+    
+    
+    /**
+     * Seperate thread so that the player can "walk away" from the riddle
+     */
+    @Override
+    public void run() {
+        while(myRiddleStatus && !(myInputPanel.hasRetreated())) { // while the player is actively at the riddle 
+            myQuestionPanel.setVisible(true); // view the riddle
+            myInputPanel.setVisible(true);
+        }
+        
+        myRiddleStatus = false;
+        
+        myQuestionPanel.setVisible(false);
+        myInputPanel.setVisible(false);
+        
+    }
+	
+	private synchronized void sendMessage(String message){
+	    while(!(myInputPanel.hasSubmitted())) { // wait till submitted to send the message
+	        try {
+                wait();
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+	    }
+	    
+	    notify();
+	}	
 }

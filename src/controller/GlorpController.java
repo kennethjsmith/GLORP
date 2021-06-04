@@ -31,7 +31,7 @@ import view.GlorpGUI;
  * @authors Heather Finch, Katelynn Oleson, Ken Smith
  * @version
  */
-public class GlorpController implements KeyListener{
+public class GlorpController implements KeyListener, Runnable{
 	// fields
 	private Maze myMaze;
 	// TODO: remover ref to player piece ? can get from maze
@@ -173,15 +173,17 @@ public class GlorpController implements KeyListener{
             	// The door was locked. Give user the riddle
             	Riddle currRiddle = myMaze.getCurrRoom().getDoors().get(theDirection).getMyRiddle();
             	
-            	myWindow.updateRiddlePanel(true, myPlayer); // show riddle prompt
+            	Thread inRiddleThread = new Thread(myWindow.getRunnableRiddlePanel(currRiddle)); 
+            	inRiddleThread.start(); // show riddle prompt and wait for message
             	
-            	return false;
+           
+//            	String input = myWindow.updateRiddlePanel(true, currRiddle); // open riddle prompt
             	
 //            	System.out.println(currRiddle.getQuestion());
 //            	Scanner scan = new Scanner(System.in);
 //            	String input = scan.next();
 //            	
-//            	// If the riddle answer is correct, unlock door and move that direction
+            	// If the riddle answer is correct, unlock door and move that direction
 //            	if(currRiddle.verifyAnswer(input)) {
 //            		currDoor.setUnlocked();
 //                    myMaze.move(theDirection);
@@ -191,11 +193,23 @@ public class GlorpController implements KeyListener{
 //            		inSuccess = false;
 //            	}
 //            	
-//            	myWindow.updateRiddlePanel(false, myPlayer); //hide riddle prompt 
+//            	myWindow.updateRiddlePanel(false, currRiddle); //hide riddle prompt 
+//            	System.out.println("Riddle Prompt Hidden");
         	}
         	
         }  
         return inSuccess; 
+    }
+    
+    /**
+     * Wait to receive message, or "run away"
+     */
+    @Override
+    public void run() {
+        while(true){ //while no message || player still in door region (helper)
+            
+        }
+        
     }
     
     /**

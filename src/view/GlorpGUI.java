@@ -33,6 +33,7 @@ import model.FixtureType;
 import model.Item;
 import model.Maze;
 import model.Player;
+import model.Riddle;
 import model.SkinType;
 /**
  * The main frame for the GUI.
@@ -292,10 +293,36 @@ public class GlorpGUI extends JFrame {
 		myItemPanel.update(thePlayer);
 	}
     
-    public void updateRiddlePanel(boolean theRiddlePromptStatus, Player thePlayer) {
-        myRiddlePanel.update(theRiddlePromptStatus, thePlayer);
-        //repaint(); //allowed to call from here? 
+    /**
+     * activates the riddle panel and returns the runnable object to open a new thread
+     * @return
+     */
+    public RiddlePanel getRunnableRiddlePanel(Riddle theRiddle) {
+        myRiddlePanel.update(true, theRiddle);
+        return myRiddlePanel;
     }
+    
+//    public String updateRiddlePanel(boolean theRiddlePromptStatus, Riddle theRiddle) {
+//        myRiddlePanel.update(theRiddlePromptStatus, theRiddle); //update state of view
+//        System.out.println("Riddle Prompt updated");
+//        
+//        repaint(); //repaint the riddlePrompt ... not repainting???
+//        
+//        if(theRiddlePromptStatus) {
+//            System.out.println("Riddle Prompt displayed");
+//        }
+//        
+//        String inAnswer = null;
+//        
+//        while(!(myRiddlePanel.hasAnswer())) { //while answer not ready
+//            System.out.println("Waiting for answer");
+//            inAnswer = myRiddlePanel.getAnswer();
+//        }
+//        
+//        System.out.println("Answer retreived");
+//        
+//        return inAnswer;
+//    }
     
     public void music(File theAudioFile) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
 	    if(theAudioFile == null) myBackgroundMusic.close();
