@@ -29,6 +29,7 @@ public class Player extends GamePiece implements Cloneable {
 	private boolean skipFrame;
 	private Rectangle myIconArea;
 	private Rectangle myBase;
+	private Riddle myCurrentRiddle;
 
 	private static final int SPEED = 10;
 	private static final int PLAYER_ROOM_ICON_SIZE = 100;
@@ -214,4 +215,13 @@ public class Player extends GamePiece implements Cloneable {
 	public String toString() {
 		return myCoordinate.toString();
 	}
+	
+	/**
+	 * The current riddle this player is engaging with
+	 * Mock Null Riddle if player is not currently engaging with the riddle.
+	 */
+    public Riddle getRiddle() {
+        // TODO: Link so that this riddle is updated when the player engages with a door
+        return new Riddle();  
+    }
 }

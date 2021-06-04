@@ -158,33 +158,44 @@ public class GlorpController implements KeyListener{
      * @param theDirection a direction to move within the maze
      */
     private boolean attemptMapMove(Direction theDirection) {
+        boolean inSuccess = false;
         if(myMaze.isValidMove(theDirection, myMaze.getCurrRoom())) { // If the move is valid
-        	
+            
         	// Grab the relevant Door
         	Door currDoor = myMaze.getCurrRoom().getDoors().get(theDirection);
         	
         	// If the door is unlocked, move that direction
         	if(currDoor.isUnlocked()) {
         		myMaze.move(theDirection);
-        		return true;
+        		inSuccess =  true;
+        	}else {
+        	
+            	// The door was locked. Give user the riddle
+            	Riddle currRiddle = myMaze.getCurrRoom().getDoors().get(theDirection).getMyRiddle();
+            	
+            	myWindow.updateRiddlePanel(true, myPlayer); // show riddle prompt
+            	
+            	return false;
+            	
+//            	System.out.println(currRiddle.getQuestion());
+//            	Scanner scan = new Scanner(System.in);
+//            	String input = scan.next();
+//            	
+//            	// If the riddle answer is correct, unlock door and move that direction
+//            	if(currRiddle.verifyAnswer(input)) {
+//            		currDoor.setUnlocked();
+//                    myMaze.move(theDirection);
+//                    inSuccess = true;
+//            	} else { // Riddle answer was not correct, block the door
+//            		currDoor.setBlocked();
+//            		inSuccess = false;
+//            	}
+//            	
+//            	myWindow.updateRiddlePanel(false, myPlayer); //hide riddle prompt 
         	}
         	
-        	// The door was locked. Give user the riddle
-        	Riddle currRiddle = myMaze.getCurrRoom().getDoors().get(theDirection).getMyRiddle();
-        	System.out.println(currRiddle.getQuestion());
-        	Scanner scan = new Scanner(System.in);
-        	String input = scan.next();
-        	
-        	// If the riddle answer is correct, unlock door and move that direction
-        	if(currRiddle.verifyAnswer(input)) {
-        		currDoor.setUnlocked();
-                myMaze.move(theDirection);
-                return true;
-        	} else { // Riddle answer was not correct, block the door
-        		currDoor.setBlocked();
-        		return false;
-        	}
-        } else return false;  // move was not valid 
+        }  
+        return inSuccess; 
     }
     
     /**

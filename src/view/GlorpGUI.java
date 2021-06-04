@@ -292,6 +292,11 @@ public class GlorpGUI extends JFrame {
 		myItemPanel.update(thePlayer);
 	}
     
+    public void updateRiddlePanel(boolean theRiddlePromptStatus, Player thePlayer) {
+        myRiddlePanel.update(theRiddlePromptStatus, thePlayer);
+        //repaint(); //allowed to call from here? 
+    }
+    
     public void music(File theAudioFile) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
 	    if(theAudioFile == null) myBackgroundMusic.close();
 	    else {

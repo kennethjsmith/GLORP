@@ -102,8 +102,10 @@ public class Riddle { // doesnt really need to be abstract
 	 /**
 	  * return array list of answer options
 	  * wrong options + the correct answer
+	  * 
 	 */
 	public ArrayList<String> getAnswerOptions(){
+	    //TODO: Modify this so that is randomizes the options
 	    ArrayList<String> inAnswers = (ArrayList<String>) myWrongOptions.clone();
 	    inAnswers.add(myAnswer);
 		return inAnswers;
