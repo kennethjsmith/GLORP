@@ -39,7 +39,7 @@ public class Room {
 	private static final Rectangle SOUTH_DOOR_ZONE = new Rectangle(new Point(200,480), new Dimension(100,20));;
 	private static final Rectangle WEST_DOOR_ZONE = new Rectangle(new Point(0,200), new Dimension(20,100));;
 	private static final Rectangle EAST_DOOR_ZONE = new Rectangle(new Point(480,200), new Dimension(20,100));;
-
+//	private static final Rectangle[] myDoorZones = {NORTH_DOOR_ZONE, SOUTH_DOOR_ZONE, WEST_DOOR_ZONE, EAST_DOOR_ZONE};
 	private final RoomIndex myIndex;
 	
 	
@@ -353,4 +353,9 @@ public class Room {
 		}
 		return true;
 	}
+	
+	// this would only work if we make class doorZone with a rectangle and a direction
+//    public Rectangle[] getDoorZones() {
+//        return
+//    }
 }

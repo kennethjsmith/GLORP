@@ -30,10 +30,10 @@ public class InputPanel extends JPanel{
 	private final static int HEIGHT = 125;
 	
 	 private JButton mySubmitButton;
-	 private JButton myRetreatButton;
+//	 private JButton myRetreatButton;
 	 private ArrayList<Component> myAnswerOptions;
 	 private boolean hasSubmitted;
-	 private boolean hasRetreated;
+//	 private boolean hasRetreated;
 	 private String myAnswer;
 	
 	/**
@@ -54,13 +54,13 @@ public class InputPanel extends JPanel{
         myAnswer = null;
         myAnswerOptions = new ArrayList<Component>();
         mySubmitButton = new JButton("Submit");
-        myRetreatButton = new JButton("Retreat");
+//        myRetreatButton = new JButton("Retreat");
         
         mySubmitButton.addActionListener(new submitActionListener());
-        myRetreatButton.addActionListener(new retreatActionListener());
+//        myRetreatButton.addActionListener(new retreatActionListener());
                 
         this.add(mySubmitButton);
-        this.add(myRetreatButton);
+//        this.add(myRetreatButton);
         
         for(Component c : myAnswerOptions) {
             this.add(c);
@@ -75,7 +75,7 @@ public class InputPanel extends JPanel{
     	super.paintComponent(g);
     }
 	
-	public String getAnswer() {
+	public String getResponse() {
 	    return myAnswer;
 	}
 	
@@ -83,13 +83,13 @@ public class InputPanel extends JPanel{
         return hasSubmitted;
     }
     
-    public boolean hasRetreated() {
-        return hasRetreated;
-    }
+//    public boolean hasRetreated() {
+//        return hasRetreated;
+//    }
     
     public void reset() {
         hasSubmitted = false;
-        hasRetreated = false;
+//        hasRetreated = false;
     }
     
     /**
@@ -122,13 +122,13 @@ public class InputPanel extends JPanel{
           
     }
     
-    private class retreatActionListener implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            hasRetreated = true;
-            System.out.println("retreated");
-        }
-    }
+//    private class retreatActionListener implements ActionListener{
+//        @Override
+//        public void actionPerformed(ActionEvent e) {
+//            hasRetreated = true;
+//            System.out.println("retreated");
+//        }
+//    }
     
     private class submitActionListener implements ActionListener{
         @Override

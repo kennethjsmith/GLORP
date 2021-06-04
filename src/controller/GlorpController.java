@@ -1,10 +1,12 @@
 package controller;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
@@ -25,14 +27,16 @@ import model.Skin;
 import model.SkinType;
 import view.GameIcon;
 import view.GlorpGUI;
+import view.RiddlePanel;
 
 /**
  * The controller, mediates the maze model and GUI. 
  * @authors Heather Finch, Katelynn Oleson, Ken Smith
  * @version
  */
-public class GlorpController implements KeyListener, Runnable{
-	// fields
+public class GlorpController implements KeyListener{
+	private static final HashMap<Direction, Point> myPositionChange = new HashMap<Direction, Point>();
+    // fields
 	private Maze myMaze;
 	// TODO: remover ref to player piece ? can get from maze
 	private Player myPlayer;
@@ -51,6 +55,13 @@ public class GlorpController implements KeyListener, Runnable{
         myWindow.setTitle("GLORP");
         myWindow.addKeyListener(this);    
         myWindow.repaint();
+        
+        // set up hashmap
+        // TODO: Fix magic numbers! & make this a helper?
+        myPositionChange.put(Direction.EAST, new Point(20, 200));
+        myPositionChange.put(Direction.WEST, new Point(380, 200));
+        myPositionChange.put(Direction.NORTH, new Point(200, 380));
+        myPositionChange.put(Direction.SOUTH, new Point(200, 20));
     }
 	
 	/**
@@ -78,137 +89,124 @@ public class GlorpController implements KeyListener, Runnable{
 	/**
 	 * A helper method, checks for item, fixture, and door interactions after a key event.
 	 */
-	// TODO: split into multiple methods? deal with duplicate code
     private void checkInteractions() {
-    	// check items
-    	Item inItem = myMaze.getCurrRoom().getItem();
-    	if(inItem != null && myPlayer.getIconArea().intersects(inItem.getIconArea())) {
-    		myPlayer.getInventory().add(myMaze.getCurrRoom().getItem());
-    		myMaze.getCurrRoom().setItem(null);
-    		myMaze.getCurrRoom().setCurrentRoom(true);
-    		myWindow.updateItemPanel(myPlayer);
-    	}
+        checkItems();
+    	checkFixtures();
     	
-    	// check fixtures
-    	Fixture inFixture = myMaze.getCurrRoom().getFixture();
-    	if(inFixture != null && inFixture.getInteractionZone() != null && myPlayer.getIconArea().intersects(inFixture.getInteractionZone())) {
-    		if(!myPlayer.getInventory().isEmpty()) {
-    			System.out.println("you win");
-    			//myPlayer.getInventory().remove(0);
-    			//myWindow.updateItemPanel(myPlayer);
-    			inFixture.setBase(new Rectangle(new Dimension(0,0)));
-    			inFixture.setIconArea(new Rectangle(new Dimension(0,0)));
-    			inFixture.setInteractionZone(new Rectangle(new Dimension(0,0)));
-    			inFixture.setMyYCoordinate(inFixture.getMyYCoordinate()-50);
-    			TimerTask task = new TimerTask() {
-    		        int i = 0;
-    		        @Override
-    		        public void run() {
-    		            if (i <= 15) {
-    		            	inFixture.setIcon(new GameIcon("src/icons/explosion/frame_" + i + ".png", 200, 250));
-    	    				myWindow.repaint();
-    		                i++;
-    		            }
-    		            else {
-    		                cancel();
-    		            }
-    		        }
-    		    };
-
-    		    Timer timer = new Timer();
-    		    timer.scheduleAtFixedRate(task, 0, 100);
-    			
-    		}
-    	}
+    	Direction inDir = checkDoorZones(); 
+    	Door inCurrDoor = myMaze.getCurrRoom().getDoors().get(inDir);
     	
-    	// check doors
-    	// east door zone
-    	if(myPlayer.getIconArea().intersects(Room.getEastDoorZone())) {
-    	    if(attemptMapMove(Direction.EAST)) {
-    	        myPlayer.getCoordinate().setLocation(20, 200);
-    	        myPlayer.updateRectangles();
-    	    }	
-    	}
-    	// west door zone
-    	else if(myPlayer.getIconArea().intersects(Room.getWestDoorZone())) {
-    	    if(attemptMapMove(Direction.WEST)) {
-    	        myPlayer.getCoordinate().setLocation(380, 200);
-    	        myPlayer.updateRectangles();
-    	    }	
-    	}
-    	// north door zone
-    	else if(myPlayer.getIconArea().intersects(Room.getNorthDoorZone())) {
-    	    if(attemptMapMove(Direction.NORTH)) {
-    	        myPlayer.getCoordinate().setLocation(200, 380);
-    	        myPlayer.updateRectangles();
-    	    }
-    	}
-    	// south door zone
-    	else if(myPlayer.getIconArea().intersects(Room.getSouthDoorZone())) {
-    	    if(attemptMapMove(Direction.SOUTH)) {
-    	        myPlayer.getCoordinate().setLocation(200, 20);
-    	        myPlayer.updateRectangles();
+    	if(inDir != null) { //if near a door
+    	    if(myMaze.isValidMove(inDir, myMaze.getCurrRoom())) { // If valid to attempt to move in that direction
+                if(inCurrDoor.isUnlocked()) { // If the door is unlocked, move that direction
+                    move(inDir); //update map & player
+                }else {
+                    openRiddleThreads(inDir); //open producer and consumer threads to watch for riddle activity
+                }
     	    }
     	}
 	}
+
+    private void checkItems() {
+        // check items
+        Item inItem = myMaze.getCurrRoom().getItem();
+        if(inItem != null && myPlayer.getIconArea().intersects(inItem.getIconArea())) {
+            myPlayer.getInventory().add(myMaze.getCurrRoom().getItem());
+            myMaze.getCurrRoom().setItem(null);
+            myMaze.getCurrRoom().setCurrentRoom(true);
+            myWindow.updateItemPanel(myPlayer);
+        }
+    }
     
-    // TODO: clean this up. Should some of this go in maze????
-    /**
-     * A helper method, returns a boolean indicating if movement into a new room was successful.
-     * @param theDirection a direction to move within the maze
-     */
-    private boolean attemptMapMove(Direction theDirection) {
-        boolean inSuccess = false;
-        if(myMaze.isValidMove(theDirection, myMaze.getCurrRoom())) { // If the move is valid
-            
-        	// Grab the relevant Door
-        	Door currDoor = myMaze.getCurrRoom().getDoors().get(theDirection);
-        	
-        	// If the door is unlocked, move that direction
-        	if(currDoor.isUnlocked()) {
-        		myMaze.move(theDirection);
-        		inSuccess =  true;
-        	}else {
-        	
-            	// The door was locked. Give user the riddle
-            	Riddle currRiddle = myMaze.getCurrRoom().getDoors().get(theDirection).getMyRiddle();
-            	
-            	Thread inRiddleThread = new Thread(myWindow.getRunnableRiddlePanel(currRiddle)); 
-            	inRiddleThread.start(); // show riddle prompt and wait for message
-            	
-           
-//            	String input = myWindow.updateRiddlePanel(true, currRiddle); // open riddle prompt
-            	
-//            	System.out.println(currRiddle.getQuestion());
-//            	Scanner scan = new Scanner(System.in);
-//            	String input = scan.next();
-//            	
-            	// If the riddle answer is correct, unlock door and move that direction
-//            	if(currRiddle.verifyAnswer(input)) {
-//            		currDoor.setUnlocked();
-//                    myMaze.move(theDirection);
-//                    inSuccess = true;
-//            	} else { // Riddle answer was not correct, block the door
-//            		currDoor.setBlocked();
-//            		inSuccess = false;
-//            	}
-//            	
-//            	myWindow.updateRiddlePanel(false, currRiddle); //hide riddle prompt 
-//            	System.out.println("Riddle Prompt Hidden");
-        	}
-        	
-        }  
-        return inSuccess; 
+    private void checkFixtures() {
+     // check fixtures
+        Fixture inFixture = myMaze.getCurrRoom().getFixture();
+        if(inFixture != null && inFixture.getInteractionZone() != null && myPlayer.getIconArea().intersects(inFixture.getInteractionZone())) {
+            if(!myPlayer.getInventory().isEmpty()) {
+                System.out.println("you win");
+                //myPlayer.getInventory().remove(0);
+                //myWindow.updateItemPanel(myPlayer);
+                inFixture.setBase(new Rectangle(new Dimension(0,0)));
+                inFixture.setIconArea(new Rectangle(new Dimension(0,0)));
+                inFixture.setInteractionZone(new Rectangle(new Dimension(0,0)));
+                inFixture.setMyYCoordinate(inFixture.getMyYCoordinate()-50);
+                TimerTask task = new TimerTask() {
+                    int i = 0;
+                    @Override
+                    public void run() {
+                        if (i <= 15) {
+                            inFixture.setIcon(new GameIcon("src/icons/explosion/frame_" + i + ".png", 200, 250));
+                            myWindow.repaint();
+                            i++;
+                        }
+                        else {
+                            cancel();
+                        }
+                    }
+                };
+
+                Timer timer = new Timer();
+                timer.scheduleAtFixedRate(task, 0, 100);
+                
+            }
+        }
     }
     
     /**
-     * Wait to receive message, or "run away"
+     * returns the direction of the door in region of or null. ... not the best, but whatev
+     * 
+     * return inner class obj, boolean hasDoor, doorDirection? 
+     * 
+     * 
      */
-    @Override
-    public void run() {
-        while(true){ //while no message || player still in door region (helper)
-            
+    private Direction checkDoorZones() {
+        // duplicate code, create doorZone class/ hashmap with rectangle, Direction
+        // east door zone
+        if(myPlayer.getIconArea().intersects(Room.getEastDoorZone())) {
+            return Direction.EAST; 
         }
+        // west door zone
+        else if(myPlayer.getIconArea().intersects(Room.getWestDoorZone())) {
+            return Direction.WEST;   
+        }
+        // north door zone
+        else if(myPlayer.getIconArea().intersects(Room.getNorthDoorZone())) {
+            return Direction.NORTH; 
+        }
+        // south door zone
+        else if(myPlayer.getIconArea().intersects(Room.getSouthDoorZone())) {
+            return Direction.SOUTH; 
+        }else
+            return null;
+    }
+    
+    /**
+     * Moves the player in the given direction 
+     * and updates player location on map & room panels
+     */
+    private void move(Direction theDirection) {
+        myMaze.move(theDirection); 
+        
+        myPlayer.getCoordinate().setLocation(myPositionChange.get(theDirection)); 
+        myPlayer.updateRectangles();  
+    }
+    
+    /**
+     * Open Producer and Consumer Threads for Riddle Panel 
+     * 
+     */
+    private void openRiddleThreads(Direction theDirection) {
+        // open producer
+        Riddle currRiddle = myMaze.getCurrRoom().getDoors().get(theDirection).getMyRiddle();
+        
+        RiddlePanel inRiddlePanel = myWindow.getRunnableRiddlePanel(currRiddle);
+                
+        Thread inRiddleProducer = new Thread(inRiddlePanel); 
+        inRiddleProducer.start(); // show riddle prompt and wait for message
+        
+        // open consumer
+        Thread inConsumer = new RiddleConsumer(inRiddlePanel, inRiddleProducer);
+        inConsumer.start();
         
     }
     
@@ -234,6 +232,54 @@ public class GlorpController implements KeyListener, Runnable{
 	public void keyTyped(KeyEvent e) {
 		// TODO: Auto-generated method stub
 		
+	}
+	
+	private class RiddleConsumer extends Thread{
+	    private RiddlePanel myRiddlePanel;
+	    private Thread myProducer;
+	    private boolean hasMessage;
+	    
+	    public RiddleConsumer(RiddlePanel thePanel, Thread theProducer) {
+	        myRiddlePanel = thePanel;
+	        myProducer = theProducer;
+	        hasMessage = false;
+	    }
+	    
+	    /*
+	     * Returns true if the message response equals the answer in the riddle
+	     */
+	    private boolean answerCorrect() {
+	        return myRiddlePanel.getResponse().equals(myRiddlePanel.getRiddle().getAnswer());
+	    }
+	    
+	    /**
+         * Wait to receive message, or "run away"
+         */
+        @Override
+        public void run() {
+          //while no message || player still in door region 
+            while(!((hasMessage) || checkDoorZones() != null)){ 
+//                try {
+//                    Thread.sleep(50);
+//                } catch (InterruptedException e) {
+//                    // TODO Auto-generated catch block
+//                    System.out.println("Error in GlorpController run method!");
+//                    e.printStackTrace();
+//                }
+            }
+            
+            Direction inDir = checkDoorZones();
+            
+            if(hasMessage && inDir != null) {
+                if(answerCorrect()) {
+                    move(inDir);
+                }
+            }
+
+            // terminate this thread & producer thread 
+            myRiddlePanel.shutDown(); 
+  
+        }
 	}
 
 }
