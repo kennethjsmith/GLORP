@@ -292,7 +292,7 @@ public class GlorpGUI extends JFrame {
     public void updateItemPanel(Player thePlayer) {
 		myItemPanel.update(thePlayer);
 	}
-    
+
     /**
      * activates the riddle panel and returns the runnable object to open a new thread
      * @return

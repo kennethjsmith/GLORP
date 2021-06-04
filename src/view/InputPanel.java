@@ -107,7 +107,7 @@ public class InputPanel extends JPanel{
             if(c instanceof JRadioButton) {
                 ((JRadioButton) c).addActionListener(ae -> {
                         myAnswer = ((JRadioButton) c).getText();
-                       // System.out.println(myAnswer);
+                        System.out.println(myAnswer);
                     } 
                 );
                 this.add(c);

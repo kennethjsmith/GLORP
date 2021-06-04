@@ -209,6 +209,7 @@ public class GlorpController implements KeyListener{
         inConsumer.start();
         
     }
+
     
     /**
      * Removes the KeyCode from the set of pressed keys. Sets stride to 0 if no keys are pressed.
