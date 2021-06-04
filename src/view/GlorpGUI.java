@@ -58,6 +58,7 @@ public class GlorpGUI extends JFrame {
     private MapView myMapView;
     private RiddlePanel myRiddlePanel;
     private ItemPanel myItemPanel;
+    private ItemView myItemView;
     private TitlePanel myTitlePanel;
     private Clip myBackgroundMusic;
     private FloatControl myGainControl;
@@ -114,6 +115,8 @@ public class GlorpGUI extends JFrame {
         
         // add item panel to GUI
         myItemPanel = new ItemPanel();
+        myItemView = new ItemView();
+        myItemPanel.add(myItemView, BorderLayout.NORTH);
         c.gridx = 0;
         c.gridy = 2;
         add(myItemPanel, c);
@@ -182,15 +185,20 @@ public class GlorpGUI extends JFrame {
         	JFrame aboutWindow = new JFrame();
         	aboutWindow.setLayout(new FlowLayout());
         	aboutWindow.setPreferredSize(new Dimension(200,200));
-        	JTextArea text = new JTextArea();
-            text.setText("Glorp: Revenge of the Sphinx \n"
-            		+ "Version 1.0 \n \n"
-            		+ "Glorp is a simple java game developed by \n");
-            aboutWindow.add(text);
+        	JLabel text1 = new JLabel();
+            text1.setText("Glorp: Revenge of the Sphinx");
+            JLabel text2 = new JLabel();
+            text2.setText("Version 1.0");
+            JLabel text3 = new JLabel();
+            text2.setText("Authors: Heather Finch, Katelynn Oleson, Ken Smith");
+            aboutWindow.add(text1);
+            aboutWindow.add(text2);
+            aboutWindow.add(text3);
             aboutWindow.pack();
             aboutWindow.setLocationRelativeTo(this);
             aboutWindow.setVisible(true);
             aboutWindow.setAlwaysOnTop(true);
+            //JOptionPane.showMessageDialog
         });
         
         JMenuItem instructions = new JMenuItem("Game Play Instructions");
@@ -283,14 +291,6 @@ public class GlorpGUI extends JFrame {
         myMenubar.add(help);
         setJMenuBar(myMenubar);
     }
-    	
-    /**
-     * 
-     * @param thePlayer
-     */
-    public void updateItemPanel(Player thePlayer) {
-		myItemPanel.update(thePlayer);
-	}
     
     public void music(File theAudioFile) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
 	    if(theAudioFile == null) myBackgroundMusic.close();
@@ -300,4 +300,11 @@ public class GlorpGUI extends JFrame {
 		    myBackgroundMusic.loop(Clip.LOOP_CONTINUOUSLY);
 	    }
     }
+
+	/**
+	 * @return the myItemView
+	 */
+	public ItemView getItemView() {
+		return myItemView;
+	}
 }

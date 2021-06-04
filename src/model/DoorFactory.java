@@ -31,16 +31,18 @@ public class DoorFactory {
         myRooms = new Room[0][0];
         TFRiddleDatabase myTrueFalseRiddles = new TFRiddleDatabase();
         tfRiddleSet = myTrueFalseRiddles.getTFRiddleSet();
-        injectDoors();   
+        injectDoors(); 
+        myTrueFalseRiddles.closeConnection();
     }
     
     public DoorFactory(Room[][] theRooms) {
         //requireNonNull(theRooms, "Cannot add doors to NullRooms"); //java not recognizing this??
         checkRoomsNonNull(theRooms);
-        myRooms = theRooms;
+        myRooms = theRooms; 
         TFRiddleDatabase myTrueFalseRiddles = new TFRiddleDatabase();
         tfRiddleSet = myTrueFalseRiddles.getTFRiddleSet();
-    	injectDoors(); 
+    	injectDoors();
+    	myTrueFalseRiddles.closeConnection();
     }
     
     /**

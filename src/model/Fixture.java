@@ -24,6 +24,7 @@ public class Fixture extends GamePiece{
 	private GameIcon myIcon;
 	
 	
+	
 	/**
 	 * A default constructor.
 	 */
@@ -37,27 +38,31 @@ public class Fixture extends GamePiece{
 	 * @param theXCoordinate
 	 * @param theYCoordinate
 	 */
-	public Fixture(int theXCoordinate, int theYCoordinate, FixtureType theFixtureType) {
+	public Fixture(int theXCoordinate, int theYCoordinate, FixtureType theType) {
 		super();
+		myType = theType;
 		myXCoordinate = theXCoordinate;
 		myYCoordinate = theYCoordinate;
+		// TODO: refactor to model Item/ItemType
 		
-		if(theFixtureType == FixtureType.CHEST) {
+		if(theType == FixtureType.CHEST) {
 			myIcon = FixtureType.getChestIcon();
 			myIconArea = new Rectangle(theXCoordinate, theYCoordinate-5, myIcon.getIconWidth(), myIcon.getIconHeight()+5);
 			myBase = new Rectangle(theXCoordinate, theYCoordinate + (myIcon.getIconHeight()/2), myIcon.getIconWidth(), (myIcon.getIconHeight()/2));
 			myInteractionZone = new Rectangle(theXCoordinate, theYCoordinate + myIcon.getIconHeight(), myIcon.getIconWidth(), (myIcon.getIconHeight()/5));
 		}
-		if(theFixtureType == FixtureType.SHIP) {
+		if(theType == FixtureType.SHIP) {
 			myIcon = FixtureType.getShipIcon();
 			myIconArea = new Rectangle(theXCoordinate, theYCoordinate, myIcon.getIconWidth(), myIcon.getIconHeight()-50);
 			myBase = new Rectangle(theXCoordinate, theYCoordinate + (myIcon.getIconHeight()-30), myIcon.getIconWidth(), 20);
+			myInteractionZone = new Rectangle(theXCoordinate, theYCoordinate + myIcon.getIconHeight(), myIcon.getIconWidth(), (myIcon.getIconHeight()/5));
 		}
 		
-		if(theFixtureType == FixtureType.ALTSHIP) {
+		if(theType == FixtureType.ALTSHIP) {
 			myIcon = FixtureType.getAltShipIcon();
 			myIconArea = new Rectangle(theXCoordinate, theYCoordinate, myIcon.getIconWidth(), myIcon.getIconHeight()-50);
 			myBase = new Rectangle(theXCoordinate, theYCoordinate + (myIcon.getIconHeight()-30), myIcon.getIconWidth(), 20);
+			myInteractionZone = new Rectangle(theXCoordinate, theYCoordinate + myIcon.getIconHeight(), myIcon.getIconWidth(), (myIcon.getIconHeight()/5));
 		}
 	}
 
@@ -143,5 +148,9 @@ public class Fixture extends GamePiece{
 	 */
 	public void setMyYCoordinate(int theYCoordinate) {
 		myYCoordinate = theYCoordinate;
+	}
+
+	public FixtureType getType() {
+		return myType;
 	}
 }

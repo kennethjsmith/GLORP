@@ -1,10 +1,13 @@
 package view;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -26,67 +29,26 @@ public class ItemPanel extends JPanel{
 	// fields
 	private final String TITLE = "Items";
 	private final static int WIDTH = 285;
-	private final static int HEIGHT = 115;
+	private final static int HEIGHT = 122;
+	private final GameIcon BACKGROUND = new GameIcon("src/icons/stars.png", WIDTH, HEIGHT);
 	
-	private JPanel item1;
-    private JPanel item2;
-    private JPanel item3;
-    JLabel item1Label;
-    JLabel item2Label;
-    JLabel item3Label;
-	
-
 	/**
 	 * A default constructor. 
 	 */
-	public ItemPanel() {
+	public ItemPanel(){
 		super();
 		// Sets the size of the JPanel
         setPreferredSize(new Dimension(WIDTH,HEIGHT));
         TitledBorder border = BorderFactory.createTitledBorder(TITLE);
         border.setTitleColor(Color.WHITE);
         border.setTitleJustification(TitledBorder.CENTER);
+        setLayout(new BorderLayout()); 
+//        GridBagConstraints c = new GridBagConstraints();
+//        c.fill = GridBagConstraints.NONE;
         setBorder(border);
-        setLayout(new FlowLayout(FlowLayout.LEADING, 8, 0)); //better solution?
-        
-        setBackground(Color.darkGray);
-        
-        item1 = new JPanel();
-        item2 = new JPanel();
-        item3 = new JPanel();
-        
-        item1.setBackground(Color.darkGray);
-        item2.setBackground(Color.darkGray);
-        item3.setBackground(Color.darkGray);
-        
-        item1.setPreferredSize(new Dimension(80,80));
-        item2.setPreferredSize(new Dimension(80,80));
-        item3.setPreferredSize(new Dimension(80,80));
-        
-        GameIcon blank = new GameIcon("src/icons/blank_item_icon.png", 75);
-        
-        item1Label = new JLabel(blank);
-        item2Label = new JLabel(blank);
-        item3Label = new JLabel(blank);
-        
-        item1.add(item1Label);
-        item2.add(item2Label);
-        item3.add(item3Label);
-        
-        add(item1);
-        add(item2);
-        add(item3);
+        //setBackground(Color.darkGray);
     }
 	
-	/**
-	 * 
-	 * @param thePlayer
-	 */
-	public void update(Player thePlayer) {
-		for(Item i : thePlayer.getInventory()) {
-			item1Label.setIcon(i.getItemPanelIcon());
-		}
-	}
 	
 	/**
 	 * 
@@ -94,5 +56,6 @@ public class ItemPanel extends JPanel{
 	@Override
     public void paintComponent(Graphics g) {
     	super.paintComponent(g);
+    	BACKGROUND.paintIcon(this, g, 0, 0);
     }
 }

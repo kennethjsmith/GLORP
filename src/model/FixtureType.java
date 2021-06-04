@@ -11,7 +11,7 @@ public enum FixtureType {
 	
 	private final static GameIcon CHEST_ICON = new GameIcon("src/icons/chest.png", 150, 100);
 	private final static GameIcon SHIP_ICON = new GameIcon("src/icons/ship.png", 200, 150);
-	private final static GameIcon ALT_SHIP_ICON = new GameIcon("src/icons/altship.png", 200, 250);
+	private final static GameIcon ALT_SHIP_ICON = new GameIcon("src/icons/alt_ship.png", 200, 275);
 	
     private FixtureType(String theLabel) {
     	myLabel = theLabel;

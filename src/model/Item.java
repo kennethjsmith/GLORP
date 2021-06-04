@@ -11,12 +11,13 @@ import view.GameIcon;
  * @version
  */
 public class Item  extends GamePiece{
-	private final static int WIDTH = 50;
-	private final static int HEIGHT = 75;
-	private final static GameIcon ROOM_ICON = new GameIcon("src/icons/anhk_key.png", WIDTH, HEIGHT);
-	private final static GameIcon ITEM_PANEL_ICON = new GameIcon("src/icons/key_item_icon.png", 75);
+	// fields
 	private Rectangle myIconArea;
+	private GameIcon myRoomIcon;
+	private GameIcon myItemPanelIcon;
+	private ItemType myType;
 	
+	private final static int MAX_SIZE = 75;
 	// TODO: should this be private to prevent instantiation? Fixture too?
 	/**
 	 * A default constructor.
@@ -30,23 +31,26 @@ public class Item  extends GamePiece{
 	 * Constructs an item at the given point.
 	 * @param thePoint
 	 */
-	public Item(PiecePoint thePoint) {
+	public Item(PiecePoint thePoint, ItemType theType) {
 		super();
-		myIconArea = new Rectangle(thePoint, new Dimension(WIDTH,HEIGHT));
+		myType = theType;
+		myRoomIcon = ItemType.getRoomIcon(theType);
+		myItemPanelIcon = ItemType.getItemPanelIcon(theType);
+		myIconArea = new Rectangle(thePoint, ItemType.getDimension(theType));
 	}
 
 	/**
 	 * @return the ROOM_ICON
 	 */
 	public GameIcon getRoomIcon() {
-		return ROOM_ICON;
+		return myRoomIcon;
 	}
 	
 	/**
 	 * @return the ITEM_PANEL_ICON
 	 */
 	public GameIcon getItemPanelIcon() {
-		return ITEM_PANEL_ICON;
+		return myItemPanelIcon;
 	}
 
 	/**
@@ -55,18 +59,19 @@ public class Item  extends GamePiece{
 	public Rectangle getIconArea() {
 		return myIconArea;
 	}
-
+	
 	/**
-	 * @return the width
+	 * @return myType my ItemType
 	 */
-	public static int getWidth() {
-		return WIDTH;
+	public ItemType getType() {
+		return myType;
 	}
 
 	/**
-	 * @return the height
+	 * @return the max size
 	 */
-	public static int getHeight() {
-		return HEIGHT;
+	public static int getMaxSize() {
+		return MAX_SIZE;
 	}
+
 }

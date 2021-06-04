@@ -16,8 +16,11 @@ import javax.swing.JFrame;
 import model.Direction;
 import model.Door;
 import model.Fixture;
+import model.FixtureType;
 import model.Item;
+import model.ItemType;
 import model.Maze;
+import model.PiecePoint;
 import model.Player;
 import model.Riddle;
 import model.Room;
@@ -34,7 +37,6 @@ import view.GlorpGUI;
 public class GlorpController implements KeyListener{
 	// fields
 	private Maze myMaze;
-	// TODO: remover ref to player piece ? can get from maze
 	private Player myPlayer;
 	private GlorpGUI myWindow; 
 	private final Set<Integer> myPressedKeys = new HashSet<Integer>();
@@ -64,15 +66,16 @@ public class GlorpController implements KeyListener{
         
         Direction inDirection = Direction.generateDirection(myPressedKeys);
         Direction validDirection = null;
-		
-        try {
-			validDirection = myMaze.getCurrRoom().validateDirection(myPlayer, inDirection);
-			myPlayer.move(validDirection);
-		} catch (CloneNotSupportedException e1) {
-			e1.printStackTrace();
+		if(!myPlayer.getFixed()) {
+	        try {
+				validDirection = myMaze.getCurrRoom().validateDirection(myPlayer, inDirection);
+				myPlayer.move(validDirection);
+			} catch (CloneNotSupportedException e1) {
+				e1.printStackTrace();
+			}
+	        checkInteractions();
+	        myWindow.repaint();
 		}
-        checkInteractions();
-        myWindow.repaint();
     }
 
 	/**
@@ -83,23 +86,25 @@ public class GlorpController implements KeyListener{
     	// check items
     	Item inItem = myMaze.getCurrRoom().getItem();
     	if(inItem != null && myPlayer.getIconArea().intersects(inItem.getIconArea())) {
-    		myPlayer.getInventory().add(myMaze.getCurrRoom().getItem());
+    		myPlayer.getInventory().add(myMaze.getCurrRoom().getItem().getType());
     		myMaze.getCurrRoom().setItem(null);
     		myMaze.getCurrRoom().setCurrentRoom(true);
-    		myWindow.updateItemPanel(myPlayer);
+    		myWindow.getItemView().update(myPlayer);
     	}
     	
     	// check fixtures
     	Fixture inFixture = myMaze.getCurrRoom().getFixture();
-    	if(inFixture != null && inFixture.getInteractionZone() != null && myPlayer.getIconArea().intersects(inFixture.getInteractionZone())) {
-    		if(!myPlayer.getInventory().isEmpty()) {
-    			System.out.println("you win");
-    			//myPlayer.getInventory().remove(0);
-    			//myWindow.updateItemPanel(myPlayer);
+    	if(inFixture != null && myPlayer.canInteract(inFixture) && myPlayer.getIconArea().intersects(inFixture.getInteractionZone())) {
+    		if(myPlayer.getInventory().contains(ItemType.KEY) 
+    				&& inFixture.getType() == FixtureType.CHEST) {
+    			myPlayer.getInventory().remove(ItemType.KEY);
+    			myMaze.getCurrRoom().addItem(new Item(new PiecePoint(250,250), ItemType.GEM));
+    			myWindow.getItemView().update(myPlayer);
     			inFixture.setBase(new Rectangle(new Dimension(0,0)));
     			inFixture.setIconArea(new Rectangle(new Dimension(0,0)));
     			inFixture.setInteractionZone(new Rectangle(new Dimension(0,0)));
-    			inFixture.setMyYCoordinate(inFixture.getMyYCoordinate()-50);
+    			inFixture.setMyYCoordinate(inFixture.getMyYCoordinate()-60);
+    			inFixture.setMyXCoordinate(inFixture.getMyXCoordinate()-10);
     			TimerTask task = new TimerTask() {
     		        int i = 0;
     		        @Override
@@ -114,38 +119,96 @@ public class GlorpController implements KeyListener{
     		            }
     		        }
     		    };
-
     		    Timer timer = new Timer();
     		    timer.scheduleAtFixedRate(task, 0, 100);
-    			
+    		}
+    		// TODO: clean this up, 2 near identical sections of spaghetti
+    		// also, this is messy, I use the player piece's icon to display the win message
+    		// I also added a field and methods to fix his location
+    		if(myPlayer.getInventory().contains(ItemType.GEM) 
+    			&& inFixture.getType() == FixtureType.ALTSHIP){
+    			inFixture.setIcon(new GameIcon("src/icons/alt_ship_win.png", 200, 275));
+        		//inFixture.setBase(new Rectangle(new Dimension(0,0)));
+        		//inFixture.setIconArea(new Rectangle(new Dimension(0,0)));
+        		//inFixture.setInteractionZone(new Rectangle(new Dimension(0,0)));
+        		myPlayer.setCoordinate(new PiecePoint(150,175));
+        		myPlayer.setRoomIcon(new GameIcon("src/icons/win_message_icon.png", 220, 150));
+        		myPlayer.setFixed(true);
+    			TimerTask task = new TimerTask() {
+    		        int i = 0;
+    		        @Override
+    		        public void run() {
+    		            if (i <= 50) {
+    		            	inFixture.setMyYCoordinate(inFixture.getMyYCoordinate()-10);
+    		            	myWindow.repaint();
+    		                i++;
+    		            }
+    		            else {
+    		                cancel();
+    		            }
+    		        }
+    		    };
+    		    Timer timer = new Timer();
+    		    timer.scheduleAtFixedRate(task, 0, 100);
+        		myPlayer.getInventory().clear();
+        		myWindow.getItemView().update(myPlayer);
+    		}
+
+    		if(myPlayer.getInventory().contains(ItemType.GEM) 
+        		&& inFixture.getType() == FixtureType.SHIP){
+        		inFixture.setIcon(new GameIcon("src/icons/ship_win.png", 200, 150));
+        		//inFixture.setBase(new Rectangle(new Dimension(0,0)));
+        		//inFixture.setIconArea(new Rectangle(new Dimension(0,0)));
+        		//inFixture.setInteractionZone(new Rectangle(new Dimension(0,0)));
+        		myPlayer.setCoordinate(new PiecePoint(150,175));
+        		myPlayer.setRoomIcon(new GameIcon("src/icons/win_message_icon.png", 220, 150));
+        		myPlayer.setFixed(true);
+    			TimerTask task = new TimerTask() {
+    		        int i = 0;
+    		        @Override
+    		        public void run() {
+    		            if (i <= 50) {
+    		            	inFixture.setMyYCoordinate(inFixture.getMyYCoordinate()-10);
+    		            	myWindow.repaint();
+    		                i++;
+    		            }
+    		            else {
+    		                cancel();
+    		            }
+    		        }
+    		    };
+    		    Timer timer = new Timer();
+    		    timer.scheduleAtFixedRate(task, 0, 100);
+        		myPlayer.getInventory().clear();
+        		myWindow.getItemView().update(myPlayer);
     		}
     	}
     	
     	// check doors
     	// east door zone
     	if(myPlayer.getIconArea().intersects(Room.getEastDoorZone())) {
-    	    if(attemptMapMove(Direction.EAST)) {
+    	    if(attemptMapTraversal(Direction.EAST)) {
     	        myPlayer.getCoordinate().setLocation(20, 200);
     	        myPlayer.updateRectangles();
     	    }	
     	}
     	// west door zone
     	else if(myPlayer.getIconArea().intersects(Room.getWestDoorZone())) {
-    	    if(attemptMapMove(Direction.WEST)) {
+    	    if(attemptMapTraversal(Direction.WEST)) {
     	        myPlayer.getCoordinate().setLocation(380, 200);
     	        myPlayer.updateRectangles();
     	    }	
     	}
     	// north door zone
     	else if(myPlayer.getIconArea().intersects(Room.getNorthDoorZone())) {
-    	    if(attemptMapMove(Direction.NORTH)) {
+    	    if(attemptMapTraversal(Direction.NORTH)) {
     	        myPlayer.getCoordinate().setLocation(200, 380);
     	        myPlayer.updateRectangles();
     	    }
     	}
     	// south door zone
     	else if(myPlayer.getIconArea().intersects(Room.getSouthDoorZone())) {
-    	    if(attemptMapMove(Direction.SOUTH)) {
+    	    if(attemptMapTraversal(Direction.SOUTH)) {
     	        myPlayer.getCoordinate().setLocation(200, 20);
     	        myPlayer.updateRectangles();
     	    }
@@ -157,15 +220,15 @@ public class GlorpController implements KeyListener{
      * A helper method, returns a boolean indicating if movement into a new room was successful.
      * @param theDirection a direction to move within the maze
      */
-    private boolean attemptMapMove(Direction theDirection) {
-        if(myMaze.isValidMove(theDirection, myMaze.getCurrRoom())) { // If the move is valid
+    private boolean attemptMapTraversal(Direction theDirection) {
+        if(myMaze.isValidTraversal(theDirection, myMaze.getCurrRoom())) { // If the move is valid
         	
         	// Grab the relevant Door
         	Door currDoor = myMaze.getCurrRoom().getDoors().get(theDirection);
         	
         	// If the door is unlocked, move that direction
         	if(currDoor.isUnlocked()) {
-        		myMaze.move(theDirection);
+        		myMaze.traverseMaze(theDirection);
         		return true;
         	}
         	
@@ -178,7 +241,7 @@ public class GlorpController implements KeyListener{
         	// If the riddle answer is correct, unlock door and move that direction
         	if(currRiddle.verifyAnswer(input)) {
         		currDoor.setUnlocked();
-                myMaze.move(theDirection);
+                myMaze.traverseMaze(theDirection);
                 return true;
         	} else { // Riddle answer was not correct, block the door
         		currDoor.setBlocked();
