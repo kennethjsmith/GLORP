@@ -31,7 +31,7 @@ import view.GlorpGUI;
  * @authors Heather Finch, Katelynn Oleson, Ken Smith
  * @version
  */
-public class GlorpController implements KeyListener, Runnable{
+public class GlorpController implements KeyListener{
 	// fields
 	private Maze myMaze;
 	// TODO: remover ref to player piece ? can get from maze
@@ -173,44 +173,44 @@ public class GlorpController implements KeyListener, Runnable{
             	// The door was locked. Give user the riddle
             	Riddle currRiddle = myMaze.getCurrRoom().getDoors().get(theDirection).getMyRiddle();
             	
-            	Thread inRiddleThread = new Thread(myWindow.getRunnableRiddlePanel(currRiddle)); 
-            	inRiddleThread.start(); // show riddle prompt and wait for message
+//            	Thread inRiddleThread = new Thread(myWindow.getRunnableRiddlePanel(currRiddle)); 
+//            	inRiddleThread.start(); // show riddle prompt and wait for message
             	
            
-//            	String input = myWindow.updateRiddlePanel(true, currRiddle); // open riddle prompt
+            	String input = myWindow.updateRiddlePanel(true, currRiddle); // open riddle prompt
             	
 //            	System.out.println(currRiddle.getQuestion());
 //            	Scanner scan = new Scanner(System.in);
 //            	String input = scan.next();
 //            	
             	// If the riddle answer is correct, unlock door and move that direction
-//            	if(currRiddle.verifyAnswer(input)) {
-//            		currDoor.setUnlocked();
-//                    myMaze.move(theDirection);
-//                    inSuccess = true;
-//            	} else { // Riddle answer was not correct, block the door
-//            		currDoor.setBlocked();
-//            		inSuccess = false;
-//            	}
-//            	
-//            	myWindow.updateRiddlePanel(false, currRiddle); //hide riddle prompt 
-//            	System.out.println("Riddle Prompt Hidden");
+            	if(currRiddle.verifyAnswer(input)) {
+            		currDoor.setUnlocked();
+                    myMaze.move(theDirection);
+                    inSuccess = true;
+            	} else { // Riddle answer was not correct, block the door
+            		currDoor.setBlocked();
+            		inSuccess = false;
+            	}
+            	
+            	myWindow.updateRiddlePanel(false, currRiddle); //hide riddle prompt 
+            	System.out.println("Riddle Prompt Hidden");
         	}
         	
         }  
         return inSuccess; 
     }
     
-    /**
-     * Wait to receive message, or "run away"
-     */
-    @Override
-    public void run() {
-        while(true){ //while no message || player still in door region (helper)
-            
-        }
-        
-    }
+//    /**
+//     * Wait to receive message, or "run away"
+//     */
+//    @Override
+//    public void run() {
+//        while(true){ //while no message || player still in door region (helper)
+//            
+//        }
+//        
+//    }
     
     /**
      * Removes the KeyCode from the set of pressed keys. Sets stride to 0 if no keys are pressed.

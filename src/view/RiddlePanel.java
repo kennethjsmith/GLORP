@@ -32,7 +32,7 @@ import model.Riddle;
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
  * @version 
  */
-public class RiddlePanel extends JPanel implements Runnable{
+public class RiddlePanel extends JPanel{
 	// fields
     /** The size of the increase/decrease buttons. */
     private static final Dimension BUTTON_SIZE = new Dimension(26, 26);
@@ -176,34 +176,34 @@ public class RiddlePanel extends JPanel implements Runnable{
         return myInputPanel.getAnswer();
     }
     
-    
-    /**
-     * Seperate thread so that the player can "walk away" from the riddle
-     */
-    @Override
-    public void run() {
-        while(myRiddleStatus && !(myInputPanel.hasRetreated())) { // while the player is actively at the riddle 
-            myQuestionPanel.setVisible(true); // view the riddle
-            myInputPanel.setVisible(true);
-        }
-        
-        myRiddleStatus = false;
-        
-        myQuestionPanel.setVisible(false);
-        myInputPanel.setVisible(false);
-        
-    }
-	
-	private synchronized void sendMessage(String message){
-	    while(!(myInputPanel.hasSubmitted())) { // wait till submitted to send the message
-	        try {
-                wait();
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-	    }
-	    
-	    notify();
-	}	
+//    
+//    /**
+//     * Seperate thread so that the player can "walk away" from the riddle
+//     */
+//    @Override
+//    public void run() {
+//        while(myRiddleStatus && !(myInputPanel.hasRetreated())) { // while the player is actively at the riddle 
+//            myQuestionPanel.setVisible(true); // view the riddle
+//            myInputPanel.setVisible(true);
+//        }
+//        
+//        myRiddleStatus = false;
+//        
+//        myQuestionPanel.setVisible(false);
+//        myInputPanel.setVisible(false);
+//        
+//    }
+//	
+//	private synchronized void sendMessage(String message){
+//	    while(!(myInputPanel.hasSubmitted())) { // wait till submitted to send the message
+//	        try {
+//                wait();
+//            } catch (InterruptedException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
+//	    }
+//	    
+//	    notify();
+//	}	
 }
