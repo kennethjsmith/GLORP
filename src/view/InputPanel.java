@@ -9,6 +9,10 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.AbstractButton;
@@ -25,7 +29,7 @@ import javax.swing.border.Border;
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
  * @version 
  */
-public class InputPanel extends JPanel{
+public class InputPanel extends JPanel implements KeyListener{
 	private final static int WIDTH = 285;
 	private final static int HEIGHT = 125;
 	
@@ -57,7 +61,7 @@ public class InputPanel extends JPanel{
         mySubmitButton = new JButton("Submit");
 //        myRetreatButton = new JButton("Retreat");
         
-        mySubmitButton.addActionListener(new submitActionListener());
+        mySubmitButton.addMouseListener(new submitMouseClickListener());
 //        myRetreatButton.addActionListener(new retreatActionListener());
                 
         this.add(mySubmitButton);
@@ -90,6 +94,7 @@ public class InputPanel extends JPanel{
     
     public void reset() {
         hasSubmitted = false;
+        myAnswer = null;
 //        hasRetreated = false;
     }
     
@@ -106,11 +111,12 @@ public class InputPanel extends JPanel{
         
         for(Component c : theAnswerOptions) { //add new answer options
             if(c instanceof JRadioButton) {
-                ((JRadioButton) c).addActionListener(ae -> {
-                        myAnswer = ((JRadioButton) c).getText();
-                        System.out.println(myAnswer);
-                    } 
-                );
+                ((JRadioButton) c).addMouseListener(new buttonMouseClickListener(((JRadioButton) c).getText()));
+//                ((JRadioButton) c).addActionListener(ae -> {
+//                        myAnswer = ((JRadioButton) c).getText();
+//                        System.out.println(myAnswer);
+//                    } 
+//                );
                 this.add(c);
             }else if(c instanceof JTextField) {
                 ((JTextField) c).addActionListener(ae -> {
@@ -131,13 +137,106 @@ public class InputPanel extends JPanel{
 //        }
 //    }
     
-    private class submitActionListener implements ActionListener{
+    
+ // mouse listener bc want to save key listener for room panel
+    private class submitMouseClickListener implements MouseListener{ 
         @Override
-        public void actionPerformed(ActionEvent e) {
-            hasSubmitted = true;  
-            System.out.println("Submitted");
-        } 
+        public void mouseClicked(MouseEvent e) {
+            if(getResponse() != null) {
+                hasSubmitted = true;  
+                System.out.println("Submitted");
+            }else
+                System.out.println("You must select and answer before submitting");
+        }
+        
+        // how to make it so we dont have to implement all of these
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            // TODO Auto-generated method stub
+            
+        }
     }
+    
+ // mouse listener bc want to save key listener for room panel
+    private class buttonMouseClickListener implements MouseListener{ 
+            String myResponse;
+            
+            private buttonMouseClickListener(String theResponse) {
+                myResponse = theResponse;
+            }
+        
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            myAnswer = myResponse; 
+            System.out.println(myAnswer);
+            
+        }
+        
+        // how to make it so we dont have to implement all of these
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            // TODO Auto-generated method stub
+            
+        }
+    }
+
+    
+    @Override
+    public void keyTyped(KeyEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        // lose focus 
+        
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+    
     
 
 }

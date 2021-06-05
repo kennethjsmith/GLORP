@@ -4,15 +4,21 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.Action;
 import javax.swing.JFrame;
+import javax.swing.KeyStroke;
 
 import model.Direction;
 import model.Door;
@@ -62,6 +68,13 @@ public class GlorpController implements KeyListener{
         myPositionChange.put(Direction.WEST, new Point(380, 200));
         myPositionChange.put(Direction.NORTH, new Point(200, 380));
         myPositionChange.put(Direction.SOUTH, new Point(200, 20));
+        
+        // key bindings instead of keylisteners
+        String[] theDirections = {"LEFT", "RIGHT", "UP", "DOWN"};
+       for(String s : theDirections) {
+           myWindow.getRoomPanel().getInputMap().put(KeyStroke.getKeyStroke(s), s);
+           myWindow.getRoomPanel().getActionMap().put(s, new keyBinder(s));
+       }
     }
 	
 	/**
@@ -257,8 +270,7 @@ public class GlorpController implements KeyListener{
 	    private boolean answerCorrect() {
 	        boolean inCorrect = myRiddlePanel.getResponse().equals(myRiddlePanel.getRiddle().getAnswer());
 	        System.out.println("The response is: " + inCorrect);
-	        return true;
-	       // return myRiddlePanel.getResponse().equals(myRiddlePanel.getRiddle().getAnswer());
+	        return myRiddlePanel.getResponse().equals(myRiddlePanel.getRiddle().getAnswer());
 	    }
 	    
 	    /**
@@ -294,10 +306,104 @@ public class GlorpController implements KeyListener{
 
             // terminate this thread & producer thread 
             myRiddlePanel.shutDown(); 
+           // myWindow.setFocusToRoom();
             myWindow.repaint();
             myRiddleOpenFlag = false;
+            
   
         }
 	}
+	
+	// private class for key bindings
+	
+	   private class keyBinder implements Action {
+	        private String myKey;
+	        private boolean isEnabled;
+	        
+	        private keyBinder(String theKey) {
+	            myKey = theKey;
+	            isEnabled = true;
+	        }
+	        
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	           // System.out.println("I WORK!1");
+	            
+	            helper(true);
+	            
+	            Direction inDirection = Direction.generateDirection(myPressedKeys);
+	            Direction validDirection = null;
+	            
+	            try {
+	                validDirection = myMaze.getCurrRoom().validateDirection(myPlayer, inDirection);
+	                myPlayer.move(validDirection);
+	            } catch (CloneNotSupportedException e1) {
+	                e1.printStackTrace();
+	            }
+	            checkInteractions();
+	            myWindow.repaint();
+	            
+	            helper(false);
+	        }
+	        
+	        @Override
+	        public Object getValue(String key) {
+	            //System.out.println("I WORK!   2 *** and getValue is " + key);
+	            return null;
+	        }
+	        @Override
+	        public void putValue(String key, Object value) {
+	           // System.out.println("I WORK!      3");
+	            
+	        }
+	        @Override
+	        public void setEnabled(boolean b) {
+	            isEnabled = b;
+	            //System.out.println("I WORK!            4");
+	            
+	        }
+	        
+	        @Override
+	        public boolean isEnabled() {
+	            return isEnabled;
+	        }
+	        
+	        @Override
+	        public void addPropertyChangeListener(PropertyChangeListener listener) {
+	            //System.out.println("I WORK!                            6");
+	            
+	        }
+	        @Override
+	        public void removePropertyChangeListener(PropertyChangeListener listener) {
+	            //System.out.println("I WORK!                                      7");
+	            
+	        }
+	        
+	        //helpers 
+	        
+	        private void helper( boolean theAddFlag) {
+	            int inKey = -1;
+	            
+	            if(myKey.equals("LEFT")) {
+	                inKey = KeyEvent.VK_LEFT;
+	            }else if(myKey.equals("RIGHT")) {
+	                inKey = KeyEvent.VK_RIGHT;
+	            }else if(myKey.equals("UP")) {
+	                inKey = KeyEvent.VK_UP; 
+	            }else if(myKey.equals("DOWN")) {
+	                inKey = KeyEvent.VK_DOWN;
+	            }
+	            
+	            if(inKey != -1) {
+	                if(theAddFlag) {
+	                    myPressedKeys.add(inKey);
+	                }else
+	                    myPressedKeys.remove(inKey);
+	            }
+	                
+	        }
+	    }
+
+
 
 }

@@ -184,6 +184,7 @@ public class RiddlePanel extends JPanel implements Runnable{
         myRiddleStatus = false; //setting this to false ends producer thread
         myQuestionPanel.setVisible(false);
         myInputPanel.setVisible(false);
+        myInputPanel.reset();
         
         System.out.println("Shut down riddle panel");
         

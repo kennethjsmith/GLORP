@@ -29,8 +29,8 @@ public class Room {
 	
 	private GameIcon myLargeIcon;
 	private GameIcon mySmallIcon;
-	private boolean isCurrentRoom;
 	private boolean isWinRoom;
+	private boolean isCurrentRoom;
 	private boolean isVisited;
 	
 	private final static int SIZE = 500;

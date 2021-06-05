@@ -6,8 +6,10 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -309,5 +311,21 @@ public class GlorpGUI extends JFrame {
 		    myBackgroundMusic.open(ais);
 		    myBackgroundMusic.loop(Clip.LOOP_CONTINUOUSLY);
 	    }
+    }
+
+    public void setFocusToRoom() {
+        myRoomPanel.setFocusable(true);
+        myRoomPanel.setRequestFocusEnabled(true);
+        myRoomPanel.requestFocusInWindow(); 
+       // myRoomPanel.grabFocus();
+    }
+    
+    public void setFocusToRiddle() {
+        myRiddlePanel.grabFocus();
+    }
+
+    public JPanel getRoomPanel() {
+        // TODO Auto-generated method stub
+        return myRoomPanel;
     }
 }
