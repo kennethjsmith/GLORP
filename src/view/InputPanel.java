@@ -6,6 +6,9 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
@@ -17,12 +20,14 @@ import java.util.ArrayList;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+
 
 /**
  * The panel for player input.
@@ -34,10 +39,9 @@ public class InputPanel extends JPanel implements KeyListener{
 	private final static int HEIGHT = 125;
 	
 	 private JButton mySubmitButton;
-//	 private JButton myRetreatButton;
+	 private JLabel myTitle;
 	 private ArrayList<Component> myAnswerOptions;
 	 private boolean hasSubmitted;
-//	 private boolean hasRetreated;
 	 private String myAnswer;
 	
 	/**
@@ -51,26 +55,46 @@ public class InputPanel extends JPanel implements KeyListener{
 	    Border whiteline = BorderFactory.createLineBorder(Color.WHITE);
 	    setBorder(whiteline);
 		
-		JTextField textField = new JTextField(5);
+		//JTextField textField = new JTextField(5);
 		// TODO: this breaks focus
-        add(new JLabel("How do you answer ..."));
-        
+	    myTitle = new JLabel("How do you answer ...");
+
         myAnswer = null;
         myAnswerOptions = new ArrayList<Component>();
         hasSubmitted = false;
         mySubmitButton = new JButton("Submit");
-//        myRetreatButton = new JButton("Retreat");
+        mySubmitButton.addMouseListener(new submitMouseClickListener());   
         
-        mySubmitButton.addMouseListener(new submitMouseClickListener());
-//        myRetreatButton.addActionListener(new retreatActionListener());
-                
-        this.add(mySubmitButton);
-//        this.add(myRetreatButton);
+        layoutComponents();
         
-        for(Component c : myAnswerOptions) {
-            this.add(c);
-        }
 	}
+	
+	/**
+     * Setup and add the GUI components for this panel. 
+     */
+    private void layoutComponents() {
+//        setLayout(new GridBagLayout()); 
+//        GridBagConstraints c = new GridBagConstraints();
+//        c.fill = GridBagConstraints.NONE;
+//        
+//        c.insets = new Insets(20,0,0,0);
+//        c.gridx = 0;
+//        c.gridy = 0;
+          this.add(myTitle);
+        
+//        c.gridx = 0;
+//        c.gridy = 1;
+//        c.insets = new Insets(300,0,0,0);
+        for(Component comp : myAnswerOptions) {
+            this.add(comp);
+        }
+        
+//        c.gridx = 0;
+//        c.gridy = 2;
+//        c.insets = new Insets(300,0,0,0);
+//        c.anchor = GridBagConstraints.PAGE_END;
+        this.add(mySubmitButton);
+    }
 	
 	/**
 	 * 
@@ -88,14 +112,9 @@ public class InputPanel extends JPanel implements KeyListener{
         return hasSubmitted;
     }
     
-//    public boolean hasRetreated() {
-//        return hasRetreated;
-//    }
-    
     public void reset() {
         hasSubmitted = false;
         myAnswer = null;
-//        hasRetreated = false;
     }
     
     /**
@@ -103,7 +122,7 @@ public class InputPanel extends JPanel implements KeyListener{
      * @param theAnswerOptions
      */
     public void setAnswerOptions(ArrayList<Component> theAnswerOptions) {
-        for(Component c : theAnswerOptions) { //remove old answer options
+        for(Component c : myAnswerOptions) { //remove old answer options
             this.remove(c);
         }
         
@@ -127,6 +146,10 @@ public class InputPanel extends JPanel implements KeyListener{
                 this.add(c); 
             }         
             
+        }
+        
+        for(int i = 0; i < this.getComponentCount(); i++) {
+            System.out.println("component #" + (i + 1) + " is " + this.getComponent(i));
         }
           
     }

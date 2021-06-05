@@ -33,6 +33,9 @@ import model.Riddle;
  * @version 
  */
 public class RiddlePanel extends JPanel implements Runnable{
+    /** The number of columns in width of the TextField. */
+    private static final int TEXT_FIELD_COLUMNS = 5;
+    
 	// fields
     /** The size of the increase/decrease buttons. */
     private static final Dimension BUTTON_SIZE = new Dimension(26, 26);
@@ -92,20 +95,14 @@ public class RiddlePanel extends JPanel implements Runnable{
         myQuestionPanel.setVisible(false);
         
         myInputPanel = new InputPanel();
+        //myInputPanel.setPreferredSize(new Dimension(100, 300));
         c.gridx = 0;
         c.gridy = 2;
         c.insets = new Insets(300,0,0,0);
         c.anchor = GridBagConstraints.PAGE_END;
+        
         add(myInputPanel, c);
         myInputPanel.setVisible(false); // replace with a block or something, so looks like sphinx sitting on table
-        
-//        mySubmitPanel = new SubmitPanel();
-//        c.gridx = 0;
-//        c.gridy = 3;
-//        c.insets = new Insets(300,0,0,0);
-//        c.anchor = GridBagConstraints.PAGE_END;
-//        add(mySubmitPanel, c);
-//        mySubmitPanel.setVisible(false);
         
     }
 
@@ -120,8 +117,16 @@ public class RiddlePanel extends JPanel implements Runnable{
 	            inAnswerOptions.add(inButton); //figure out how to only allow one selection
 	            inComponents.add(inButton);
 	        }
-	    }else { 
+	    }else if(theAnswers.size() == 1)  {  // open ended question, just the answer
 	        // open ended, display a text box
+	        JTextField inField = new JTextField();
+	        inField.setText("Enter your answer here...");
+	        inField.setEditable(true);
+	        inField.setColumns(TEXT_FIELD_COLUMNS);
+	        inField.setHorizontalAlignment(JTextField.RIGHT);
+	        
+	        inComponents.add(inField);
+	        
 	    }
 	    
 	    return inComponents;

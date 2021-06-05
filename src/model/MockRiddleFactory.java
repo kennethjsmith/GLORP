@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 class MockRiddleFactory {
+    
+    private static final MockRiddleFactory INSTANCE = new MockRiddleFactory();
     /*
      * Ex: how each would look
      * 
@@ -23,6 +25,13 @@ class MockRiddleFactory {
      * NOTE:   myWrongOptions.length == 0
      * 
      */
+    private MockRiddleFactory () {
+        setUp();
+    }
+    
+    public static MockRiddleFactory getInstance() {
+        return INSTANCE;
+    }
     
     Riddle[] myRiddles;
     
@@ -38,7 +47,7 @@ class MockRiddleFactory {
         
         myRiddles[0] = new Riddle("T/F Question", "True", TFWrong);
         myRiddles[1] = new Riddle("Multi Choice Question", "Correct Answer", MultiWrong);
-        myRiddles[2] = new Riddle("Open Ended Answer", "The Answer");
+        myRiddles[2] = new Riddle("Open Ended Answer... type \"Answer\"", "Answer");
     }
          
     

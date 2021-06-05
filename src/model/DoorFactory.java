@@ -92,7 +92,7 @@ public class DoorFactory {
     
     private Riddle getNextRiddle() {
 
-        return new Riddle(); // mock riddle 
+        return MockRiddleFactory.getInstance().generatetRiddle(); // mock riddle 
     }
     
 
