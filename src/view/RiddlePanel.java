@@ -205,13 +205,13 @@ public class RiddlePanel extends JPanel implements Runnable{
 //            }
         } 
         
-        if(myInputPanel.hasSubmitted()) {
-            sendResponse(myInputPanel.getResponse());
-        }
+//        if(myInputPanel.hasSubmitted()) {
+//            sendResponse(myInputPanel.getResponse());
+//        }
         
     }
 	
-	private synchronized void sendResponse(String theMessage){
-	    // send message
-	}
+//	private synchronized void sendResponse(String theMessage){
+//	    // send message
+//	}
 }

@@ -8,7 +8,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Scanner;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -23,8 +22,6 @@ import model.Maze;
 import model.Player;
 import model.Riddle;
 import model.Room;
-import model.Skin;
-import model.SkinType;
 import view.GameIcon;
 import view.GlorpGUI;
 import view.RiddlePanel;
@@ -35,20 +32,23 @@ import view.RiddlePanel;
  * @version
  */
 public class GlorpController implements KeyListener{
-	private static final HashMap<Direction, Point> myPositionChange = new HashMap<Direction, Point>();
     // fields
 	private Maze myMaze;
 	// TODO: remover ref to player piece ? can get from maze
 	private Player myPlayer;
 	private GlorpGUI myWindow; 
+	private boolean myRiddleOpenFlag;
 	private final Set<Integer> myPressedKeys = new HashSet<Integer>();
+	private final HashMap<Direction, Point> myPositionChange = new HashMap<Direction, Point>();
+	
 	
 	/**
 	 * Default constructor for GlorpController
 	 */
 	public GlorpController(){
+	    myRiddleOpenFlag = false;
 		myMaze = Maze.getInstance();
-		myPlayer = myMaze.getPlayer();		
+		myPlayer = myMaze.getPlayer();	
 		myWindow = new GlorpGUI();
         myWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         myWindow.setVisible(true);
@@ -96,11 +96,12 @@ public class GlorpController implements KeyListener{
     	Direction inDir = checkDoorZones(); 
     	Door inCurrDoor = myMaze.getCurrRoom().getDoors().get(inDir);
     	
-    	if(inDir != null) { //if near a door
+    	if(inDir != null) { //if near a door 
     	    if(myMaze.isValidMove(inDir, myMaze.getCurrRoom())) { // If valid to attempt to move in that direction
                 if(inCurrDoor.isUnlocked()) { // If the door is unlocked, move that direction
                     move(inDir); //update map & player
-                }else {
+                }else if(!(myRiddleOpenFlag)) { // riddle threads are not already open
+                    myRiddleOpenFlag = true;
                     openRiddleThreads(inDir); //open producer and consumer threads to watch for riddle activity
                 }
     	    }
@@ -188,7 +189,11 @@ public class GlorpController implements KeyListener{
         myMaze.move(theDirection); 
         
         myPlayer.getCoordinate().setLocation(myPositionChange.get(theDirection)); 
-        myPlayer.updateRectangles();  
+        myPlayer.updateRectangles(); 
+        
+       // myPlayer.getCoordinate().setLocation(200, 380);
+        
+        System.out.println("Move player!");
     }
     
     /**
@@ -237,20 +242,23 @@ public class GlorpController implements KeyListener{
 	
 	private class RiddleConsumer extends Thread{
 	    private RiddlePanel myRiddlePanel;
-	    private Thread myProducer;
-	    private boolean hasMessage;
+	    //private Thread myProducer;
+	    //private boolean hasMessage;
 	    
 	    public RiddleConsumer(RiddlePanel thePanel, Thread theProducer) {
 	        myRiddlePanel = thePanel;
-	        myProducer = theProducer;
-	        hasMessage = false;
+//	        myProducer = theProducer;
+//	        hasMessage = false;
 	    }
 	    
 	    /*
 	     * Returns true if the message response equals the answer in the riddle
 	     */
 	    private boolean answerCorrect() {
-	        return myRiddlePanel.getResponse().equals(myRiddlePanel.getRiddle().getAnswer());
+	        boolean inCorrect = myRiddlePanel.getResponse().equals(myRiddlePanel.getRiddle().getAnswer());
+	        System.out.println("The response is: " + inCorrect);
+	        return true;
+	       // return myRiddlePanel.getResponse().equals(myRiddlePanel.getRiddle().getAnswer());
 	    }
 	    
 	    /**
@@ -259,26 +267,35 @@ public class GlorpController implements KeyListener{
         @Override
         public void run() {
           //while no message || player still in door region 
-            while(!((hasMessage) || checkDoorZones() != null)){ 
-//                try {
-//                    Thread.sleep(50);
-//                } catch (InterruptedException e) {
-//                    // TODO Auto-generated catch block
-//                    System.out.println("Error in GlorpController run method!");
-//                    e.printStackTrace();
-//                }
+            while( (!myRiddlePanel.hasResponse()) && checkDoorZones() != null){          
+                try {
+                    Thread.sleep(5);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    System.out.println("Error in GlorpController run method!");
+                    e.printStackTrace();
+                }
             }
+            
+            //System.out.println("escaped loop!");
             
             Direction inDir = checkDoorZones();
             
-            if(hasMessage && inDir != null) {
+            if(myRiddlePanel.hasResponse() && inDir != null) {
+                System.out.println("submitted******");
                 if(answerCorrect()) {
+                    myMaze.getCurrRoom().getDoors().get(inDir).setUnlocked();
                     move(inDir);
-                }
+                }else
+                    myMaze.getCurrRoom().getDoors().get(inDir).setBlocked();
+            }else {
+                System.out.println("Ran away!");
             }
 
             // terminate this thread & producer thread 
             myRiddlePanel.shutDown(); 
+            myWindow.repaint();
+            myRiddleOpenFlag = false;
   
         }
 	}

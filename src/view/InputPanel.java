@@ -53,6 +53,7 @@ public class InputPanel extends JPanel{
         
         myAnswer = null;
         myAnswerOptions = new ArrayList<Component>();
+        hasSubmitted = false;
         mySubmitButton = new JButton("Submit");
 //        myRetreatButton = new JButton("Retreat");
         
