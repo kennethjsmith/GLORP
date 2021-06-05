@@ -449,7 +449,7 @@ public class Maze {
 			lastCol.setPlayer(myPlayer);
 			
 			firstCol.getDoors().get(Direction.NORTH).setUnlocked();
-
+			
 			lastCol.getDoors().get(Direction.NORTH).setUnlocked();
 
 			firstCol.getDoors().get(Direction.SOUTH).setUnlocked();

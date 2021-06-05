@@ -55,9 +55,11 @@ public class Riddle {
 		return myType;
 	}
 	
+	//TODO modify this so it works for every riddle type
+	//May need to wait to see what GUI does to complete this
 	public boolean verifyAnswer(String thePlayersAnswer) {
 		System.out.println("The players answer: " + thePlayersAnswer + ", correct answer: " + myAnswer);
-		if(thePlayersAnswer.toLowerCase().equals(myAnswer)) return true;
+		if(thePlayersAnswer.toLowerCase().equals(myAnswer.toLowerCase())) return true;
 		return false;
 	}
 }

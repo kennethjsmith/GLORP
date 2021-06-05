@@ -45,7 +45,6 @@ public class RiddleFactory {
 
 
     public RiddleFactory() {
-        
         myTrueFalseRiddles = new TFRiddleDatabase();
         myTFRiddleSet = myTrueFalseRiddles.getTFRiddleSet();
         
@@ -54,9 +53,6 @@ public class RiddleFactory {
         
         myFillInBlankRiddles = new FBRiddleDatabase();
         myFBRiddleSet = myFillInBlankRiddles.getFBRiddleSet();
-
-    	//trueFalseRiddles.closeConnection();
-
     }
              
     public Riddle getNextRiddle() {
@@ -88,13 +84,19 @@ public class RiddleFactory {
     	return currRiddle; // TODO null handling
     }
     
-	 // TODO: make this into a utility
+	 // TODO: make this into a utility ? Very similar to one used in Maze
     /**
-	  * Generates a random index between two numbers (min val, max val)
+	  * Generates a random index between 0 and 3
 	  */
 	 private int generateRandom() {
 	     Random rand = new Random();
-	     return rand.nextInt(3);
+	     int randomNum = rand.nextInt(3);
+	     
+	     if((FB_RIDDLE_COUNT > 1.3 * TF_RIDDLE_COUNT || FB_RIDDLE_COUNT > 1.3 * MC_RIDDLE_COUNT) && randomNum == 2) randomNum = 1;
+	     if((MC_RIDDLE_COUNT > 1.3 * TF_RIDDLE_COUNT || MC_RIDDLE_COUNT > 1.3 * FB_RIDDLE_COUNT) && randomNum == 1) randomNum = 0;
+	     if((TF_RIDDLE_COUNT > 1.3 * MC_RIDDLE_COUNT || TF_RIDDLE_COUNT > 1.3 * FB_RIDDLE_COUNT) && randomNum == 0) randomNum = 2;
+	    
+	     return randomNum;
 	 }
     
     public void close() {

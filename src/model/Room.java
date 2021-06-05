@@ -14,12 +14,11 @@ import javax.swing.ImageIcon;
 import view.GameIcon;
 
 /**
- * A room can has 4 doors an item, and contains flags indicating 
+ * A room has 4 doors and can contain items. Each rooms has flags indicating 
  * player presence and whether or not the room has been visited.
- * @author
+ * @author Heather Finch, Katelynn Oleson, Ken Smith
  * @version
  */
-// TODO: create subclasses (start and end rooms)
 public class Room {
     private HashMap<Direction, Door> myDoorMap;
 	private Item myItem; 

@@ -37,9 +37,7 @@ public class Door {
     private static final GameIcon WE_MAP_BLOCKED_ICON = new GameIcon("src/icons/door_red.png", 2, 10);
     private static final GameIcon NS_MAP_BLOCKED_ICON = new GameIcon("src/icons/door_red.png", 10, 2);
 
-    // or will they just give their coordinates 
-    // and room/maze uses those to decide how the item is attempting to leave the room
-    // remove item, that call add item elsewhere 
+    
     /**
      * 
      */
@@ -105,7 +103,7 @@ public class Door {
 	 */
 	public void setUnlocked() { //change to package once we have riddle, want limited access so only riddle can change this 
         myUnlockedFlag = true;
-        System.out.println(this);
+        myPermaBlockedFlag = false;
         if(myDirection == Direction.NORTH || myDirection == Direction.SOUTH) {
 			myRoomIcon = NS_ROOM_UNLOCKED_ICON;
 			myMapIcon = NS_MAP_UNLOCKED_ICON;

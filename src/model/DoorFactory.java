@@ -31,6 +31,7 @@ public class DoorFactory {
         myRooms = new Room[0][0];
         myRiddles = new RiddleFactory();
         injectDoors(); 
+    	myRiddles.close();
     }
     
     public DoorFactory(Room[][] theRooms) {
@@ -39,7 +40,6 @@ public class DoorFactory {
         myRiddles = new RiddleFactory();
     	injectDoors();
     	myRiddles.close();
-    	//TODO close the connection to the databases when we are done with them
     }
     
     /**
@@ -92,9 +92,7 @@ public class DoorFactory {
                 } else doorMap.put(Direction.WEST, new Door(Direction.WEST, myRiddles.getNextRiddle()));
                 
                 
-            	//tfRiddleSet.next();
                 doorMap.put(Direction.EAST, new Door(Direction.EAST, myRiddles.getNextRiddle()));
-            	//tfRiddleSet.next();
                 doorMap.put(Direction.SOUTH, new Door(Direction.SOUTH, myRiddles.getNextRiddle()));
 
                 myRooms[r][c].setDoors(doorMap); // fill the room with new door array
