@@ -22,8 +22,6 @@ public class TitlePanel extends JPanel{
 	// fields
 	private final static int WIDTH = 285;
 	private final static int HEIGHT = 81;
-	private final static int TITLE_WIDTH = 260;
-	private final static int TITLE_HEIGHT = 90;
 	private GameIcon TITLE_ICON = new GameIcon("src/icons/title.png",250, HEIGHT+10);
 	private GameIcon BACKGROUND_ICON = new GameIcon("src/icons/stars.png",WIDTH,HEIGHT);
 	

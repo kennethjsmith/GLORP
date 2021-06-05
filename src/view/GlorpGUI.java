@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -48,11 +49,7 @@ public class GlorpGUI extends JFrame {
      */
     private static final long serialVersionUID = 0;
 
-    /**
-     * The window title.
-     */
-    private static final String TITLE = "GLORP";
-    
+    // fields
     private RoomPanel myRoomPanel;
     private MapPanel myMapPanel;
     private MapView myMapView;
@@ -63,7 +60,12 @@ public class GlorpGUI extends JFrame {
     private Clip myBackgroundMusic;
     private FloatControl myGainControl;
 	
+    private static final String TITLE = "Glorp";
+    private ImageIcon ICON = new ImageIcon("src/icons/space_invader.png");
+    private final int ABOUT_WIDTH = 400;
+	private final int ABOUT_HEIGHT = 300;
 
+  
     /**
      * 
      */
@@ -71,6 +73,7 @@ public class GlorpGUI extends JFrame {
         super();
         setTitle(TITLE);
         setResizable(false);
+        setIconImage(ICON.getImage());
         // music
         try {
 			myBackgroundMusic = AudioSystem.getClip();
@@ -91,7 +94,7 @@ public class GlorpGUI extends JFrame {
 			e1.printStackTrace();
 		}
         myGainControl = (FloatControl) myBackgroundMusic.getControl(FloatControl.Type.MASTER_GAIN);
-        myGainControl.setValue(-30f);
+        myGainControl.setValue(-80f);
         
         //set layout
         this.setLayout(new GridBagLayout());
@@ -182,23 +185,9 @@ public class GlorpGUI extends JFrame {
         // TODO make this window singleton
         JMenuItem about = new JMenuItem("About");
         about.addActionListener(e ->{
-        	JFrame aboutWindow = new JFrame();
-        	aboutWindow.setLayout(new FlowLayout());
-        	aboutWindow.setPreferredSize(new Dimension(200,200));
-        	JLabel text1 = new JLabel();
-            text1.setText("Glorp: Revenge of the Sphinx");
-            JLabel text2 = new JLabel();
-            text2.setText("Version 1.0");
-            JLabel text3 = new JLabel();
-            text2.setText("Authors: Heather Finch, Katelynn Oleson, Ken Smith");
-            aboutWindow.add(text1);
-            aboutWindow.add(text2);
-            aboutWindow.add(text3);
-            aboutWindow.pack();
-            aboutWindow.setLocationRelativeTo(this);
-            aboutWindow.setVisible(true);
-            aboutWindow.setAlwaysOnTop(true);
-            //JOptionPane.showMessageDialog
+        	AboutWindow inAbout = new AboutWindow(ICON);
+        	inAbout.setSize(new Dimension(ABOUT_WIDTH,ABOUT_HEIGHT));
+        	inAbout.setLocationRelativeTo(this);
         });
         
         JMenuItem instructions = new JMenuItem("Game Play Instructions");
@@ -216,58 +205,62 @@ public class GlorpGUI extends JFrame {
         JMenuItem glorp = new JMenuItem("Glorp");
         glorp.addActionListener(e ->{
         	Player tempPlayer = Maze.getInstance().getPlayer();
-        	tempPlayer.setSkin(SkinType.ALIEN);
-        	tempPlayer.updateRoomIcon();
-        	Maze.getInstance().getMyStartRoom().setFixture(new Fixture(150, 150, FixtureType.SHIP));
-        	//move player out of fixture base if needed
-        	if(Maze.getInstance().getCurrRoom().getFixture() != null) {
-        		while(tempPlayer.getBase().intersects(Maze.getInstance().getCurrRoom().getFixture().getBase())) {
-        			tempPlayer.move(Direction.SOUTH);
-        		}	
+        	if(!tempPlayer.getFixed()) {
+	        	tempPlayer.setSkin(SkinType.ALIEN);
+	        	tempPlayer.updateRoomIcon();
+	        	Maze.getInstance().getMyStartRoom().setFixture(new Fixture(150, 150, FixtureType.SHIP));
+	        	//move player out of fixture base if needed
+	        	if(Maze.getInstance().getCurrRoom().getFixture() != null) {
+	        		while(tempPlayer.getBase().intersects(Maze.getInstance().getCurrRoom().getFixture().getBase())) {
+	        			tempPlayer.move(Direction.SOUTH);
+	        		}	
+	        	}
+	        	this.repaint();
+	        	try {
+	        		myBackgroundMusic.close();
+					music(new File("src/sounds/wlae.wav"));
+				} catch (LineUnavailableException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (UnsupportedAudioFileException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
         	}
-        	this.repaint();
-        	try {
-        		myBackgroundMusic.close();
-				music(new File("src/sounds/wlae.wav"));
-			} catch (LineUnavailableException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (UnsupportedAudioFileException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
         });
         
         JMenuItem ignignokt = new JMenuItem("Ignignokt");
         ignignokt.addActionListener(e ->{
         	Player tempPlayer = Maze.getInstance().getPlayer();
-        	tempPlayer.setSkin(SkinType.MOONINITE);
-        	tempPlayer.updateRoomIcon();
-        	Maze.getInstance().getMyStartRoom().setFixture(new Fixture(150, 100, FixtureType.ALTSHIP));
-        	//move player out of fixture base if needed
-        	if(Maze.getInstance().getCurrRoom().getFixture() != null) {
-        		while(tempPlayer.getBase().intersects(Maze.getInstance().getCurrRoom().getFixture().getBase())) {
-        			tempPlayer.move(Direction.SOUTH);
-        		}	
+        	if(!tempPlayer.getFixed()) {
+	        	tempPlayer.setSkin(SkinType.MOONINITE);
+	        	tempPlayer.updateRoomIcon();
+	        	Maze.getInstance().getMyStartRoom().setFixture(new Fixture(150, 100, FixtureType.ALTSHIP));
+	        	//move player out of fixture base if needed
+	        	if(Maze.getInstance().getCurrRoom().getFixture() != null) {
+	        		while(tempPlayer.getBase().intersects(Maze.getInstance().getCurrRoom().getFixture().getBase())) {
+	        			tempPlayer.move(Direction.SOUTH);
+	        		}	
+	        	}
+	        	this.repaint();
+	        	
+	        	try {
+	        		myBackgroundMusic.close();
+	    			music(new File("src/sounds/athf.wav"));
+	    		} catch (UnsupportedAudioFileException e1) {
+	    			// TODO Auto-generated catch block
+	    			e1.printStackTrace();
+	    		} catch (IOException e1) {
+	    			// TODO Auto-generated catch block
+	    			e1.printStackTrace();
+	    		} catch (LineUnavailableException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
         	}
-        	this.repaint();
-        	
-        	try {
-        		myBackgroundMusic.close();
-    			music(new File("src/sounds/athf.wav"));
-    		} catch (UnsupportedAudioFileException e1) {
-    			// TODO Auto-generated catch block
-    			e1.printStackTrace();
-    		} catch (IOException e1) {
-    			// TODO Auto-generated catch block
-    			e1.printStackTrace();
-    		} catch (LineUnavailableException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
         });
         
         file.add(restart);
