@@ -1,16 +1,7 @@
 package model;
 
-import java.awt.Point;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.HashMap;
 
-import sql.TFRiddleDatabase;
-import view.GameIcon;
 
 /**
  * Create the doors for the maze. 
@@ -84,6 +75,7 @@ public class DoorFactory {
                 	doorMap.put(Direction.NORTH, currDoor);
                 	
                 } else doorMap.put(Direction.NORTH, new Door(Direction.NORTH, myRiddles.getNextRiddle()));
+
                 
                 if(c > 0) { // if there is a connecting room to the left
                     // grab its right door for this rooms left door

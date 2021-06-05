@@ -82,6 +82,11 @@ public class Maze {
 	 * Creates and adds rooms to myMaze. 
 	 */
 	private void addRooms() {
+//<<<<<<< HEAD
+//		for(int r = 0; r < LENGTH+BORDER_BUFFER; r++) {
+//			for(int c = 0; c < WIDTH+BORDER_BUFFER; c++) {
+//				myMaze[r][c] = new Room(myPlainRoomIcon, myPlainRoomIcon, r, c);
+//=======
 		for(int row = 0; row < LENGTH+BORDER_BUFFER; row++) {
 			for(int col = 0; col < WIDTH+BORDER_BUFFER; col++) {
 				myMaze[row][col] = new Room(row, col);
@@ -170,6 +175,16 @@ public class Maze {
 	     return rand.nextInt(theMax - theMin + 1) + theMin;
 	 }
 	 
+//    /*
+//     * Generates a random index between two numbers (min val, max val) 
+//     */
+//     private static int generateRandom(int theMin, int theMax) {
+//         Random rand = new Random();
+//         return rand.nextInt(theMax - theMin + 1) + theMin;
+//         // highest val is ((theMax - theMin + 1) - 1) + theMin = theMax
+//         // lowest val is (0) + theMin = theMin
+//     }
+     
 	/**
 	 * Check if moving in a certain direction is valid.
 	 * Returns true if the user is not only the border of the maze AND if the door is not blocked

@@ -6,8 +6,10 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -34,6 +36,7 @@ import model.FixtureType;
 import model.Item;
 import model.Maze;
 import model.Player;
+import model.Riddle;
 import model.SkinType;
 /**
  * The main frame for the GUI.
@@ -284,6 +287,15 @@ public class GlorpGUI extends JFrame {
         myMenubar.add(help);
         setJMenuBar(myMenubar);
     }
+
+    /**
+     * activates the riddle panel and returns the runnable object to open a new thread
+     * @return
+     */
+    public RiddlePanel getRunnableRiddlePanel(Riddle theRiddle) {
+        myRiddlePanel.startUp(theRiddle);
+        return myRiddlePanel;
+    }
     
     public void music(File theAudioFile) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
 	    if(theAudioFile == null) myBackgroundMusic.close();
@@ -300,4 +312,19 @@ public class GlorpGUI extends JFrame {
 	public ItemView getItemView() {
 		return myItemView;
 	}
+    public void setFocusToRoom() {
+        myRoomPanel.setFocusable(true);
+        myRoomPanel.setRequestFocusEnabled(true);
+        myRoomPanel.requestFocusInWindow(); 
+       // myRoomPanel.grabFocus();
+    }
+    
+    public void setFocusToRiddle() {
+        myRiddlePanel.grabFocus();
+    }
+
+    public JPanel getRoomPanel() {
+        // TODO Auto-generated method stub
+        return myRoomPanel;
+    }
 }

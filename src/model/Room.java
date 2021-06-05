@@ -24,11 +24,13 @@ public class Room {
 	private Item myItem; 
 	private Fixture myFixture;
 	private Player myPlayer;
+    // why does room contain the player? 
+	
 	private GameIcon myLargeIcon;
 	private GameIcon mySmallIcon;
-	private boolean isCurrentRoom;
 	private boolean isWinRoom;
 	private boolean isStartRoom;
+	private boolean isCurrentRoom;
 	private boolean isVisited;
 	
 	private final static int SIZE = 500;
@@ -37,7 +39,7 @@ public class Room {
 	private static final Rectangle SOUTH_DOOR_ZONE = new Rectangle(new Point(200,480), new Dimension(100,20));;
 	private static final Rectangle WEST_DOOR_ZONE = new Rectangle(new Point(0,200), new Dimension(20,100));;
 	private static final Rectangle EAST_DOOR_ZONE = new Rectangle(new Point(480,200), new Dimension(20,100));;
-
+//	private static final Rectangle[] myDoorZones = {NORTH_DOOR_ZONE, SOUTH_DOOR_ZONE, WEST_DOOR_ZONE, EAST_DOOR_ZONE};
 	private final RoomIndex myIndex;
 	
 	
@@ -83,9 +85,12 @@ public class Room {
 	    myPlayer = null;
 	    isVisited = false;
 	}
-    
-    /**
-     * @param theDoors
+
+
+	/**
+     * If this rooms doors have not been initailized already,
+     * sets this rooms door array to the passed in door array.
+     * @param Door[] theDoors
      */
     public void setDoors(HashMap<Direction, Door> theDoors) {
     	myDoorMap = theDoors;
@@ -139,19 +144,21 @@ public class Room {
 	}
 	
 	/**
-	 * @param myLargeIcon the myLargeIcon to set
-	 */
-	public void setLargeIcon(GameIcon myLargeIcon) {
-		this.myLargeIcon = myLargeIcon;
-	}
-
-	/**
 	 * @return
 	 */
 	public GameIcon getLargeIcon() {
 	    return myLargeIcon;
 	}
 	
+	/**
+     * @param myLargeIcon the myLargeIcon to set
+     */
+	public void setLargeIcon(GameIcon theLargeIcon) {
+	    Objects.requireNonNull(theLargeIcon);
+	    myLargeIcon = theLargeIcon;
+	}
+	   
+
 	/**
 	 * @param theSmallIcon
 	 */
@@ -349,4 +356,9 @@ public class Room {
 		}
 		return true;
 	}
+	
+	// this would only work if we make class doorZone with a rectangle and a direction
+//    public Rectangle[] getDoorZones() {
+//        return
+//    }
 }

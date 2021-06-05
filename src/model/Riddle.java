@@ -7,6 +7,7 @@ import java.util.ArrayList;
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
  * @version 
  */
+
 // TODO should this be an interface instead?
 public class Riddle {
 
@@ -19,34 +20,98 @@ public class Riddle {
 	/**
 	 * Constructor creates a riddle based off of the question, answer, and type of riddle. 
 	 */
-	public Riddle (String theQuestion, String theAnswer, ArrayList<String> theAnswerOptions, RiddleType theType) {
+	public Riddle (String theQuestion, String theAnswer, ArrayList<String> theWrongAnswerOptions, RiddleType theType) {
 		myQuestion = theQuestion;
 		myAnswer = theAnswer;
-		myWrongAnswerOptions = theAnswerOptions;
+		myWrongAnswerOptions = theWrongAnswerOptions;
 		myType = theType;
 	}
 
 	/**
+	 * Default for testing purposes
+	 */
+	public Riddle() {
+        myQuestion = "Test Question";
+        myAnswer = "correct Answer";
+        myWrongAnswerOptions = new ArrayList<String>();
+        myWrongAnswerOptions.add("wrong answer 1");
+        myWrongAnswerOptions.add("wrong answer 2");
+    }
+	
+	public Riddle(String theQuestion, String theAnswer) {
+	    myQuestion = theQuestion;
+	    myAnswer = theAnswer;
+	    myWrongAnswerOptions = new ArrayList<String>();
+	}
+	
+	public Riddle(String theQuestion, String theAnswer, ArrayList<String> theWrongOptions) {
+	    myQuestion = theQuestion;
+        myAnswer = theAnswer;
+        myWrongAnswerOptions = theWrongOptions;
+	}
+	
+    /**
+     * Getter for this Riddle's Question
 	 * @return the myQuestion
 	 */
-	public String getMyQuestion() {
-		return myQuestion;
+	public String getQuestion() {
+	    return myQuestion;
 	}
 
-
 	/**
-	 * @return the myAnswer
+	 * Returns wrong answer options 
+	 * if returns an empty list, then the riddle is open answer
+	 * @return theWrongOptions
 	 */
-	public String getMyAnswer() {
-		return myAnswer;
+	public ArrayList<String> getWrongOptions() {
+	    return myWrongAnswerOptions; // deep copy? 
+	     // or shallow copy for items that allow elimination of wrong answers (50/50 item)
 	}
 	
 	/**
-	 * @return array list of answer options
+	 * Compares the attempted answer to the correct answer, 
+	 * if identical 
+	 * Does checks for spelling, puncuation, capitolization
+	 * @param theInput
+	 * @return boolean isCorrect 
 	 */
-	public ArrayList<String> getWrongAnswerOptions(){
-		return myWrongAnswerOptions;
+	public boolean checkAnswer(String theInput) {
+	    return true;	    
 	}
+	
+	/**
+     * Compares the attempted answer to the correct answer
+     * If within error margin, returns true
+     * Does checks for spelling, puncuation, capitolization
+     * @param theInput
+     * @return boolean isCorrect 
+     */
+    public boolean checkAnswer(String theInput, double theErrorMargin) {
+        return true;
+    }
+	
+    /**
+     * Returns the correct answer for this riddle
+     * @return
+     */
+	public String getAnswer() {
+	    return myAnswer;
+	}
+
+
+	 /**
+	  * return array list of answer options
+	  * wrong options + the correct answer
+	  * 
+	 */
+
+	public ArrayList<String> getAnswerOptions(){
+	    //TODO: Modify this so that is randomizes the options
+	    ArrayList<String> inAnswers = (ArrayList<String>) myWrongAnswerOptions.clone();
+	    inAnswers.add(myAnswer);
+		return inAnswers;
+	}
+
 	
 	/**
 	 * @return type of riddle enum

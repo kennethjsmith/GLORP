@@ -12,7 +12,6 @@ import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-
 import java.util.Scanner;
 import java.util.Set;
 import java.util.Timer;
@@ -33,8 +32,6 @@ import model.PiecePoint;
 import model.Player;
 import model.Riddle;
 import model.Room;
-import model.Skin;
-import model.SkinType;
 import view.GameIcon;
 import view.GlorpGUI;
 import view.RiddlePanel;
@@ -46,13 +43,14 @@ import view.RiddlePanel;
  * @version
  */
 public class GlorpController implements KeyListener{
-	// fields
+    // fields
 	private Maze myMaze;
 	private Player myPlayer;
 	private GlorpGUI myWindow; 
 	private boolean myRiddleOpenFlag;
 	private final Set<Integer> myPressedKeys = new HashSet<Integer>();
 	private final HashMap<Direction, Point> myPositionChange = new HashMap<Direction, Point>();
+
 	
 	/**
 	 * Default constructor for GlorpController
@@ -61,6 +59,7 @@ public class GlorpController implements KeyListener{
 		myMaze = Maze.getInstance();
 		myPlayer = myMaze.getPlayer();	
 		myRiddleOpenFlag = false;
+
 		myWindow = new GlorpGUI();
         myWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         myWindow.setVisible(true);
@@ -112,7 +111,6 @@ public class GlorpController implements KeyListener{
 	/**
 	 * A helper method, checks for item, fixture, and door interactions after a key event.
 	 */
-	// TODO: split into multiple methods? deal with duplicate code
     private void checkInteractions() {
     	checkItems();
     	checkFixtures();
@@ -121,9 +119,9 @@ public class GlorpController implements KeyListener{
     	Door inCurrDoor = myMaze.getCurrRoom().getDoors().get(inDir);
     	
     	if(inDir != null) { //if near a door 
-    	    if(myMaze.isValidMove(inDir, myMaze.getCurrRoom())) { // If valid to attempt to move in that direction
+    	    if(myMaze.isValidTraversal(inDir, myMaze.getCurrRoom())) { // If valid to attempt to move in that direction
                 if(inCurrDoor.isUnlocked()) { // If the door is unlocked, move that direction
-                    move(inDir); //update map & player
+                    attemptMapTraversal(inDir); //update map & player
                 }else if(!(myRiddleOpenFlag)) { // riddle threads are not already open
                     myRiddleOpenFlag = true;
                     openRiddleThreads(inDir); //open producer and consumer threads to watch for riddle activity
@@ -265,10 +263,12 @@ public class GlorpController implements KeyListener{
             return null;
     }
     
-    // TODO: clean this up. Should some of this go in maze????
     /**
-     * A helper method, returns a boolean indicating if movement into a new room was successful.
-     * @param theDirection a direction to move within the maze
+     * returns the direction of the door in region of or null. ... not the best, but whatev
+     * 
+     * return inner class obj, boolean hasDoor, doorDirection? 
+     * 
+     * 
      */
     private void attemptMapTraversal(Direction theDirection) {
         if(myMaze.isValidTraversal(theDirection, myMaze.getCurrRoom())) { // If the move is valid
@@ -285,10 +285,8 @@ public class GlorpController implements KeyListener{
 				   // myPlayer.getCoordinate().setLocation(200, 380);
 				
 				System.out.println("Move player!");
-        		return true;
         	} 
         }
-        return false;
     }
     
     /**
@@ -307,7 +305,7 @@ public class GlorpController implements KeyListener{
         // open consumer
         Thread inConsumer = new RiddleConsumer(inRiddlePanel, inRiddleProducer);
         inConsumer.start();
-        
+
     }
     
     /**
@@ -378,7 +376,7 @@ public class GlorpController implements KeyListener{
                 System.out.println("submitted******");
                 if(answerCorrect()) {
                     myMaze.getCurrRoom().getDoors().get(inDir).setUnlocked();
-                    move(inDir);
+                    attemptMapTraversal(inDir);
                     myRiddlePanel.sphinxResponse("You will never escape");
                 }else {
                     myMaze.getCurrRoom().getDoors().get(inDir).setBlocked();
@@ -437,7 +435,6 @@ public class GlorpController implements KeyListener{
 	            }
 	            checkInteractions();
 	            myWindow.repaint();
-	            
 	            helper(false); //removeFromPressedKeys
 	        }
 	        

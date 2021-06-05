@@ -266,4 +266,5 @@ public class Player extends GamePiece implements Cloneable {
 	public String toString() {
 		return myCoordinate.toString();
 	}
+	
 }

@@ -93,8 +93,7 @@ public class Door {
 	/**
 	 * @return the myRiddle
 	 */
-	public Riddle getMyRiddle() { // should doors just return riddles? 
-	                              // or handle the inner workings of riddles? 
+	public Riddle getMyRiddle() {  
 		return myRiddle;
 	}
 	
