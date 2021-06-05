@@ -47,7 +47,7 @@ class MockRiddleFactory {
         
         myRiddles[0] = new Riddle("T/F Question", "True", TFWrong);
         myRiddles[1] = new Riddle("Multi Choice Question", "Correct Answer", MultiWrong);
-        myRiddles[2] = new Riddle("Open Ended Answer... type \"Answer\"", "Answer");
+        myRiddles[2] = new Riddle("Open Ended.. Type: Answer", "Answer");
     }
          
     

@@ -146,12 +146,7 @@ public class InputPanel extends JPanel implements KeyListener{
                 this.add(c); 
             }         
             
-        }
-        
-        for(int i = 0; i < this.getComponentCount(); i++) {
-            System.out.println("component #" + (i + 1) + " is " + this.getComponent(i));
-        }
-          
+        }          
     }
     
 //    private class retreatActionListener implements ActionListener{

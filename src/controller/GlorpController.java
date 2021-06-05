@@ -298,13 +298,27 @@ public class GlorpController implements KeyListener{
                 if(answerCorrect()) {
                     myMaze.getCurrRoom().getDoors().get(inDir).setUnlocked();
                     move(inDir);
-                }else
+                    myRiddlePanel.sphinxResponse("You will never escape");
+                }else {
                     myMaze.getCurrRoom().getDoors().get(inDir).setBlocked();
+                    myRiddlePanel.sphinxResponse("Haha >:)");
+                }
+                
             }else {
                 System.out.println("Ran away!");
+                myRiddlePanel.sphinxResponse("Coward!");
             }
 
             // terminate this thread & producer thread 
+            myWindow.repaint();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                System.out.println("Error in GlorpController run method!");
+                e.printStackTrace();
+            }
+            
             myRiddlePanel.shutDown(); 
            // myWindow.setFocusToRoom();
             myWindow.repaint();

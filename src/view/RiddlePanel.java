@@ -51,7 +51,8 @@ public class RiddlePanel extends JPanel implements Runnable{
 	private Riddle myCurrentRiddle;
 	private InputPanel myInputPanel;
 	private JPanel myQuestionPanel; 
-	private JLabel myQuestion;
+	private JLabel myQuestionTitle;
+	private JLabel myQuestionLabel;
 	
 	/**
 	 * 
@@ -80,14 +81,14 @@ public class RiddlePanel extends JPanel implements Runnable{
         // helpers to set up question and answer panels? 
         myQuestionPanel = new JPanel();
         myQuestionPanel.setBackground(Color.WHITE);
-        JLabel inTitle = new JLabel("My inquiry for you is ..."); 
+        myQuestionTitle = new JLabel("My inquiry for you is ..."); 
   //      later figure out how to nicely arrange title and question
-        myQuestion = new JLabel("No Question yet");
+        myQuestionLabel = new JLabel("No Question yet");
        
-        inTitle.setBackground(Color.WHITE);
-        inTitle.setOpaque(true);
-        myQuestionPanel.add(inTitle);
-        myQuestionPanel.add(myQuestion);
+        myQuestionTitle.setBackground(Color.WHITE);
+        myQuestionTitle.setOpaque(true);
+        myQuestionPanel.add(myQuestionTitle);
+        myQuestionPanel.add(myQuestionLabel);
         c.insets = new Insets(20,0,0,0);
         c.gridx = 0;
         c.gridy = 0;
@@ -143,7 +144,7 @@ public class RiddlePanel extends JPanel implements Runnable{
 	public void startUp(Riddle theRiddle) {
 	    myRiddleStatus = true; 
 	    myCurrentRiddle = theRiddle; 
-	    myQuestion.setText(myCurrentRiddle.getQuestion()); 
+	    myQuestionLabel.setText(myCurrentRiddle.getQuestion()); 
         myInputPanel.setAnswerOptions(setUpAnswers(myCurrentRiddle.getAnswerOptions()));
         
         myQuestionPanel.setVisible(true);
@@ -182,6 +183,15 @@ public class RiddlePanel extends JPanel implements Runnable{
     public Riddle getRiddle() {
         return myCurrentRiddle;
     }
+    
+    
+    public void sphinxResponse(String theResponse) {
+        myInputPanel.setVisible(false);
+        myInputPanel.reset();
+        
+        myQuestionLabel.setText("");
+        myQuestionTitle.setText(theResponse);
+    }
 
     
     /*
@@ -191,8 +201,8 @@ public class RiddlePanel extends JPanel implements Runnable{
     public void shutDown() {
         myRiddleStatus = false; //setting this to false ends producer thread
         myQuestionPanel.setVisible(false);
-        myInputPanel.setVisible(false);
-        myInputPanel.reset();
+        
+        myQuestionTitle.setText("My inquiry for you is ...");
         
         System.out.println("Shut down riddle panel");
         
@@ -206,21 +216,13 @@ public class RiddlePanel extends JPanel implements Runnable{
     public void run() {
         // while riddle activated & not yet submitted
         while(myRiddleStatus && !(myInputPanel.hasSubmitted())) {     
-//            try {
-//                wait();
-//            } catch (Exception e) {
-//                System.out.println("Error in RiddlePanel run method!");
-//                e.printStackTrace();
-//            }
+            try {
+                Thread.sleep(5);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                System.out.println("Error in RiddlePanel run method!");
+                e.printStackTrace();
+            }
         } 
-        
-//        if(myInputPanel.hasSubmitted()) {
-//            sendResponse(myInputPanel.getResponse());
-//        }
-        
     }
-	
-//	private synchronized void sendResponse(String theMessage){
-//	    // send message
-//	}
 }
