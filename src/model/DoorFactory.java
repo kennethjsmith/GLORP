@@ -1,16 +1,7 @@
 package model;
 
-import java.awt.Point;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.HashMap;
 
-import sql.TFRiddleDatabase;
-import view.GameIcon;
 
 /**
  * Create the doors for the maze. 
@@ -18,7 +9,7 @@ import view.GameIcon;
  * @version
  */
 public class DoorFactory {
-    private final ResultSet tfRiddleSet;
+
         
     private Room[][] myRooms;
     
@@ -29,8 +20,6 @@ public class DoorFactory {
      */
     public DoorFactory() {
         myRooms = new Room[0][0];
-        TFRiddleDatabase myTrueFalseRiddles = new TFRiddleDatabase();
-        tfRiddleSet = myTrueFalseRiddles.getTFRiddleSet();
         injectDoors();   
     }
     
@@ -38,8 +27,6 @@ public class DoorFactory {
         //requireNonNull(theRooms, "Cannot add doors to NullRooms"); //java not recognizing this??
         checkRoomsNonNull(theRooms);
         myRooms = theRooms;
-        TFRiddleDatabase myTrueFalseRiddles = new TFRiddleDatabase();
-        tfRiddleSet = myTrueFalseRiddles.getTFRiddleSet();
     	injectDoors(); 
     }
     
@@ -84,37 +71,29 @@ public class DoorFactory {
                 	Door currDoor = myRooms[r-1][c].getDoors().get(Direction.SOUTH);
                 	doorMap.put(Direction.NORTH, currDoor);
                 	
-                } else doorMap.put(Direction.NORTH, new Door(Direction.NORTH, getNextRiddle(RiddleType.TRUE_FALSE)));
+                } else doorMap.put(Direction.NORTH, new Door(Direction.NORTH, getNextRiddle()));
                 
                 if(c > 0) { // if there is a connecting room to the left
                     // grab its right door for this rooms left door
                 	Door currDoor = myRooms[r][c-1].getDoors().get(Direction.EAST);
                 	doorMap.put(Direction.WEST, currDoor);                	
-                } else doorMap.put(Direction.WEST, new Door(Direction.WEST, getNextRiddle(RiddleType.TRUE_FALSE)));
+                } else doorMap.put(Direction.WEST, new Door(Direction.WEST, getNextRiddle()));
                 
                 
             	//tfRiddleSet.next();
-                doorMap.put(Direction.EAST, new Door(Direction.EAST, getNextRiddle(RiddleType.TRUE_FALSE)));
+                doorMap.put(Direction.EAST, new Door(Direction.EAST, getNextRiddle()));
             	//tfRiddleSet.next();
-                doorMap.put(Direction.SOUTH, new Door(Direction.SOUTH, getNextRiddle(RiddleType.TRUE_FALSE)));
+                doorMap.put(Direction.SOUTH, new Door(Direction.SOUTH, getNextRiddle()));
 
                 myRooms[r][c].setDoors(doorMap); // fill the room with new door array
             }
         }
     }
     
-    private Riddle getNextRiddle(RiddleType theType) {
-    	Riddle currRiddle = null;
-    	try {
-	    	if(theType.getLabel().equals("tf") && tfRiddleSet.next()){
-						RIDDLECOUNT++;
-		            	currRiddle = new TFRiddle(tfRiddleSet.getString("question"), tfRiddleSet.getString("answer"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-    	return new Riddle(); // mock riddle 
-   // 	return currRiddle; // TODO null handling
+    private Riddle getNextRiddle() {
+
+        return new Riddle(); // mock riddle 
     }
+    
 
 }

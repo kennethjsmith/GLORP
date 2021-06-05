@@ -32,7 +32,7 @@ import model.Riddle;
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
  * @version 
  */
-public class RiddlePanel extends JPanel{
+public class RiddlePanel extends JPanel implements Runnable{
 	// fields
     /** The size of the increase/decrease buttons. */
     private static final Dimension BUTTON_SIZE = new Dimension(26, 26);
@@ -48,9 +48,7 @@ public class RiddlePanel extends JPanel{
 	private Riddle myCurrentRiddle;
 	private InputPanel myInputPanel;
 	private JPanel myQuestionPanel; 
-	//private	SubmitPanel mySubmitPanel;
 	private JLabel myQuestion;
-	//private ArrayList<JRadioButton> myAnswerOptions; 
 	
 	/**
 	 * 
@@ -58,7 +56,6 @@ public class RiddlePanel extends JPanel{
 	public RiddlePanel() {   
 	    myRiddleStatus = false;
 	    myCurrentRiddle = null; // TODO: change to be mock null riddle object
-	  //  myAnswerOptions = new ArrayList<JRadioButton>();
 	    
         setPreferredSize(new Dimension(WIDTH,HEIGHT));
         // add border
@@ -138,15 +135,16 @@ public class RiddlePanel extends JPanel{
 	 * Check the status of the player and 
 	 * update the panel accordingly
 	 */
-	public void update(boolean theRiddlePromptStatus, Riddle theRiddle) {
-	    myRiddleStatus = theRiddlePromptStatus; 
-	    
-	    if(theRiddlePromptStatus) {
-	        myCurrentRiddle = theRiddle;  
-	    }else {
-	        // closing down 
-	        myInputPanel.reset();
-	    }
+	public void startUp(Riddle theRiddle) {
+	    myRiddleStatus = true; 
+	    myCurrentRiddle = theRiddle; 
+	    myQuestion.setText(myCurrentRiddle.getQuestion()); 
+        myInputPanel.setAnswerOptions(setUpAnswers(myCurrentRiddle.getAnswerOptions()));
+        
+        myQuestionPanel.setVisible(true);
+        myInputPanel.setVisible(true);
+        
+        System.out.println("Started up riddle panel");
 	}
 	
 	/**
@@ -158,59 +156,66 @@ public class RiddlePanel extends JPanel{
     	BACKGROUND.paintIcon(this, g, 0, 0);
 
     	if(myRiddleStatus) {
-    	    SPEECH_BUBBLE.paintIcon(this, g, 5, 20); // incorporate this into the riddle status? 
-    	    myQuestion.setText(myCurrentRiddle.getQuestion()); 
-    	    myInputPanel.setAnswerOptions(setUpAnswers(myCurrentRiddle.getAnswerOptions()));
-    	    System.out.println("Riddle Prompt displayed");
-    	} 
-    	
-    	myQuestionPanel.setVisible(myRiddleStatus);
-        myInputPanel.setVisible(myRiddleStatus);
-    	    
+    	    SPEECH_BUBBLE.paintIcon(this, g, 5, 20); // incorporate this into the riddle status?  
+    	}
     	SPHINX.paintIcon(this, g, 70, 200);
     	
     }
 	
-	public boolean hasRetreated() {
-	    return myInputPanel.hasRetreated();
-	}
+//	public boolean hasRetreated() {
+//	    return myInputPanel.hasRetreated();
+//	}
 
-    public boolean hasAnswer() {
+    public boolean hasResponse() {
         return myInputPanel.hasSubmitted();
     }
 
-    public String getAnswer() {
-        return myInputPanel.getAnswer();
+    public String getResponse() {
+        return myInputPanel.getResponse();
     }
     
-//    
-//    /**
-//     * Seperate thread so that the player can "walk away" from the riddle
-//     */
-//    @Override
-//    public void run() {
-//        while(myRiddleStatus && !(myInputPanel.hasRetreated())) { // while the player is actively at the riddle 
-//            myQuestionPanel.setVisible(true); // view the riddle
-//            myInputPanel.setVisible(true);
-//        }
-//        
-//        myRiddleStatus = false;
-//        
-//        myQuestionPanel.setVisible(false);
-//        myInputPanel.setVisible(false);
-//        
-//    }
-//	
-//	private synchronized void sendMessage(String message){
-//	    while(!(myInputPanel.hasSubmitted())) { // wait till submitted to send the message
-//	        try {
+    public Riddle getRiddle() {
+        return myCurrentRiddle;
+    }
+
+    
+    /*
+     * Shut down the riddle prompt 
+     * and terminate the producer thread
+     */
+    public void shutDown() {
+        myRiddleStatus = false; //setting this to false ends producer thread
+        myQuestionPanel.setVisible(false);
+        myInputPanel.setVisible(false);
+        myInputPanel.reset();
+        
+        System.out.println("Shut down riddle panel");
+        
+    }   
+    
+    
+    /**
+     * Seperate thread so that the player can "walk away" from the riddle
+     */
+    @Override
+    public void run() {
+        // while riddle activated & not yet submitted
+        while(myRiddleStatus && !(myInputPanel.hasSubmitted())) {     
+//            try {
 //                wait();
-//            } catch (InterruptedException e) {
-//                // TODO Auto-generated catch block
+//            } catch (Exception e) {
+//                System.out.println("Error in RiddlePanel run method!");
 //                e.printStackTrace();
 //            }
-//	    }
-//	    
-//	    notify();
-//	}	
+        } 
+        
+//        if(myInputPanel.hasSubmitted()) {
+//            sendResponse(myInputPanel.getResponse());
+//        }
+        
+    }
+	
+//	private synchronized void sendResponse(String theMessage){
+//	    // send message
+//	}
 }

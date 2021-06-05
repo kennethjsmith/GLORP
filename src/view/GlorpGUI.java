@@ -6,8 +6,10 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -292,43 +294,14 @@ public class GlorpGUI extends JFrame {
     public void updateItemPanel(Player thePlayer) {
 		myItemPanel.update(thePlayer);
 	}
-    
-//    /**
-//     * activates the riddle panel and returns the runnable object to open a new thread
-//     * @return
-//     */
-//    public RiddlePanel getRunnableRiddlePanel(Riddle theRiddle) {
-//        myRiddlePanel.update(true, theRiddle);
-//        return myRiddlePanel;
-//    }
-    
-    public String updateRiddlePanel(boolean theRiddlePromptStatus, Riddle theRiddle) {
-        myRiddlePanel.update(theRiddlePromptStatus, theRiddle); //update state of view
-        System.out.println("Riddle Prompt updated");
-        
-        repaint(); //repaint the riddlePrompt ... not repainting???
-        
-        if(theRiddlePromptStatus) {
-            System.out.println("Riddle Prompt displayed ****");
-        }
-        
-        String inAnswer = null;
-        
-//        while(!(myRiddlePanel.hasAnswer())) { //while answer not ready
-//            //System.out.println("Waiting for answer");
-//            try {
-//                Thread.sleep(50);
-//            } catch (InterruptedException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
-//        }
-        
-        inAnswer = myRiddlePanel.getAnswer();
-        
-        System.out.println("Answer retreived *******************");
-        
-        return inAnswer;
+
+    /**
+     * activates the riddle panel and returns the runnable object to open a new thread
+     * @return
+     */
+    public RiddlePanel getRunnableRiddlePanel(Riddle theRiddle) {
+        myRiddlePanel.startUp(theRiddle);
+        return myRiddlePanel;
     }
     
     public void music(File theAudioFile) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
@@ -338,5 +311,21 @@ public class GlorpGUI extends JFrame {
 		    myBackgroundMusic.open(ais);
 		    myBackgroundMusic.loop(Clip.LOOP_CONTINUOUSLY);
 	    }
+    }
+
+    public void setFocusToRoom() {
+        myRoomPanel.setFocusable(true);
+        myRoomPanel.setRequestFocusEnabled(true);
+        myRoomPanel.requestFocusInWindow(); 
+       // myRoomPanel.grabFocus();
+    }
+    
+    public void setFocusToRiddle() {
+        myRiddlePanel.grabFocus();
+    }
+
+    public JPanel getRoomPanel() {
+        // TODO Auto-generated method stub
+        return myRoomPanel;
     }
 }
