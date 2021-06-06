@@ -52,13 +52,14 @@ public class RiddlePanel extends JPanel implements Runnable{
 	private final GameIcon SPHINX = new GameIcon("src/icons/sphinx.png", 225,162);
 	private final GameIcon SPEECH_BUBBLE = new GameIcon("src/icons/speech_bubble.png", 290, 250);
 	private final GameIcon BACKGROUND = new GameIcon("src/icons/sand.png", WIDTH, HEIGHT);
+	private final Color OFF_WHITE = new Color(248,248,255);
 	
 	private boolean myRiddleStatus;
 	private Riddle myCurrentRiddle;
 	private JPanel myInputBorder;
 	private InputPanel myInputPanel;
 	private JPanel myQuestionBorder; 
-	private JPanel myQuestionOuterPanel; 
+	private RoundJPanel myQuestionOuterPanel; 
 	private JPanel myQuestionInnerPanel;
 	private JLabel myQuestionTitle;
 	private JLabel myQuestionLabel;
@@ -85,8 +86,9 @@ public class RiddlePanel extends JPanel implements Runnable{
         myQuestionBorder.setBackground(new Color(0,0,0,0));
         myQuestionBorder.setBorder( new EmptyBorder(20,20,20,20));
         
-        myQuestionOuterPanel = new JPanel();
+        myQuestionOuterPanel = new RoundJPanel();
         myQuestionOuterPanel.setBackground(new Color(0,0,0,150));
+        myQuestionOuterPanel.setOpaque(false);
         myQuestionOuterPanel.setPreferredSize(new Dimension(250,150));
         myQuestionOuterPanel.setLayout(new GridBagLayout());
         
@@ -96,11 +98,11 @@ public class RiddlePanel extends JPanel implements Runnable{
         
         myQuestionTitle = new JLabel("My inquiry for you is ...");
         myQuestionTitle.setBackground(new Color(0,0,0,0));
-        myQuestionTitle.setForeground(Color.WHITE);
+        myQuestionTitle.setForeground(OFF_WHITE);
         
         myQuestionLabel = new JLabel("No Question yet");
         myQuestionLabel.setBackground(new Color(0,0,0,0));
-        myQuestionLabel.setForeground(Color.WHITE);
+        myQuestionLabel.setForeground(OFF_WHITE);
         
         
         myQuestionInnerPanel.add(myQuestionTitle);
