@@ -88,7 +88,7 @@ public class RiddlePanel extends JPanel implements Runnable{
         
         myQuestionOuterPanel = new RoundJPanel();
         myQuestionOuterPanel.setBackground(new Color(0,0,0,150));
-        myQuestionOuterPanel.setOpaque(false);
+        myQuestionOuterPanel.setOpaque(false); // must set to false for RoundJPanel
         myQuestionOuterPanel.setPreferredSize(new Dimension(250,150));
         myQuestionOuterPanel.setLayout(new GridBagLayout());
         
