@@ -1,39 +1,24 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.border.Border; 
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 import javax.sound.sampled.*;
 
 import model.Direction;
 import model.Fixture;
 import model.FixtureType;
-import model.Item;
 import model.Maze;
 import model.Player;
 import model.Riddle;
@@ -53,21 +38,16 @@ public class GlorpGUI extends JFrame {
     private static final long serialVersionUID = 0;
 
     // fields
+    private GlorpPanel myGlorpPanel;
     private RoomPanel myRoomPanel;
-    private MapPanel myMapPanel;
-    private MapView myMapView;
     private RiddlePanel myRiddlePanel;
-    private ItemPanel myItemPanel;
-    private ItemView myItemView;
-    private TitlePanel myTitlePanel;
     private Clip myBackgroundMusic;
     private FloatControl myGainControl;
 	
     private static final String TITLE = "Glorp";
     private ImageIcon ICON = new ImageIcon("src/icons/space_invader.png");
-    private final int ABOUT_WIDTH = 400;
-	private final int ABOUT_HEIGHT = 300;
-
+    private final int POP_UP_WIDTH = 400;
+	private final int POP_UP_HEIGHT = 300;
   
     /**
      * 
@@ -77,6 +57,7 @@ public class GlorpGUI extends JFrame {
         setTitle(TITLE);
         setResizable(false);
         setIconImage(ICON.getImage());
+        
         // music
         try {
 			myBackgroundMusic = AudioSystem.getClip();
@@ -103,42 +84,25 @@ public class GlorpGUI extends JFrame {
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
-        
-        // TODO: make this titlepanel its own class
-        myTitlePanel = new TitlePanel();
+       
+        myGlorpPanel = new GlorpPanel();
         c.gridx = 0;
         c.gridy = 0;
-        add(myTitlePanel, c);
-        
-        
-        // add map view to map panel, add to GUI
-        myMapPanel = new MapPanel();
-        myMapView = new MapView();
-        myMapPanel.add(myMapView);
-        c.gridx = 0;
-        c.gridy = 1;
-        add(myMapPanel, c);
-        
-        // add item panel to GUI
-        myItemPanel = new ItemPanel();
-        myItemView = new ItemView();
-        myItemPanel.add(myItemView, BorderLayout.NORTH);
-        c.gridx = 0;
-        c.gridy = 2;
-        add(myItemPanel, c);
+        c.gridheight = 1;
+        add(myGlorpPanel, c);
         
         // add room panel to GUI
         myRoomPanel = new RoomPanel();
         c.gridx = 1;
         c.gridy = 0;
-        c.gridheight = 3;
+        c.gridheight = 1;
         add(myRoomPanel, c);
         
         // add riddle panel to GUI
         myRiddlePanel = new RiddlePanel();
         c.gridx = 2;
         c.gridy = 0;
-        c.gridheight = 3;
+        c.gridheight = 1;
         add(myRiddlePanel, c);
         
         
@@ -182,26 +146,32 @@ public class GlorpGUI extends JFrame {
 				myGainControl.setValue(gain);
 			}
         });
+        sound.add(volume);
         
         //create help menu
         JMenu help = new JMenu("Help");
-        // TODO make this window singleton
+        // TODO: make these window singleton
         JMenuItem about = new JMenuItem("About");
         about.addActionListener(e ->{
         	AboutWindow inAbout = new AboutWindow(ICON);
-        	inAbout.setSize(new Dimension(ABOUT_WIDTH,ABOUT_HEIGHT));
+        	inAbout.setSize(new Dimension(POP_UP_WIDTH, POP_UP_HEIGHT));
         	inAbout.setLocationRelativeTo(this);
         });
         
         JMenuItem instructions = new JMenuItem("Game Play Instructions");
+        instructions.addActionListener(e ->{
+        	InstructionsWindow inInstructions = new InstructionsWindow(ICON);
+        	inInstructions.setSize(new Dimension(POP_UP_WIDTH, POP_UP_HEIGHT));
+        	inInstructions.setLocationRelativeTo(this);
+        });
+        
         JMenu cheats = new JMenu("Cheats");
-        
         JMenuItem unlockAllDoors = new JMenuItem("Unlock All Doors");
-        
         unlockAllDoors.addActionListener(e ->{
         	Maze.getInstance().unlockAllDoors();
         	this.repaint();
         });
+        cheats.add(unlockAllDoors);
         
         JMenu skins = new JMenu("Skins");
         
@@ -272,12 +242,10 @@ public class GlorpGUI extends JFrame {
         file.add(exit);
         
         settings.add(sound);
-        sound.add(volume);
         
         help.add(about);
         help.add(instructions);
         help.add(cheats);
-        cheats.add(unlockAllDoors);
         help.add(skins);
         skins.add(glorp);
         skins.add(ignignokt);
@@ -285,6 +253,7 @@ public class GlorpGUI extends JFrame {
         myMenubar.add(file);
         myMenubar.add(settings);
         myMenubar.add(help);
+        
         setJMenuBar(myMenubar);
     }
 
@@ -309,9 +278,10 @@ public class GlorpGUI extends JFrame {
 	/**
 	 * @return the myItemView
 	 */
-	public ItemView getItemView() {
-		return myItemView;
+	public GlorpPanel getGlorpPanel() {
+		return myGlorpPanel;
 	}
+	
     public void setFocusToRoom() {
         myRoomPanel.setFocusable(true);
         myRoomPanel.setRequestFocusEnabled(true);

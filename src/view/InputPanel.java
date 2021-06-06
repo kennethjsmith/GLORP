@@ -35,11 +35,11 @@ import javax.swing.border.Border;
  * @version 
  */
 public class InputPanel extends JPanel implements KeyListener{
-	private final static int WIDTH = 285;
+	private final static int WIDTH = 275;
 	private final static int HEIGHT = 125;
 	
 	 private JButton mySubmitButton;
-	 private JLabel myTitle;
+	 private JLabel myPrompt;
 	 private ArrayList<Component> myAnswerOptions;
 	 private boolean hasSubmitted;
 	 private String myAnswer;
@@ -47,9 +47,9 @@ public class InputPanel extends JPanel implements KeyListener{
 	/**
 	 * 
 	 */
-	public InputPanel() {
+	public InputPanel(){
 		super();
-		setLayout(new FlowLayout());
+		setLayout(new GridBagLayout());
 		setPreferredSize(new Dimension(WIDTH,HEIGHT));
 		// Create a border
 	    Border whiteline = BorderFactory.createLineBorder(Color.WHITE);
@@ -57,7 +57,7 @@ public class InputPanel extends JPanel implements KeyListener{
 		
 		//JTextField textField = new JTextField(5);
 		// TODO: this breaks focus
-	    myTitle = new JLabel("How do you answer ...");
+	    myPrompt = new JLabel("How do you answer ...");
 
         myAnswer = null;
         myAnswerOptions = new ArrayList<Component>();
@@ -66,33 +66,34 @@ public class InputPanel extends JPanel implements KeyListener{
         mySubmitButton.addMouseListener(new submitMouseClickListener());   
         
         layoutComponents();
-        
 	}
 	
 	/**
      * Setup and add the GUI components for this panel. 
      */
     private void layoutComponents() {
-//        setLayout(new GridBagLayout()); 
-//        GridBagConstraints c = new GridBagConstraints();
-//        c.fill = GridBagConstraints.NONE;
-//        
-//        c.insets = new Insets(20,0,0,0);
-//        c.gridx = 0;
-//        c.gridy = 0;
-          this.add(myTitle);
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
         
-//        c.gridx = 0;
-//        c.gridy = 1;
-//        c.insets = new Insets(300,0,0,0);
+        //c.insets = new Insets(20,0,0,0);
+        //c.anchor = GridBagConstraints.NORTH;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridheight = 1;
+        this.add(myPrompt);
+        
+        c.gridx = 0;
+        c.gridy = 1;
+        //c.insets = new Insets(300,0,0,0);
         for(Component comp : myAnswerOptions) {
+        	c.gridx++;
             this.add(comp);
         }
         
-//        c.gridx = 0;
-//        c.gridy = 2;
-//        c.insets = new Insets(300,0,0,0);
-//        c.anchor = GridBagConstraints.PAGE_END;
+        c.gridx = 0;
+        c.gridy = 2;
+        //c.insets = new Insets(300,0,0,0);
+        //c.anchor = GridBagConstraints.PAGE_END;
         this.add(mySubmitButton);
     }
 	

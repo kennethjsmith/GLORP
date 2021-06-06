@@ -24,7 +24,6 @@ public class AboutWindow extends JFrame{
         setTitle(TITLE);
         setIconImage(theIcon.getImage());
         setResizable(false);
-		setLayout(new FlowLayout());
 		
 		//set layout
         this.setLayout(new GridBagLayout());

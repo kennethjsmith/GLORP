@@ -14,7 +14,7 @@ import javax.swing.border.TitledBorder;
  */
 public class MapPanel extends JPanel{
 	// fields
-	private final static int HEIGHT = 300;
+	private final static int HEIGHT = 290;
 	private final static int WIDTH = 285;
 	private final static TitledBorder MAP_TITLE_BORDER = BorderFactory.createTitledBorder("Map");
 	private static final Color OFF_BLACK = new Color(15,15,15);

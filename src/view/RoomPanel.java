@@ -37,14 +37,17 @@ public class RoomPanel extends JPanel {
     // fields
 	private static final long serialVersionUID = 1L;
     private Player myCurrentPlayer;
-    private final static int SIZE = 500;
+    private final static int SIZE = 501;
     
     /**
      * 
      */
     public RoomPanel() {
         setPreferredSize(new Dimension(SIZE,SIZE));
-
+//        Border raisedbevel = BorderFactory.createRaisedBevelBorder();
+//		Border loweredbevel = BorderFactory.createLoweredBevelBorder();
+//		Border compound = BorderFactory.createCompoundBorder(raisedbevel, loweredbevel);
+//		setBorder(compound);
         setLayout(new FlowLayout());
         myCurrentPlayer = Maze.getInstance().getPlayer(); // TODO Getting instance of Maze in RoomPanel violates MVC?
     }

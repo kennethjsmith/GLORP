@@ -137,7 +137,7 @@ public class GlorpController implements KeyListener{
     		myPlayer.getInventory().add(myMaze.getCurrRoom().getItem().getType());
     		myMaze.getCurrRoom().setItem(null);
     		myMaze.getCurrRoom().setCurrentRoom(true);
-    		myWindow.getItemView().update(myPlayer);
+    		myWindow.getGlorpPanel().getItemView().update(myPlayer);
     	}
     }
     
@@ -149,7 +149,7 @@ public class GlorpController implements KeyListener{
     				&& inFixture.getType() == FixtureType.CHEST) {
     			myPlayer.getInventory().remove(ItemType.KEY);
     			myMaze.getCurrRoom().addItem(new Item(new PiecePoint(250,250), ItemType.GEM));
-    			myWindow.getItemView().update(myPlayer);
+    			myWindow.getGlorpPanel().getItemView().update(myPlayer);
     			inFixture.setBase(new Rectangle(new Dimension(0,0)));
     			inFixture.setIconArea(new Rectangle(new Dimension(0,0)));
     			inFixture.setInteractionZone(new Rectangle(new Dimension(0,0)));
@@ -198,7 +198,7 @@ public class GlorpController implements KeyListener{
     		    Timer timer = new Timer();
     		    timer.scheduleAtFixedRate(task, 0, 100);
         		myPlayer.getInventory().clear();
-        		myWindow.getItemView().update(myPlayer);
+        		myWindow.getGlorpPanel().getItemView().update(myPlayer);
     		}
 
     		if(myPlayer.getInventory().contains(ItemType.GEM) 
@@ -224,10 +224,10 @@ public class GlorpController implements KeyListener{
     		    Timer timer = new Timer();
     		    timer.scheduleAtFixedRate(task, 0, 100);
         		myPlayer.getInventory().clear();
-        		myWindow.getItemView().update(myPlayer);
+        		myWindow.getGlorpPanel().getItemView().update(myPlayer);
     		}
     	}
-       }
+    }
     
     /**
      * returns the direction of the door in region of or null. ... not the best, but whatev
