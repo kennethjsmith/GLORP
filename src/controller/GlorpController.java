@@ -178,9 +178,6 @@ public class GlorpController implements KeyListener{
     		if(myPlayer.getInventory().contains(ItemType.GEM) 
     			&& inFixture.getType() == FixtureType.ALTSHIP){
     			inFixture.setIcon(new GameIcon("src/icons/alt_ship_win.png", 200, 275));
-        		//inFixture.setBase(new Rectangle(new Dimension(0,0)));
-        		//inFixture.setIconArea(new Rectangle(new Dimension(0,0)));
-        		//inFixture.setInteractionZone(new Rectangle(new Dimension(0,0)));
         		myPlayer.setCoordinate(new PiecePoint(150,175));
         		myPlayer.setRoomIcon(new GameIcon("src/icons/win_message_icon.png", 220, 150));
         		myPlayer.setFixed(true);
@@ -207,9 +204,6 @@ public class GlorpController implements KeyListener{
     		if(myPlayer.getInventory().contains(ItemType.GEM) 
         		&& inFixture.getType() == FixtureType.SHIP){
         		inFixture.setIcon(new GameIcon("src/icons/ship_win.png", 200, 150));
-        		//inFixture.setBase(new Rectangle(new Dimension(0,0)));
-        		//inFixture.setIconArea(new Rectangle(new Dimension(0,0)));
-        		//inFixture.setInteractionZone(new Rectangle(new Dimension(0,0)));
         		myPlayer.setCoordinate(new PiecePoint(150,175));
         		myPlayer.setRoomIcon(new GameIcon("src/icons/win_message_icon.png", 220, 150));
         		myPlayer.setFixed(true);

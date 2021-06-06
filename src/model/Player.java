@@ -87,18 +87,18 @@ public class Player extends GamePiece implements Cloneable {
 	 * @param theDirection
 	 */
 	public void move(Direction theDirection){
-		// update room icon
-		myIconDirection = IconDirection.generateIconDirection(theDirection, myIconDirection);
-		if(!skipFrame) {
-			myStride++;
+		if(!isFixed) {
+			myIconDirection = IconDirection.generateIconDirection(theDirection, myIconDirection);
+			if(!skipFrame) {
+				myStride++;
+			}
+			skipFrame = !skipFrame;
+			if(myStride > 4) myStride = 1;
+			updateRoomIcon();
+			myCoordinate.move(theDirection);
+			updateRectangles();
 		}
-		skipFrame = !skipFrame;
-		if(myStride > 4) myStride = 1;
-		updateRoomIcon();
-		myCoordinate.move(theDirection);
-		updateRectangles();
 	}
-	
 	/**
 	 * 
 	 */
