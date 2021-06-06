@@ -32,7 +32,6 @@ public class FBRiddleDatabase {
 		  // it probably means no database file is found
 		  System.err.println(e.getMessage());
 	    }
-		//closeConnection();
 	}
 		
 	private void addRiddles(Statement theStatement) {

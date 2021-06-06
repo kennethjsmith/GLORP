@@ -80,7 +80,8 @@ public class RiddleFactory {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
+    	
+    	if(currRiddle == null) throw new NullPointerException("RiddleFactory tried to return a null riddle");
     	return currRiddle; // TODO null handling
     }
     
