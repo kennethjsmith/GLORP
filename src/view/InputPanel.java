@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -49,7 +50,7 @@ public class InputPanel extends JPanel implements KeyListener{
 	 */
 	public InputPanel(){
 		super();
-		setLayout(new GridBagLayout());
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setPreferredSize(new Dimension(WIDTH,HEIGHT));
 		// Create a border
 	    Border whiteline = BorderFactory.createLineBorder(Color.WHITE);
@@ -73,28 +74,30 @@ public class InputPanel extends JPanel implements KeyListener{
      */
     private void layoutComponents() {
         GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
+        c.fill = GridBagConstraints.VERTICAL;
         
         //c.insets = new Insets(20,0,0,0);
         //c.anchor = GridBagConstraints.NORTH;
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridheight = 1;
-        this.add(myPrompt);
+        //c.gridx = 0;
+        //c.gridy = 0;
+        //c.gridheight = 1;
+        this.add(myPrompt,0);
         
-        c.gridx = 0;
-        c.gridy = 1;
+        
         //c.insets = new Insets(300,0,0,0);
+        JPanel inOptions = new JPanel();
         for(Component comp : myAnswerOptions) {
-        	c.gridx++;
-            this.add(comp);
+            inOptions.add(comp);
         }
+        //c.gridx = 0;
+        //c.gridy = 1;
+        this.add(inOptions,1);
         
-        c.gridx = 0;
-        c.gridy = 2;
+        //c.gridx = 0;
+        //c.gridy = 2;
         //c.insets = new Insets(300,0,0,0);
         //c.anchor = GridBagConstraints.PAGE_END;
-        this.add(mySubmitButton);
+        this.add(mySubmitButton,2);
     }
 	
 	/**

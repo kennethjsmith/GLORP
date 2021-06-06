@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -91,6 +92,7 @@ public class RiddlePanel extends JPanel implements Runnable{
         
         myQuestionInnerPanel = new JPanel();
         myQuestionInnerPanel.setBackground(new Color(0,0,0,0));
+        myQuestionInnerPanel.setLayout(new BoxLayout(myQuestionInnerPanel,BoxLayout.Y_AXIS));
         
         myQuestionTitle = new JLabel("My inquiry for you is ...");
         myQuestionTitle.setBackground(new Color(0,0,0,0));
