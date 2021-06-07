@@ -62,8 +62,7 @@ public class RiddlePanel extends JPanel implements Runnable{
 	private JPanel myInputBorder;
 	private InputPanel myInputPanel;
 	private JPanel myQuestionBorder; 
-	private RoundJPanel myQuestionOuterPanel; 
-	private JPanel myQuestionInnerPanel;
+	private RoundJPanel myQuestionPanel; 
 	private JTextPane myQuestionPane;
 	
 	/**
@@ -82,26 +81,18 @@ public class RiddlePanel extends JPanel implements Runnable{
         setLayout(new BorderLayout()); 
         
         // helpers to set up question and answer panels? 
-        
         myQuestionBorder = new JPanel();
         myQuestionBorder.setOpaque(false);
         myQuestionBorder.setBorder( new EmptyBorder(20,20,20,20));
-        // TODO: This code was all put into a QuestionPanel class
-        // this would be much cleaner to use, 
-        // but I was having trouble getting it to show -ken
-        myQuestionOuterPanel = new RoundJPanel();
-        myQuestionOuterPanel.setBackground(new Color(0,0,0,150));
-        myQuestionOuterPanel.setOpaque(false); // must set to false for RoundJPanel
-        myQuestionOuterPanel.setPreferredSize(new Dimension(250,150));
-        myQuestionOuterPanel.setLayout(new GridBagLayout());
+        // TODO: Try moving this into to QuestionPanel class
+        myQuestionPanel = new RoundJPanel();
+        myQuestionPanel.setBackground(new Color(0,0,0,150));
+        myQuestionPanel.setOpaque(false); // must set to false for RoundJPanel
+        myQuestionPanel.setPreferredSize(new Dimension(250,150));
+        myQuestionPanel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
-        
-//        myQuestionInnerPanel = new JPanel();
-//        myQuestionInnerPanel.setOpaque(false);
-//        myQuestionInnerPanel.setPreferredSize(new Dimension(200,150));
-//        myQuestionInnerPanel.setLayout(new GridBagLayout());
-//        
+            
         myQuestionPane = new JTextPane();
         myQuestionPane.setOpaque(false);
         myQuestionPane.setForeground(OFF_WHITE);
@@ -113,8 +104,8 @@ public class RiddlePanel extends JPanel implements Runnable{
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
         
-        myQuestionOuterPanel.add(myQuestionPane,c);
-        myQuestionBorder.add(myQuestionOuterPanel);
+        myQuestionPanel.add(myQuestionPane,c);
+        myQuestionBorder.add(myQuestionPanel);
         add(myQuestionBorder, BorderLayout.PAGE_START);
         myQuestionBorder.setVisible(false);
         
