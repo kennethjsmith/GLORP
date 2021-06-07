@@ -5,8 +5,11 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+<<<<<<< HEAD
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeListener;
+=======
+>>>>>>> heathersbranch
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -59,10 +62,22 @@ public class GlorpController {
 	private boolean myRiddleOpenFlag;
 	private final Set<Integer> myPressedKeys = new HashSet<Integer>();
 	private final HashMap<Direction, Point> myPositionChange = new HashMap<Direction, Point>();
+<<<<<<< HEAD
 	private static final String[] correctSphinxResponse = {"You will never escape!", "Grrrrrrrr", ">:(", "Beginners luck..."};
 	private static final String[] incorrectSphinxResponse = {"Now this passage is sealed... like your fate.", "*sinister laughter*", ">:)", "I've known smarter scarabs."};
 	private final static String PRESSED = "pressed ";
     private final static String RELEASED = "released ";
+=======
+	private static final String[] correctSphinxResponse = {"You will never escape!", "Grrrrrrrr...", ">:(", "Beginners luck won't save you everytime.", "..."};
+	private static final String[] incorrectSphinxResponse = {"Now this passage is sealed... like your fate.", "*sinister laughter*", ">:)", "I've known smarter scarabs.", "..."};
+	private static final String[] runawaySphinxResponse = {"I can smell your fear.", "Coward!", "Running away can't save you.", "...", "I see your confidence is dwindling"};
+	private final static String PRESSED = "pressed ";
+    private final static String RELEASED = "released ";
+    private final static int SPINX_RESPONSE_TIME = 1500;
+    private final static int SHORT_EXPLANATION_TIME = 1500;
+    private final static int LONG_EXPLANATION_TIME = 7000;
+
+>>>>>>> heathersbranch
 	private static final Random RAND = new Random();
 	
 	private Clip soundFX;
@@ -269,11 +284,7 @@ public class GlorpController {
         	if(currDoor.isUnlocked()) {
 				myMaze.traverseMaze(theDirection); 
 				myPlayer.getCoordinate().setLocation(myPositionChange.get(theDirection)); 
-				myPlayer.updateRectangles(); 
-				    
-				   // myPlayer.getCoordinate().setLocation(200, 380);
-				
-				System.out.println("Move player!");
+				myPlayer.updateRectangles(); 				
         	} 
         }
     }
@@ -298,17 +309,16 @@ public class GlorpController {
 
     }
 	
+    /*
+     * Private inner class for consumer thread
+     */
 	private class RiddleConsumer extends Thread{
 	    private RiddlePanel myRiddlePanel;
 	    private InputPanel myInputPanel;
-	    //private Thread myProducer;
-	    //private boolean hasMessage;
 	    
 	    public RiddleConsumer(RiddlePanel thePanel, InputPanel theInputPanel, Thread theProducer) {
 	        myRiddlePanel = thePanel;
 	        myInputPanel = theInputPanel;
-//	        myProducer = theProducer;
-//	        hasMessage = false;
 	    }
 	    
 	    /*
@@ -318,89 +328,48 @@ public class GlorpController {
 	        boolean inCorrect = myRiddlePanel.getRiddle().verifyAnswer(myInputPanel.getResponse(myRiddlePanel.getRiddle()));
 	        return inCorrect;
 	    }
-    
-//	    /**
-//	     * Wait to receive message, or "run away"
-//	     */
-//	    @Override
-//	    public void run() {
-//	      //while no message || player still in door region 
-//	        while( (!myRiddlePanel.hasResponse()) && checkDoorZones() != null){          
-//	            try {
-//	                Thread.sleep(5);
-//	            } catch (InterruptedException e) {
-//	                // TODO Auto-generated catch block
-//	                System.out.println("Error in GlorpController run method!");
-//	                e.printStackTrace();
-//	            }
-//	        }
-//	            
-//	        //System.out.println("escaped loop!");
-//	        
-//	        Direction inDir = checkDoorZones();
-//	        
-//	        if(myRiddlePanel.hasResponse() && inDir != null) {
-//	            System.out.println("submitted******");
-//	            if(answerCorrect()) {
-//	                myMaze.getCurrRoom().getDoors().get(inDir).setUnlocked();
-//	                attemptMapTraversal(inDir);
-//	                myRiddlePanel.sphinxResponse("You will never escape");
-//	            }else {
-//	                myMaze.getCurrRoom().getDoors().get(inDir).setBlocked();
-//	                myRiddlePanel.sphinxResponse("Haha >:)");
-//	            }
-//	            
-//	        }else {
-//	            System.out.println("Ran away!");
-//	            myRiddlePanel.sphinxResponse("Coward!");
-//	        }
-//	
-//	        // terminate this thread & producer thread 
-//	        myWindow.repaint();
-//	        try {
-//	            Thread.sleep(1000);
-//	        } catch (InterruptedException e) {
-//	            // TODO Auto-generated catch block
-//	            System.out.println("Error in GlorpController run method!");
-//	            e.printStackTrace();
-//	        }
-//	        
-//	        myRiddlePanel.shutDown(); 
-//	       // myWindow.setFocusToRoom();
-//	        myWindow.repaint();
-//	        myRiddleOpenFlag = false;     
-//	    }
 
-    @Override
-    public void run() {
-      //while no message || player still in door region 
-        while( (!myRiddlePanel.hasResponse()) && checkDoorZones() != null){          
-            try {
-                Thread.sleep(5);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                System.out.println("Error in GlorpController run method!");
-                e.printStackTrace();
-            }
-        }
-            
-            //System.out.println("escaped loop!");
-            
+        @Override
+        public void run() {
+          //while no message || player still in door region 
+            while( (!myRiddlePanel.hasResponse()) && checkDoorZones() != null){          
+                try {
+                    Thread.sleep(5);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    System.out.println("Error in GlorpController run method!");
+                    e.printStackTrace();
+                }
+            }                
             Direction inDir = checkDoorZones();
-            
+                
             if(myRiddlePanel.hasResponse() && inDir != null) {
-               // System.out.println("submitted******");
                 if(answerCorrect()) {
                     myMaze.getCurrRoom().getDoors().get(inDir).setUnlocked();
                     attemptMapTraversal(inDir);
+<<<<<<< HEAD
                     myRiddlePanel.sphinxResponse(correctSphinxResponse[RAND.nextInt(4)]); //change to be randomized
                 }else {
+=======
+                    displayRiddleExplanation();
+                    myRiddlePanel.sphinxResponse(correctSphinxResponse[RAND.nextInt(correctSphinxResponse.length)]); //change to be randomized
+                } else {
+>>>>>>> heathersbranch
                     myMaze.getCurrRoom().getDoors().get(inDir).setBlocked();
                     if(!myMaze.canWin()) {
                     	myPlayer.setCoordinate(new PiecePoint(50,175));
                 		myPlayer.setRoomIcon(new GameIcon("src/icons/trapped_message_icon.png", 400, 150));
                 		myPlayer.setFixed(true); // change to trigger lose scenario
+<<<<<<< HEAD
 
+=======
+//                		try {
+//							myWindow.music(null);
+//						} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+>>>>>>> heathersbranch
                 		try {
 							AudioInputStream ais = AudioSystem.getAudioInputStream(LOSE_SOUND);
 							soundFX.open(ais);
@@ -411,38 +380,55 @@ public class GlorpController {
 						} catch (LineUnavailableException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
+<<<<<<< HEAD
 						}
                 		
                 		
                     }
                     myRiddlePanel.sphinxResponse(incorrectSphinxResponse[RAND.nextInt(4)]); //change to say correct answer/explanation
+=======
+						}	
+                    }
+                	displayRiddleExplanation();
+                    myRiddlePanel.sphinxResponse(incorrectSphinxResponse[RAND.nextInt(incorrectSphinxResponse.length)]); 
+>>>>>>> heathersbranch
                 }
-                
-            }else {
-                //System.out.println("Ran away!");
-                myRiddlePanel.sphinxResponse("Coward!");
+                    
+            } else {
+                myRiddlePanel.sphinxResponse(runawaySphinxResponse[RAND.nextInt(runawaySphinxResponse.length)]); 
             }
-
+    
             // terminate this thread & producer thread 
             myWindow.repaint();
             try {
-                Thread.sleep(1000);
+                Thread.sleep(SPINX_RESPONSE_TIME);
+                    
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 System.out.println("Error in GlorpController run method!");
                 e.printStackTrace();
             }
-            
+                
             myRiddlePanel.shutDown(); 
-           // myWindow.setFocusToRoom();
             myWindow.repaint();
             myRiddleOpenFlag = false;
-            
-  
         }
+        private void displayRiddleExplanation() {
+    		String explanation = myRiddlePanel.getRiddle().getExplanation();
+    		if(explanation.length() > 1) {
+    			try {
+            		myRiddlePanel.riddleExplanation(explanation);
+            		if(explanation.length() > 60) Thread.sleep(LONG_EXPLANATION_TIME);
+            		else Thread.sleep(SHORT_EXPLANATION_TIME);
+    			} catch (InterruptedException e) {
+    				e.printStackTrace();
+    			}
+    		}
+    	}
 	}
 	
-	// Key Binding/ Key Listener stuff
+	
+	
+	// Key Binding set up method & inner Action class
 	   
     /*
      * Multiple keys key binding solution, 
@@ -452,16 +438,13 @@ public class GlorpController {
     private void addKeyActions(String keyStroke){
         //  Separate the key identifier from the modifiers of the KeyStroke
 
-        // don't really need..., modifiers would be like "shift" or "control"
+        // don't really need... removes modifiers like "shift" or "control"
         int offset = keyStroke.lastIndexOf(" ");
         String key = offset == -1 ? keyStroke :  keyStroke.substring( offset + 1 );
         String modifiers = keyStroke.replace(key, "");
 
         //  Get the InputMap and ActionMap of the component
-        
-//      myWindow.getRoomPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(s), s);
-//      myWindow.getRoomPanel().getActionMap().put(s, new keyBinder(s));
-        
+
         InputMap inputMap = myWindow.getRoomPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = myWindow.getRoomPanel().getActionMap();
 
@@ -502,15 +485,7 @@ public class GlorpController {
 	            
 	            Direction inDirection = Direction.generateDirection(myPressedKeys);
 	            Direction validDirection = null;
-	            
-//	            try {
-//	                Thread.sleep(5); //break between add and removal, let other keys be added?
-//	            } catch (InterruptedException i) {
-//	                // TODO Auto-generated catch block
-//	                System.out.println("Error in GlorpController run method!");
-//	                i.printStackTrace();
-//	            }
-	            
+
 	            try {
 	                validDirection = myMaze.getCurrRoom().validateDirection(myPlayer, inDirection);
 	                myPlayer.move(validDirection);
@@ -520,20 +495,15 @@ public class GlorpController {
 	            checkInteractions();
 	            myWindow.repaint();
 	            }else {
-	                helper(false); //removeFromPressedKeys
-	                
-	               // myPressedKeys.remove(myKey);
-//	                
-//	                if(myPressedKeys.isEmpty()) {
-//	                    myPlayer.setStride(0);
-//	                    myPlayer.setSkipFrame(false);
-//	                }
-//	                myWindow.repaint();
+	                helper(false); //remove from pressedKeys
 	            }
 	        }
 	        
-	        //helpers 
-	        
+	        //helper
+	        /*
+	         * If true, add key
+	         * if false, remove key 
+	         */
 	        private void helper( boolean theAddFlag) {
 	            int inKey = -1;
 	            
@@ -562,44 +532,5 @@ public class GlorpController {
 	                
 	        }
 	    }
-	   
-//	    /**
-//	     * Adds the pressed key's KeyCode to the set of pressed keys. Generates and validates a direction from the set,
-//	     * then moves the player.
-//	     */
-//	    @Override
-//	    public void keyPressed(KeyEvent e) {
-//	        int k = e.getKeyCode();
-//	        myPressedKeys.add(k);
-//	        
-//	        Direction inDirection = Direction.generateDirection(myPressedKeys);
-//	        Direction validDirection = null;
-//	        
-//	        if(!myPlayer.getFixed()) {
-//	            try {
-//	                validDirection = myMaze.getCurrRoom().validateDirection(myPlayer, inDirection);
-//	                myPlayer.move(validDirection);
-//	            } catch (CloneNotSupportedException e1) {
-//	                e1.printStackTrace();
-//	            }
-//	            checkInteractions();
-//	            myWindow.repaint();
-//	        }
-//	    }
-//	    
-//	    /**
-//	     * Removes the KeyCode from the set of pressed keys. Sets stride to 0 if no keys are pressed.
-//	     */
-//	    @Override
-//	    public void keyReleased(KeyEvent e) {
-//	        int inKey = e.getKeyCode();
-//	        myPressedKeys.remove(inKey);
-//	        
-//	        if(myPressedKeys.isEmpty()) {
-//	            myPlayer.setStride(0);
-//	            myPlayer.setSkipFrame(false);
-//	        }
-//	        myWindow.repaint();
-//	    }
 
 }
