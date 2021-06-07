@@ -104,12 +104,6 @@ public class RiddleFactory {
     	myTrueFalseRiddles.closeConnection();
     	myMultipleChoiceRiddles.closeConnection();
     	myFillInBlankRiddles.closeConnection();
-    	
-    	System.out.println("True false riddle count: " + TF_RIDDLE_COUNT);
-    	System.out.println("Multiple choice riddle count: " + MC_RIDDLE_COUNT);
-    	System.out.println("Fill in the blank riddle count: " + FB_RIDDLE_COUNT);
-
-    	
     }
 
 }

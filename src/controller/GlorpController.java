@@ -57,7 +57,8 @@ public class GlorpController {
     private final static String PRESSED = "pressed ";
     private final static String RELEASED = "released ";
     private final static int SPINX_RESPONSE_TIME = 1500;
-    private final static int EXPLANATION_TIME = 7000;
+    private final static int SHORT_EXPLANATION_TIME = 1500;
+    private final static int LONG_EXPLANATION_TIME = 7000;
     private static final Random RAND = new Random();
     
     private final Set<Integer> myPressedKeys = new HashSet<Integer>();
@@ -274,7 +275,7 @@ public class GlorpController {
         	if(currDoor.isUnlocked()) {
 				myMaze.traverseMaze(theDirection); 
 				myPlayer.getCoordinate().setLocation(myPositionChange.get(theDirection)); 
-				myPlayer.updateRectangles(); 
+				myPlayer.updateRectangles(); 				
         	} 
         }
     }
@@ -329,71 +330,77 @@ public class GlorpController {
                     System.out.println("Error in GlorpController run method!");
                     e.printStackTrace();
                 }
-            }
 
-                Direction inDir = checkDoorZones();
+            }                
+            Direction inDir = checkDoorZones();
                 
-                if(myRiddlePanel.hasResponse() && inDir != null) {
-                    if(answerCorrect()) {
-                        myMaze.getCurrRoom().getDoors().get(inDir).setUnlocked();
-                        attemptMapTraversal(inDir);
-                        myRiddlePanel.sphinxResponse(correctSphinxResponse[RAND.nextInt(correctSphinxResponse.length)]); //change to be randomized
-                    }else {
-                        myMaze.getCurrRoom().getDoors().get(inDir).setBlocked();
-                        if(!myMaze.canWin()) {
-                        	myPlayer.setCoordinate(new PiecePoint(50,175));
-                    		myPlayer.setRoomIcon(new GameIcon("src/icons/trapped_message_icon.png", 400, 150));
-                    		myPlayer.setFixed(true); // change to trigger lose scenario
-    //                		try {
-    //							myWindow.music(null);
-    //						} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
-    //							// TODO Auto-generated catch block
-    //							e.printStackTrace();
-    //						}
-                    		try {
-    							AudioInputStream ais = AudioSystem.getAudioInputStream(LOSE_SOUND);
-    							soundFX.open(ais);
-    							soundFX.start();
-                    		} catch (UnsupportedAudioFileException | IOException e) {
-    							// TODO Auto-generated catch block
-    							e.printStackTrace();
-    						} catch (LineUnavailableException e) {
-    							// TODO Auto-generated catch block
-    							e.printStackTrace();
-    						}
-                    		
-                    		
-                        }
-                        if(false) { //change to be condition, "hasExplanation"
-                            System.out.println("Explanation");
-                        }else
-                            myRiddlePanel.sphinxResponse(incorrectSphinxResponse[RAND.nextInt(incorrectSphinxResponse.length)]); 
+            if(myRiddlePanel.hasResponse() && inDir != null) {
+                if(answerCorrect()) {
+                    myMaze.getCurrRoom().getDoors().get(inDir).setUnlocked();
+                    attemptMapTraversal(inDir);
+                    displayRiddleExplanation();
+                    myRiddlePanel.sphinxResponse(correctSphinxResponse[RAND.nextInt(correctSphinxResponse.length)]); //change to be randomized
+                } else {
+                    myMaze.getCurrRoom().getDoors().get(inDir).setBlocked();
+                    if(!myMaze.canWin()) {
+                    	myPlayer.setCoordinate(new PiecePoint(50,175));
+                		myPlayer.setRoomIcon(new GameIcon("src/icons/trapped_message_icon.png", 400, 150));
+                		myPlayer.setFixed(true); // change to trigger lose scenario
+//                		try {
+//							myWindow.music(null);
+//						} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+                		try {
+							AudioInputStream ais = AudioSystem.getAudioInputStream(LOSE_SOUND);
+							soundFX.open(ais);
+							soundFX.start();
+                		} catch (UnsupportedAudioFileException | IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (LineUnavailableException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}	
                     }
+                	displayRiddleExplanation();
+                    myRiddlePanel.sphinxResponse(incorrectSphinxResponse[RAND.nextInt(incorrectSphinxResponse.length)]); 
+                }
                     
-                }else {
-                    myRiddlePanel.sphinxResponse(runawaySphinxResponse[RAND.nextInt(runawaySphinxResponse.length)]); 
-                }
-    
-                // terminate this thread & producer thread 
-                myWindow.repaint();
-                try {
-                    if(false) { //change to be "if hasExplanation"
-                        Thread.sleep(SPINX_RESPONSE_TIME);
-                    }else
-                        Thread.sleep(SPINX_RESPONSE_TIME);
-                        
-                } catch (InterruptedException e) {
-                    System.out.println("Error in GlorpController run method!");
-                    e.printStackTrace();
-                }
-                
-                myRiddlePanel.shutDown(); 
-                myWindow.repaint();
-                myRiddleOpenFlag = false;
-                
-      
+            } else {
+                myRiddlePanel.sphinxResponse(runawaySphinxResponse[RAND.nextInt(runawaySphinxResponse.length)]); 
             }
+    
+            // terminate this thread & producer thread 
+            myWindow.repaint();
+            try {
+                Thread.sleep(SPINX_RESPONSE_TIME);
+                    
+            } catch (InterruptedException e) {
+                System.out.println("Error in GlorpController run method!");
+                e.printStackTrace();
+            }
+                
+            myRiddlePanel.shutDown(); 
+            myWindow.repaint();
+            myRiddleOpenFlag = false;
+        }
+        private void displayRiddleExplanation() {
+    		String explanation = myRiddlePanel.getRiddle().getExplanation();
+    		if(explanation.length() > 1) {
+    			try {
+            		myRiddlePanel.riddleExplanation(explanation);
+            		if(explanation.length() > 60) Thread.sleep(LONG_EXPLANATION_TIME);
+            		else Thread.sleep(SHORT_EXPLANATION_TIME);
+    			} catch (InterruptedException e) {
+    				e.printStackTrace();
+    			}
+    		}
     	}
+	}
+	
+	
 	
 	// Key Binding set up method & inner Action class
 	   
