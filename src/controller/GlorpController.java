@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
@@ -14,6 +16,11 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -58,10 +65,14 @@ public class GlorpController {
     private final static String RELEASED = "released ";
 	private static final Random RAND = new Random();
 	
+	private Clip soundFX;
+	private static final File LOSE_SOUND = new File("src/sounds/lose.wav");
+	
 	/**
 	 * Default constructor for GlorpController
+	 * @throws LineUnavailableException 
 	 */
-	public GlorpController(){
+	public GlorpController() throws LineUnavailableException{
 		myMaze = Maze.getInstance();
 		myPlayer = myMaze.getPlayer();	
 		myRiddleOpenFlag = false;
@@ -70,6 +81,9 @@ public class GlorpController {
         myWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         myWindow.setVisible(true);
         myWindow.setTitle("GLORP");
+        
+        soundFX = AudioSystem.getClip();
+        
         //myWindow.addKeyListener(this);    
         myWindow.repaint();
         
@@ -386,6 +400,25 @@ public class GlorpController {
                     	myPlayer.setCoordinate(new PiecePoint(50,175));
                 		myPlayer.setRoomIcon(new GameIcon("src/icons/trapped_message_icon.png", 400, 150));
                 		myPlayer.setFixed(true); // change to trigger lose scenario
+//                		try {
+//							myWindow.music(null);
+//						} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+                		try {
+							AudioInputStream ais = AudioSystem.getAudioInputStream(LOSE_SOUND);
+							soundFX.open(ais);
+							soundFX.start();
+                		} catch (UnsupportedAudioFileException | IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (LineUnavailableException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+                		
+                		
                     }
                     myRiddlePanel.sphinxResponse(incorrectSphinxResponse[RAND.nextInt(4)]); //change to say correct answer/explanation
                 }
