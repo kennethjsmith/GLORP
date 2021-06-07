@@ -50,6 +50,7 @@ public class GlorpController implements KeyListener{
 	private boolean myRiddleOpenFlag;
 	private final Set<Integer> myPressedKeys = new HashSet<Integer>();
 	private final HashMap<Direction, Point> myPositionChange = new HashMap<Direction, Point>();
+	private static final String[] correctSphinxResponse = {"You will never escape!", "Grrrr", ">:(", "Beginners luck"};
 
 	
 	/**
@@ -371,7 +372,7 @@ public class GlorpController implements KeyListener{
                 if(answerCorrect()) {
                     myMaze.getCurrRoom().getDoors().get(inDir).setUnlocked();
                     attemptMapTraversal(inDir);
-                    myRiddlePanel.sphinxResponse("You will never escape");
+                    myRiddlePanel.sphinxResponse(correctSphinxResponse[0]); //change to be randomized
                 }else {
                     myMaze.getCurrRoom().getDoors().get(inDir).setBlocked();
                     myRiddlePanel.sphinxResponse("Haha >:)");
