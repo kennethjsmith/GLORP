@@ -9,6 +9,7 @@ import java.awt.event.KeyListener;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -51,10 +52,11 @@ public class GlorpController {
 	private boolean myRiddleOpenFlag;
 	private final Set<Integer> myPressedKeys = new HashSet<Integer>();
 	private final HashMap<Direction, Point> myPositionChange = new HashMap<Direction, Point>();
-	private static final String[] correctSphinxResponse = {"You will never escape!", "Grrrr", ">:(", "Beginners luck"};
-	
+	private static final String[] correctSphinxResponse = {"You will never escape!", "Grrrrrrrr", ">:(", "Beginners luck..."};
+	private static final String[] incorrectSphinxResponse = {"Now this passage is sealed... like your fate.", "*sinister laughter*", ">:)", "I've known smarter scarabs."};
 	private final static String PRESSED = "pressed ";
     private final static String RELEASED = "released ";
+	private static final Random RAND = new Random();
 	
 	/**
 	 * Default constructor for GlorpController
@@ -377,13 +379,15 @@ public class GlorpController {
                 if(answerCorrect()) {
                     myMaze.getCurrRoom().getDoors().get(inDir).setUnlocked();
                     attemptMapTraversal(inDir);
-                    myRiddlePanel.sphinxResponse(correctSphinxResponse[0]); //change to be randomized
+                    myRiddlePanel.sphinxResponse(correctSphinxResponse[RAND.nextInt(4)]); //change to be randomized
                 }else {
                     myMaze.getCurrRoom().getDoors().get(inDir).setBlocked();
-                    if(! myMaze.canWin()) {
-                        System.out.println("YOU LOSE!"); // change to trigger lose scenario
+                    if(!myMaze.canWin()) {
+                    	myPlayer.setCoordinate(new PiecePoint(50,175));
+                		myPlayer.setRoomIcon(new GameIcon("src/icons/trapped_message_icon.png", 400, 150));
+                		myPlayer.setFixed(true); // change to trigger lose scenario
                     }
-                    myRiddlePanel.sphinxResponse("Haha >:)"); //change to say correct answer/explanation
+                    myRiddlePanel.sphinxResponse(incorrectSphinxResponse[RAND.nextInt(4)]); //change to say correct answer/explanation
                 }
                 
             }else {
@@ -435,7 +439,7 @@ public class GlorpController {
 
         //  Create Action and add binding for the pressed key
 
-        Action pressedAction = new keyBinder(key, true);
+        Action pressedAction = new KeyBinder(key, true);
         String pressedKey = PRESSED + key;
         KeyStroke pressedKeyStroke = KeyStroke.getKeyStroke(pressedKey);
         inputMap.put(pressedKeyStroke, pressedKey);
@@ -443,7 +447,7 @@ public class GlorpController {
 
         //  Create Action and add binding for the released key
 
-        Action releasedAction = new keyBinder(key, false);
+        Action releasedAction = new KeyBinder(key, false);
         String releasedKey = modifiers + RELEASED + key;
         KeyStroke releasedKeyStroke = KeyStroke.getKeyStroke(releasedKey);
         inputMap.put(releasedKeyStroke, releasedKey);
@@ -452,11 +456,11 @@ public class GlorpController {
 	
 	// private class for key bindings
 	
-	   private class keyBinder extends AbstractAction implements Action {
+	   private class KeyBinder extends AbstractAction implements Action {
 	        private String myKey;
 	        private final boolean myAddFlag;
 	        
-	        private keyBinder(String theKey, boolean theAddFlag) {
+	        private KeyBinder(String theKey, boolean theAddFlag) {
 	            myKey = theKey;
 	            myAddFlag = theAddFlag;
 	        }

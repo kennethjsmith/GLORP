@@ -21,6 +21,7 @@ public class TFInputView extends JPanel {
 	
 	public TFInputView() {
 		super();
+		setOpaque(false);
 		setLayout(new GridBagLayout());
 		//setPreferredSize(new Dimension(WIDTH,HEIGHT));
 		mySelectedAnswer = null;
@@ -30,7 +31,10 @@ public class TFInputView extends JPanel {
 	
 	private void setupButtons() {
 		myAnswerOption1 = new JRadioButton("True");
+		myAnswerOption1.setOpaque(false);
 		myAnswerOption2 = new JRadioButton("False");
+		myAnswerOption2.setOpaque(false);
+		
 		myAnswers = new ButtonGroup();
 		myAnswers.add(myAnswerOption1);
 		myAnswers.add(myAnswerOption2);
@@ -47,7 +51,7 @@ public class TFInputView extends JPanel {
 			mySelectedAnswer = myAnswerOption2.getText();
 		});
 	}
-	
+	// TODO: why is this public?
 	public String getAnswer() {
 		return mySelectedAnswer;
 	}

@@ -33,13 +33,19 @@ public class PiecePoint extends Point{
 	}
 	
 	/**
+	 * Moves this in a direction based on theDirection. 
+	 * Uses a pythagorean equation to adjust dx and dy for diagonal movement.
 	 * @param theDirection
 	 */
 	public void move(Direction theDirection) {
-
+		int inSpeed = Player.getSpeed();
 		if(theDirection != null) {
-			int inXVelocity = Player.getSpeed()*theDirection.getDXMultiplier();
-			int inYVelocity = Player.getSpeed()*theDirection.getDYMultiplier();
+			if(theDirection.getLabel()=="NW" || theDirection.getLabel()=="NE"
+					|| theDirection.getLabel()=="SW" || theDirection.getLabel()=="SE") {
+				inSpeed = (int) Math.ceil(Math.sqrt(Math.pow(inSpeed, 2))/2);
+			}
+			int inXVelocity = inSpeed*theDirection.getDXMultiplier();
+			int inYVelocity = inSpeed*theDirection.getDYMultiplier();
 			x = x + (inXVelocity);
 			y = y + (inYVelocity);
 		}
