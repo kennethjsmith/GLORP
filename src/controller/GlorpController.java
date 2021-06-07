@@ -4,15 +4,11 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
-import java.util.Scanner;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -421,6 +417,14 @@ public class GlorpController implements KeyListener{
 	            
 	            Direction inDirection = Direction.generateDirection(myPressedKeys);
 	            Direction validDirection = null;
+	            
+	            try {
+	                Thread.sleep(5); //break between add and removal, let other keys be added?
+	            } catch (InterruptedException i) {
+	                // TODO Auto-generated catch block
+	                System.out.println("Error in GlorpController run method!");
+	                i.printStackTrace();
+	            }
 	            
 	            try {
 	                validDirection = myMaze.getCurrRoom().validateDirection(myPlayer, inDirection);
