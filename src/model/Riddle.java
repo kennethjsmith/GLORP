@@ -15,15 +15,17 @@ public class Riddle {
 	private String myQuestion;
 	private String myAnswer; 
 	private ArrayList<String> myWrongAnswerOptions;
+	private String myExplanation;
 	private RiddleType myType;
 	
 	/**
 	 * Constructor creates a riddle based off of the question, answer, and type of riddle. 
 	 */
-	public Riddle (String theQuestion, String theAnswer, ArrayList<String> theWrongAnswerOptions, RiddleType theType) {
+	public Riddle (String theQuestion, String theAnswer, ArrayList<String> theWrongAnswerOptions, String theExplanation, RiddleType theType) {
 		myQuestion = theQuestion;
 		myAnswer = theAnswer;
 		myWrongAnswerOptions = theWrongAnswerOptions;
+		myExplanation = theExplanation;
 		myType = theType;
 	}
 
@@ -37,18 +39,6 @@ public class Riddle {
         myWrongAnswerOptions.add("wrong answer 1");
         myWrongAnswerOptions.add("wrong answer 2");
     }
-	
-	public Riddle(String theQuestion, String theAnswer) {
-	    myQuestion = theQuestion;
-	    myAnswer = theAnswer;
-	    myWrongAnswerOptions = new ArrayList<String>();
-	}
-	
-	public Riddle(String theQuestion, String theAnswer, ArrayList<String> theWrongOptions) {
-	    myQuestion = theQuestion;
-        myAnswer = theAnswer;
-        myWrongAnswerOptions = theWrongOptions;
-	}
 	
     /**
      * Getter for this Riddle's Question

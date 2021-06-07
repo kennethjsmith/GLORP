@@ -62,19 +62,19 @@ public class RiddleFactory {
     		// If it is a true/false riddle
 	    	if(randomNum == 0 && myTFRiddleSet.next()){
 	    		currRiddle = new Riddle(myTFRiddleSet.getString("question"), myTFRiddleSet.getString("answer"), 
-	    				new ArrayList<String>(Arrays.asList(myTFRiddleSet.getString("wrong_answer"))), RiddleType.TRUE_FALSE);
+	    				new ArrayList<String>(Arrays.asList(myTFRiddleSet.getString("wrong_answer"))), myTFRiddleSet.getString("explanation"), RiddleType.TRUE_FALSE);
     			TF_RIDDLE_COUNT++;
 			// If it is a multiple choice riddle
 	    	} else if(randomNum == 1 && myMCRiddleSet.next()) {
 				currRiddle = new Riddle(myMCRiddleSet.getString("question"), myMCRiddleSet.getString("answer"), 
 	    				new ArrayList<String>(Arrays.asList(myMCRiddleSet.getString("wrong_answer1"), 
-	    				myMCRiddleSet.getString("wrong_answer2"), myMCRiddleSet.getString("wrong_answer2"))), 
+	    				myMCRiddleSet.getString("wrong_answer2"), myMCRiddleSet.getString("wrong_answer2"))), myMCRiddleSet.getString("explanation"), 
 	    				RiddleType.MULTIPLE_CHOICE);
 				MC_RIDDLE_COUNT++;
 			// If it is a fill-in-the-blank riddle
 	    	} else if(randomNum == 2 && myFBRiddleSet.next()) {
-	    		currRiddle = new Riddle(myFBRiddleSet.getString("question"), myMCRiddleSet.getString("answer"), 
-	    				new ArrayList<String>(), RiddleType.FILL_IN_BLANK);
+	    		currRiddle = new Riddle(myFBRiddleSet.getString("question"), myFBRiddleSet.getString("answer"), 
+	    				new ArrayList<String>(), myFBRiddleSet.getString("explanation"), RiddleType.FILL_IN_BLANK);
 	    		FB_RIDDLE_COUNT++;
 	    	}
 		} catch (SQLException e) {
