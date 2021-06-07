@@ -338,9 +338,9 @@ public class GlorpController implements KeyListener{
      * Returns true if the message response equals the answer in the riddle
      */
     private boolean answerCorrect() {
-        boolean inCorrect = myRiddlePanel.getResponse().equals(myRiddlePanel.getRiddle().getAnswer());
-        System.out.println("The response is: " + inCorrect);
-        return myRiddlePanel.getResponse().equals(myRiddlePanel.getRiddle().getAnswer());
+        boolean inCorrect = myRiddlePanel.getRiddle().verifyAnswer(myRiddlePanel.getResponse());
+        		myRiddlePanel.getResponse().equals(myRiddlePanel.getRiddle().getAnswer());
+        return inCorrect;
     }
     
 	    /**

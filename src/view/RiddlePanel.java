@@ -37,6 +37,7 @@ import javax.swing.text.StyledDocument;
 
 import model.Player;
 import model.Riddle;
+import model.RiddleType;
 /**
  * Displays the Door's Riddle and also contains the Input Panel.
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
@@ -127,21 +128,25 @@ public class RiddlePanel extends JPanel implements Runnable{
        
         add(myInputBorder, BorderLayout.PAGE_END);
         myInputPanel.setVisible(false); // replace with a block or something, so looks like sphinx sitting on table
-        
     }
 
 	
-	private ArrayList<Component> setUpAnswers(ArrayList<String> theAnswers) {
+	private ArrayList<Component> setUpAnswers(RiddleType theType, String theCorrectAnswer, ArrayList<String> theWrongAnswers) {
 	    ArrayList<Component> inComponents = new ArrayList<Component>();
 	    
-	    if(theAnswers.size() > 1) { 
+	    if(theType.getLabel() == "mc" || theType.getLabel() == "tf") {  // multiple choice
 	        ButtonGroup inAnswerOptions = new ButtonGroup();
-	        for(String s : theAnswers) {
+	        JRadioButton inRightAnswer = new JRadioButton(theCorrectAnswer);
+	        inAnswerOptions.add(inRightAnswer);
+	        inComponents.add(inRightAnswer);
+	        for(String s : theWrongAnswers) {
 	            JRadioButton inButton = new JRadioButton(s);
 	            inAnswerOptions.add(inButton); //figure out how to only allow one selection
 	            inComponents.add(inButton);
 	        }
-	    }else if(theAnswers.size() == 1)  {  // open ended question, just the answer
+	       
+	        
+	    } else if(theType.getLabel() == "fb")  {  // fill in the blank
 	        // open ended, display a text box
 	        JTextField inField = new JTextField();
 	        inField.setText("Enter your answer here...");
@@ -150,8 +155,7 @@ public class RiddlePanel extends JPanel implements Runnable{
 	        inField.setHorizontalAlignment(JTextField.RIGHT);
 	        
 	        inComponents.add(inField);
-	        
-	    }
+	    } 
 	    
 	    return inComponents;
 	}
@@ -168,13 +172,11 @@ public class RiddlePanel extends JPanel implements Runnable{
 	    myRiddleStatus = true; 
 	    myCurrentRiddle = theRiddle; 
 	    myQuestionPane.setText(myCurrentRiddle.getQuestion()); 
-        myInputPanel.setAnswerOptions(setUpAnswers(myCurrentRiddle.getAnswerOptions()));
+        myInputPanel.setAnswerOptions(setUpAnswers(myCurrentRiddle.getType(), myCurrentRiddle.getAnswer(), myCurrentRiddle.getWrongOptions()));
         
         myQuestionBorder.setVisible(true);
         myInputPanel.setVisible(true);
-        
-        System.out.println("Started up riddle panel");
-	}
+  	}
 	
 	/**
 	 * 

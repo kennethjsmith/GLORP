@@ -15,15 +15,17 @@ public class Riddle {
 	private String myQuestion;
 	private String myAnswer; 
 	private ArrayList<String> myWrongAnswerOptions;
+	private String myExplanation;
 	private RiddleType myType;
 	
 	/**
 	 * Constructor creates a riddle based off of the question, answer, and type of riddle. 
 	 */
-	public Riddle (String theQuestion, String theAnswer, ArrayList<String> theWrongAnswerOptions, RiddleType theType) {
+	public Riddle (String theQuestion, String theAnswer, ArrayList<String> theWrongAnswerOptions, String theExplanation, RiddleType theType) {
 		myQuestion = theQuestion;
 		myAnswer = theAnswer;
 		myWrongAnswerOptions = theWrongAnswerOptions;
+		myExplanation = theExplanation;
 		myType = theType;
 	}
 
@@ -37,18 +39,6 @@ public class Riddle {
         myWrongAnswerOptions.add("wrong answer 1");
         myWrongAnswerOptions.add("wrong answer 2");
     }
-	
-	public Riddle(String theQuestion, String theAnswer) {
-	    myQuestion = theQuestion;
-	    myAnswer = theAnswer;
-	    myWrongAnswerOptions = new ArrayList<String>();
-	}
-	
-	public Riddle(String theQuestion, String theAnswer, ArrayList<String> theWrongOptions) {
-	    myQuestion = theQuestion;
-        myAnswer = theAnswer;
-        myWrongAnswerOptions = theWrongOptions;
-	}
 	
     /**
      * Getter for this Riddle's Question
@@ -69,6 +59,14 @@ public class Riddle {
 	}
 	
 	/**
+	 * Returns explanation about answer 
+	 * @return myExplanation
+	 */
+	public String getExplanation() {
+		return myExplanation;
+	}
+	
+	/**
 	 * Compares the attempted answer to the correct answer, 
 	 * if identical 
 	 * Does checks for spelling, puncuation, capitolization
@@ -79,37 +77,12 @@ public class Riddle {
 	    return true;	    
 	}
 	
-	/**
-     * Compares the attempted answer to the correct answer
-     * If within error margin, returns true
-     * Does checks for spelling, puncuation, capitolization
-     * @param theInput
-     * @return boolean isCorrect 
-     */
-    public boolean checkAnswer(String theInput, double theErrorMargin) {
-        return true;
-    }
-	
     /**
      * Returns the correct answer for this riddle
      * @return
      */
 	public String getAnswer() {
 	    return myAnswer;
-	}
-
-
-	 /**
-	  * return array list of answer options
-	  * wrong options + the correct answer
-	  * 
-	 */
-
-	public ArrayList<String> getAnswerOptions(){
-	    //TODO: Modify this so that is randomizes the options
-	    ArrayList<String> inAnswers = (ArrayList<String>) myWrongAnswerOptions.clone();
-	    inAnswers.add(myAnswer);
-		return inAnswers;
 	}
 
 	
@@ -120,8 +93,13 @@ public class Riddle {
 		return myType;
 	}
 	
-	//TODO modify this so it works for every riddle type
-	//May need to wait to see what GUI does to complete this
+	/**
+	 * Compares the attempted answer to the correct answer, 
+	 * if identical 
+	 * Does checks for spelling, puncuation, capitolization
+	 * @param the players answer to the question
+	 * @return true if the answer was correct, false otherwise 
+	 */
 	public boolean verifyAnswer(String thePlayersAnswer) {
 		System.out.println("The players answer: " + thePlayersAnswer + ", correct answer: " + myAnswer);
 		if(thePlayersAnswer.toLowerCase().equals(myAnswer.toLowerCase())) return true;
