@@ -1,21 +1,12 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.util.Random;
-
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.JTextPane;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 
 import model.Riddle;
 /**
@@ -113,8 +104,6 @@ public class RiddlePanel extends JPanel implements Runnable{
     public void riddleExplanation(String theExplanation) {
         myInputPanel.setVisible(false);
         myInputPanel.reset();
-        
-        
         myQuestionPanel.setText(theExplanation);
     }
     
@@ -131,6 +120,8 @@ public class RiddlePanel extends JPanel implements Runnable{
      */
     public void shutDown() {
         myRiddleStatus = false; //setting this to false ends producer thread
+        myInputPanel.setVisible(false);
+        myInputPanel.reset();
         myQuestionBorder.setVisible(false);   
     }   
     

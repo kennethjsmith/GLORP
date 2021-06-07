@@ -1,15 +1,22 @@
 package model;
 
+import java.io.Serializable;
+
 import view.GameIcon;
 /**
  * The Carpet class holds all the Icons that might represent a rooms floor. 
  * @authors Heather Finch, Katelynn Oleson, Ken Smith
  * @version
  */
-public class Carpet {
-	// fields
+public class Carpet implements Serializable{
+    /**
+     * Serialize the state of myIcons
+     */
+    private static final long serialVersionUID = 6671862627898128762L;
+    
+    // fields
 	private static final int ROOM_ICON_SIZE = 500;
-	private GameIcon[] myIcons;
+	private GameIcon[] myIcons; 
 	private final static GameIcon mySpecialIcon = new GameIcon("src/icons/dark_floor.png", ROOM_ICON_SIZE);
 
 	/**

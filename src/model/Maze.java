@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Random;
 import view.GameIcon;
 
@@ -9,8 +10,13 @@ import view.GameIcon;
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
  * @version 5.14.21
  */
-public class Maze {
-	// fields
+public class Maze implements Serializable{
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 7714896058615502865L;
+
+    // fields
 	// The 2D array that stores each room
 	private Room[][] myMaze;
 	

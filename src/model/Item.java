@@ -2,6 +2,7 @@ package model;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.io.Serializable;
 
 import view.GameIcon;
 
@@ -10,8 +11,13 @@ import view.GameIcon;
  * @authors Heather Finch, Katelynn Oleson, Ken Smith
  * @version
  */
-public class Item  extends GamePiece{
-	// fields
+public class Item  extends GamePiece implements Serializable{
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 4350554592080926262L;
+    
+    // fields
 	private Rectangle myIconArea;
 	private GameIcon myRoomIcon;
 	private GameIcon myItemPanelIcon;

@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.Random;
 
 /**
@@ -8,7 +9,9 @@ import java.util.Random;
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
  * @version 5.14.21
  */
-public class PiecePoint extends Point{
+public class PiecePoint extends Point {
+    
+    // ... not generating ID... Point implements serializable?
 	
 	private static final long serialVersionUID = 1L;
 	private int x;

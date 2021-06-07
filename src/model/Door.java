@@ -1,8 +1,6 @@
 package model;
 
-import java.awt.Point;
-
-import javax.swing.ImageIcon;
+import java.io.Serializable;
 
 import view.GameIcon;
 
@@ -12,7 +10,12 @@ import view.GameIcon;
  * @author
  * @version
  */
-public class Door {
+public class Door implements Serializable{
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 8488154775165313034L;
+    
     // fields
     private Riddle myRiddle;
     private GameIcon myRoomIcon;

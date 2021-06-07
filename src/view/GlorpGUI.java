@@ -126,6 +126,14 @@ public class GlorpGUI extends JFrame {
         JMenuItem save = new JMenuItem("Save Game");
         JMenuItem load = new JMenuItem("Load Game");
         JMenuItem exit = new JMenuItem("Exit");
+        save.addActionListener(e ->{
+            System.out.println("Save game");
+        });
+        
+        load.addActionListener(e ->{
+            System.out.println("Load game");
+        });
+        
         exit.addActionListener(e ->{
         	System.exit(ABORT);
         });

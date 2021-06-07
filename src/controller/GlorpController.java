@@ -322,6 +322,8 @@ public class GlorpController {
 
         @Override
         public void run() {
+            int responseTime = SPINX_RESPONSE_TIME;
+            
           //while no message || player still in door region 
             while( (!myRiddlePanel.hasResponse()) && checkDoorZones() != null){          
                 try {
@@ -338,7 +340,7 @@ public class GlorpController {
                 if(answerCorrect()) {
                     myMaze.getCurrRoom().getDoors().get(inDir).setUnlocked();
                     attemptMapTraversal(inDir);
-                    displayRiddleExplanation();
+                    displayRiddleExplanation();  //shouldnt explain if they got it right, bc they know the answer
                     myRiddlePanel.sphinxResponse(correctSphinxResponse[RAND.nextInt(correctSphinxResponse.length)]); //change to be randomized
                 } else {
                     myMaze.getCurrRoom().getDoors().get(inDir).setBlocked();
@@ -359,41 +361,43 @@ public class GlorpController {
 							e.printStackTrace();
 						}	
                     }
-                	displayRiddleExplanation();
+                    responseTime = displayRiddleExplanation();
                     myRiddlePanel.sphinxResponse(incorrectSphinxResponse[RAND.nextInt(incorrectSphinxResponse.length)]); 
-
                 }
                     
             } else {
                 myRiddlePanel.sphinxResponse(runawaySphinxResponse[RAND.nextInt(runawaySphinxResponse.length)]); 
             }
     
-            // terminate this thread & producer thread 
+            // display response
             myWindow.repaint();
             try {
-                Thread.sleep(SPINX_RESPONSE_TIME);
+                Thread.sleep(responseTime);
                     
             } catch (InterruptedException e) {
                 System.out.println("Error in GlorpController run method!");
                 e.printStackTrace();
             }
                 
+            // terminate this thread & producer thread 
             myRiddlePanel.shutDown(); 
             myWindow.repaint();
             myRiddleOpenFlag = false;
         }
-        private void displayRiddleExplanation() {
+        
+        private int displayRiddleExplanation() {
     		String explanation = myRiddlePanel.getRiddle().getExplanation();
+    		System.out.println("*************");
     		if(explanation.length() > 1) {
-    			try {
-            		myRiddlePanel.riddleExplanation(explanation);
-            		if(explanation.length() > 60) Thread.sleep(LONG_EXPLANATION_TIME);
-            		else Thread.sleep(SHORT_EXPLANATION_TIME);
-    			} catch (InterruptedException e) {
-    				e.printStackTrace();
-    			}
-    		}
+    			myRiddlePanel.riddleExplanation(explanation);
+            	if(explanation.length() > 60) {
+            	    return LONG_EXPLANATION_TIME;
+            	}else 
+            	    return SHORT_EXPLANATION_TIME;
+    		}else 
+    		    return SPINX_RESPONSE_TIME;
     	}
+        
 	}
 	
 	
