@@ -2,6 +2,8 @@ package controller;
 
 import java.awt.EventQueue;
 
+import javax.sound.sampled.LineUnavailableException;
+
 /**
  * The main, runs the game and creates the controller. 
  * @authors Heather Finch, Katelynn Oleson, Ken Smith
@@ -24,7 +26,12 @@ public class GlorpMain {
     	EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-            GlorpController controller = new GlorpController();
+            try {
+				GlorpController controller = new GlorpController();
+			} catch (LineUnavailableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }});
 
     }

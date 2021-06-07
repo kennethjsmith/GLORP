@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -33,16 +34,13 @@ public class RiddlePanel extends JPanel implements Runnable{
 	private final static int HEIGHT = 500;
 	private final GameIcon SPHINX = new GameIcon("src/icons/sphinx.png", 225,162);
 	private final GameIcon BACKGROUND = new GameIcon("src/icons/sand.png", WIDTH, HEIGHT);
-	private final Color OFF_WHITE = new Color(248,248,255);
 	
 	private boolean myRiddleStatus;
 	private Riddle myCurrentRiddle;
 	private JPanel myInputBorder;
 	private InputPanel myInputPanel;
 	private JPanel myQuestionBorder; 
-	private RoundJPanel myQuestionOuterPanel; 
-	private JPanel myQuestionInnerPanel;
-	private JTextPane myQuestionPane;
+	private QuestionPanel myQuestionPanel; 
 	
 	/**
 	 * 
@@ -52,57 +50,26 @@ public class RiddlePanel extends JPanel implements Runnable{
 	    myCurrentRiddle = null; // TODO: change to be mock null riddle object
 	    
         setPreferredSize(new Dimension(WIDTH,HEIGHT));
-        // add border
+        // compound border
         Border raisedbevel = BorderFactory.createRaisedBevelBorder();
 		Border loweredbevel = BorderFactory.createLoweredBevelBorder();
 		Border compound = BorderFactory.createCompoundBorder(raisedbevel, loweredbevel);
 		setBorder(compound);
         setLayout(new BorderLayout()); 
-        
-        // helpers to set up question and answer panels? 
-        
+        // question
         myQuestionBorder = new JPanel();
         myQuestionBorder.setOpaque(false);
-        myQuestionBorder.setBorder( new EmptyBorder(20,20,20,20));
-        // TODO: This code was all put into a QuestionPanel class
-        // this would be much cleaner to use, 
-        // but I was having trouble getting it to show -ken
-        myQuestionOuterPanel = new RoundJPanel();
-        myQuestionOuterPanel.setBackground(new Color(0,0,0,150));
-        myQuestionOuterPanel.setOpaque(false); // must set to false for RoundJPanel
-        myQuestionOuterPanel.setPreferredSize(new Dimension(250,150));
-        myQuestionOuterPanel.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
-        
-//        myQuestionInnerPanel = new JPanel();
-//        myQuestionInnerPanel.setOpaque(false);
-//        myQuestionInnerPanel.setPreferredSize(new Dimension(200,150));
-//        myQuestionInnerPanel.setLayout(new GridBagLayout());
-//        
-        myQuestionPane = new JTextPane();
-        myQuestionPane.setOpaque(false);
-        myQuestionPane.setForeground(OFF_WHITE);
-        myQuestionPane.setPreferredSize(new Dimension(200,100));
-        myQuestionPane.setEditable(false);
-        
-        StyledDocument doc = myQuestionPane.getStyledDocument();
-        SimpleAttributeSet center = new SimpleAttributeSet();
-        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-        doc.setParagraphAttributes(0, doc.getLength(), center, false);
-        
-        myQuestionOuterPanel.add(myQuestionPane,c);
-        myQuestionBorder.add(myQuestionOuterPanel);
+        myQuestionBorder.setBorder(new EmptyBorder(10,10,10,10));
+        myQuestionPanel = new QuestionPanel();
+        myQuestionBorder.add(myQuestionPanel);
         add(myQuestionBorder, BorderLayout.PAGE_START);
         myQuestionBorder.setVisible(false);
-        
+        // input
         myInputBorder = new JPanel();
         myInputBorder.setOpaque(false);
         myInputBorder.setBorder(new EmptyBorder(10,10,10,10));
-        
         myInputPanel = new InputPanel();
         myInputBorder.add(myInputPanel);
-       
         add(myInputBorder, BorderLayout.PAGE_END);
         myInputPanel.setVisible(false); // replace with a block or something, so looks like sphinx sitting on table
 	}
@@ -114,7 +81,7 @@ public class RiddlePanel extends JPanel implements Runnable{
 	public void startUp(Riddle theRiddle) {
 	    myRiddleStatus = true; 
 	    myCurrentRiddle = theRiddle; 
-	    myQuestionPane.setText(myCurrentRiddle.getQuestion()); 
+	    myQuestionPanel.setText(myCurrentRiddle.getQuestion()); 
         myInputPanel.setupView(myCurrentRiddle);
         myQuestionBorder.setVisible(true);
         myInputPanel.setVisible(true);
@@ -127,12 +94,7 @@ public class RiddlePanel extends JPanel implements Runnable{
     public void paintComponent(Graphics g) {  
     	super.paintComponent(g);
     	BACKGROUND.paintIcon(this, g, 0, 0);
-
-//    	if(myRiddleStatus) {
-//    	    SPEECH_BUBBLE.paintIcon(this, g, 5, 20); // incorporate this into the riddle status?  
-//    	}
-    	SPHINX.paintIcon(this, g, 70, 180);
-    	
+    	SPHINX.paintIcon(this, g, 70, 200);
     }
 	
 //	public boolean hasRetreated() {
@@ -151,12 +113,20 @@ public class RiddlePanel extends JPanel implements Runnable{
     	return myInputPanel;
     }
     
+    public void riddleExplanation(String theExplanation) {
+        myInputPanel.setVisible(false);
+        myInputPanel.reset();
+        
+        
+        myQuestionPanel.setText(theExplanation);
+    }
     
     public void sphinxResponse(String theResponse) {
         myInputPanel.setVisible(false);
         myInputPanel.reset();
         
-        myQuestionPane.setText(theResponse);
+        
+        myQuestionPanel.setText(theResponse);
     }
 
     

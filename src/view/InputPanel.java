@@ -1,10 +1,12 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -18,36 +20,29 @@ import model.Riddle;
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
  * @version 
  */
-public class InputPanel extends JPanel {
-	/**
-	 * 
-	 */
+public class InputPanel extends RoundJPanel {
+	// fields
 	private static final long serialVersionUID = 5022637539885702888L;
-	private final static int WIDTH = 275;
-	private final static int HEIGHT = 125;
 	
-	 private JButton mySubmitButton;
-	 private boolean hasSubmitted;
-	 private TFInputView myTFInputView;
-	 private MCInputView myMCInputView;
-	 private FBInputView myFBInputView;
+	private JButton mySubmitButton;
+	private boolean hasSubmitted;
+	private JPanel myInputView;
+	
+	private final static int WIDTH = 250;
+	private final static int HEIGHT = 100;
+	private final Color TRANSPARENT_NEON_GREEN = new Color(57,255,020,150);
 	
 	/**
 	 * 
 	 */
 	public InputPanel(){
 		super();
+		setBackground(TRANSPARENT_NEON_GREEN);
+        setOpaque(false); // must set to false for RoundJPanel
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setPreferredSize(new Dimension(WIDTH,HEIGHT));
-		// Create a border
-		
-	    Border whiteline = BorderFactory.createLineBorder(Color.WHITE);
-	    setBorder(whiteline);
 
-	    myTFInputView = null;
-	    myMCInputView = null;
-	    myFBInputView = null;
-	    
+	    myInputView = null;
         hasSubmitted = false;
         mySubmitButton = new JButton("Submit");
         mySubmitButton.addActionListener(e -> {
@@ -55,19 +50,11 @@ public class InputPanel extends JPanel {
         });
 	}
 	
-	/**
-	 * 
-	 */
-	@Override
-    public void paintComponent(Graphics g) {
-    	super.paintComponent(g);
-    }
-	
-	// TODO make this work for all 3 riddle types
+	// TODO we can create an InputView interface to avoid having to cast
 	public String getResponse(Riddle theRiddle) {
-	    if(theRiddle.getType().getLabel().equals("tf")) return myTFInputView.getAnswer();
-	    if(theRiddle.getType().getLabel().equals("mc")) return myMCInputView.getAnswer();
-	    if(theRiddle.getType().getLabel().equals("fb")) return myFBInputView.getAnswer();
+	    if(theRiddle.getType().getLabel().equals("tf")) return ((TFInputView) myInputView).getAnswer();
+	    if(theRiddle.getType().getLabel().equals("mc")) return ((MCInputView) myInputView).getAnswer();
+	    if(theRiddle.getType().getLabel().equals("fb")) return ((FBInputView) myInputView).getAnswer();
 	    return null;
 
 	}
@@ -78,27 +65,26 @@ public class InputPanel extends JPanel {
     
     public void reset() {
         hasSubmitted = false;
-        myTFInputView = null;
-        myMCInputView = null;
-        myFBInputView = null;
+        myInputView = null;
         this.removeAll();
         
     }
     
+    // TODO: enums for riddle types could simplify this and other sections
     public void setupView(Riddle theRiddle) {
     	if(theRiddle.getType().getLabel().equals("tf")) {
-    		myTFInputView = new TFInputView();
-            this.add(myTFInputView,0);
+    		myInputView = new TFInputView();
     	}
     	if(theRiddle.getType().getLabel().equals("mc")) {
-    		myMCInputView = new MCInputView(theRiddle);
-    		this.add(myMCInputView, 0);
+    		myInputView = new MCInputView(theRiddle);
     	}
     	if(theRiddle.getType().getLabel().equals("fb")) {
-    		myFBInputView = new FBInputView();
-    		this.add(myFBInputView, 0);
+    		myInputView = new FBInputView();
     	}
-        this.add(mySubmitButton, 1);    	
+    	add(myInputView);
+    	mySubmitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(mySubmitButton);
+        add(Box.createRigidArea(new Dimension(0, 10)));
     }    
     
 //    private class retreatActionListener implements ActionListener{

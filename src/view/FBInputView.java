@@ -24,6 +24,7 @@ public class FBInputView extends JPanel {
 	
 	public FBInputView() {
 		super();
+		setOpaque(false);
 		setLayout(new GridBagLayout());
 		//setPreferredSize(new Dimension(WIDTH,HEIGHT));
 		myTypedAnswer = null;

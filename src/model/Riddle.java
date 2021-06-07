@@ -1,17 +1,16 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
- * A Riddle is a question/answer pair.
+ * A Riddle contains a question, answer, a list of wrong answer options, and a type.
+ * Riddle types include true/false, multiple choice, and fill-in-the-blank.
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
  * @version 
  */
-
-// TODO should this be an interface instead?
 public class Riddle {
-
-	// fields
+	
 	private String myQuestion;
 	private String myAnswer; 
 	private ArrayList<String> myWrongAnswerOptions;
@@ -22,19 +21,20 @@ public class Riddle {
 	 * Constructor creates a riddle based off of the question, answer, and type of riddle. 
 	 */
 	public Riddle (String theQuestion, String theAnswer, ArrayList<String> theWrongAnswerOptions, String theExplanation, RiddleType theType) {
-		myQuestion = theQuestion;
-		myAnswer = theAnswer;
-		myWrongAnswerOptions = theWrongAnswerOptions;
-		myExplanation = theExplanation;
-		myType = theType;
+		
+		myQuestion = Objects.requireNonNull(theQuestion);
+		myAnswer = Objects.requireNonNull(theAnswer);
+		myWrongAnswerOptions = Objects.requireNonNull(theWrongAnswerOptions);
+		myExplanation = Objects.requireNonNull(theExplanation);
+		myType = Objects.requireNonNull(theType);
 	}
 
 	/**
 	 * Default for testing purposes
 	 */
 	public Riddle() {
-        myQuestion = "Test Question";
-        myAnswer = "correct Answer";
+        myQuestion = "Test question";
+        myAnswer = "correct answer";
         myWrongAnswerOptions = new ArrayList<String>();
         myWrongAnswerOptions.add("wrong answer 1");
         myWrongAnswerOptions.add("wrong answer 2");
@@ -66,17 +66,6 @@ public class Riddle {
 		return myExplanation;
 	}
 	
-	/**
-	 * Compares the attempted answer to the correct answer, 
-	 * if identical 
-	 * Does checks for spelling, puncuation, capitolization
-	 * @param theInput
-	 * @return boolean isCorrect 
-	 */
-	public boolean checkAnswer(String theInput) {
-	    return true;	    
-	}
-	
     /**
      * Returns the correct answer for this riddle
      * @return
@@ -94,14 +83,14 @@ public class Riddle {
 	}
 	
 	/**
-	 * Compares the attempted answer to the correct answer, 
-	 * if identical 
-	 * Does checks for spelling, puncuation, capitolization
+	 * Compares the attempted answer to the correct answer.
+	 * Ignores capitalization.
+	 * Answer must be correctly spelled without punctuation. 
 	 * @param the players answer to the question
 	 * @return true if the answer was correct, false otherwise 
 	 */
 	public boolean verifyAnswer(String thePlayersAnswer) {
-		System.out.println("The players answer: " + thePlayersAnswer + ", correct answer: " + myAnswer);
+		Objects.requireNonNull(thePlayersAnswer, "thePlayersAnswer cannot be null");
 		if(thePlayersAnswer.toLowerCase().equals(myAnswer.toLowerCase())) return true;
 		return false;
 	}
