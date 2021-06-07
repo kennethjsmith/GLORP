@@ -12,6 +12,7 @@ import org.sqlite.SQLiteDataSource;
 //	https://egypt.mrdonn.org/trivia.html
 //	https://www.riddles.com/
 //	https://conversationstartersworld.com/ancient-egypt-trivia-questions/
+//  https://www.history.com/news/11-things-you-may-not-know-about-ancient-egypt
 public class MCRiddleDatabase {
 	private Connection myConnection;
 	
@@ -48,9 +49,9 @@ public class MCRiddleDatabase {
 			  
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Lily is a lilypad in a small pond. Lilly doubles her size each day, "
 			  		+ "On the 20th day she covers the whole pond. On what day was Lily half the size of the pond?', "
-			  		+ " '19', '15', '10', '17', ' ' )");
+			  		+ " 'Day 19', 'Day 15', 'Day 10', 'Day 17', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many seconds are there in one year?', '12', '416853', '32536000', '92471900', "
-			  		+ "'January 2nd, February 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, August 2nd, September 2nd, October 2nd, November 2nd, December 2nd.' )");
+			  		+ "'There are 12 seconds in one year: January 2nd, February 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, August 2nd, September 2nd, October 2nd, November 2nd, December 2nd.' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What is the next letter in the sequence: bcdfgh__', 'j', 'm', 'i', 'r', 'this is a sequential list of consonants' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Ancient Egypt was responsible for the earliest known peace treaty which was between Egypt and what group of people', 'The Hittites', 'The Villanovans', 'The Paracas', 'The Assyrians', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('The Great Pyramids of Giza consists of how many pyramids?', '3', '2', '5', '6', ' ' )");
@@ -60,93 +61,112 @@ public class MCRiddleDatabase {
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many items were found in King Tut’s tomb?', '5,398', '153', '38', '2560', 'King Tut’s tomb is among the best preserved and the artifacts found "
 			  		+ "there are the most exhibited and traveled. Among the items were a solid gold coffin, the iconic face mask, a meteorite dagger, and fresh linen underwear. "
 			  		+ "Even pharaohs need clean undies in the afterlife.' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Which of the following animals did ancient Egyptians NOT keep as pets?', 'Fish', 'Lions', 'Ibises', 'Baboons', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What mineral did ancient Egyptians use to create makeup?', 'Malachite', 'Quartz', 'Aurichalcite', 'Vesuvianite', ' ' )");
+			 
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Lily is a lilypad in a small pond. Lilly doubles her size each day, "
-				  		+ "On the 20th day she covers the whole pond. On what day was Lily half the size of the pond?', "
-				  		+ " '19', '15', '10', '17', ' ' )");
+			  		+ "On the 20th day she covers the whole pond. On what day was Lily half the size of the pond?', "
+			  		+ " 'Day 19', 'Day 15', 'Day 10', 'Day 17', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many seconds are there in one year?', '12', '416853', '32536000', '92471900', "
-			  		+ "'January 2nd, February 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, August 2nd, September 2nd, October 2nd, November 2nd, December 2nd.' )");
+			  		+ "'There are 12 seconds in one year: January 2nd, February 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, August 2nd, September 2nd, October 2nd, November 2nd, December 2nd.' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What is the next letter in the sequence: bcdfgh__', 'j', 'm', 'i', 'r', 'this is a sequential list of consonants' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Ancient Egypt was responsible for the earliest known peace treaty which was between Egypt and what group of people', 'The Hittites', 'The Villanovans', 'The Paracas', 'The Assyrians', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('The Great Pyramids of Giza consists of how many pyramids?', '3', '2', '5', '6', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What did Pharaoh Pepi II cover slaves in to attract flies away from himself?', 'Honey', 'Agave', 'Maple Syrup', 'Molasses', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many years did King Tut rule?', '9 years', '25 years', '4 years', '15 years', 'He ruled from 1332-1323 BC during the Eighteenth Dynasty')");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How old was King Tut when he became pharaoh?', '9 years old', '17 years old', '25 years old', '45 years old', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many items were found in King Tut’s tomb?', '5,398', '153', '38', '2560', 'King Tut’s tomb is among the best preserved and the artifacts found there are the most exhibited and traveled. Among the items were a solid gold coffin, the iconic face mask, a meteorite dagger, and fresh linen underwear. Even pharaohs need clean undies in the afterlife.' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many items were found in King Tut’s tomb?', '5,398', '153', '38', '2560', 'King Tut’s tomb is among the best preserved and the artifacts found "
+			  		+ "there are the most exhibited and traveled. Among the items were a solid gold coffin, the iconic face mask, a meteorite dagger, and fresh linen underwear. "
+			  		+ "Even pharaohs need clean undies in the afterlife.' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Which of the following animals did ancient Egyptians NOT keep as pets?', 'Fish', 'Lions', 'Ibises', 'Baboons', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What mineral did ancient Egyptians use to create makeup?', 'Malachite', 'Quartz', 'Aurichalcite', 'Vesuvianite', ' ' )");
+		
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Lily is a lilypad in a small pond. Lilly doubles her size each day, "
+			  		+ "On the 20th day she covers the whole pond. On what day was Lily half the size of the pond?', "
+			  		+ " 'Day 19', 'Day 15', 'Day 10', 'Day 17', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many seconds are there in one year?', '12', '416853', '32536000', '92471900', "
+			  		+ "'There are 12 seconds in one year: January 2nd, February 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, August 2nd, September 2nd, October 2nd, November 2nd, December 2nd.' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What is the next letter in the sequence: bcdfgh__', 'j', 'm', 'i', 'r', 'this is a sequential list of consonants' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Ancient Egypt was responsible for the earliest known peace treaty which was between Egypt and what group of people', 'The Hittites', 'The Villanovans', 'The Paracas', 'The Assyrians', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('The Great Pyramids of Giza consists of how many pyramids?', '3', '2', '5', '6', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What did Pharaoh Pepi II cover slaves in to attract flies away from himself?', 'Honey', 'Agave', 'Maple Syrup', 'Molasses', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many years did King Tut rule?', '9 years', '25 years', '4 years', '15 years', 'He ruled from 1332-1323 BC during the Eighteenth Dynasty')");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How old was King Tut when he became pharaoh?', '9 years old', '17 years old', '25 years old', '45 years old', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many items were found in King Tut’s tomb?', '5,398', '153', '38', '2560', 'King Tut’s tomb is among the best preserved and the artifacts found "
+			  		+ "there are the most exhibited and traveled. Among the items were a solid gold coffin, the iconic face mask, a meteorite dagger, and fresh linen underwear. "
+			  		+ "Even pharaohs need clean undies in the afterlife.' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Which of the following animals did ancient Egyptians NOT keep as pets?', 'Fish', 'Lions', 'Ibises', 'Baboons', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What mineral did ancient Egyptians use to create makeup?', 'Malachite', 'Quartz', 'Aurichalcite', 'Vesuvianite', ' ' )");
+		
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Lily is a lilypad in a small pond. Lilly doubles her size each day, "
+			  		+ "On the 20th day she covers the whole pond. On what day was Lily half the size of the pond?', "
+			  		+ " 'Day 19', 'Day 15', 'Day 10', 'Day 17', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many seconds are there in one year?', '12', '416853', '32536000', '92471900', "
+			  		+ "'There are 12 seconds in one year: January 2nd, February 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, August 2nd, September 2nd, October 2nd, November 2nd, December 2nd.' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What is the next letter in the sequence: bcdfgh__', 'j', 'm', 'i', 'r', 'this is a sequential list of consonants' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Ancient Egypt was responsible for the earliest known peace treaty which was between Egypt and what group of people', 'The Hittites', 'The Villanovans', 'The Paracas', 'The Assyrians', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('The Great Pyramids of Giza consists of how many pyramids?', '3', '2', '5', '6', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What did Pharaoh Pepi II cover slaves in to attract flies away from himself?', 'Honey', 'Agave', 'Maple Syrup', 'Molasses', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many years did King Tut rule?', '9 years', '25 years', '4 years', '15 years', 'He ruled from 1332-1323 BC during the Eighteenth Dynasty')");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How old was King Tut when he became pharaoh?', '9 years old', '17 years old', '25 years old', '45 years old', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many items were found in King Tut’s tomb?', '5,398', '153', '38', '2560', 'King Tut’s tomb is among the best preserved and the artifacts found "
+			  		+ "there are the most exhibited and traveled. Among the items were a solid gold coffin, the iconic face mask, a meteorite dagger, and fresh linen underwear. "
+			  		+ "Even pharaohs need clean undies in the afterlife.' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Which of the following animals did ancient Egyptians NOT keep as pets?', 'Fish', 'Lions', 'Ibises', 'Baboons', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What mineral did ancient Egyptians use to create makeup?', 'Malachite', 'Quartz', 'Aurichalcite', 'Vesuvianite', ' ' )");
+		
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Lily is a lilypad in a small pond. Lilly doubles her size each day, "
+			  		+ "On the 20th day she covers the whole pond. On what day was Lily half the size of the pond?', "
+			  		+ " 'Day 19', 'Day 15', 'Day 10', 'Day 17', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many seconds are there in one year?', '12', '416853', '32536000', '92471900', "
+			  		+ "'There are 12 seconds in one year: January 2nd, February 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, August 2nd, September 2nd, October 2nd, November 2nd, December 2nd.' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What is the next letter in the sequence: bcdfgh__', 'j', 'm', 'i', 'r', 'this is a sequential list of consonants' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Ancient Egypt was responsible for the earliest known peace treaty which was between Egypt and what group of people', 'The Hittites', 'The Villanovans', 'The Paracas', 'The Assyrians', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('The Great Pyramids of Giza consists of how many pyramids?', '3', '2', '5', '6', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What did Pharaoh Pepi II cover slaves in to attract flies away from himself?', 'Honey', 'Agave', 'Maple Syrup', 'Molasses', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many years did King Tut rule?', '9 years', '25 years', '4 years', '15 years', 'He ruled from 1332-1323 BC during the Eighteenth Dynasty')");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How old was King Tut when he became pharaoh?', '9 years old', '17 years old', '25 years old', '45 years old', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many items were found in King Tut’s tomb?', '5,398', '153', '38', '2560', 'King Tut’s tomb is among the best preserved and the artifacts found "
+			  		+ "there are the most exhibited and traveled. Among the items were a solid gold coffin, the iconic face mask, a meteorite dagger, and fresh linen underwear. "
+			  		+ "Even pharaohs need clean undies in the afterlife.' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Which of the following animals did ancient Egyptians NOT keep as pets?', 'Fish', 'Lions', 'Ibises', 'Baboons', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What mineral did ancient Egyptians use to create makeup?', 'Malachite', 'Quartz', 'Aurichalcite', 'Vesuvianite', ' ' )");
+		
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Lily is a lilypad in a small pond. Lilly doubles her size each day, "
+			  		+ "On the 20th day she covers the whole pond. On what day was Lily half the size of the pond?', "
+			  		+ " 'Day 19', 'Day 15', 'Day 10', 'Day 17', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many seconds are there in one year?', '12', '416853', '32536000', '92471900', "
+			  		+ "'There are 12 seconds in one year: January 2nd, February 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, August 2nd, September 2nd, October 2nd, November 2nd, December 2nd.' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What is the next letter in the sequence: bcdfgh__', 'j', 'm', 'i', 'r', 'this is a sequential list of consonants' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Ancient Egypt was responsible for the earliest known peace treaty which was between Egypt and what group of people', 'The Hittites', 'The Villanovans', 'The Paracas', 'The Assyrians', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('The Great Pyramids of Giza consists of how many pyramids?', '3', '2', '5', '6', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What did Pharaoh Pepi II cover slaves in to attract flies away from himself?', 'Honey', 'Agave', 'Maple Syrup', 'Molasses', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many years did King Tut rule?', '9 years', '25 years', '4 years', '15 years', 'He ruled from 1332-1323 BC during the Eighteenth Dynasty')");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How old was King Tut when he became pharaoh?', '9 years old', '17 years old', '25 years old', '45 years old', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many items were found in King Tut’s tomb?', '5,398', '153', '38', '2560', 'King Tut’s tomb is among the best preserved and the artifacts found "
+			  		+ "there are the most exhibited and traveled. Among the items were a solid gold coffin, the iconic face mask, a meteorite dagger, and fresh linen underwear. "
+			  		+ "Even pharaohs need clean undies in the afterlife.' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Which of the following animals did ancient Egyptians NOT keep as pets?', 'Fish', 'Lions', 'Ibises', 'Baboons', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What mineral did ancient Egyptians use to create makeup?', 'Malachite', 'Quartz', 'Aurichalcite', 'Vesuvianite', ' ' )");
+		
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Lily is a lilypad in a small pond. Lilly doubles her size each day, "
+			  		+ "On the 20th day she covers the whole pond. On what day was Lily half the size of the pond?', "
+			  		+ " 'Day 19', 'Day 15', 'Day 10', 'Day 17', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many seconds are there in one year?', '12', '416853', '32536000', '92471900', "
+			  		+ "'There are 12 seconds in one year: January 2nd, February 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, August 2nd, September 2nd, October 2nd, November 2nd, December 2nd.' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What is the next letter in the sequence: bcdfgh__', 'j', 'm', 'i', 'r', 'this is a sequential list of consonants' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Ancient Egypt was responsible for the earliest known peace treaty which was between Egypt and what group of people', 'The Hittites', 'The Villanovans', 'The Paracas', 'The Assyrians', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('The Great Pyramids of Giza consists of how many pyramids?', '3', '2', '5', '6', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What did Pharaoh Pepi II cover slaves in to attract flies away from himself?', 'Honey', 'Agave', 'Maple Syrup', 'Molasses', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many years did King Tut rule?', '9 years', '25 years', '4 years', '15 years', 'He ruled from 1332-1323 BC during the Eighteenth Dynasty')");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How old was King Tut when he became pharaoh?', '9 years old', '17 years old', '25 years old', '45 years old', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many items were found in King Tut’s tomb?', '5,398', '153', '38', '2560', 'King Tut’s tomb is among the best preserved and the artifacts found "
+			  		+ "there are the most exhibited and traveled. Among the items were a solid gold coffin, the iconic face mask, a meteorite dagger, and fresh linen underwear. "
+			  		+ "Even pharaohs need clean undies in the afterlife.' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Which of the following animals did ancient Egyptians NOT keep as pets?', 'Fish', 'Lions', 'Ibises', 'Baboons', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What mineral did ancient Egyptians use to create makeup?', 'Malachite', 'Quartz', 'Aurichalcite', 'Vesuvianite', ' ' )");
+		
 			  
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Lily is a lilypad in a small pond. Lilly doubles her size each day, "
-				  		+ "On the 20th day she covers the whole pond. On what day was Lily half the size of the pond?', "
-				  		+ " '19', '15', '10', '17', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many seconds are there in one year?', '12', '416853', '32536000', '92471900', "
-			  		+ "'January 2nd, February 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, August 2nd, September 2nd, October 2nd, November 2nd, December 2nd.' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What is the next letter in the sequence: bcdfgh__', 'j', 'm', 'i', 'r', 'this is a sequential list of consonants' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Ancient Egypt was responsible for the earliest known peace treaty which was between Egypt and what group of people', 'The Hittites', 'The Villanovans', 'The Paracas', 'The Assyrians', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('The Great Pyramids of Giza consists of how many pyramids?', '3', '2', '5', '6', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What did Pharaoh Pepi II cover slaves in to attract flies away from himself?', 'Honey', 'Agave', 'Maple Syrup', 'Molasses', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many years did King Tut rule?', '9 years', '25 years', '4 years', '15 years', 'He ruled from 1332-1323 BC during the Eighteenth Dynasty')");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How old was King Tut when he became pharaoh?', '9 years old', '17 years old', '25 years old', '45 years old', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many items were found in King Tut’s tomb?', '5,398', '153', '38', '2560', 'King Tut’s tomb is among the best preserved and the artifacts found there are the most exhibited and traveled. Among the items were a solid gold coffin, the iconic face mask, a meteorite dagger, and fresh linen underwear. Even pharaohs need clean undies in the afterlife.' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Lily is a lilypad in a small pond. Lilly doubles her size each day, "
-				  		+ "On the 20th day she covers the whole pond. On what day was Lily half the size of the pond?', "
-				  		+ " '19', '15', '10', '17', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many seconds are there in one year?', '12', '416853', '32536000', '92471900', "
-			  		+ "'January 2nd, February 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, August 2nd, September 2nd, October 2nd, November 2nd, December 2nd.' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What is the next letter in the sequence: bcdfgh__', 'j', 'm', 'i', 'r', 'this is a sequential list of consonants' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Ancient Egypt was responsible for the earliest known peace treaty which was between Egypt and what group of people', 'The Hittites', 'The Villanovans', 'The Paracas', 'The Assyrians', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('The Great Pyramids of Giza consists of how many pyramids?', '3', '2', '5', '6', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What did Pharaoh Pepi II cover slaves in to attract flies away from himself?', 'Honey', 'Agave', 'Maple Syrup', 'Molasses', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many years did King Tut rule?', '9 years', '25 years', '4 years', '15 years', 'He ruled from 1332-1323 BC during the Eighteenth Dynasty')");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How old was King Tut when he became pharaoh?', '9 years old', '17 years old', '25 years old', '45 years old', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many items were found in King Tut’s tomb?', '5,398', '153', '38', '2560', 'King Tut’s tomb is among the best preserved and the artifacts found there are the most exhibited and traveled. Among the items were a solid gold coffin, the iconic face mask, a meteorite dagger, and fresh linen underwear. Even pharaohs need clean undies in the afterlife.' )");
-				 
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Lily is a lilypad in a small pond. Lilly doubles her size each day, "
-				  		+ "On the 20th day she covers the whole pond. On what day was Lily half the size of the pond?', "
-				  		+ " '19', '15', '10', '17', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many seconds are there in one year?', '12', '416853', '32536000', '92471900', "
-			  		+ "'January 2nd, February 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, August 2nd, September 2nd, October 2nd, November 2nd, December 2nd.' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What is the next letter in the sequence: bcdfgh__', 'j', 'm', 'i', 'r', 'this is a sequential list of consonants' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Ancient Egypt was responsible for the earliest known peace treaty which was between Egypt and what group of people', 'The Hittites', 'The Villanovans', 'The Paracas', 'The Assyrians', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('The Great Pyramids of Giza consists of how many pyramids?', '3', '2', '5', '6', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What did Pharaoh Pepi II cover slaves in to attract flies away from himself?', 'Honey', 'Agave', 'Maple Syrup', 'Molasses', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many years did King Tut rule?', '9 years', '25 years', '4 years', '15 years', 'He ruled from 1332-1323 BC during the Eighteenth Dynasty')");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How old was King Tut when he became pharaoh?', '9 years old', '17 years old', '25 years old', '45 years old', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many items were found in King Tut’s tomb?', '5,398', '153', '38', '2560', 'King Tut’s tomb is among the best preserved and the artifacts found there are the most exhibited and traveled. Among the items were a solid gold coffin, the iconic face mask, a meteorite dagger, and fresh linen underwear. Even pharaohs need clean undies in the afterlife.' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Lily is a lilypad in a small pond. Lilly doubles her size each day, "
-				  		+ "On the 20th day she covers the whole pond. On what day was Lily half the size of the pond?', "
-				  		+ " '19', '15', '10', '17', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many seconds are there in one year?', '12', '416853', '32536000', '92471900', "
-			  		+ "'January 2nd, February 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, August 2nd, September 2nd, October 2nd, November 2nd, December 2nd.' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What is the next letter in the sequence: bcdfgh__', 'j', 'm', 'i', 'r', 'this is a sequential list of consonants' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Ancient Egypt was responsible for the earliest known peace treaty which was between Egypt and what group of people', 'The Hittites', 'The Villanovans', 'The Paracas', 'The Assyrians', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('The Great Pyramids of Giza consists of how many pyramids?', '3', '2', '5', '6', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What did Pharaoh Pepi II cover slaves in to attract flies away from himself?', 'Honey', 'Agave', 'Maple Syrup', 'Molasses', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many years did King Tut rule?', '9 years', '25 years', '4 years', '15 years', 'He ruled from 1332-1323 BC during the Eighteenth Dynasty')");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How old was King Tut when he became pharaoh?', '9 years old', '17 years old', '25 years old', '45 years old', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many items were found in King Tut’s tomb?', '5,398', '153', '38', '2560', 'King Tut’s tomb is among the best preserved and the artifacts found there are the most exhibited and traveled. Among the items were a solid gold coffin, the iconic face mask, a meteorite dagger, and fresh linen underwear. Even pharaohs need clean undies in the afterlife.' )");
-				   
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Lily is a lilypad in a small pond. Lilly doubles her size each day, "
-				  		+ "On the 20th day she covers the whole pond. On what day was Lily half the size of the pond?', "
-			  		+ " '19', '15', '10', '17', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many seconds are there in one year?', '12', '416853', '32536000', '92471900', "
-			  		+ "'January 2nd, February 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, August 2nd, September 2nd, October 2nd, November 2nd, December 2nd.' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What is the next letter in the sequence: bcdfgh__', 'j', 'm', 'i', 'r', 'this is a sequential list of consonants' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Ancient Egypt was responsible for the earliest known peace treaty which was between Egypt and what group of people', 'The Hittites', 'The Villanovans', 'The Paracas', 'The Assyrians', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('The Great Pyramids of Giza consists of how many pyramids?', '3', '2', '5', '6', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What did Pharaoh Pepi II cover slaves in to attract flies away from himself?', 'Honey', 'Agave', 'Maple Syrup', 'Molasses', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many years did King Tut rule?', '9 years', '25 years', '4 years', '15 years', 'He ruled from 1332-1323 BC during the Eighteenth Dynasty')");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How old was King Tut when he became pharaoh?', '9 years old', '17 years old', '25 years old', '45 years old', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many items were found in King Tut’s tomb?', '5,398', '153', '38', '2560', 'King Tut’s tomb is among the best preserved and the artifacts found there are the most exhibited and traveled. Among the items were a solid gold coffin, the iconic face mask, a meteorite dagger, and fresh linen underwear. Even pharaohs need clean undies in the afterlife.' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Lily is a lilypad in a small pond. Lilly doubles her size each day, "
-				  		+ "On the 20th day she covers the whole pond. On what day was Lily half the size of the pond?', "
-				  		+ " '19', '15', '10', '17', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many seconds are there in one year?', '12', '416853', '32536000', '92471900', "
-			  		+ "'January 2nd, February 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, August 2nd, September 2nd, October 2nd, November 2nd, December 2nd.' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What is the next letter in the sequence: bcdfgh__', 'j', 'm', 'i', 'r', 'this is a sequential list of consonants' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Ancient Egypt was responsible for the earliest known peace treaty which was between Egypt and what group of people', 'The Hittites', 'The Villanovans', 'The Paracas', 'The Assyrians', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('The Great Pyramids of Giza consists of how many pyramids?', '3', '2', '5', '6', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What did Pharaoh Pepi II cover slaves in to attract flies away from himself?', 'Honey', 'Agave', 'Maple Syrup', 'Molasses', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many years did King Tut rule?', '9 years', '25 years', '4 years', '15 years', 'He ruled from 1332-1323 BC during the Eighteenth Dynasty')");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How old was King Tut when he became pharaoh?', '9 years old', '17 years old', '25 years old', '45 years old', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many items were found in King Tut’s tomb?', '5,398', '153', '38', '2560', 'King Tut’s tomb is among the best preserved and the artifacts found there are the most exhibited and traveled. Among the items were a solid gold coffin, the iconic face mask, a meteorite dagger, and fresh linen underwear. Even pharaohs need clean undies in the afterlife.' )");
 		} catch(SQLException e) {	
 		  // if the error message is "out of memory",
 		  // it probably means no database file is found
