@@ -19,6 +19,10 @@ import model.Player;
 * @version 
 */
 public class ItemView extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2788214106090858619L;
 	// fields
 	private JPanel item1;
     private JPanel item2;

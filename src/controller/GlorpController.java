@@ -34,6 +34,7 @@ import model.Riddle;
 import model.Room;
 import view.GameIcon;
 import view.GlorpGUI;
+import view.InputPanel;
 import view.RiddlePanel;
 
 
@@ -292,12 +293,13 @@ public class GlorpController implements KeyListener{
         Riddle currRiddle = myMaze.getCurrRoom().getDoors().get(theDirection).getMyRiddle();
         
         RiddlePanel inRiddlePanel = myWindow.getRunnableRiddlePanel(currRiddle);
+        InputPanel inputPanel = inRiddlePanel.getInputPanel();
                 
         Thread inRiddleProducer = new Thread(inRiddlePanel); 
         inRiddleProducer.start(); // show riddle prompt and wait for message
         
         // open consumer
-        Thread inConsumer = new RiddleConsumer(inRiddlePanel, inRiddleProducer);
+        Thread inConsumer = new RiddleConsumer(inRiddlePanel, inputPanel, inRiddleProducer);
         inConsumer.start();
 
     }
@@ -328,78 +330,77 @@ public class GlorpController implements KeyListener{
 	
 	private class RiddleConsumer extends Thread{
 	    private RiddlePanel myRiddlePanel;
+	    private InputPanel myInputPanel;
 	    //private Thread myProducer;
 	    //private boolean hasMessage;
 	    
-	    public RiddleConsumer(RiddlePanel thePanel, Thread theProducer) {
+	    public RiddleConsumer(RiddlePanel thePanel, InputPanel theInputPanel, Thread theProducer) {
 	        myRiddlePanel = thePanel;
+	        myInputPanel = theInputPanel;
 //	        myProducer = theProducer;
 //	        hasMessage = false;
 	    }
 	    
-    /*
-     * Returns true if the message response equals the answer in the riddle
-     */
-    private boolean answerCorrect() {
-        boolean inCorrect = myRiddlePanel.getRiddle().verifyAnswer(myRiddlePanel.getResponse());
-        		myRiddlePanel.getResponse().equals(myRiddlePanel.getRiddle().getAnswer());
-        return inCorrect;
-    }
+	    /*
+	     * Returns true if the message response equals the answer in the riddle
+	     */
+	    private boolean answerCorrect() {
+	        boolean inCorrect = myRiddlePanel.getRiddle().verifyAnswer(myInputPanel.getResponse(myRiddlePanel.getRiddle()));
+	        return inCorrect;
+	    }
     
 	    /**
-     * Wait to receive message, or "run away"
-     */
-    @Override
-    public void run() {
-      //while no message || player still in door region 
-        while( (!myRiddlePanel.hasResponse()) && checkDoorZones() != null){          
-            try {
-                Thread.sleep(5);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                System.out.println("Error in GlorpController run method!");
-                e.printStackTrace();
-            }
-        }
-            
-            //System.out.println("escaped loop!");
-            
-            Direction inDir = checkDoorZones();
-            
-            if(myRiddlePanel.hasResponse() && inDir != null) {
-                System.out.println("submitted******");
-                if(answerCorrect()) {
-                    myMaze.getCurrRoom().getDoors().get(inDir).setUnlocked();
-                    attemptMapTraversal(inDir);
-                    myRiddlePanel.sphinxResponse("You will never escape");
-                }else {
-                    myMaze.getCurrRoom().getDoors().get(inDir).setBlocked();
-                    myRiddlePanel.sphinxResponse("Haha >:)");
-                }
-                
-            }else {
-                System.out.println("Ran away!");
-                myRiddlePanel.sphinxResponse("Coward!");
-            }
-
-            // terminate this thread & producer thread 
-            myWindow.repaint();
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                System.out.println("Error in GlorpController run method!");
-                e.printStackTrace();
-            }
-            
-            myRiddlePanel.shutDown(); 
-           // myWindow.setFocusToRoom();
-            myWindow.repaint();
-            myRiddleOpenFlag = false;
-            
-  
-        }
-	}
+	     * Wait to receive message, or "run away"
+	     */
+	    @Override
+	    public void run() {
+	      //while no message || player still in door region 
+	        while( (!myRiddlePanel.hasResponse()) && checkDoorZones() != null){          
+	            try {
+	                Thread.sleep(5);
+	            } catch (InterruptedException e) {
+	                // TODO Auto-generated catch block
+	                System.out.println("Error in GlorpController run method!");
+	                e.printStackTrace();
+	            }
+	        }
+	            
+	        //System.out.println("escaped loop!");
+	        
+	        Direction inDir = checkDoorZones();
+	        
+	        if(myRiddlePanel.hasResponse() && inDir != null) {
+	            System.out.println("submitted******");
+	            if(answerCorrect()) {
+	                myMaze.getCurrRoom().getDoors().get(inDir).setUnlocked();
+	                attemptMapTraversal(inDir);
+	                myRiddlePanel.sphinxResponse("You will never escape");
+	            }else {
+	                myMaze.getCurrRoom().getDoors().get(inDir).setBlocked();
+	                myRiddlePanel.sphinxResponse("Haha >:)");
+	            }
+	            
+	        }else {
+	            System.out.println("Ran away!");
+	            myRiddlePanel.sphinxResponse("Coward!");
+	        }
+	
+	        // terminate this thread & producer thread 
+	        myWindow.repaint();
+	        try {
+	            Thread.sleep(1000);
+	        } catch (InterruptedException e) {
+	            // TODO Auto-generated catch block
+	            System.out.println("Error in GlorpController run method!");
+	            e.printStackTrace();
+	        }
+	        
+	        myRiddlePanel.shutDown(); 
+	       // myWindow.setFocusToRoom();
+	        myWindow.repaint();
+	        myRiddleOpenFlag = false;     
+	    }
+}
 	
 	// private class for key bindings
 	

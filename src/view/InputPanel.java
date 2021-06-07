@@ -1,33 +1,16 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.ArrayList;
 
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
 import javax.swing.border.Border;
+
+import model.Riddle;
 
 
 /**
@@ -35,15 +18,19 @@ import javax.swing.border.Border;
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
  * @version 
  */
-public class InputPanel extends JPanel implements KeyListener{
+public class InputPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5022637539885702888L;
 	private final static int WIDTH = 275;
 	private final static int HEIGHT = 125;
 	
 	 private JButton mySubmitButton;
-	 private JLabel myPrompt;
-	 private ArrayList<Component> myAnswerOptions;
 	 private boolean hasSubmitted;
-	 private String myAnswer;
+	 private TFInputView myTFInputView;
+	 private MCInputView myMCInputView;
+	 private FBInputView myFBInputView;
 	
 	/**
 	 * 
@@ -56,50 +43,17 @@ public class InputPanel extends JPanel implements KeyListener{
 		
 	    Border whiteline = BorderFactory.createLineBorder(Color.WHITE);
 	    setBorder(whiteline);
-		
-		//JTextField textField = new JTextField(5);
-		// TODO: this breaks focus
-	    myPrompt = new JLabel("How do you answer ...");
 
-        myAnswer = null;
-        myAnswerOptions = new ArrayList<Component>();
+	    myTFInputView = null;
+	    myMCInputView = null;
+	    myFBInputView = null;
+	    
         hasSubmitted = false;
         mySubmitButton = new JButton("Submit");
-        mySubmitButton.addMouseListener(new submitMouseClickListener());   
-        
-        layoutComponents();
+        mySubmitButton.addActionListener(e -> {
+        	hasSubmitted = true;
+        });
 	}
-	
-	/**
-     * Setup and add the GUI components for this panel. 
-     */
-    private void layoutComponents() {
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.VERTICAL;
-        
-        //c.insets = new Insets(20,0,0,0);
-        //c.anchor = GridBagConstraints.NORTH;
-        //c.gridx = 0;
-        //c.gridy = 0;
-        //c.gridheight = 1;
-        this.add(myPrompt,0);
-        
-        
-        //c.insets = new Insets(300,0,0,0);
-        JPanel inOptions = new JPanel();
-        for(Component comp : myAnswerOptions) {
-            inOptions.add(comp);
-        }
-        //c.gridx = 0;
-        //c.gridy = 1;
-        this.add(inOptions,1);
-        
-        //c.gridx = 0;
-        //c.gridy = 2;
-        //c.insets = new Insets(300,0,0,0);
-        //c.anchor = GridBagConstraints.PAGE_END;
-        this.add(mySubmitButton,2);
-    }
 	
 	/**
 	 * 
@@ -109,8 +63,13 @@ public class InputPanel extends JPanel implements KeyListener{
     	super.paintComponent(g);
     }
 	
-	public String getResponse() {
-	    return myAnswer;
+	// TODO make this work for all 3 riddle types
+	public String getResponse(Riddle theRiddle) {
+	    if(theRiddle.getType().getLabel().equals("tf")) return myTFInputView.getAnswer();
+	    if(theRiddle.getType().getLabel().equals("mc")) return myMCInputView.getAnswer();
+	    if(theRiddle.getType().getLabel().equals("fb")) return myFBInputView.getAnswer();
+	    return null;
+
 	}
 	
 	public boolean hasSubmitted() {
@@ -119,40 +78,28 @@ public class InputPanel extends JPanel implements KeyListener{
     
     public void reset() {
         hasSubmitted = false;
-        myAnswer = null;
+        myTFInputView = null;
+        myMCInputView = null;
+        myFBInputView = null;
+        this.removeAll();
+        
     }
     
-    /**
-     * Sets to be either buttons or a text field
-     * @param theAnswerOptions
-     */
-    public void setAnswerOptions(ArrayList<Component> theAnswerOptions) {
-        for(Component c : myAnswerOptions) { //remove old answer options
-            this.remove(c);
-        }
-        
-        reset(); // reset answer flags
-        
-        myAnswerOptions = theAnswerOptions;
-        
-        for(Component c : theAnswerOptions) { //add new answer options
-            if(c instanceof JRadioButton) {
-                ((JRadioButton) c).addMouseListener(new buttonMouseClickListener(((JRadioButton) c).getText()));
-//                ((JRadioButton) c).addActionListener(ae -> {
-//                        myAnswer = ((JRadioButton) c).getText();
-//                        System.out.println(myAnswer);
-//                    } 
-//                );
-                this.add(c);
-            }else if(c instanceof JTextField) {
-                ((JTextField) c).addActionListener(ae -> {
-                    myAnswer = ((JTextField) c).getText();
-                });
-                this.add(c); 
-            }         
-            
-        }          
-    }
+    public void setupView(Riddle theRiddle) {
+    	if(theRiddle.getType().getLabel().equals("tf")) {
+    		myTFInputView = new TFInputView();
+            this.add(myTFInputView,0);
+    	}
+    	if(theRiddle.getType().getLabel().equals("mc")) {
+    		myMCInputView = new MCInputView(theRiddle);
+    		this.add(myMCInputView, 0);
+    	}
+    	if(theRiddle.getType().getLabel().equals("fb")) {
+    		myFBInputView = new FBInputView();
+    		this.add(myFBInputView, 0);
+    	}
+        this.add(mySubmitButton, 1);    	
+    }    
     
 //    private class retreatActionListener implements ActionListener{
 //        @Override
@@ -162,107 +109,21 @@ public class InputPanel extends JPanel implements KeyListener{
 //        }
 //    }
     
-    
- // mouse listener bc want to save key listener for room panel
-    private class submitMouseClickListener implements MouseListener{ 
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            if(getResponse() != null) {
-                hasSubmitted = true;  
-                System.out.println("Submitted");
-            }else
-                System.out.println("You must select and answer before submitting");
-        }
-        
-        // how to make it so we dont have to implement all of these
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            // TODO Auto-generated method stub
-            
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            // TODO Auto-generated method stub
-            
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            // TODO Auto-generated method stub
-            
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-            // TODO Auto-generated method stub
-            
-        }
-    }
-    
- // mouse listener bc want to save key listener for room panel
-    private class buttonMouseClickListener implements MouseListener{ 
-            String myResponse;
-            
-            private buttonMouseClickListener(String theResponse) {
-                myResponse = theResponse;
-            }
-        
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            myAnswer = myResponse; 
-            System.out.println(myAnswer);
-            
-        }
-        
-        // how to make it so we dont have to implement all of these
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            // TODO Auto-generated method stub
-            
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            // TODO Auto-generated method stub
-            
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            // TODO Auto-generated method stub
-            
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-            // TODO Auto-generated method stub
-            
-        }
-    }
-
-    
-    @Override
-    public void keyTyped(KeyEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        // lose focus 
-        
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
-    
-    
-
+//    @Override
+//    public void keyTyped(KeyEvent e) {
+//        // TODO Auto-generated method stub
+//        
+//    }
+//
+//    @Override
+//    public void keyPressed(KeyEvent e) {
+//        // lose focus 
+//        
+//    }
+//
+//    @Override
+//    public void keyReleased(KeyEvent e) {
+//        // TODO Auto-generated method stub      
+//    }
 }
 
