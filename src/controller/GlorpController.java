@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
@@ -320,7 +321,7 @@ public class GlorpController {
             Direction inDir = checkDoorZones();
             
             if(myRiddlePanel.hasResponse() && inDir != null) {
-                System.out.println("submitted******");
+               // System.out.println("submitted******");
                 if(answerCorrect()) {
                     myMaze.getCurrRoom().getDoors().get(inDir).setUnlocked();
                     attemptMapTraversal(inDir);
@@ -328,13 +329,13 @@ public class GlorpController {
                 }else {
                     myMaze.getCurrRoom().getDoors().get(inDir).setBlocked();
                     if(! myMaze.canWin()) {
-                        System.out.println("YOU LOSE!");
+                        System.out.println("YOU LOSE!"); // change to trigger lose scenario
                     }
-                    myRiddlePanel.sphinxResponse("Haha >:)");
+                    myRiddlePanel.sphinxResponse("Haha >:)"); //change to say correct answer/explanation
                 }
                 
             }else {
-                System.out.println("Ran away!");
+                //System.out.println("Ran away!");
                 myRiddlePanel.sphinxResponse("Coward!");
             }
 
@@ -399,21 +400,17 @@ public class GlorpController {
 	
 	// private class for key bindings
 	
-	   private class keyBinder implements Action {
+	   private class keyBinder extends AbstractAction implements Action {
 	        private String myKey;
-	        private boolean isEnabled;
 	        private final boolean myAddFlag;
 	        
 	        private keyBinder(String theKey, boolean theAddFlag) {
 	            myKey = theKey;
-	            isEnabled = true;
 	            myAddFlag = theAddFlag;
 	        }
 	        
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
-	           // System.out.println("I WORK!1");
-	            
 	            if(myAddFlag) {
 	                
 	            
@@ -422,13 +419,13 @@ public class GlorpController {
 	            Direction inDirection = Direction.generateDirection(myPressedKeys);
 	            Direction validDirection = null;
 	            
-	            try {
-	                Thread.sleep(5); //break between add and removal, let other keys be added?
-	            } catch (InterruptedException i) {
-	                // TODO Auto-generated catch block
-	                System.out.println("Error in GlorpController run method!");
-	                i.printStackTrace();
-	            }
+//	            try {
+//	                Thread.sleep(5); //break between add and removal, let other keys be added?
+//	            } catch (InterruptedException i) {
+//	                // TODO Auto-generated catch block
+//	                System.out.println("Error in GlorpController run method!");
+//	                i.printStackTrace();
+//	            }
 	            
 	            try {
 	                validDirection = myMaze.getCurrRoom().validateDirection(myPlayer, inDirection);
@@ -451,39 +448,6 @@ public class GlorpController {
 	            }
 	        }
 	        
-	        @Override
-	        public Object getValue(String key) {
-	            //System.out.println("I WORK!   2 *** and getValue is " + key);
-	            return null;
-	        }
-	        @Override
-	        public void putValue(String key, Object value) {
-	           // System.out.println("I WORK!      3");
-	            
-	        }
-	        @Override
-	        public void setEnabled(boolean b) {
-	            isEnabled = b;
-	            //System.out.println("I WORK!            4");
-	            
-	        }
-	        
-	        @Override
-	        public boolean isEnabled() {
-	            return isEnabled;
-	        }
-	        
-	        @Override
-	        public void addPropertyChangeListener(PropertyChangeListener listener) {
-	            //System.out.println("I WORK!                            6");
-	            
-	        }
-	        @Override
-	        public void removePropertyChangeListener(PropertyChangeListener listener) {
-	            //System.out.println("I WORK!                                      7");
-	            
-	        }
-	        
 	        //helpers 
 	        
 	        private void helper( boolean theAddFlag) {
@@ -502,8 +466,14 @@ public class GlorpController {
 	            if(inKey != -1) {
 	                if(theAddFlag) {
 	                    myPressedKeys.add(inKey);
-	                }else
+	                }else {
 	                    myPressedKeys.remove(inKey);
+	                    if(myPressedKeys.isEmpty()) { // is this needed? 
+	                      myPlayer.setStride(0);
+	                      myPlayer.setSkipFrame(false);
+	                    }
+	                    myWindow.repaint();
+	                }
 	            }
 	                
 	        }
@@ -546,15 +516,6 @@ public class GlorpController {
 //	            myPlayer.setSkipFrame(false);
 //	        }
 //	        myWindow.repaint();
-//	    }
-//
-//	    public void actionPerformed(ActionEvent e) {
-//	        // TODO: Auto-generated method stub 
-//	    }
-//
-//	    public void keyTyped(KeyEvent e) {
-//	        // TODO: Auto-generated method stub
-//	        
 //	    }
 
 }
