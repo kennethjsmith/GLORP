@@ -86,30 +86,5 @@ public class InputPanel extends RoundJPanel {
         add(mySubmitButton);
         add(Box.createRigidArea(new Dimension(0, 10)));
     }    
-    
-//    private class retreatActionListener implements ActionListener{
-//        @Override
-//        public void actionPerformed(ActionEvent e) {
-//            hasRetreated = true;
-//            System.out.println("retreated");
-//        }
-//    }
-    
-//    @Override
-//    public void keyTyped(KeyEvent e) {
-//        // TODO Auto-generated method stub
-//        
-//    }
-//
-//    @Override
-//    public void keyPressed(KeyEvent e) {
-//        // lose focus 
-//        
-//    }
-//
-//    @Override
-//    public void keyReleased(KeyEvent e) {
-//        // TODO Auto-generated method stub      
-//    }
 }
 

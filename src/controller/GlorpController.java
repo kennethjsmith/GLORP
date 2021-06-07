@@ -51,20 +51,22 @@ import view.RiddlePanel;
  */
 public class GlorpController {
     // fields
+    private static final String[] correctSphinxResponse = {"You will never escape!", "Grrrrrrrr...", ">:(", "Beginners luck won't save you everytime.", "...", "..."};
+    private static final String[] incorrectSphinxResponse = {"Now this passage is sealed... like your fate.", "*sinister laughter*", ">:)", "I've known smarter scarabs.", "...", "..."};
+    private static final String[] runawaySphinxResponse = {"I can smell your fear.", "Coward!", "Running away can't save you.", "I see your confidence is dwindling", "...", "..."};
+    private final static String PRESSED = "pressed ";
+    private final static String RELEASED = "released ";
+    private final static int SPINX_RESPONSE_TIME = 1500;
+    private final static int EXPLANATION_TIME = 7000;
+    private static final Random RAND = new Random();
+    
+    private final Set<Integer> myPressedKeys = new HashSet<Integer>();
+    private final HashMap<Direction, Point> myPositionChange = new HashMap<Direction, Point>();
+    
 	private Maze myMaze;
 	private Player myPlayer;
 	private GlorpGUI myWindow; 
 	private boolean myRiddleOpenFlag;
-	private final Set<Integer> myPressedKeys = new HashSet<Integer>();
-	private final HashMap<Direction, Point> myPositionChange = new HashMap<Direction, Point>();
-	private static final String[] correctSphinxResponse = {"You will never escape!", "Grrrrrrrr...", ">:(", "Beginners luck won't save you everytime.", "..."};
-	private static final String[] incorrectSphinxResponse = {"Now this passage is sealed... like your fate.", "*sinister laughter*", ">:)", "I've known smarter scarabs.", "..."};
-	private static final String[] runawaySphinxResponse = {"I can smell your fear.", "Coward!", "Running away can't save you.", "...", "I see your confidence is dwindling"};
-	private final static String PRESSED = "pressed ";
-    private final static String RELEASED = "released ";
-    private final static int SPINX_RESPONSE_TIME = 1500;
-    private final static int EXPLANATION_TIME = 7000;
-	private static final Random RAND = new Random();
 	
 	private Clip soundFX;
 	private static final File LOSE_SOUND = new File("src/sounds/lose.wav");
@@ -83,9 +85,7 @@ public class GlorpController {
         myWindow.setVisible(true);
         myWindow.setTitle("GLORP");
         
-        soundFX = AudioSystem.getClip();
-        
-        //myWindow.addKeyListener(this);    
+        soundFX = AudioSystem.getClip();   
         myWindow.repaint();
         
         // set up hashmap
@@ -96,7 +96,7 @@ public class GlorpController {
         myPositionChange.put(Direction.SOUTH, new Point(200, 20));
         
         
-        // key bindings instead of keylisteners
+        // set up key bindings
         String[] theDirections = {"LEFT", "RIGHT", "UP", "DOWN"};
         for(String key : theDirections) {
             addKeyActions(key);
@@ -115,12 +115,16 @@ public class GlorpController {
     	Door inCurrDoor = myMaze.getCurrRoom().getDoors().get(inDir);
     	
     	if(inDir != null) { //if near a door 
-    	    if(myMaze.isValidTraversal(inDir, myMaze.getCurrRoom())) { // If valid to attempt to move in that direction
-                if(inCurrDoor.isUnlocked()) { // If the door is unlocked, move that direction
-                    attemptMapTraversal(inDir); //update map & player
-                }else if(!(myRiddleOpenFlag)) { // riddle threads are not already open
+    	    // If valid to attempt to move in that direction
+    	    if(myMaze.isValidTraversal(inDir, myMaze.getCurrRoom())) { 
+    	        // If the door is unlocked, move that direction & update map & player
+                if(inCurrDoor.isUnlocked()) { 
+                    attemptMapTraversal(inDir); 
+                // riddle threads are not already open 
+                //open producer and consumer threads to watch for riddle activity
+                }else if(!(myRiddleOpenFlag)) { 
                     myRiddleOpenFlag = true;
-                    openRiddleThreads(inDir); //open producer and consumer threads to watch for riddle activity
+                    openRiddleThreads(inDir); 
                 }
     	    }
     	}
@@ -271,10 +275,6 @@ public class GlorpController {
 				myMaze.traverseMaze(theDirection); 
 				myPlayer.getCoordinate().setLocation(myPositionChange.get(theDirection)); 
 				myPlayer.updateRectangles(); 
-				    
-				   // myPlayer.getCoordinate().setLocation(200, 380);
-				
-				System.out.println("Move player!");
         	} 
         }
     }
@@ -326,18 +326,14 @@ public class GlorpController {
                 try {
                     Thread.sleep(5);
                 } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
                     System.out.println("Error in GlorpController run method!");
                     e.printStackTrace();
                 }
             }
-                
-                //System.out.println("escaped loop!");
-                
+
                 Direction inDir = checkDoorZones();
                 
                 if(myRiddlePanel.hasResponse() && inDir != null) {
-                   // System.out.println("submitted******");
                     if(answerCorrect()) {
                         myMaze.getCurrRoom().getDoors().get(inDir).setUnlocked();
                         attemptMapTraversal(inDir);
@@ -406,14 +402,7 @@ public class GlorpController {
      * Modified code of KeyBoardAnimation.java 
      * from https://tips4java.wordpress.com/2013/06/09/motion-using-the-keyboard/
      */
-    private void addKeyActions(String keyStroke){
-        //  Separate the key identifier from the modifiers of the KeyStroke
-
-        // don't really need... removes modifiers like "shift" or "control"
-        int offset = keyStroke.lastIndexOf(" ");
-        String key = offset == -1 ? keyStroke :  keyStroke.substring( offset + 1 );
-        String modifiers = keyStroke.replace(key, "");
-
+    private void addKeyActions(String key){
         //  Get the InputMap and ActionMap of the component
 
         InputMap inputMap = myWindow.getRoomPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -430,7 +419,7 @@ public class GlorpController {
         //  Create Action and add binding for the released key
 
         Action releasedAction = new KeyBinder(key, false);
-        String releasedKey = modifiers + RELEASED + key;
+        String releasedKey = RELEASED + key;
         KeyStroke releasedKeyStroke = KeyStroke.getKeyStroke(releasedKey);
         inputMap.put(releasedKeyStroke, releasedKey);
         actionMap.put(releasedKey, releasedAction);
@@ -469,11 +458,9 @@ public class GlorpController {
 	                helper(false); //remove from pressedKeys
 	            }
 	        }
-	        
-	        //helper
+
 	        /*
-	         * If true, add key
-	         * if false, remove key 
+	         * if theAddFlag is true, add key otherwise remove key 
 	         */
 	        private void helper( boolean theAddFlag) {
 	            int inKey = -1;

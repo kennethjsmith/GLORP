@@ -71,7 +71,8 @@ public class RiddlePanel extends JPanel implements Runnable{
         myInputPanel = new InputPanel();
         myInputBorder.add(myInputPanel);
         add(myInputBorder, BorderLayout.PAGE_END);
-        myInputPanel.setVisible(false); // replace with a block or something, so looks like sphinx sitting on table
+        // replace with a block or something, so looks like sphinx is not floating  ??
+        myInputPanel.setVisible(false); 
 	}
 	
 	/**
@@ -97,10 +98,6 @@ public class RiddlePanel extends JPanel implements Runnable{
     	SPHINX.paintIcon(this, g, 70, 200);
     }
 	
-//	public boolean hasRetreated() {
-//	    return myInputPanel.hasRetreated();
-//	}
-
     public boolean hasResponse() {
         return myInputPanel.hasSubmitted();
     }
@@ -117,8 +114,6 @@ public class RiddlePanel extends JPanel implements Runnable{
     public void sphinxResponse(String theResponse) {
         myInputPanel.setVisible(false);
         myInputPanel.reset();
-        
-        
         myQuestionPanel.setText(theResponse);
     }
 
