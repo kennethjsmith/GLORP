@@ -1,12 +1,8 @@
 package model;
 
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.Set;
-
-import javax.swing.ImageIcon;
 
 import view.GameIcon;
 
@@ -33,7 +29,6 @@ public class Player extends GamePiece implements Cloneable {
 
 	private static final int SPEED = 10;
 	private static final int PLAYER_ROOM_ICON_SIZE = 100;
-	private static final int PLAYER_MAP_ICON_SIZE = 10;
 	private static final Skin DEFAULT_SKIN = new Skin(SkinType.ALIEN);
 	
 	/**

@@ -3,10 +3,6 @@
  */
 package model;
 import java.awt.Point;
-import java.util.Set;
-import javax.swing.ImageIcon;
-import view.GameIcon;
-
 import view.GameIcon;
 
 /**

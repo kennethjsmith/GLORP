@@ -1,8 +1,6 @@
 package model;
 
-import java.awt.Dimension;
 import java.awt.Rectangle;
-
 import view.GameIcon;
 
 /**

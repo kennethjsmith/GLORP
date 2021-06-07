@@ -1,10 +1,6 @@
 package model;
 
-import java.awt.Image;
 import java.awt.Rectangle;
-import java.io.InputStream;
-import java.util.Timer;
-
 import view.GameIcon;
 
 /**
@@ -17,8 +13,6 @@ public class Fixture extends GamePiece{
 	private Rectangle myIconArea;
 	private Rectangle myInteractionZone = null;
 	private FixtureType myType;
-	private int myWidth;
-	private int myHeight;
 	private int myXCoordinate;
 	private int myYCoordinate;
 	private GameIcon myIcon;

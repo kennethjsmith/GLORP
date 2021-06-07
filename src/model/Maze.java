@@ -1,7 +1,7 @@
 package model;
 
+import java.util.Objects;
 import java.util.Random;
-import view.GameIcon;
 
 /**
  * The maze has all the rooms in a 2D array with a buffer of size 1 around the border.
@@ -11,34 +11,35 @@ import view.GameIcon;
  */
 public class Maze {
 	// fields
-	// The 2D array that stores each room
+	
+	// The 2D array that stores each room.
 	private Room[][] myMaze;
 	
-	// The player
+	// The player.
 	private final Player myPlayer;
 	
-	// The room our Player is currently in
+	// The room our Player is currently in.
 	private Room myCurrentRoom;
 
-	// The room the player starts in
+	// The room the player starts in.
 	private Room myStartRoom;
 	
-	// The room that contains the key (used to unlock chest in win room)
+	// The room that contains the key (used to unlock chest in win room).
 	private Room myKeyRoom;
 
-	// The room the player must get to so that they can win
+	// The room the player must get to so that they can win.
 	private Room myWinRoom;
 	
-	// Provides information about whether we can access the win room
+	// Provides information about whether we can access the win room.
 	private boolean myCanAccessWinRoom;
 	
-	// Provides information about whether we can access the key room
+	// Provides information about whether we can access the key room.
 	private boolean myCanAccessKeyRoom;
 	
-	// The number of rows in the maze that store rooms
+	// The number of rows in the maze that store rooms.
 	private final int LENGTH = 7;
 	
-	// The number of columns in the maze that store rooms
+	// The number of columns in the maze that store rooms.
 	private final int WIDTH = 7;
 	
 	// The border around the entire room is 1 space wide on each side.
@@ -48,9 +49,7 @@ public class Maze {
 	// Creates the maze.
     private static final Maze THISMAZE = new Maze();
 
-    /**
-     * A private constructor due to singleton pattern.
-     */
+    // Constructor - private due to singleton pattern.
     private Maze() {
 		
 		// Initialize with row-major: Room[rows][columns]
@@ -71,7 +70,7 @@ public class Maze {
 	
 	/**
 	 * Getter for the maze instance.
-	 * @return
+	 * @return THISMAZE an instance of the maze
 	 */
 	public static Maze getInstance() {
 		return THISMAZE;
@@ -82,11 +81,6 @@ public class Maze {
 	 * Creates and adds rooms to myMaze. 
 	 */
 	private void addRooms() {
-//<<<<<<< HEAD
-//		for(int r = 0; r < LENGTH+BORDER_BUFFER; r++) {
-//			for(int c = 0; c < WIDTH+BORDER_BUFFER; c++) {
-//				myMaze[r][c] = new Room(myPlainRoomIcon, myPlainRoomIcon, r, c);
-//=======
 		for(int row = 0; row < LENGTH+BORDER_BUFFER; row++) {
 			for(int col = 0; col < WIDTH+BORDER_BUFFER; col++) {
 				myMaze[row][col] = new Room(row, col);
@@ -174,25 +168,18 @@ public class Maze {
 	     Random rand = new Random();
 	     return rand.nextInt(theMax - theMin + 1) + theMin;
 	 }
-	 
-//    /*
-//     * Generates a random index between two numbers (min val, max val) 
-//     */
-//     private static int generateRandom(int theMin, int theMax) {
-//         Random rand = new Random();
-//         return rand.nextInt(theMax - theMin + 1) + theMin;
-//         // highest val is ((theMax - theMin + 1) - 1) + theMin = theMax
-//         // lowest val is (0) + theMin = theMin
-//     }
      
 	/**
 	 * Check if moving in a certain direction is valid.
 	 * Returns true if the user is not only the border of the maze AND if the door is not blocked
 	 * Does not check if the door is locked or unlocked
-	 * @param theDirection
-	 * @return boolean canMove
+	 * @param theDirection the direction the player wants to move in
+	 * @return boolean canMove "yes" if the player can move in the direction provided, "no" otherwise
 	 */
 	public boolean isValidTraversal(Direction theDirection, Room theRoom) {
+		Objects.requireNonNull(theDirection);
+		Objects.requireNonNull(theRoom);
+		
 	    RoomIndex currIndex = myCurrentRoom.getIndex();
         int row = currIndex.getRow();
         int col = currIndex.getCol();
@@ -209,9 +196,11 @@ public class Maze {
 	// TODO: add exception handeling to move method
 	/**
 	 * Move in a direction through the maze.
-	 * @param theDirection
+	 * @param theDirection the direction the player will move in
 	 */
 	public void traverseMaze(Direction theDirection) {
+		Objects.requireNonNull(theDirection);
+		
 		Room tempCurrentRoom = myCurrentRoom;
 		RoomIndex currIndex = myCurrentRoom.getIndex();
 		int inRow = currIndex.getRow();
@@ -239,12 +228,12 @@ public class Maze {
 		tempCurrentRoom.setPlayer(null);
 		
 		myCurrentRoom.setCurrentRoom(true);
-		myCurrentRoom.setPlayer(myPlayer); //TODO use add player instead when we have doors
+		myCurrentRoom.setPlayer(myPlayer); 
 	}
 	
 	/**
-	 * Getter for the current room the player is in
-	 * @return
+	 * Getter for the current room the player is in.
+	 * @return the current room
 	 */
 	public Room getCurrRoom() {
 	    return myCurrentRoom;
@@ -252,43 +241,38 @@ public class Maze {
 	
 	/**
 	 * Getter for the Player
-	 * @return
+	 * @return the player
 	 */
 	public Player getPlayer() {
 	    return myPlayer;
 	}
 	
 	/**
-	 * Returns the room at the provided row and column
+	 * Fins and returns the room at the provided row and column.
 	 * @param theRow
 	 * @param theColumn
-	 * @return
+	 * @return Room the room at the provided row and column
 	 */
 	public Room getRoom(int theRow, int theColumn) {
 		if(theRow < 0 || theColumn < 0) throw new 
 				IllegalArgumentException("getRoom error: The index of the rooms cannot be negative");
 		else if(theRow > (LENGTH) || theColumn > (WIDTH)) 
 		    throw new IllegalArgumentException("getRoom error: The index of the rooms cannot be greater than the size of the maze");
-		
-		// Using the line below does not return the correct room for testing purposes.
-		// Not sure if this method will be needed anywhere else. 
-		// Logic is so the client does not know about the buffer rooms and cannot access the buffer rooms
-		//return myMaze[theRow + BORDER_BUFFER/2][theColumn + BORDER_BUFFER/2];
 	
 		return myMaze[theRow][theColumn];
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Returns the room the player started at.
+	 * @return Room the room the player started at
 	 */
 	public Room getMyStartRoom() {
 		return myStartRoom;
 	}
 
 	/**
-	 * 
-	 * @param theStartRoom
+	 * Sets the room the player starts at.
+	 * @param theStartRoom the room the player will be starting at
 	 */
 	public void setMyStartRoom(Room theStartRoom) {
 		this.myStartRoom = theStartRoom;
@@ -342,7 +326,6 @@ public class Maze {
         return WIDTH;
     }
 	
-
 	// Returns true if the row and column are valid, and false otherwise
 	// TODO: containsRoom method is redundant unless we decide to make some spaces in the grid not exist as rooms.
 	public boolean containsRoom(int theRow, int theColumn) {
@@ -350,9 +333,7 @@ public class Maze {
 	    else if(theRow >= (LENGTH) || theColumn >= (WIDTH)) return false;
 		else return true;
 	}
-	
 	 
-	
 	/**
 	 * Searches for a path from the current room to the win room 
 	 * to see if the user can win the game
@@ -423,25 +404,9 @@ public class Maze {
 		}
 	}
 
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		for(int row = 1; row <= LENGTH; row++) {
-			for(int col = 1; col <= WIDTH; col++) {
-				Room currRoom = getRoom(row, col);
-
-				if(getRoom(row, col).equals(myCurrentRoom)) {
-					sb.append(" current");
-				} else if (currRoom == myWinRoom) {
-					sb.append("  win   ");
-				} else sb.append("   x    ");
-			}
-			sb.append("\n");
-		}
-		return sb.toString();
-	}
-
-	// CHEAT METHOD
-	// Unlocks every door in the maze except doors that lead to border rooms
+	/**
+	 * Unlocks every door in the maze except doors surrounding border rooms.
+	 */
 	public void unlockAllDoors() {
 		
 		// Unlocks all doors in the middle group of rooms

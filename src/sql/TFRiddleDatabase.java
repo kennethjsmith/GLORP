@@ -37,7 +37,6 @@ public class TFRiddleDatabase {
 	}
 		
 	private void addRiddles(Statement theStatement) {
-		SQLiteDataSource ds = null;
 		try {
 			  theStatement.executeUpdate("CREATE TABLE IF NOT EXISTS tfriddles ( question string, answer string, wrong_answer string, explanation string )");
 			 

@@ -42,7 +42,6 @@ public class MCRiddleDatabase {
 	}
 		
 	private void addRiddles(Statement theStatement) {
-		SQLiteDataSource ds = null;
 		try {
 			  theStatement.executeUpdate("CREATE TABLE IF NOT EXISTS mcriddles ( question string, answer string, wrong_answer1 string, "
 			  		+ "wrong_answer2 string, wrong_answer3 string, explanation string )");

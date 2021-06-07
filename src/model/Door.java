@@ -1,9 +1,5 @@
 package model;
 
-import java.awt.Point;
-
-import javax.swing.ImageIcon;
-
 import view.GameIcon;
 
 /**
@@ -36,20 +32,6 @@ public class Door {
     private static final GameIcon NS_ROOM_BLOCKED_ICON = new GameIcon("src/icons/door_red.png", 100, 20);
     private static final GameIcon WE_MAP_BLOCKED_ICON = new GameIcon("src/icons/door_red.png", 2, 10);
     private static final GameIcon NS_MAP_BLOCKED_ICON = new GameIcon("src/icons/door_red.png", 10, 2);
-
-    
-    /**
-     * 
-     */
-    private Door(){
-        myRiddle = null;
-        myDirection = null;
-        myRoomIcon = null;
-        myMapIcon = null;
-        myUnlockedFlag = false;
-        myPermaBlockedFlag = false;
-        
-    }
     
     /**
      * @param theDirection
@@ -74,8 +56,7 @@ public class Door {
 		if(theDirection == Direction.WEST || theDirection == Direction.EAST) {
 			myRoomIcon = WE_ROOM_LOCKED_ICON;
 			myMapIcon = WE_MAP_LOCKED_ICON;
-		}
-		
+		}		
 	}
 
 	/**

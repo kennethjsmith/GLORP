@@ -439,7 +439,9 @@ public class GlorpController {
 	// private class for key bindings
 	
 	   private class KeyBinder extends AbstractAction implements Action {
-	        private String myKey;
+
+			private static final long serialVersionUID = 2272429193842620197L;
+			private String myKey;
 	        private final boolean myAddFlag;
 	        
 	        private KeyBinder(String theKey, boolean theAddFlag) {
