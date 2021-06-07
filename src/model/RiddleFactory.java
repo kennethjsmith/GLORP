@@ -68,7 +68,7 @@ public class RiddleFactory {
 	    	} else if(randomNum == 1 && myMCRiddleSet.next()) {
 				currRiddle = new Riddle(myMCRiddleSet.getString("question"), myMCRiddleSet.getString("answer"), 
 	    				new ArrayList<String>(Arrays.asList(myMCRiddleSet.getString("wrong_answer1"), 
-	    				myMCRiddleSet.getString("wrong_answer2"), myMCRiddleSet.getString("wrong_answer2"))), myMCRiddleSet.getString("explanation"), 
+	    				myMCRiddleSet.getString("wrong_answer2"), myMCRiddleSet.getString("wrong_answer3"))), myMCRiddleSet.getString("explanation"), 
 	    				RiddleType.MULTIPLE_CHOICE);
 				MC_RIDDLE_COUNT++;
 			// If it is a fill-in-the-blank riddle

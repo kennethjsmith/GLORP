@@ -43,7 +43,7 @@ public class FBRiddleDatabase {
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What 8 letter word can have a letter taken away and it still makes a word. Take another letter away and it still makes a word. Keep on doing that until you have one letter left. What is the word?', 'Starting', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What has a head, a tail, is brown, and has no legs?', 'Penny', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What has many keys, but cant even open a single door?', 'Piano', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('Re-arrange the letters, O O U S W T D N E J R, to spell just one word. What is it?', 'Just one word', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('Re-arrange the letters, O O U S W T D N E J R, to spell just one word. What is it?', 'Just one word', 'JUST ONE WORD!' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What can point in every direction but cant reach the destination by itself?', 'Finger', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('My life can be measured in hours, I serve by being devoured. Thin, I am quick. Fat, I am slow. Wind is my foe. What am I?', 'Candle', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What is black when you buy it, red when you use it, and gray when you throw it away?', 'Charcoal', ' ' )");
@@ -82,7 +82,7 @@ public class FBRiddleDatabase {
 			  		+ "What is the word?', 'Starting', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What has a head, a tail, is brown, and has no legs?', 'Penny',' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What has many keys, but cant even open a single door?', 'Piano', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('Re-arrange the letters, O O U S W T D N E J R, to spell just one word. What is it?', 'Just one word', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('Re-arrange the letters, O O U S W T D N E J R, to spell just one word. What is it?', 'Just one word', 'JUST ONE WORD!' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What can point in every direction but cant reach the destination by itself?', 'Finger', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('My life can be measured in hours, I serve by being devoured. Thin, I am quick. Fat, I am slow. Wind is my foe. What am I?', 'Candle', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What is black when you buy it, red when you use it, and gray when you throw it away?', 'Charcoal', ' ' )");
@@ -121,7 +121,7 @@ public class FBRiddleDatabase {
 			  		+ "What is the word?', 'Starting', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What has a head, a tail, is brown, and has no legs?', 'Penny',' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What has many keys, but cant even open a single door?', 'Piano', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('Re-arrange the letters, O O U S W T D N E J R, to spell just one word. What is it?', 'Just one word', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('Re-arrange the letters, O O U S W T D N E J R, to spell just one word. What is it?', 'Just one word', 'JUST ONE WORD!' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What can point in every direction but cant reach the destination by itself?', 'Finger', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('My life can be measured in hours, I serve by being devoured. Thin, I am quick. Fat, I am slow. Wind is my foe. What am I?', 'Candle', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What is black when you buy it, red when you use it, and gray when you throw it away?', 'Charcoal', ' ' )");
