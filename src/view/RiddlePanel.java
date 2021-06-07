@@ -2,40 +2,20 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
-import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.swing.JToggleButton;
-import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import model.Player;
 import model.Riddle;
 /**
  * Displays the Door's Riddle and also contains the Input Panel.
@@ -43,16 +23,14 @@ import model.Riddle;
  * @version 
  */
 public class RiddlePanel extends JPanel implements Runnable{
-    /** The number of columns in width of the TextField. */
-    private static final int TEXT_FIELD_COLUMNS = 5;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -760524911580782663L;
     
 	// fields
-    /** The size of the increase/decrease buttons. */
-    private static final Dimension BUTTON_SIZE = new Dimension(26, 26);
-    
 	private final static int WIDTH = 300;
 	private final static int HEIGHT = 500;
-	private final String TITLE = "Riddle";
 	private final GameIcon SPHINX = new GameIcon("src/icons/sphinx.png", 225,162);
 	private final GameIcon BACKGROUND = new GameIcon("src/icons/sand.png", WIDTH, HEIGHT);
 	private final Color OFF_WHITE = new Color(248,248,255);
@@ -117,38 +95,7 @@ public class RiddlePanel extends JPanel implements Runnable{
         myInputBorder.add(myInputPanel);
         add(myInputBorder, BorderLayout.PAGE_END);
         myInputPanel.setVisible(false); // replace with a block or something, so looks like sphinx sitting on table
-        
-    }
-
-	
-	private ArrayList<Component> setUpAnswers(ArrayList<String> theAnswers) {
-	    ArrayList<Component> inComponents = new ArrayList<Component>();
-	    
-	    if(theAnswers.size() > 1) { 
-	        ButtonGroup inAnswerOptions = new ButtonGroup();
-	        for(String s : theAnswers) {
-	            JRadioButton inButton = new JRadioButton(s);
-	            inAnswerOptions.add(inButton); //figure out how to only allow one selection
-	            inComponents.add(inButton);
-	        }
-	    }else if(theAnswers.size() == 1)  {  // open ended question, just the answer
-	        // open ended, display a text box
-	        JTextField inField = new JTextField();
-	        inField.setText("Enter your answer here...");
-	        inField.setEditable(true);
-	        inField.setColumns(TEXT_FIELD_COLUMNS);
-	        inField.setHorizontalAlignment(JTextField.RIGHT);
-	        
-	        inComponents.add(inField);
-	        
-	    }
-	    
-	    return inComponents;
 	}
-	
-	//lambda statements for submit button listeners 
-	// look at menu listeners in GlorpGUI
-	
 	
 	/**
 	 * Check the status of the player and 
@@ -158,13 +105,10 @@ public class RiddlePanel extends JPanel implements Runnable{
 	    myRiddleStatus = true; 
 	    myCurrentRiddle = theRiddle; 
 	    myQuestionPane.setText(myCurrentRiddle.getQuestion()); 
-        myInputPanel.setAnswerOptions(setUpAnswers(myCurrentRiddle.getAnswerOptions()));
-        
+        myInputPanel.setupView(myCurrentRiddle);
         myQuestionBorder.setVisible(true);
         myInputPanel.setVisible(true);
-        
-        System.out.println("Started up riddle panel");
-	}
+  	}
 	
 	/**
 	 * 
@@ -188,13 +132,13 @@ public class RiddlePanel extends JPanel implements Runnable{
     public boolean hasResponse() {
         return myInputPanel.hasSubmitted();
     }
-
-    public String getResponse() {
-        return myInputPanel.getResponse();
-    }
     
     public Riddle getRiddle() {
         return myCurrentRiddle;
+    }
+    
+    public InputPanel getInputPanel() {
+    	return myInputPanel;
     }
     
     

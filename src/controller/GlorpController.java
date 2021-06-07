@@ -4,20 +4,20 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
-import java.util.Scanner;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 import javax.swing.JFrame;
 
@@ -34,6 +34,7 @@ import model.Riddle;
 import model.Room;
 import view.GameIcon;
 import view.GlorpGUI;
+import view.InputPanel;
 import view.RiddlePanel;
 
 
@@ -42,7 +43,7 @@ import view.RiddlePanel;
  * @authors Heather Finch, Katelynn Oleson, Ken Smith
  * @version
  */
-public class GlorpController implements KeyListener{
+public class GlorpController {
     // fields
 	private Maze myMaze;
 	private Player myPlayer;
@@ -50,7 +51,10 @@ public class GlorpController implements KeyListener{
 	private boolean myRiddleOpenFlag;
 	private final Set<Integer> myPressedKeys = new HashSet<Integer>();
 	private final HashMap<Direction, Point> myPositionChange = new HashMap<Direction, Point>();
-
+	private static final String[] correctSphinxResponse = {"You will never escape!", "Grrrr", ">:(", "Beginners luck"};
+	
+	private final static String PRESSED = "pressed ";
+    private final static String RELEASED = "released ";
 	
 	/**
 	 * Default constructor for GlorpController
@@ -64,7 +68,7 @@ public class GlorpController implements KeyListener{
         myWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         myWindow.setVisible(true);
         myWindow.setTitle("GLORP");
-        myWindow.addKeyListener(this);    
+        //myWindow.addKeyListener(this);    
         myWindow.repaint();
         
         // set up hashmap
@@ -74,39 +78,14 @@ public class GlorpController implements KeyListener{
         myPositionChange.put(Direction.NORTH, new Point(200, 380));
         myPositionChange.put(Direction.SOUTH, new Point(200, 20));
         
+        
         // key bindings instead of keylisteners
         String[] theDirections = {"LEFT", "RIGHT", "UP", "DOWN"};
-        for(String s : theDirections) {
-           myWindow.getRoomPanel().getInputMap().put(KeyStroke.getKeyStroke(s), s);
-           myWindow.getRoomPanel().getActionMap().put(s, new keyBinder(s));
+        for(String key : theDirections) {
+            addKeyActions(key);
        }
     }
-	
-	
-	
-	/**
-	 * Adds the pressed key's KeyCode to the set of pressed keys. Generates and validates a direction from the set,
-	 * then moves the player.
-	 */
-	@Override
-    public void keyPressed(KeyEvent e) {
-		int k = e.getKeyCode();
-        myPressedKeys.add(k);
-        
-        Direction inDirection = Direction.generateDirection(myPressedKeys);
-        Direction validDirection = null;
-        
-		if(!myPlayer.getFixed()) {
-	        try {
-				validDirection = myMaze.getCurrRoom().validateDirection(myPlayer, inDirection);
-				myPlayer.move(validDirection);
-			} catch (CloneNotSupportedException e1) {
-				e1.printStackTrace();
-			}
-	        checkInteractions();
-	        myWindow.repaint();
-		}
-    }
+
 
 	/**
 	 * A helper method, checks for item, fixture, and door interactions after a key event.
@@ -292,63 +271,90 @@ public class GlorpController implements KeyListener{
         Riddle currRiddle = myMaze.getCurrRoom().getDoors().get(theDirection).getMyRiddle();
         
         RiddlePanel inRiddlePanel = myWindow.getRunnableRiddlePanel(currRiddle);
+        InputPanel inputPanel = inRiddlePanel.getInputPanel();
                 
         Thread inRiddleProducer = new Thread(inRiddlePanel); 
         inRiddleProducer.start(); // show riddle prompt and wait for message
         
         // open consumer
-        Thread inConsumer = new RiddleConsumer(inRiddlePanel, inRiddleProducer);
+        Thread inConsumer = new RiddleConsumer(inRiddlePanel, inputPanel, inRiddleProducer);
         inConsumer.start();
 
     }
-    
-    /**
-     * Removes the KeyCode from the set of pressed keys. Sets stride to 0 if no keys are pressed.
-     */
-	@Override
-    public void keyReleased(KeyEvent e) {
-		int inKey = e.getKeyCode();
-		myPressedKeys.remove(inKey);
-		
-		if(myPressedKeys.isEmpty()) {
-			myPlayer.setStride(0);
-			myPlayer.setSkipFrame(false);
-		}
-		myWindow.repaint();
-	}
-
-	public void actionPerformed(ActionEvent e) {
-		// TODO: Auto-generated method stub	
-	}
-
-	public void keyTyped(KeyEvent e) {
-		// TODO: Auto-generated method stub
-		
-	}
 	
 	private class RiddleConsumer extends Thread{
 	    private RiddlePanel myRiddlePanel;
+	    private InputPanel myInputPanel;
 	    //private Thread myProducer;
 	    //private boolean hasMessage;
 	    
-	    public RiddleConsumer(RiddlePanel thePanel, Thread theProducer) {
+	    public RiddleConsumer(RiddlePanel thePanel, InputPanel theInputPanel, Thread theProducer) {
 	        myRiddlePanel = thePanel;
+	        myInputPanel = theInputPanel;
 //	        myProducer = theProducer;
 //	        hasMessage = false;
 	    }
 	    
-    /*
-     * Returns true if the message response equals the answer in the riddle
-     */
-    private boolean answerCorrect() {
-        boolean inCorrect = myRiddlePanel.getResponse().equals(myRiddlePanel.getRiddle().getAnswer());
-        System.out.println("The response is: " + inCorrect);
-        return myRiddlePanel.getResponse().equals(myRiddlePanel.getRiddle().getAnswer());
-    }
+	    /*
+	     * Returns true if the message response equals the answer in the riddle
+	     */
+	    private boolean answerCorrect() {
+	        boolean inCorrect = myRiddlePanel.getRiddle().verifyAnswer(myInputPanel.getResponse(myRiddlePanel.getRiddle()));
+	        return inCorrect;
+	    }
     
-	    /**
-     * Wait to receive message, or "run away"
-     */
+//	    /**
+//	     * Wait to receive message, or "run away"
+//	     */
+//	    @Override
+//	    public void run() {
+//	      //while no message || player still in door region 
+//	        while( (!myRiddlePanel.hasResponse()) && checkDoorZones() != null){          
+//	            try {
+//	                Thread.sleep(5);
+//	            } catch (InterruptedException e) {
+//	                // TODO Auto-generated catch block
+//	                System.out.println("Error in GlorpController run method!");
+//	                e.printStackTrace();
+//	            }
+//	        }
+//	            
+//	        //System.out.println("escaped loop!");
+//	        
+//	        Direction inDir = checkDoorZones();
+//	        
+//	        if(myRiddlePanel.hasResponse() && inDir != null) {
+//	            System.out.println("submitted******");
+//	            if(answerCorrect()) {
+//	                myMaze.getCurrRoom().getDoors().get(inDir).setUnlocked();
+//	                attemptMapTraversal(inDir);
+//	                myRiddlePanel.sphinxResponse("You will never escape");
+//	            }else {
+//	                myMaze.getCurrRoom().getDoors().get(inDir).setBlocked();
+//	                myRiddlePanel.sphinxResponse("Haha >:)");
+//	            }
+//	            
+//	        }else {
+//	            System.out.println("Ran away!");
+//	            myRiddlePanel.sphinxResponse("Coward!");
+//	        }
+//	
+//	        // terminate this thread & producer thread 
+//	        myWindow.repaint();
+//	        try {
+//	            Thread.sleep(1000);
+//	        } catch (InterruptedException e) {
+//	            // TODO Auto-generated catch block
+//	            System.out.println("Error in GlorpController run method!");
+//	            e.printStackTrace();
+//	        }
+//	        
+//	        myRiddlePanel.shutDown(); 
+//	       // myWindow.setFocusToRoom();
+//	        myWindow.repaint();
+//	        myRiddleOpenFlag = false;     
+//	    }
+
     @Override
     public void run() {
       //while no message || player still in door region 
@@ -367,18 +373,21 @@ public class GlorpController implements KeyListener{
             Direction inDir = checkDoorZones();
             
             if(myRiddlePanel.hasResponse() && inDir != null) {
-                System.out.println("submitted******");
+               // System.out.println("submitted******");
                 if(answerCorrect()) {
                     myMaze.getCurrRoom().getDoors().get(inDir).setUnlocked();
                     attemptMapTraversal(inDir);
-                    myRiddlePanel.sphinxResponse("You will never escape");
+                    myRiddlePanel.sphinxResponse(correctSphinxResponse[0]); //change to be randomized
                 }else {
                     myMaze.getCurrRoom().getDoors().get(inDir).setBlocked();
-                    myRiddlePanel.sphinxResponse("Haha >:)");
+                    if(! myMaze.canWin()) {
+                        System.out.println("YOU LOSE!"); // change to trigger lose scenario
+                    }
+                    myRiddlePanel.sphinxResponse("Haha >:)"); //change to say correct answer/explanation
                 }
                 
             }else {
-                System.out.println("Ran away!");
+                //System.out.println("Ran away!");
                 myRiddlePanel.sphinxResponse("Coward!");
             }
 
@@ -401,25 +410,74 @@ public class GlorpController implements KeyListener{
         }
 	}
 	
+	// Key Binding/ Key Listener stuff
+	   
+    /*
+     * Multiple keys key binding solution, 
+     * Modified code of KeyBoardAnimation.java 
+     * from https://tips4java.wordpress.com/2013/06/09/motion-using-the-keyboard/
+     */
+    private void addKeyActions(String keyStroke){
+        //  Separate the key identifier from the modifiers of the KeyStroke
+
+        // don't really need..., modifiers would be like "shift" or "control"
+        int offset = keyStroke.lastIndexOf(" ");
+        String key = offset == -1 ? keyStroke :  keyStroke.substring( offset + 1 );
+        String modifiers = keyStroke.replace(key, "");
+
+        //  Get the InputMap and ActionMap of the component
+        
+//      myWindow.getRoomPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(s), s);
+//      myWindow.getRoomPanel().getActionMap().put(s, new keyBinder(s));
+        
+        InputMap inputMap = myWindow.getRoomPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = myWindow.getRoomPanel().getActionMap();
+
+        //  Create Action and add binding for the pressed key
+
+        Action pressedAction = new keyBinder(key, true);
+        String pressedKey = PRESSED + key;
+        KeyStroke pressedKeyStroke = KeyStroke.getKeyStroke(pressedKey);
+        inputMap.put(pressedKeyStroke, pressedKey);
+        actionMap.put(pressedKey, pressedAction);
+
+        //  Create Action and add binding for the released key
+
+        Action releasedAction = new keyBinder(key, false);
+        String releasedKey = modifiers + RELEASED + key;
+        KeyStroke releasedKeyStroke = KeyStroke.getKeyStroke(releasedKey);
+        inputMap.put(releasedKeyStroke, releasedKey);
+        actionMap.put(releasedKey, releasedAction);
+    }
+	
 	// private class for key bindings
 	
-	   private class keyBinder implements Action {
+	   private class keyBinder extends AbstractAction implements Action {
 	        private String myKey;
-	        private boolean isEnabled;
+	        private final boolean myAddFlag;
 	        
-	        private keyBinder(String theKey) {
+	        private keyBinder(String theKey, boolean theAddFlag) {
 	            myKey = theKey;
-	            isEnabled = true;
+	            myAddFlag = theAddFlag;
 	        }
 	        
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
-	           // System.out.println("I WORK!1");
+	            if(myAddFlag) {
+	                
 	            
 	            helper(true); // add to pressedKeys
 	            
 	            Direction inDirection = Direction.generateDirection(myPressedKeys);
 	            Direction validDirection = null;
+	            
+//	            try {
+//	                Thread.sleep(5); //break between add and removal, let other keys be added?
+//	            } catch (InterruptedException i) {
+//	                // TODO Auto-generated catch block
+//	                System.out.println("Error in GlorpController run method!");
+//	                i.printStackTrace();
+//	            }
 	            
 	            try {
 	                validDirection = myMaze.getCurrRoom().validateDirection(myPlayer, inDirection);
@@ -429,40 +487,17 @@ public class GlorpController implements KeyListener{
 	            }
 	            checkInteractions();
 	            myWindow.repaint();
-	            helper(false); //removeFromPressedKeys
-	        }
-	        
-	        @Override
-	        public Object getValue(String key) {
-	            //System.out.println("I WORK!   2 *** and getValue is " + key);
-	            return null;
-	        }
-	        @Override
-	        public void putValue(String key, Object value) {
-	           // System.out.println("I WORK!      3");
-	            
-	        }
-	        @Override
-	        public void setEnabled(boolean b) {
-	            isEnabled = b;
-	            //System.out.println("I WORK!            4");
-	            
-	        }
-	        
-	        @Override
-	        public boolean isEnabled() {
-	            return isEnabled;
-	        }
-	        
-	        @Override
-	        public void addPropertyChangeListener(PropertyChangeListener listener) {
-	            //System.out.println("I WORK!                            6");
-	            
-	        }
-	        @Override
-	        public void removePropertyChangeListener(PropertyChangeListener listener) {
-	            //System.out.println("I WORK!                                      7");
-	            
+	            }else {
+	                helper(false); //removeFromPressedKeys
+	                
+	               // myPressedKeys.remove(myKey);
+//	                
+//	                if(myPressedKeys.isEmpty()) {
+//	                    myPlayer.setStride(0);
+//	                    myPlayer.setSkipFrame(false);
+//	                }
+//	                myWindow.repaint();
+	            }
 	        }
 	        
 	        //helpers 
@@ -483,11 +518,56 @@ public class GlorpController implements KeyListener{
 	            if(inKey != -1) {
 	                if(theAddFlag) {
 	                    myPressedKeys.add(inKey);
-	                }else
+	                }else {
 	                    myPressedKeys.remove(inKey);
+	                    if(myPressedKeys.isEmpty()) { // is this needed? 
+	                      myPlayer.setStride(0);
+	                      myPlayer.setSkipFrame(false);
+	                    }
+	                    myWindow.repaint();
+	                }
 	            }
 	                
 	        }
 	    }
+	   
+//	    /**
+//	     * Adds the pressed key's KeyCode to the set of pressed keys. Generates and validates a direction from the set,
+//	     * then moves the player.
+//	     */
+//	    @Override
+//	    public void keyPressed(KeyEvent e) {
+//	        int k = e.getKeyCode();
+//	        myPressedKeys.add(k);
+//	        
+//	        Direction inDirection = Direction.generateDirection(myPressedKeys);
+//	        Direction validDirection = null;
+//	        
+//	        if(!myPlayer.getFixed()) {
+//	            try {
+//	                validDirection = myMaze.getCurrRoom().validateDirection(myPlayer, inDirection);
+//	                myPlayer.move(validDirection);
+//	            } catch (CloneNotSupportedException e1) {
+//	                e1.printStackTrace();
+//	            }
+//	            checkInteractions();
+//	            myWindow.repaint();
+//	        }
+//	    }
+//	    
+//	    /**
+//	     * Removes the KeyCode from the set of pressed keys. Sets stride to 0 if no keys are pressed.
+//	     */
+//	    @Override
+//	    public void keyReleased(KeyEvent e) {
+//	        int inKey = e.getKeyCode();
+//	        myPressedKeys.remove(inKey);
+//	        
+//	        if(myPressedKeys.isEmpty()) {
+//	            myPlayer.setStride(0);
+//	            myPlayer.setSkipFrame(false);
+//	        }
+//	        myWindow.repaint();
+//	    }
 
 }
