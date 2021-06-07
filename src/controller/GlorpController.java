@@ -41,7 +41,7 @@ import view.RiddlePanel;
  * @authors Heather Finch, Katelynn Oleson, Ken Smith
  * @version
  */
-public class GlorpController implements KeyListener{
+public class GlorpController {
     // fields
 	private Maze myMaze;
 	private Player myPlayer;
@@ -66,7 +66,7 @@ public class GlorpController implements KeyListener{
         myWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         myWindow.setVisible(true);
         myWindow.setTitle("GLORP");
-        myWindow.addKeyListener(this);    
+        //myWindow.addKeyListener(this);    
         myWindow.repaint();
         
         // set up hashmap
@@ -327,6 +327,9 @@ public class GlorpController implements KeyListener{
                     myRiddlePanel.sphinxResponse(correctSphinxResponse[0]); //change to be randomized
                 }else {
                     myMaze.getCurrRoom().getDoors().get(inDir).setBlocked();
+                    if(! myMaze.canWin()) {
+                        System.out.println("YOU LOSE!");
+                    }
                     myRiddlePanel.sphinxResponse("Haha >:)");
                 }
                 
@@ -436,15 +439,15 @@ public class GlorpController implements KeyListener{
 	            checkInteractions();
 	            myWindow.repaint();
 	            }else {
-	               // helper(false); //removeFromPressedKeys
+	                helper(false); //removeFromPressedKeys
 	                
-	                myPressedKeys.remove(myKey);
-	                
-	                if(myPressedKeys.isEmpty()) {
-	                    myPlayer.setStride(0);
-	                    myPlayer.setSkipFrame(false);
-	                }
-	                myWindow.repaint();
+	               // myPressedKeys.remove(myKey);
+//	                
+//	                if(myPressedKeys.isEmpty()) {
+//	                    myPlayer.setStride(0);
+//	                    myPlayer.setSkipFrame(false);
+//	                }
+//	                myWindow.repaint();
 	            }
 	        }
 	        
@@ -506,52 +509,52 @@ public class GlorpController implements KeyListener{
 	        }
 	    }
 	   
-	    /**
-	     * Adds the pressed key's KeyCode to the set of pressed keys. Generates and validates a direction from the set,
-	     * then moves the player.
-	     */
-	    @Override
-	    public void keyPressed(KeyEvent e) {
-	        int k = e.getKeyCode();
-	        myPressedKeys.add(k);
-	        
-	        Direction inDirection = Direction.generateDirection(myPressedKeys);
-	        Direction validDirection = null;
-	        
-	        if(!myPlayer.getFixed()) {
-	            try {
-	                validDirection = myMaze.getCurrRoom().validateDirection(myPlayer, inDirection);
-	                myPlayer.move(validDirection);
-	            } catch (CloneNotSupportedException e1) {
-	                e1.printStackTrace();
-	            }
-	            checkInteractions();
-	            myWindow.repaint();
-	        }
-	    }
-	    
-	    /**
-	     * Removes the KeyCode from the set of pressed keys. Sets stride to 0 if no keys are pressed.
-	     */
-	    @Override
-	    public void keyReleased(KeyEvent e) {
-	        int inKey = e.getKeyCode();
-	        myPressedKeys.remove(inKey);
-	        
-	        if(myPressedKeys.isEmpty()) {
-	            myPlayer.setStride(0);
-	            myPlayer.setSkipFrame(false);
-	        }
-	        myWindow.repaint();
-	    }
-
-	    public void actionPerformed(ActionEvent e) {
-	        // TODO: Auto-generated method stub 
-	    }
-
-	    public void keyTyped(KeyEvent e) {
-	        // TODO: Auto-generated method stub
-	        
-	    }
+//	    /**
+//	     * Adds the pressed key's KeyCode to the set of pressed keys. Generates and validates a direction from the set,
+//	     * then moves the player.
+//	     */
+//	    @Override
+//	    public void keyPressed(KeyEvent e) {
+//	        int k = e.getKeyCode();
+//	        myPressedKeys.add(k);
+//	        
+//	        Direction inDirection = Direction.generateDirection(myPressedKeys);
+//	        Direction validDirection = null;
+//	        
+//	        if(!myPlayer.getFixed()) {
+//	            try {
+//	                validDirection = myMaze.getCurrRoom().validateDirection(myPlayer, inDirection);
+//	                myPlayer.move(validDirection);
+//	            } catch (CloneNotSupportedException e1) {
+//	                e1.printStackTrace();
+//	            }
+//	            checkInteractions();
+//	            myWindow.repaint();
+//	        }
+//	    }
+//	    
+//	    /**
+//	     * Removes the KeyCode from the set of pressed keys. Sets stride to 0 if no keys are pressed.
+//	     */
+//	    @Override
+//	    public void keyReleased(KeyEvent e) {
+//	        int inKey = e.getKeyCode();
+//	        myPressedKeys.remove(inKey);
+//	        
+//	        if(myPressedKeys.isEmpty()) {
+//	            myPlayer.setStride(0);
+//	            myPlayer.setSkipFrame(false);
+//	        }
+//	        myWindow.repaint();
+//	    }
+//
+//	    public void actionPerformed(ActionEvent e) {
+//	        // TODO: Auto-generated method stub 
+//	    }
+//
+//	    public void keyTyped(KeyEvent e) {
+//	        // TODO: Auto-generated method stub
+//	        
+//	    }
 
 }

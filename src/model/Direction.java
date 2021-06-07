@@ -41,6 +41,12 @@ public enum Direction {
 	 * @param thePressedKeys
 	 */
 	public static Direction generateDirection(Set<Integer> thePressedKeys) {
+	    
+	    for(Integer i : thePressedKeys) {
+	        System.out.println(i);
+	    }
+	    
+	    System.out.println();
 		
 		Direction inXDirection = null;
 		Direction inYDirection = null;
