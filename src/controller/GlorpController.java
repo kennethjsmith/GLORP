@@ -14,6 +14,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 import javax.swing.JFrame;
 
@@ -47,7 +50,9 @@ public class GlorpController implements KeyListener{
 	private final Set<Integer> myPressedKeys = new HashSet<Integer>();
 	private final HashMap<Direction, Point> myPositionChange = new HashMap<Direction, Point>();
 	private static final String[] correctSphinxResponse = {"You will never escape!", "Grrrr", ">:(", "Beginners luck"};
-
+	
+	private final static String PRESSED = "pressed ";
+    private final static String RELEASED = "released ";
 	
 	/**
 	 * Default constructor for GlorpController
@@ -71,39 +76,14 @@ public class GlorpController implements KeyListener{
         myPositionChange.put(Direction.NORTH, new Point(200, 380));
         myPositionChange.put(Direction.SOUTH, new Point(200, 20));
         
+        
         // key bindings instead of keylisteners
         String[] theDirections = {"LEFT", "RIGHT", "UP", "DOWN"};
-        for(String s : theDirections) {
-           myWindow.getRoomPanel().getInputMap().put(KeyStroke.getKeyStroke(s), s);
-           myWindow.getRoomPanel().getActionMap().put(s, new keyBinder(s));
+        for(String key : theDirections) {
+            addKeyActions(key);
        }
     }
-	
-	
-	
-	/**
-	 * Adds the pressed key's KeyCode to the set of pressed keys. Generates and validates a direction from the set,
-	 * then moves the player.
-	 */
-	@Override
-    public void keyPressed(KeyEvent e) {
-		int k = e.getKeyCode();
-        myPressedKeys.add(k);
-        
-        Direction inDirection = Direction.generateDirection(myPressedKeys);
-        Direction validDirection = null;
-        
-		if(!myPlayer.getFixed()) {
-	        try {
-				validDirection = myMaze.getCurrRoom().validateDirection(myPlayer, inDirection);
-				myPlayer.move(validDirection);
-			} catch (CloneNotSupportedException e1) {
-				e1.printStackTrace();
-			}
-	        checkInteractions();
-	        myWindow.repaint();
-		}
-    }
+
 
 	/**
 	 * A helper method, checks for item, fixture, and door interactions after a key event.
@@ -298,30 +278,6 @@ public class GlorpController implements KeyListener{
         inConsumer.start();
 
     }
-    
-    /**
-     * Removes the KeyCode from the set of pressed keys. Sets stride to 0 if no keys are pressed.
-     */
-	@Override
-    public void keyReleased(KeyEvent e) {
-		int inKey = e.getKeyCode();
-		myPressedKeys.remove(inKey);
-		
-		if(myPressedKeys.isEmpty()) {
-			myPlayer.setStride(0);
-			myPlayer.setSkipFrame(false);
-		}
-		myWindow.repaint();
-	}
-
-	public void actionPerformed(ActionEvent e) {
-		// TODO: Auto-generated method stub	
-	}
-
-	public void keyTyped(KeyEvent e) {
-		// TODO: Auto-generated method stub
-		
-	}
 	
 	private class RiddleConsumer extends Thread{
 	    private RiddlePanel myRiddlePanel;
@@ -398,20 +354,65 @@ public class GlorpController implements KeyListener{
         }
 	}
 	
+	// Key Binding/ Key Listener stuff
+	   
+    /*
+     * Multiple keys key binding solution, 
+     * Modified code of KeyBoardAnimation.java 
+     * from https://tips4java.wordpress.com/2013/06/09/motion-using-the-keyboard/
+     */
+    private void addKeyActions(String keyStroke){
+        //  Separate the key identifier from the modifiers of the KeyStroke
+
+        // don't really need..., modifiers would be like "shift" or "control"
+        int offset = keyStroke.lastIndexOf(" ");
+        String key = offset == -1 ? keyStroke :  keyStroke.substring( offset + 1 );
+        String modifiers = keyStroke.replace(key, "");
+
+        //  Get the InputMap and ActionMap of the component
+        
+//      myWindow.getRoomPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(s), s);
+//      myWindow.getRoomPanel().getActionMap().put(s, new keyBinder(s));
+        
+        InputMap inputMap = myWindow.getRoomPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = myWindow.getRoomPanel().getActionMap();
+
+        //  Create Action and add binding for the pressed key
+
+        Action pressedAction = new keyBinder(key, true);
+        String pressedKey = PRESSED + key;
+        KeyStroke pressedKeyStroke = KeyStroke.getKeyStroke(pressedKey);
+        inputMap.put(pressedKeyStroke, pressedKey);
+        actionMap.put(pressedKey, pressedAction);
+
+        //  Create Action and add binding for the released key
+
+        Action releasedAction = new keyBinder(key, false);
+        String releasedKey = modifiers + RELEASED + key;
+        KeyStroke releasedKeyStroke = KeyStroke.getKeyStroke(releasedKey);
+        inputMap.put(releasedKeyStroke, releasedKey);
+        actionMap.put(releasedKey, releasedAction);
+    }
+	
 	// private class for key bindings
 	
 	   private class keyBinder implements Action {
 	        private String myKey;
 	        private boolean isEnabled;
+	        private final boolean myAddFlag;
 	        
-	        private keyBinder(String theKey) {
+	        private keyBinder(String theKey, boolean theAddFlag) {
 	            myKey = theKey;
 	            isEnabled = true;
+	            myAddFlag = theAddFlag;
 	        }
 	        
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
 	           // System.out.println("I WORK!1");
+	            
+	            if(myAddFlag) {
+	                
 	            
 	            helper(true); // add to pressedKeys
 	            
@@ -434,7 +435,17 @@ public class GlorpController implements KeyListener{
 	            }
 	            checkInteractions();
 	            myWindow.repaint();
-	            helper(false); //removeFromPressedKeys
+	            }else {
+	               // helper(false); //removeFromPressedKeys
+	                
+	                myPressedKeys.remove(myKey);
+	                
+	                if(myPressedKeys.isEmpty()) {
+	                    myPlayer.setStride(0);
+	                    myPlayer.setSkipFrame(false);
+	                }
+	                myWindow.repaint();
+	            }
 	        }
 	        
 	        @Override
@@ -493,6 +504,54 @@ public class GlorpController implements KeyListener{
 	            }
 	                
 	        }
+	    }
+	   
+	    /**
+	     * Adds the pressed key's KeyCode to the set of pressed keys. Generates and validates a direction from the set,
+	     * then moves the player.
+	     */
+	    @Override
+	    public void keyPressed(KeyEvent e) {
+	        int k = e.getKeyCode();
+	        myPressedKeys.add(k);
+	        
+	        Direction inDirection = Direction.generateDirection(myPressedKeys);
+	        Direction validDirection = null;
+	        
+	        if(!myPlayer.getFixed()) {
+	            try {
+	                validDirection = myMaze.getCurrRoom().validateDirection(myPlayer, inDirection);
+	                myPlayer.move(validDirection);
+	            } catch (CloneNotSupportedException e1) {
+	                e1.printStackTrace();
+	            }
+	            checkInteractions();
+	            myWindow.repaint();
+	        }
+	    }
+	    
+	    /**
+	     * Removes the KeyCode from the set of pressed keys. Sets stride to 0 if no keys are pressed.
+	     */
+	    @Override
+	    public void keyReleased(KeyEvent e) {
+	        int inKey = e.getKeyCode();
+	        myPressedKeys.remove(inKey);
+	        
+	        if(myPressedKeys.isEmpty()) {
+	            myPlayer.setStride(0);
+	            myPlayer.setSkipFrame(false);
+	        }
+	        myWindow.repaint();
+	    }
+
+	    public void actionPerformed(ActionEvent e) {
+	        // TODO: Auto-generated method stub 
+	    }
+
+	    public void keyTyped(KeyEvent e) {
+	        // TODO: Auto-generated method stub
+	        
 	    }
 
 }
