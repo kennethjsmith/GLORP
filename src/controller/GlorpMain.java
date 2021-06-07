@@ -26,12 +26,12 @@ public class GlorpMain {
     	EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-            try {
-				GlorpController controller = new GlorpController();
-			} catch (LineUnavailableException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				try {
+					GlorpController controller = new GlorpController();
+				} catch (LineUnavailableException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}	
         }});
 
     }

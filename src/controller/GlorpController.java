@@ -5,11 +5,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-<<<<<<< HEAD
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeListener;
-=======
->>>>>>> heathersbranch
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -22,6 +20,7 @@ import java.util.TimerTask;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.AbstractAction;
@@ -47,6 +46,7 @@ import view.GameIcon;
 import view.GlorpGUI;
 import view.InputPanel;
 import view.RiddlePanel;
+import view.SoundEffect;
 
 
 /**
@@ -62,12 +62,6 @@ public class GlorpController {
 	private boolean myRiddleOpenFlag;
 	private final Set<Integer> myPressedKeys = new HashSet<Integer>();
 	private final HashMap<Direction, Point> myPositionChange = new HashMap<Direction, Point>();
-<<<<<<< HEAD
-	private static final String[] correctSphinxResponse = {"You will never escape!", "Grrrrrrrr", ">:(", "Beginners luck..."};
-	private static final String[] incorrectSphinxResponse = {"Now this passage is sealed... like your fate.", "*sinister laughter*", ">:)", "I've known smarter scarabs."};
-	private final static String PRESSED = "pressed ";
-    private final static String RELEASED = "released ";
-=======
 	private static final String[] correctSphinxResponse = {"You will never escape!", "Grrrrrrrr...", ">:(", "Beginners luck won't save you everytime.", "..."};
 	private static final String[] incorrectSphinxResponse = {"Now this passage is sealed... like your fate.", "*sinister laughter*", ">:)", "I've known smarter scarabs.", "..."};
 	private static final String[] runawaySphinxResponse = {"I can smell your fear.", "Coward!", "Running away can't save you.", "...", "I see your confidence is dwindling"};
@@ -77,11 +71,8 @@ public class GlorpController {
     private final static int SHORT_EXPLANATION_TIME = 1500;
     private final static int LONG_EXPLANATION_TIME = 7000;
 
->>>>>>> heathersbranch
 	private static final Random RAND = new Random();
-	
-	private Clip soundFX;
-	private static final File LOSE_SOUND = new File("src/sounds/lose.wav");
+
 	
 	/**
 	 * Default constructor for GlorpController
@@ -97,7 +88,6 @@ public class GlorpController {
         myWindow.setVisible(true);
         myWindow.setTitle("GLORP");
         
-        soundFX = AudioSystem.getClip();
         
         //myWindow.addKeyListener(this);    
         myWindow.repaint();
@@ -347,51 +337,24 @@ public class GlorpController {
                 if(answerCorrect()) {
                     myMaze.getCurrRoom().getDoors().get(inDir).setUnlocked();
                     attemptMapTraversal(inDir);
-<<<<<<< HEAD
-                    myRiddlePanel.sphinxResponse(correctSphinxResponse[RAND.nextInt(4)]); //change to be randomized
-                }else {
-=======
                     displayRiddleExplanation();
                     myRiddlePanel.sphinxResponse(correctSphinxResponse[RAND.nextInt(correctSphinxResponse.length)]); //change to be randomized
                 } else {
->>>>>>> heathersbranch
                     myMaze.getCurrRoom().getDoors().get(inDir).setBlocked();
                     if(!myMaze.canWin()) {
                     	myPlayer.setCoordinate(new PiecePoint(50,175));
                 		myPlayer.setRoomIcon(new GameIcon("src/icons/trapped_message_icon.png", 400, 150));
                 		myPlayer.setFixed(true); // change to trigger lose scenario
-<<<<<<< HEAD
-
-=======
 //                		try {
 //							myWindow.music(null);
 //						} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
 //							// TODO Auto-generated catch block
 //							e.printStackTrace();
 //						}
->>>>>>> heathersbranch
-                		try {
-							AudioInputStream ais = AudioSystem.getAudioInputStream(LOSE_SOUND);
-							soundFX.open(ais);
-							soundFX.start();
-                		} catch (UnsupportedAudioFileException | IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (LineUnavailableException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-<<<<<<< HEAD
-						}
-                		
-                		
-                    }
-                    myRiddlePanel.sphinxResponse(incorrectSphinxResponse[RAND.nextInt(4)]); //change to say correct answer/explanation
-=======
-						}	
+                		SoundEffect.LOSE.play();
                     }
                 	displayRiddleExplanation();
                     myRiddlePanel.sphinxResponse(incorrectSphinxResponse[RAND.nextInt(incorrectSphinxResponse.length)]); 
->>>>>>> heathersbranch
                 }
                     
             } else {

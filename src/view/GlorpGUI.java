@@ -41,8 +41,6 @@ public class GlorpGUI extends JFrame {
     private GlorpPanel myGlorpPanel;
     private RoomPanel myRoomPanel;
     private RiddlePanel myRiddlePanel;
-    private Clip myBackgroundMusic;
-    private FloatControl myGainControl;
 	
     private static final String TITLE = "Glorp";
     private ImageIcon ICON = new ImageIcon("src/icons/space_invader.png");
@@ -59,26 +57,7 @@ public class GlorpGUI extends JFrame {
         setIconImage(ICON.getImage());
         
         // music
-        try {
-			myBackgroundMusic = AudioSystem.getClip();
-		} catch (LineUnavailableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        try {
-			music(new File("src/sounds/wlae.wav"));
-		} catch (LineUnavailableException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (UnsupportedAudioFileException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-        myGainControl = (FloatControl) myBackgroundMusic.getControl(FloatControl.Type.MASTER_GAIN);
-        myGainControl.setValue(-80f);
+        Music.WLAE.play();
         
         //set layout
         this.setLayout(new GridBagLayout());
@@ -133,20 +112,40 @@ public class GlorpGUI extends JFrame {
         //create settings menu
         JMenu settings = new JMenu("Settings");
         JMenu sound = new JMenu("Sound");
-        JSlider volume = new JSlider(0,100,60);
-        volume.setPaintTicks(true);
-        volume.setPaintLabels(true);
-        volume.setMajorTickSpacing(20);
-        volume.setMinorTickSpacing(5);
-        // TODO: fix the scale, is this logarithmic?
-        volume.addChangeListener(e ->{
-			if(myBackgroundMusic.isOpen()) {
-				float range = myGainControl.getMaximum() - myGainControl.getMinimum();
-				float gain =(range * (float)volume.getValue()/volume.getMaximum()) + myGainControl.getMinimum();
-				myGainControl.setValue(gain);
-			}
+        JMenu music = new JMenu("Music Volume");
+        JMenu effects = new JMenu("SFX Volume");
+        
+        JSlider musicSlider = new JSlider(0,Volume.HIGH.getLevel(),Volume.MEDIUM.getLevel());
+        musicSlider.setPaintTicks(true);
+        musicSlider.setPaintLabels(true);
+        musicSlider.setMajorTickSpacing(1);
+        musicSlider.addChangeListener(e ->{
+        	int inLevel = musicSlider.getValue();
+        	Volume target = Volume.LOW;
+        	for(Volume vol : Volume.values()) {
+        		if(inLevel == vol.getLevel()) target = vol;
+        	}
+        	Music.setVolume(target.getGain());
         });
-        sound.add(volume);
+        
+        JSlider SFXSlider = new JSlider(0,Volume.HIGH.getLevel(),Volume.MEDIUM.getLevel());
+        SFXSlider.setPaintTicks(true);
+        SFXSlider.setPaintLabels(true);
+        SFXSlider.setMajorTickSpacing(1);
+        SFXSlider.addChangeListener(e ->{
+        	int inLevel = SFXSlider.getValue();
+        	Volume target = Volume.LOW;
+        	for(Volume vol : Volume.values()) {
+        		if(inLevel == vol.getLevel()) target = vol;
+        	}
+        	SoundEffect.setVolume(target.getGain());
+        });
+        
+        
+        music.add(musicSlider);
+        effects.add(SFXSlider);
+        sound.add(music);
+        sound.add(effects);
         
         //create help menu
         JMenu help = new JMenu("Help");
@@ -189,19 +188,7 @@ public class GlorpGUI extends JFrame {
 	        		}	
 	        	}
 	        	this.repaint();
-	        	try {
-	        		myBackgroundMusic.close();
-					music(new File("src/sounds/wlae.wav"));
-				} catch (LineUnavailableException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (UnsupportedAudioFileException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+	        	Music.WLAE.play();
         	}
         });
         
@@ -219,20 +206,7 @@ public class GlorpGUI extends JFrame {
 	        		}	
 	        	}
 	        	this.repaint();
-	        	
-	        	try {
-	        		myBackgroundMusic.close();
-	    			music(new File("src/sounds/athf.wav"));
-	    		} catch (UnsupportedAudioFileException e1) {
-	    			// TODO Auto-generated catch block
-	    			e1.printStackTrace();
-	    		} catch (IOException e1) {
-	    			// TODO Auto-generated catch block
-	    			e1.printStackTrace();
-	    		} catch (LineUnavailableException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+	        	Music.ATHF.play();
         	}
         });
         
@@ -265,15 +239,7 @@ public class GlorpGUI extends JFrame {
         myRiddlePanel.startUp(theRiddle);
         return myRiddlePanel;
     }
-    
-    public void music(File theAudioFile) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
-	    if(theAudioFile == null) myBackgroundMusic.close();
-	    else {
-		    AudioInputStream ais = AudioSystem.getAudioInputStream(theAudioFile);
-		    myBackgroundMusic.open(ais);
-		    myBackgroundMusic.loop(Clip.LOOP_CONTINUOUSLY);
-	    }
-    }
+   
 
 	/**
 	 * @return the myItemView
