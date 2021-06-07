@@ -53,6 +53,7 @@ public class InputPanel extends JPanel implements KeyListener{
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setPreferredSize(new Dimension(WIDTH,HEIGHT));
 		// Create a border
+		
 	    Border whiteline = BorderFactory.createLineBorder(Color.WHITE);
 	    setBorder(whiteline);
 		

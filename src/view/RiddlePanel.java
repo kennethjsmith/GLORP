@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -22,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
@@ -50,7 +52,6 @@ public class RiddlePanel extends JPanel implements Runnable{
 	private final static int HEIGHT = 500;
 	private final String TITLE = "Riddle";
 	private final GameIcon SPHINX = new GameIcon("src/icons/sphinx.png", 225,162);
-	private final GameIcon SPEECH_BUBBLE = new GameIcon("src/icons/speech_bubble.png", 290, 250);
 	private final GameIcon BACKGROUND = new GameIcon("src/icons/sand.png", WIDTH, HEIGHT);
 	private final Color OFF_WHITE = new Color(248,248,255);
 	
@@ -62,7 +63,7 @@ public class RiddlePanel extends JPanel implements Runnable{
 	private RoundJPanel myQuestionOuterPanel; 
 	private JPanel myQuestionInnerPanel;
 	private JLabel myQuestionTitle;
-	private JLabel myQuestionLabel;
+	private JTextArea myQuestionTextArea;
 	
 	/**
 	 * 
@@ -79,13 +80,14 @@ public class RiddlePanel extends JPanel implements Runnable{
 		setBorder(compound);
         setLayout(new BorderLayout()); 
         
-       // setBackground(new Color(194,178,128)); // sand
-        
         // helpers to set up question and answer panels? 
-        myQuestionBorder = new JPanel();
-        myQuestionBorder.setBackground(new Color(0,0,0,0));
-        myQuestionBorder.setBorder( new EmptyBorder(20,20,20,20));
         
+        myQuestionBorder = new JPanel();
+        myQuestionBorder.setOpaque(false);
+        myQuestionBorder.setBorder( new EmptyBorder(20,20,20,20));
+        // TODO: This code was all put into a QuestionPanel class
+        // this would be much cleaner to use, 
+        // but I was having trouble getting it to show -ken
         myQuestionOuterPanel = new RoundJPanel();
         myQuestionOuterPanel.setBackground(new Color(0,0,0,150));
         myQuestionOuterPanel.setOpaque(false); // must set to false for RoundJPanel
@@ -93,27 +95,34 @@ public class RiddlePanel extends JPanel implements Runnable{
         myQuestionOuterPanel.setLayout(new GridBagLayout());
         
         myQuestionInnerPanel = new JPanel();
-        myQuestionInnerPanel.setBackground(new Color(0,0,0,0));
+        myQuestionInnerPanel.setOpaque(false);
+        myQuestionInnerPanel.setPreferredSize(new Dimension(200,150));
         myQuestionInnerPanel.setLayout(new BoxLayout(myQuestionInnerPanel,BoxLayout.Y_AXIS));
         
+        
         myQuestionTitle = new JLabel("My inquiry for you is ...");
-        myQuestionTitle.setBackground(new Color(0,0,0,0));
+        myQuestionTitle.setOpaque(false);
         myQuestionTitle.setForeground(OFF_WHITE);
+        myQuestionTitle.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         
-        myQuestionLabel = new JLabel("No Question yet");
-        myQuestionLabel.setBackground(new Color(0,0,0,0));
-        myQuestionLabel.setForeground(OFF_WHITE);
+        myQuestionTextArea = new JTextArea("No Question yet");
+        myQuestionTextArea.setOpaque(false);
+        myQuestionTextArea.setForeground(OFF_WHITE);
         
+        myQuestionTextArea.setEditable(false);
+        myQuestionTextArea.setLineWrap(true);
+        myQuestionTextArea.setWrapStyleWord(true);
         
+        myQuestionInnerPanel.add(Box.createVerticalStrut(20));
         myQuestionInnerPanel.add(myQuestionTitle);
-        myQuestionInnerPanel.add(myQuestionLabel);
+        myQuestionInnerPanel.add(myQuestionTextArea);
         myQuestionOuterPanel.add(myQuestionInnerPanel);
         myQuestionBorder.add(myQuestionOuterPanel);
         add(myQuestionBorder, BorderLayout.PAGE_START);
         myQuestionBorder.setVisible(false);
         
         myInputBorder = new JPanel();
-        myInputBorder.setBackground(new Color(0, 0, 0, 0));
+        myInputBorder.setOpaque(false);
         myInputBorder.setBorder(new EmptyBorder(10,10,10,10));
         
         myInputPanel = new InputPanel();
@@ -161,7 +170,7 @@ public class RiddlePanel extends JPanel implements Runnable{
 	public void startUp(Riddle theRiddle) {
 	    myRiddleStatus = true; 
 	    myCurrentRiddle = theRiddle; 
-	    myQuestionLabel.setText(myCurrentRiddle.getQuestion()); 
+	    myQuestionTextArea.setText(myCurrentRiddle.getQuestion()); 
         myInputPanel.setAnswerOptions(setUpAnswers(myCurrentRiddle.getAnswerOptions()));
         
         myQuestionBorder.setVisible(true);
@@ -206,7 +215,7 @@ public class RiddlePanel extends JPanel implements Runnable{
         myInputPanel.setVisible(false);
         myInputPanel.reset();
         
-        myQuestionLabel.setText("");
+        myQuestionTextArea.setText("");
         myQuestionTitle.setText(theResponse);
     }
 
