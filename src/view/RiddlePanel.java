@@ -171,7 +171,7 @@ public class RiddlePanel extends JPanel implements Runnable{
 	    myRiddleStatus = true; 
 	    myCurrentRiddle = theRiddle; 
 	    myQuestionTextArea.setText(myCurrentRiddle.getQuestion()); 
-        myInputPanel.setAnswerOptions(setUpAnswers(myCurrentRiddle.getAnswerOptions()));
+        myInputPanel.setAnswerOptions(setUpAnswers(myCurrentRiddle.getWrongOptions()));
         
         myQuestionBorder.setVisible(true);
         myInputPanel.setVisible(true);

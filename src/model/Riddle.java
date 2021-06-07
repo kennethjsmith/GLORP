@@ -59,6 +59,14 @@ public class Riddle {
 	}
 	
 	/**
+	 * Returns explanation about answer 
+	 * @return myExplanation
+	 */
+	public String getExplanation() {
+		return myExplanation;
+	}
+	
+	/**
 	 * Compares the attempted answer to the correct answer, 
 	 * if identical 
 	 * Does checks for spelling, puncuation, capitolization
@@ -69,37 +77,12 @@ public class Riddle {
 	    return true;	    
 	}
 	
-	/**
-     * Compares the attempted answer to the correct answer
-     * If within error margin, returns true
-     * Does checks for spelling, puncuation, capitolization
-     * @param theInput
-     * @return boolean isCorrect 
-     */
-    public boolean checkAnswer(String theInput, double theErrorMargin) {
-        return true;
-    }
-	
     /**
      * Returns the correct answer for this riddle
      * @return
      */
 	public String getAnswer() {
 	    return myAnswer;
-	}
-
-
-	 /**
-	  * return array list of answer options
-	  * wrong options + the correct answer
-	  * 
-	 */
-
-	public ArrayList<String> getAnswerOptions(){
-	    //TODO: Modify this so that is randomizes the options
-	    ArrayList<String> inAnswers = (ArrayList<String>) myWrongAnswerOptions.clone();
-	    inAnswers.add(myAnswer);
-		return inAnswers;
 	}
 
 	
@@ -110,8 +93,13 @@ public class Riddle {
 		return myType;
 	}
 	
-	//TODO modify this so it works for every riddle type
-	//May need to wait to see what GUI does to complete this
+	/**
+	 * Compares the attempted answer to the correct answer, 
+	 * if identical 
+	 * Does checks for spelling, puncuation, capitolization
+	 * @param the players answer to the question
+	 * @return true if the answer was correct, false otherwise 
+	 */
 	public boolean verifyAnswer(String thePlayersAnswer) {
 		System.out.println("The players answer: " + thePlayersAnswer + ", correct answer: " + myAnswer);
 		if(thePlayersAnswer.toLowerCase().equals(myAnswer.toLowerCase())) return true;
