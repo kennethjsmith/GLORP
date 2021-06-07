@@ -111,6 +111,17 @@ public class RiddlePanel extends JPanel implements Runnable{
     }
     
     public void riddleExplanation(String theExplanation) {
+<<<<<<< HEAD
+=======
+        myInputPanel.setVisible(false);
+        myInputPanel.reset();
+        
+        
+        myQuestionPanel.setText(theExplanation);
+    }
+    
+    public void sphinxResponse(String theResponse) {
+>>>>>>> kensbranch
         myInputPanel.setVisible(false);
         myInputPanel.reset();
         

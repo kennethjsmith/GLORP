@@ -346,12 +346,7 @@ public class GlorpController {
                     	myPlayer.setCoordinate(new PiecePoint(50,175));
                 		myPlayer.setRoomIcon(new GameIcon("src/icons/trapped_message_icon.png", 400, 150));
                 		myPlayer.setFixed(true); // change to trigger lose scenario
-//                		try {
-//							myWindow.music(null);
-//						} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
-//							// TODO Auto-generated catch block
-//							e.printStackTrace();
-//						}
+
                 		try {
 							AudioInputStream ais = AudioSystem.getAudioInputStream(LOSE_SOUND);
 							soundFX.open(ais);
@@ -366,6 +361,7 @@ public class GlorpController {
                     }
                 	displayRiddleExplanation();
                     myRiddlePanel.sphinxResponse(incorrectSphinxResponse[RAND.nextInt(incorrectSphinxResponse.length)]); 
+
                 }
                     
             } else {
