@@ -161,7 +161,7 @@ public class GlorpGUI extends JFrame {
         JMenuItem instructions = new JMenuItem("Game Play Instructions");
         instructions.addActionListener(e ->{
         	InstructionsWindow inInstructions = new InstructionsWindow(ICON);
-        	inInstructions.setSize(new Dimension(POP_UP_WIDTH, POP_UP_HEIGHT+20));
+        	inInstructions.setSize(new Dimension(POP_UP_WIDTH, POP_UP_HEIGHT+30));
         	inInstructions.setLocationRelativeTo(this);
         });
         
