@@ -386,9 +386,9 @@ public class GlorpController {
         }
         
         private int displayRiddleExplanation() {
-    		String explanation = myRiddlePanel.getRiddle().getExplanation();
-    		System.out.println("*************");
-    		if(explanation.length() > 1) {
+            String explanation = myRiddlePanel.getRiddle().getExplanation();
+            System.out.println(explanation);
+            if(explanation.length() > 1) {
     			myRiddlePanel.riddleExplanation(explanation);
             	if(explanation.length() > 60) {
             	    return LONG_EXPLANATION_TIME;
