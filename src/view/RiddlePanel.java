@@ -25,13 +25,15 @@ import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-
-
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import model.Player;
 import model.Riddle;
@@ -62,8 +64,7 @@ public class RiddlePanel extends JPanel implements Runnable{
 	private JPanel myQuestionBorder; 
 	private RoundJPanel myQuestionOuterPanel; 
 	private JPanel myQuestionInnerPanel;
-	private JLabel myQuestionTitle;
-	private JTextArea myQuestionTextArea;
+	private JTextPane myQuestionPane;
 	
 	/**
 	 * 
@@ -93,30 +94,26 @@ public class RiddlePanel extends JPanel implements Runnable{
         myQuestionOuterPanel.setOpaque(false); // must set to false for RoundJPanel
         myQuestionOuterPanel.setPreferredSize(new Dimension(250,150));
         myQuestionOuterPanel.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
         
-        myQuestionInnerPanel = new JPanel();
-        myQuestionInnerPanel.setOpaque(false);
-        myQuestionInnerPanel.setPreferredSize(new Dimension(200,150));
-        myQuestionInnerPanel.setLayout(new BoxLayout(myQuestionInnerPanel,BoxLayout.Y_AXIS));
+//        myQuestionInnerPanel = new JPanel();
+//        myQuestionInnerPanel.setOpaque(false);
+//        myQuestionInnerPanel.setPreferredSize(new Dimension(200,150));
+//        myQuestionInnerPanel.setLayout(new GridBagLayout());
+//        
+        myQuestionPane = new JTextPane();
+        myQuestionPane.setOpaque(false);
+        myQuestionPane.setForeground(OFF_WHITE);
+        myQuestionPane.setPreferredSize(new Dimension(200,100));
+        myQuestionPane.setEditable(false);
         
+        StyledDocument doc = myQuestionPane.getStyledDocument();
+        SimpleAttributeSet center = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        doc.setParagraphAttributes(0, doc.getLength(), center, false);
         
-        myQuestionTitle = new JLabel("My inquiry for you is ...");
-        myQuestionTitle.setOpaque(false);
-        myQuestionTitle.setForeground(OFF_WHITE);
-        myQuestionTitle.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-        
-        myQuestionTextArea = new JTextArea("No Question yet");
-        myQuestionTextArea.setOpaque(false);
-        myQuestionTextArea.setForeground(OFF_WHITE);
-        
-        myQuestionTextArea.setEditable(false);
-        myQuestionTextArea.setLineWrap(true);
-        myQuestionTextArea.setWrapStyleWord(true);
-        
-        myQuestionInnerPanel.add(Box.createVerticalStrut(20));
-        myQuestionInnerPanel.add(myQuestionTitle);
-        myQuestionInnerPanel.add(myQuestionTextArea);
-        myQuestionOuterPanel.add(myQuestionInnerPanel);
+        myQuestionOuterPanel.add(myQuestionPane,c);
         myQuestionBorder.add(myQuestionOuterPanel);
         add(myQuestionBorder, BorderLayout.PAGE_START);
         myQuestionBorder.setVisible(false);
@@ -170,7 +167,7 @@ public class RiddlePanel extends JPanel implements Runnable{
 	public void startUp(Riddle theRiddle) {
 	    myRiddleStatus = true; 
 	    myCurrentRiddle = theRiddle; 
-	    myQuestionTextArea.setText(myCurrentRiddle.getQuestion()); 
+	    myQuestionPane.setText(myCurrentRiddle.getQuestion()); 
         myInputPanel.setAnswerOptions(setUpAnswers(myCurrentRiddle.getWrongOptions()));
         
         myQuestionBorder.setVisible(true);
@@ -213,8 +210,7 @@ public class RiddlePanel extends JPanel implements Runnable{
         myInputPanel.setVisible(false);
         myInputPanel.reset();
         
-        myQuestionTextArea.setText("");
-        myQuestionTitle.setText(theResponse);
+        myQuestionPane.setText(theResponse);
     }
 
     
@@ -224,12 +220,7 @@ public class RiddlePanel extends JPanel implements Runnable{
      */
     public void shutDown() {
         myRiddleStatus = false; //setting this to false ends producer thread
-        myQuestionBorder.setVisible(false);
-        
-        myQuestionTitle.setText("My inquiry for you is ...");
-        
-        System.out.println("Shut down riddle panel");
-        
+        myQuestionBorder.setVisible(false);   
     }   
     
     
