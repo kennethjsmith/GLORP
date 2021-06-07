@@ -115,7 +115,6 @@ public class RiddlePanel extends JPanel implements Runnable{
         
         myInputPanel = new InputPanel();
         myInputBorder.add(myInputPanel);
-       
         add(myInputBorder, BorderLayout.PAGE_END);
         myInputPanel.setVisible(false); // replace with a block or something, so looks like sphinx sitting on table
         
