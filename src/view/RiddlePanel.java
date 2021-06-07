@@ -175,9 +175,7 @@ public class RiddlePanel extends JPanel implements Runnable{
         
         myQuestionBorder.setVisible(true);
         myInputPanel.setVisible(true);
-        
-        System.out.println("Started up riddle panel");
-	}
+  	}
 	
 	/**
 	 * 
