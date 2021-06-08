@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Objects;
-
+import java.lang.Object;
 /**
  * A Riddle contains a question, answer, a list of wrong answer options, and a type.
  * Riddle types include true/false, multiple choice, and fill-in-the-blank.
