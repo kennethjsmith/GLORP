@@ -102,13 +102,13 @@ public class RiddlePanel extends JPanel implements Runnable{
     }
     
     public void riddleExplanation(String theExplanation) {
-        myInputPanel.setVisible(false);
+        myInputPanel.setVisible(false); //movement freezes once this is called
         myInputPanel.reset();
         myQuestionPanel.setText(theExplanation);
     }
     
     public void sphinxResponse(String theResponse) {
-        myInputPanel.setVisible(false);
+        myInputPanel.setVisible(false); // ... but movement does not freeze when this is called? 
         myInputPanel.reset();
         myQuestionPanel.setText(theResponse);
     }
@@ -133,13 +133,13 @@ public class RiddlePanel extends JPanel implements Runnable{
     public void run() {
         // while riddle activated & not yet submitted
         while(myRiddleStatus && !(myInputPanel.hasSubmitted())) {     
-            try {
-                Thread.sleep(5);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                System.out.println("Error in RiddlePanel run method!");
-                e.printStackTrace();
-            }
+//            try {
+//                Thread.sleep(5);
+//            } catch (InterruptedException e) {
+//                // TODO Auto-generated catch block
+//                System.out.println("Error in RiddlePanel run method!");
+//                e.printStackTrace();
+//            }
         } 
     }
 }

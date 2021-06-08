@@ -56,7 +56,7 @@ public class GlorpController {
     private static final String[] runawaySphinxResponse = {"I can smell your fear.", "Coward!", "Running away can't save you.", "I see your confidence is dwindling", "...", "..."};
     private final static String PRESSED = "pressed ";
     private final static String RELEASED = "released ";
-    private final static int SPINX_RESPONSE_TIME = 1500;
+    private final static int SPHINX_RESPONSE_TIME = 1500;
     private final static int SHORT_EXPLANATION_TIME = 1500;
     private final static int LONG_EXPLANATION_TIME = 7000;
     private static final Random RAND = new Random();
@@ -322,12 +322,12 @@ public class GlorpController {
 
         @Override
         public void run() {
-            int responseTime = SPINX_RESPONSE_TIME;
+            int responseTime = SPHINX_RESPONSE_TIME;
             
           //while no message || player still in door region 
             while( (!myRiddlePanel.hasResponse()) && checkDoorZones() != null){          
                 try {
-                    Thread.sleep(5);
+                    RiddleConsumer.sleep(5);
                 } catch (InterruptedException e) {
                     System.out.println("Error in GlorpController run method!");
                     e.printStackTrace();
@@ -340,7 +340,7 @@ public class GlorpController {
                 if(answerCorrect()) {
                     myMaze.getCurrRoom().getDoors().get(inDir).setUnlocked();
                     attemptMapTraversal(inDir);
-                    displayRiddleExplanation();  //shouldnt explain if they got it right, bc they know the answer
+                    //responseTime = displayRiddleExplanation();  //shouldnt explain if they got it right, bc they know the answer
                     myRiddlePanel.sphinxResponse(correctSphinxResponse[RAND.nextInt(correctSphinxResponse.length)]); //change to be randomized
                 } else {
                     myMaze.getCurrRoom().getDoors().get(inDir).setBlocked();
@@ -362,7 +362,9 @@ public class GlorpController {
 						}	
                     }
                     responseTime = displayRiddleExplanation();
-                    myRiddlePanel.sphinxResponse(incorrectSphinxResponse[RAND.nextInt(incorrectSphinxResponse.length)]); 
+                    if(responseTime == SPHINX_RESPONSE_TIME) {
+                        myRiddlePanel.sphinxResponse(incorrectSphinxResponse[RAND.nextInt(incorrectSphinxResponse.length)]); 
+                    }
                 }
                     
             } else {
@@ -370,9 +372,10 @@ public class GlorpController {
             }
     
             // display response
-            myWindow.repaint();
+            myWindow.repaint(); 
+            
             try {
-                Thread.sleep(responseTime);
+                RiddleConsumer.sleep(responseTime);
                     
             } catch (InterruptedException e) {
                 System.out.println("Error in GlorpController run method!");
@@ -395,7 +398,7 @@ public class GlorpController {
             	}else 
             	    return SHORT_EXPLANATION_TIME;
     		}else 
-    		    return SPINX_RESPONSE_TIME;
+    		    return SPHINX_RESPONSE_TIME;
     	}
         
 	}

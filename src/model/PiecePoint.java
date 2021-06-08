@@ -9,7 +9,7 @@ import java.util.Random;
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
  * @version 5.14.21
  */
-public class PiecePoint extends Point {
+public class PiecePoint extends Point implements Serializable{
     
     // ... not generating ID... Point implements serializable?
 	

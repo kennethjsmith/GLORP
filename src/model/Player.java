@@ -26,7 +26,7 @@ public class Player extends GamePiece implements Cloneable, Serializable{
     // fields
 	private PiecePoint myCoordinate;
 	private GameIcon myRoomIcon;
-	private final GameIcon myMapIcon = new GameIcon("src/icons/alien_map_icon.png"); //TODO: add mapIcon
+	private static final GameIcon myMapIcon = new GameIcon("src/icons/alien_map_icon.png"); //TODO: add mapIcon
 	
 	private ArrayList<ItemType> myInventory;
 	private Skin mySkin;

@@ -32,8 +32,8 @@ public class Room implements Serializable{
 	private Player myPlayer;
     // why does room contain the player? 
 	
-	private GameIcon myLargeIcon;
-	private GameIcon mySmallIcon;
+	private transient GameIcon myLargeIcon; // trouble serializing ImageIcons
+	private transient GameIcon mySmallIcon; // trouble serializing ImageIcons
 	private boolean isWinRoom;
 	private boolean isStartRoom;
 	private boolean isCurrentRoom;
