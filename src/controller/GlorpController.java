@@ -105,7 +105,7 @@ public class GlorpController {
         String[] theDirections = {"LEFT", "RIGHT", "UP", "DOWN"};
         for(String key : theDirections) {
             addKeyActions(key);
-       }
+        }
     }
 
 
@@ -450,24 +450,23 @@ public class GlorpController {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
 	            if(myAddFlag) {
-	                
-	            
-	            helper(true); // add to pressedKeys
-	            
-	            Direction inDirection = Direction.generateDirection(myPressedKeys);
-	            Direction validDirection = null;
-
-	            try {
-	                validDirection = myMaze.getCurrRoom().validateDirection(myPlayer, inDirection);
-	                myPlayer.move(validDirection);
-	            } catch (CloneNotSupportedException e1) {
-	                e1.printStackTrace();
-	            }
-	            checkInteractions();
-	            myWindow.repaint();
-	            }else {
-	                helper(false); //remove from pressedKeys
-	            }
+	            	helper(true); // add to pressedKeys
+		            Direction inDirection = Direction.generateDirection(myPressedKeys);
+		            Direction validDirection = null;
+	
+		            try {
+		                validDirection = myMaze.getCurrRoom().validateDirection(myPlayer, inDirection);
+		                myPlayer.move(validDirection);
+		            } catch (CloneNotSupportedException e1) {
+		                e1.printStackTrace();
+		            }
+		            
+		            checkInteractions();
+		            myWindow.repaint();
+		        }
+	            else {
+		            helper(false); //remove from pressedKeys
+		        }
 	        }
 	        
 	        //helper
