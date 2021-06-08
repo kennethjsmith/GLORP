@@ -7,6 +7,7 @@ public enum SoundEffect {
 	ITEM("src/sounds/item.wav"),
 	EXPLOSION("src/sounds/explosion.wav"),
 	WALK("src/sounds/walk.wav"),
+	MOON_WALK("src/sounds/moon_walk.wav"),
 	WIN("src/sounds/win.wav"),
     LOSE("src/sounds/lose.wav");   // explosion
    

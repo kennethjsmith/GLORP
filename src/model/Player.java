@@ -96,7 +96,10 @@ public class Player extends GamePiece implements Cloneable {
 			myIconDirection = IconDirection.generateIconDirection(theDirection, myIconDirection);
 			if(!skipFrame) {
 				myStride++;
-				if(!isClone) SoundEffect.WALK.play();
+				if(!isClone) {
+					if(mySkin.getType() == SkinType.ALIEN) SoundEffect.WALK.play();
+					if(mySkin.getType() == SkinType.MOONINITE) SoundEffect.MOON_WALK.play();
+				}
 			}
 			skipFrame = !skipFrame;
 			if(myStride > 4) myStride = 1;
