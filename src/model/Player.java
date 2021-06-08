@@ -9,6 +9,8 @@ import java.util.Set;
 import javax.swing.ImageIcon;
 
 import view.GameIcon;
+import view.Music;
+import view.SoundEffect;
 
 /**
  * Represents the player that the user will move throughout the maze.
@@ -30,6 +32,7 @@ public class Player extends GamePiece implements Cloneable {
 	private Rectangle myIconArea;
 	private Rectangle myBase;
 	private boolean isFixed;
+	private boolean isClone;
 
 	private static final int SPEED = 20;
 	private static final int PLAYER_ROOM_ICON_SIZE = 100;
@@ -51,6 +54,7 @@ public class Player extends GamePiece implements Cloneable {
 		myIconArea = new Rectangle(myCoordinate, new Dimension (mySkin.getIconWidth(), mySkin.getIconHeight()));
 		myBase = new Rectangle((int)myCoordinate.getX()+10, (int)myCoordinate.getY()+(mySkin.getIconHeight()-20), mySkin.getIconWidth()-20, 20);
 		isFixed = false;
+		isClone = false;
 	}
 	
 	/**
@@ -67,6 +71,7 @@ public class Player extends GamePiece implements Cloneable {
 		skipFrame = false;
 		myIconArea = new Rectangle(myCoordinate, new Dimension (mySkin.getIconWidth(), mySkin.getIconHeight()));
 		myBase = new Rectangle((int)myCoordinate.getX()+10, (int)myCoordinate.getY()+(mySkin.getIconHeight()-20), mySkin.getIconWidth()-20, 20);
+		isClone = false;	
 	}
 	
 	/**
@@ -91,6 +96,7 @@ public class Player extends GamePiece implements Cloneable {
 			myIconDirection = IconDirection.generateIconDirection(theDirection, myIconDirection);
 			if(!skipFrame) {
 				myStride++;
+				if(!isClone) SoundEffect.WALK.play();
 			}
 			skipFrame = !skipFrame;
 			if(myStride > 4) myStride = 1;
@@ -212,7 +218,7 @@ public class Player extends GamePiece implements Cloneable {
 	    clone.myBase = (Rectangle) this.myBase.clone();
 	    clone.myIconDirection = this.myIconDirection;
 	    clone.myStride = this.myStride;
-
+	    clone.isClone = true;
 	    return clone;
 	}
 	

@@ -4,7 +4,11 @@ import java.io.*;
 import javax.sound.sampled.*;
 
 public enum SoundEffect {
-   LOSE("src/sounds/lose.wav");   // explosion
+	ITEM("src/sounds/item.wav"),
+	EXPLOSION("src/sounds/explosion.wav"),
+	WALK("src/sounds/walk.wav"),
+	WIN("src/sounds/win.wav"),
+    LOSE("src/sounds/lose.wav");   // explosion
    
    // Each sound effect has its own clip, loaded with its own sound file.
    private Clip myClip;
@@ -33,7 +37,7 @@ public enum SoundEffect {
    
    // Play or Re-play the sound effect from the beginning, by rewinding.
    public void play() {
-	   if (myClip.isRunning()) myClip.stop();   // Stop the player if it is still running
+	   //if (myClip.isRunning()) myClip.stop();   // Stop the player if it is still running
        myClip.setFramePosition(0); // rewind to the beginning
        myClip.start();     // Start playing
    }

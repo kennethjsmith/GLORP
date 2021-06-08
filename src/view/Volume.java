@@ -1,7 +1,7 @@
 package view;
 
 public enum Volume {
-    MUTE(0, -80f), LOW(1, -60f), MEDIUM(2, -40f), HIGH(3, -20f);
+    MUTE(0, -80f), LOW(1, -50f), MEDIUM(2, -40f), HIGH(3, -20f);
 
 	private final int myLevel;
 	private final float myGain;

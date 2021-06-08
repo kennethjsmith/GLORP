@@ -41,13 +41,17 @@ public enum Music {
 	   
 	   // stop all music, then play this
 	   public void play() {
-		   for (Music music : Music.values()) { 
-			    music.myClip.stop(); 
-			}
+		   stop();
 		   
 		   if (myClip.isRunning()) myClip.stop();   // Stop the player if it is still running
 	       myClip.setFramePosition(0); // rewind to the beginning
 	       myClip.loop(Clip.LOOP_CONTINUOUSLY); 
+	   }
+	   
+	   public static void stop() {
+		   for (Music music : Music.values()) { 
+			    music.myClip.stop(); 
+			}
 	   }
 	   
 	   public static void setVolume(float theVolume) {

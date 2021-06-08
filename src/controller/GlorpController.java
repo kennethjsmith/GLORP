@@ -45,6 +45,7 @@ import model.Room;
 import view.GameIcon;
 import view.GlorpGUI;
 import view.InputPanel;
+import view.Music;
 import view.RiddlePanel;
 import view.SoundEffect;
 
@@ -138,6 +139,7 @@ public class GlorpController {
     		myMaze.getCurrRoom().setItem(null);
     		myMaze.getCurrRoom().setCurrentRoom(true);
     		myWindow.getGlorpPanel().getItemView().update(myPlayer);
+    		SoundEffect.ITEM.play();
     	}
     }
     
@@ -155,6 +157,7 @@ public class GlorpController {
     			inFixture.setInteractionZone(new Rectangle(new Dimension(0,0)));
     			inFixture.setMyYCoordinate(inFixture.getMyYCoordinate()-60);
     			inFixture.setMyXCoordinate(inFixture.getMyXCoordinate()-10);
+    			SoundEffect.EXPLOSION.play();
     			TimerTask task = new TimerTask() {
     		        int i = 0;
     		        @Override
@@ -181,6 +184,8 @@ public class GlorpController {
         		myPlayer.setCoordinate(new PiecePoint(150,175));
         		myPlayer.setRoomIcon(new GameIcon("src/icons/win_message_icon.png", 220, 150));
         		myPlayer.setFixed(true);
+        		Music.stop();
+        		SoundEffect.WIN.play();
     			TimerTask task = new TimerTask() {
     		        int i = 0;
     		        @Override
@@ -207,6 +212,8 @@ public class GlorpController {
         		myPlayer.setCoordinate(new PiecePoint(150,175));
         		myPlayer.setRoomIcon(new GameIcon("src/icons/win_message_icon.png", 220, 150));
         		myPlayer.setFixed(true);
+        		Music.stop();
+        		SoundEffect.WIN.play();
     			TimerTask task = new TimerTask() {
     		        int i = 0;
     		        @Override
@@ -351,6 +358,7 @@ public class GlorpController {
 //							// TODO Auto-generated catch block
 //							e.printStackTrace();
 //						}
+                		Music.stop();
                 		SoundEffect.LOSE.play();
                     }
                 	displayRiddleExplanation();
