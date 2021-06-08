@@ -6,7 +6,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import view.GameIcon;
-import view.Music;
 import view.SoundEffect;
 
 /**

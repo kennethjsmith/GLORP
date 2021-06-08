@@ -66,8 +66,7 @@ public class InputPanel extends RoundJPanel {
     public void reset() {
         hasSubmitted = false;
         myInputView = null;
-        this.removeAll();
-        
+        this.removeAll();    
     }
     
     // TODO: enums for riddle types could simplify this and other sections

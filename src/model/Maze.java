@@ -2,20 +2,10 @@ package model;
 
 import java.util.Objects;
 import java.util.Random;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Random;
 
 import controller.SerializeGame;
-import view.GameIcon;
 
 /**
  * The maze has all the rooms in a 2D array with a buffer of size 1 around the border.
@@ -253,8 +243,6 @@ public class Maze implements Serializable{
 		
 		myCurrentRoom.setCurrentRoom(true);
 		myCurrentRoom.setPlayer(myPlayer); 
-		
-		System.out.println("Current index row: " + myCurrentRoom.getIndex().getRow() + ", " + myCurrentRoom.getIndex().getCol());
 	}
 	
 	/**
