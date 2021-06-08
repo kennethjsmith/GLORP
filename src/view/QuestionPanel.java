@@ -38,7 +38,7 @@ public class QuestionPanel extends RoundJPanel {
         myQuestionPane.setOpaque(false);
         myQuestionPane.setForeground(OFF_WHITE);
         myQuestionPane.setFont(new Font("SansSerif", Font.BOLD, 12));
-        myQuestionPane.setPreferredSize(new Dimension(200,100));
+        myQuestionPane.setPreferredSize(new Dimension(200,125));
         myQuestionPane.setEditable(false);
         
         StyledDocument doc = myQuestionPane.getStyledDocument();

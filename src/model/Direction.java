@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.event.KeyEvent;
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -8,9 +9,10 @@ import java.util.Set;
  * @authors Heather Finch, Katelynn Oleson, Ken Smith
  * @version
  */
-public enum Direction {
-	NORTH("N", 0, -1),
-	NORTHEAST("NE", 1, -1),
+public enum Direction implements Serializable{ // .. not generating a serialize ID
+    
+    NORTH("N", 0, -1),
+    NORTHEAST("NE", 1, -1),
 	EAST("E", 1, 0),
 	SOUTHEAST("SE", 1, 1),
 	SOUTH("S", 0, 1),

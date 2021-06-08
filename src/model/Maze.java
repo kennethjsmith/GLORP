@@ -1,6 +1,20 @@
 package model;
 
+import java.util.Objects;
 import java.util.Random;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Random;
+
+import controller.SerializeGame;
 import view.GameIcon;
 
 /**
@@ -9,48 +23,57 @@ import view.GameIcon;
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
  * @version 5.14.21
  */
-public class Maze {
-	// fields
+public class Maze implements Serializable{
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 7714896058615502865L;
+
+    // fields
+    
+    //Data map for serialization
+    private static HashMap<String, Object> myDataMap;
+
 	// The 2D array that stores each room
-	private Room[][] myMaze;
+	private static Room[][] myMaze;
 	
+// cant be final for serialization
 	// The player
-	private final Player myPlayer;
+	private static Player myPlayer; 
 	
 	// The room our Player is currently in
-	private Room myCurrentRoom;
+	private static Room myCurrentRoom;
 
 	// The room the player starts in
-	private Room myStartRoom;
+	private static Room myStartRoom;
 	
 	// The room that contains the key (used to unlock chest in win room)
-	private Room myKeyRoom;
+	private static Room myKeyRoom;
 
 	// The room the player must get to so that they can win
-	private Room myWinRoom;
+	private static Room myWinRoom;
 	
 	// Provides information about whether we can access the win room
-	private boolean myCanAccessWinRoom;
+	private static boolean myCanAccessWinRoom;
 	
 	// Provides information about whether we can access the key room
-	private boolean myCanAccessKeyRoom;
+	private static boolean myCanAccessKeyRoom;
 	
-	// The number of rows in the maze that store rooms
+	// The number of rows in the maze that store rooms.
 	private final int LENGTH = 7;
 	
-	// The number of columns in the maze that store rooms
+	// The number of columns in the maze that store rooms.
 	private final int WIDTH = 7;
 	
 	// The border around the entire room is 1 space wide on each side.
 	// This is 2 to account for the buffer on both sides.
 	private final int BORDER_BUFFER = 2;
 	
+//  cant be final if gonna serialize 
 	// Creates the maze.
-    private static final Maze THISMAZE = new Maze();
+    private final static Maze THISMAZE = new Maze(); 
 
-    /**
-     * A private constructor due to singleton pattern.
-     */
+    // Constructor - private due to singleton pattern.
     private Maze() {
 		
 		// Initialize with row-major: Room[rows][columns]
@@ -66,12 +89,12 @@ public class Maze {
         blockBorderRooms(); // create "border wall" of completely blocked rooms surounding map
         myCanAccessWinRoom = true;
         myCanAccessKeyRoom = true;
-  
+        setUpNameObjectMap();
 	}
 	
 	/**
 	 * Getter for the maze instance.
-	 * @return
+	 * @return THISMAZE an instance of the maze
 	 */
 	public static Maze getInstance() {
 		return THISMAZE;
@@ -82,11 +105,6 @@ public class Maze {
 	 * Creates and adds rooms to myMaze. 
 	 */
 	private void addRooms() {
-//<<<<<<< HEAD
-//		for(int r = 0; r < LENGTH+BORDER_BUFFER; r++) {
-//			for(int c = 0; c < WIDTH+BORDER_BUFFER; c++) {
-//				myMaze[r][c] = new Room(myPlainRoomIcon, myPlainRoomIcon, r, c);
-//=======
 		for(int row = 0; row < LENGTH+BORDER_BUFFER; row++) {
 			for(int col = 0; col < WIDTH+BORDER_BUFFER; col++) {
 				myMaze[row][col] = new Room(row, col);
@@ -174,25 +192,18 @@ public class Maze {
 	     Random rand = new Random();
 	     return rand.nextInt(theMax - theMin + 1) + theMin;
 	 }
-	 
-//    /*
-//     * Generates a random index between two numbers (min val, max val) 
-//     */
-//     private static int generateRandom(int theMin, int theMax) {
-//         Random rand = new Random();
-//         return rand.nextInt(theMax - theMin + 1) + theMin;
-//         // highest val is ((theMax - theMin + 1) - 1) + theMin = theMax
-//         // lowest val is (0) + theMin = theMin
-//     }
      
 	/**
 	 * Check if moving in a certain direction is valid.
 	 * Returns true if the user is not only the border of the maze AND if the door is not blocked
 	 * Does not check if the door is locked or unlocked
-	 * @param theDirection
-	 * @return boolean canMove
+	 * @param theDirection the direction the player wants to move in
+	 * @return boolean canMove "yes" if the player can move in the direction provided, "no" otherwise
 	 */
 	public boolean isValidTraversal(Direction theDirection, Room theRoom) {
+		Objects.requireNonNull(theDirection);
+		Objects.requireNonNull(theRoom);
+		
 	    RoomIndex currIndex = myCurrentRoom.getIndex();
         int row = currIndex.getRow();
         int col = currIndex.getCol();
@@ -209,9 +220,11 @@ public class Maze {
 	// TODO: add exception handeling to move method
 	/**
 	 * Move in a direction through the maze.
-	 * @param theDirection
+	 * @param theDirection the direction the player will move in
 	 */
 	public void traverseMaze(Direction theDirection) {
+		Objects.requireNonNull(theDirection);
+		
 		Room tempCurrentRoom = myCurrentRoom;
 		RoomIndex currIndex = myCurrentRoom.getIndex();
 		int inRow = currIndex.getRow();
@@ -239,12 +252,14 @@ public class Maze {
 		tempCurrentRoom.setPlayer(null);
 		
 		myCurrentRoom.setCurrentRoom(true);
-		myCurrentRoom.setPlayer(myPlayer); //TODO use add player instead when we have doors
+		myCurrentRoom.setPlayer(myPlayer); 
+		
+		System.out.println("Current index row: " + myCurrentRoom.getIndex().getRow() + ", " + myCurrentRoom.getIndex().getCol());
 	}
 	
 	/**
-	 * Getter for the current room the player is in
-	 * @return
+	 * Getter for the current room the player is in.
+	 * @return the current room
 	 */
 	public Room getCurrRoom() {
 	    return myCurrentRoom;
@@ -252,43 +267,38 @@ public class Maze {
 	
 	/**
 	 * Getter for the Player
-	 * @return
+	 * @return the player
 	 */
 	public Player getPlayer() {
 	    return myPlayer;
 	}
 	
 	/**
-	 * Returns the room at the provided row and column
+	 * Fins and returns the room at the provided row and column.
 	 * @param theRow
 	 * @param theColumn
-	 * @return
+	 * @return Room the room at the provided row and column
 	 */
 	public Room getRoom(int theRow, int theColumn) {
 		if(theRow < 0 || theColumn < 0) throw new 
 				IllegalArgumentException("getRoom error: The index of the rooms cannot be negative");
 		else if(theRow > (LENGTH) || theColumn > (WIDTH)) 
 		    throw new IllegalArgumentException("getRoom error: The index of the rooms cannot be greater than the size of the maze");
-		
-		// Using the line below does not return the correct room for testing purposes.
-		// Not sure if this method will be needed anywhere else. 
-		// Logic is so the client does not know about the buffer rooms and cannot access the buffer rooms
-		//return myMaze[theRow + BORDER_BUFFER/2][theColumn + BORDER_BUFFER/2];
 	
 		return myMaze[theRow][theColumn];
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Returns the room the player started at.
+	 * @return Room the room the player started at
 	 */
 	public Room getMyStartRoom() {
 		return myStartRoom;
 	}
 
 	/**
-	 * 
-	 * @param theStartRoom
+	 * Sets the room the player starts at.
+	 * @param theStartRoom the room the player will be starting at
 	 */
 	public void setMyStartRoom(Room theStartRoom) {
 		this.myStartRoom = theStartRoom;
@@ -342,17 +352,14 @@ public class Maze {
         return WIDTH;
     }
 	
-
 	// Returns true if the row and column are valid, and false otherwise
 	// TODO: containsRoom method is redundant unless we decide to make some spaces in the grid not exist as rooms.
 	public boolean containsRoom(int theRow, int theColumn) {
 	    if(theRow < 0 || theColumn < 0) return false;
-	    else if(theRow >= (LENGTH) || theColumn >= (WIDTH)) return false;
+	    else if(theRow > (LENGTH) || theColumn > (WIDTH)) return false;
 		else return true;
 	}
-	
 	 
-	
 	/**
 	 * Searches for a path from the current room to the win room 
 	 * to see if the user can win the game
@@ -367,33 +374,32 @@ public class Maze {
 			// check if we can access the room with the key
 			myCanAccessKeyRoom = false;
 	        depthFirstSearchMaze(myCurrentRoom.getIndex().getRow(),  myCurrentRoom.getIndex().getCol(), visited, "key", myKeyRoom);  	        
-	        if(myCanAccessKeyRoom == false) return false;
+	        if(myCanAccessKeyRoom == false) {
+	        	return false;
+	        }
 		}
 		
 		// check if we can access the win room
 		visited = new boolean[LENGTH + BORDER_BUFFER][WIDTH + BORDER_BUFFER];
 		myCanAccessWinRoom = false;
         depthFirstSearchMaze(myCurrentRoom.getIndex().getRow(),  myCurrentRoom.getIndex().getCol(), visited, "win", myWinRoom);     
-  
         return myCanAccessWinRoom;
 	}
 	
 	
 	// Helper method for canWin. Uses depth first search to see if the win room is accessible
 	private void depthFirstSearchMaze(int theRow, int theColumn, boolean[][] theVisitedRooms, String theRoom, Room theGoalRoom) {				
-		
-		if(theRoom.equals("key") && myCanAccessKeyRoom == true) return;
-		else if(theRoom.equals("win") && myCanAccessWinRoom == true) return;		
+				
+		if(theGoalRoom.equals(myKeyRoom) && myCanAccessKeyRoom == true) return;
+		else if(theGoalRoom.equals(myWinRoom) && myCanAccessWinRoom == true) return;		
 		
 		// return if we've hit the end of the maze.
-	    if (theRow <= 0 || theColumn <= 0 || theRow > LENGTH - 1 || theColumn > WIDTH - 1 || theVisitedRooms[theRow][theColumn]) {
+	    if (theRow <= 0 || theColumn <= 0 || theRow > LENGTH + BORDER_BUFFER - 1 || theColumn > WIDTH + BORDER_BUFFER - 1 || theVisitedRooms[theRow][theColumn]) {
 	    	return;
 	    }
 	    
 	    // return if this room doesn't exist
-	    if(!this.containsRoom(theRow, theColumn)){
-	    	return;
-	    }
+	    if(!this.containsRoom(theRow, theColumn)) return;
 	    
 	    Room currentRoom = myMaze[theRow][theColumn];
 	    
@@ -401,43 +407,26 @@ public class Maze {
 	    // TODO, should I use a "break" to exit the depthFirstSearchMaze method once the winRoom has been found?
 	    // Otherwise the DFS could recurse further.
 	    if(currentRoom == theGoalRoom) {
-	    	if(theRoom.equals("key")) myCanAccessKeyRoom = true;
+	    	if(theGoalRoom.equals(myKeyRoom)) myCanAccessKeyRoom = true;
 	    	else myCanAccessWinRoom = true;
 	    	return;
 	    } else {
-	
+	    	
 		    //mark the cell visited
 		    theVisitedRooms[theRow][theColumn] = true;
 		    
-		    // if the right door is unlocked:
+		    // if the right door is not blocked:
 		    if(!currentRoom.getDoors().get(Direction.EAST).isBlocked()) depthFirstSearchMaze(theRow, theColumn + 1, theVisitedRooms, theRoom, theGoalRoom); // go right
 		    		    
-		    // if the left door is unlocked:
+		    // if the left door is not blocked:
 		    if(!currentRoom.getDoors().get(Direction.WEST).isBlocked()) depthFirstSearchMaze(theRow, theColumn - 1, theVisitedRooms, theRoom, theGoalRoom); //go left
 		    
-		    // if the bottom door is unlocked:
-		    if(!currentRoom.getDoors().get(Direction.SOUTH).isBlocked())	depthFirstSearchMaze(theRow + 1, theColumn, theVisitedRooms, theRoom, theGoalRoom); //go down
+		    // if the bottom door is not blocked:
+		    if(!currentRoom.getDoors().get(Direction.SOUTH).isBlocked()) depthFirstSearchMaze(theRow + 1, theColumn, theVisitedRooms, theRoom, theGoalRoom); //go down
 		    
-		    // if the top door is unlocked:
+		    // if the top door is not blocked:
 		    if(!currentRoom.getDoors().get(Direction.NORTH).isBlocked()) depthFirstSearchMaze(theRow - 1, theColumn, theVisitedRooms, theRoom, theGoalRoom); // go up
 		}
-	}
-
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		for(int row = 1; row <= LENGTH; row++) {
-			for(int col = 1; col <= WIDTH; col++) {
-				Room currRoom = getRoom(row, col);
-
-				if(getRoom(row, col).equals(myCurrentRoom)) {
-					sb.append(" current");
-				} else if (currRoom == myWinRoom) {
-					sb.append("  win   ");
-				} else sb.append("   x    ");
-			}
-			sb.append("\n");
-		}
-		return sb.toString();
 	}
 
 	// CHEAT METHOD
@@ -493,5 +482,113 @@ public class Maze {
 		getRoom(LENGTH, 1).setPlayer(myPlayer);
 		getRoom(LENGTH, WIDTH).setPlayer(myPlayer);
 	}
+	
+	
+	// serialize stuff
+	
+	//NOTE: issues with serializing imageIcons
+	
+	private void setUpNameObjectMap() {
+	    myDataMap = new HashMap<String, Object>();
+	    
+	    myDataMap.put("Maze", myMaze);
+	    myDataMap.put("Player", myPlayer);    
+	    myDataMap.put("StartRoom", myStartRoom);
+	    myDataMap.put("WinRoom", myWinRoom);
+	    myDataMap.put("KeyRoom", myKeyRoom);
+	    myDataMap.put("CurrentRoom", myCurrentRoom);
+	    myDataMap.put("CanWin", myCanAccessWinRoom);
+	    myDataMap.put("CanKey", myCanAccessKeyRoom);  
+	}
+	
+	public static void serializeMyObjects() {
+	    if(myDataMap != null) {
+    	    for(String fileName : myDataMap.keySet()) {
+    	        SerializeGame.serializeMe(myDataMap.get(fileName), fileName);
+    	    }
+	    }else
+	        System.out.println("Maze Data map has not been initialized yet!");
+	}
+	
+	// not the best... 
+	public static void deserializeMyObjects() {
+	    if(myDataMap != null) {
+
+                myMaze = (Room[][]) SerializeGame.deserializeMe(myDataMap.get("Maze"), "Maze");
+                myPlayer = (Player) SerializeGame.deserializeMe(myDataMap.get("Player"), "Player");    
+                myStartRoom = (Room) SerializeGame.deserializeMe(myDataMap.get("StartRoom"), "StartRoom");
+                myWinRoom = (Room) SerializeGame.deserializeMe(myDataMap.get("WinRoom"), "WinRoom");
+                myKeyRoom = (Room) SerializeGame.deserializeMe(myDataMap.get("KeyRoom"),"KeyRoom");
+                myCurrentRoom = (Room) SerializeGame.deserializeMe(myDataMap.get("CurrentRoom"), "CurrentRoom");
+                myCanAccessWinRoom = (boolean) SerializeGame.deserializeMe(myDataMap.get("CanWin"), "CanWin");
+                myCanAccessKeyRoom = (boolean) SerializeGame.deserializeMe(myDataMap.get("CanKey"), "CanKey"); 
+                
+            
+        }else
+            System.out.println("Maze Data map has not been initialized yet!");
+        
+    }
+//	
+//	private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+//	    ois.defaultReadObject();
+//	    THISMAZE = this;
+//	}
+//
+//	private Object readResolve()  {
+//	    return THISMAZE;
+//	}
+//	
+//	public static void serializeMaze() {
+//	    System.out.println(THISMAZE.toString()); 
+//	    
+//	    String filename = "savedGame.txt";
+//	    //Saving of object in a file             
+//	    FileOutputStream file;
+//        try {
+//            file = new FileOutputStream(filename);
+//            ObjectOutputStream out = new ObjectOutputStream(file); 
+//            
+//            out.writeObject(Maze.getInstance());
+//            
+//            out.close();             
+//            file.close(); 
+//        } catch (IOException e2) {
+//            // TODO Auto-generated catch block
+//            System.out.println("Error in Maze serializeMaze method! ");
+//            e2.printStackTrace();
+//       }             
+//	                	    
+//	}
+//	
+//	public void deserializeMaze() {
+//	       ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+//	        ObjectOutputStream oos;
+//	        
+//	        try {
+//	            oos = new java.io.ObjectOutputStream(baos);
+//	            oos.writeObject(getInstance());
+//	            oos.close();
+//	            
+//	        } catch (IOException e) {
+//	            System.out.println("Error in Maze serializeMaze method! ");
+//	            e.printStackTrace();
+//	        }
+//	        
+//	   // ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+//	    InputStream is = new ByteArrayInputStream(baos.toByteArray());
+//	    ObjectInputStream ois;
+//        try {
+//            ois = new ObjectInputStream(is);
+//            Maze deserialized = (Maze) ois.readObject();
+//            System.out.println(deserialized.toString()); 
+//        } catch (IOException | ClassNotFoundException e) {
+//            // TODO Auto-generated catch block
+//            System.out.println("Error in Maze deserializeMaze method! ");
+//            e.printStackTrace();
+//        }
+//	   
+//	   
+//	}
+
 
 }

@@ -1,10 +1,7 @@
 package model;
 
-import java.awt.Image;
 import java.awt.Rectangle;
-import java.io.InputStream;
-import java.util.Timer;
-
+import java.io.Serializable;
 import view.GameIcon;
 
 /**
@@ -12,18 +9,19 @@ import view.GameIcon;
  * @authors Heather Finch, Katelynn Oleson, Ken Smith
  * @version
  */
-public class Fixture extends GamePiece{
-	private Rectangle myBase;
+public class Fixture extends GamePiece implements Serializable{
+	/**
+     * 
+     */
+    private static final long serialVersionUID = -5492848388078336772L;
+    
+    private Rectangle myBase;
 	private Rectangle myIconArea;
 	private Rectangle myInteractionZone = null;
 	private FixtureType myType;
-	private int myWidth;
-	private int myHeight;
 	private int myXCoordinate;
 	private int myYCoordinate;
 	private GameIcon myIcon;
-	
-	
 	
 	/**
 	 * A default constructor.

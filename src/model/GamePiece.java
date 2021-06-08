@@ -3,10 +3,7 @@
  */
 package model;
 import java.awt.Point;
-import java.util.Set;
-import javax.swing.ImageIcon;
-import view.GameIcon;
-
+import java.io.Serializable;
 import view.GameIcon;
 
 /**
@@ -14,8 +11,13 @@ import view.GameIcon;
  * @authors Heather Finch, Katelynn Oleson, Ken Smith
  * @version
  */
-public abstract class GamePiece {
-	 // fields
+public abstract class GamePiece implements Serializable{
+	 /**
+     * 
+     */
+    private static final long serialVersionUID = 2512409428926537464L;
+    
+    // fields
 	 private PiecePoint myCoordinate;
 	 private GameIcon myRoomIcon;
 	 private GameIcon myMapIcon;

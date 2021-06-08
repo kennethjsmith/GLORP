@@ -1,17 +1,23 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
-
+import java.lang.Object;
 /**
  * A Riddle contains a question, answer, a list of wrong answer options, and a type.
  * Riddle types include true/false, multiple choice, and fill-in-the-blank.
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
  * @version 
  */
-public class Riddle {
+public class Riddle implements Serializable {
 	
-	private String myQuestion;
+	/**
+     * 
+     */
+    private static final long serialVersionUID = -8875389615271997933L;
+    
+    private String myQuestion;
 	private String myAnswer; 
 	private ArrayList<String> myWrongAnswerOptions;
 	private String myExplanation;
