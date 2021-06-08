@@ -36,7 +36,7 @@ public class Player extends GamePiece implements Cloneable, Serializable{
 	private boolean isFixed;
 	private boolean isClone;
 
-	private static final int SPEED = 20;
+	private static final int SPEED = 10;
 	private static final int PLAYER_ROOM_ICON_SIZE = 100;
 	private static final Skin DEFAULT_SKIN = new Skin(SkinType.ALIEN);
 	
