@@ -64,8 +64,7 @@ public class FBRiddleDatabase {
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('Only one color, but not one size, Stuck at the bottom, yet easily flies."
 			  		+ "Present in sun, but not in rain. Doing no harm, and feeling no pain. What is it?', 'Shadow', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What English word retains the same pronunciation, even after you take away four of its five letters?', 'Queue', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('A time when they are green, a time when theyre brown, but both of these times, cause me to frown. But just in between, for a very short while, Theyre perfect and yellow and cause me to smile!\n"
-			  		+ "What are they?', 'Bananas', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('A time when they are green, a time when theyre brown, but both of these times, cause me to frown. But just in between, for a very short while, Theyre perfect, yellow and cause me to smile. What are they?', 'Bananas', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('There is an ancient invention, still used in some parts of the world today, that allows people to see through walls. What is it?', 'Window', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What kind of nut has no shell?', 'Doughnut', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What day would yesterday be if Thursday was four days before the day after tommorow?', 'Friday', ' ' )");
@@ -97,8 +96,7 @@ public class FBRiddleDatabase {
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('Only one color, but not one size, Stuck at the bottom, yet easily flies."
 			  		+ "Present in sun, but not in rain. Doing no harm, and feeling no pain. What is it?', 'Shadow', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What English word retains the same pronunciation, even after you take away four of its five letters?', 'Queue', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('A time when they are green, a time when theyre brown, but both of these times, cause me to frown. But just in between, for a very short while, Theyre perfect and yellow and cause me to smile!\n"
-			  		+ "What are they?', 'Bananas', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('A time when they are green, a time when theyre brown, but both of these times, cause me to frown. But just in between, for a very short while, Theyre perfect, yellow and cause me to smile. What are they?', 'Bananas', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('There is an ancient invention, still used in some parts of the world today, that allows people to see through walls. What is it?', 'Window', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What kind of nut has no shell?', 'Doughnut', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What day would yesterday be if Thursday was four days before the day after tommorow?', 'Friday', ' ' )");
@@ -130,8 +128,7 @@ public class FBRiddleDatabase {
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('Only one color, but not one size, Stuck at the bottom, yet easily flies."
 			  		+ "Present in sun, but not in rain. Doing no harm, and feeling no pain. What is it?', 'Shadow', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What English word retains the same pronunciation, even after you take away four of its five letters?', 'Queue', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('A time when they are green, a time when theyre brown, but both of these times, cause me to frown. But just in between, for a very short while, Theyre perfect and yellow and cause me to smile!\n"
-			  		+ "What are they?', 'Bananas', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('A time when they are green, a time when theyre brown, but both of these times, cause me to frown. But just in between, for a very short while, Theyre perfect, yellow and cause me to smile. What are they?', 'Bananas', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('There is an ancient invention, still used in some parts of the world today, that allows people to see through walls. What is it?', 'Window', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What kind of nut has no shell?', 'Doughnut', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What day would yesterday be if Thursday was four days before the day after tommorow?', 'Friday', ' ' )");

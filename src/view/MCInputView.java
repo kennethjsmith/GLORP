@@ -5,6 +5,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
@@ -28,32 +29,39 @@ public class MCInputView extends JPanel {
 		super();
 		setOpaque(false);
 		setLayout(new GridBagLayout());
-		//setPreferredSize(new Dimension(WIDTH,HEIGHT));
 		mySelectedAnswer = null;
 
-		ArrayList<String >randomizedAnswers = randomizeAnswerOptions(theRiddle);
+		HashSet<String >randomizedAnswers = randomizeAnswerOptions(theRiddle);
 		setupButtons(randomizedAnswers);
 		addListeners();
 	}
 	
-	private ArrayList<String> randomizeAnswerOptions(Riddle theRiddle) {
-		ArrayList<String> answerOptions = theRiddle.getWrongOptions();
+	private HashSet<String> randomizeAnswerOptions(Riddle theRiddle) {
+		HashSet<String> answerOptions = new HashSet<>();
+		for(String s : theRiddle.getWrongOptions()) {
+			answerOptions.add(s);
+		}
 		answerOptions.add(theRiddle.getAnswer());
-		Collections.shuffle(answerOptions);
 		return answerOptions;
 	}
 	
-	private void setupButtons(ArrayList<String> theAnswers) {
-		myAnswerOption1 = new JRadioButton(theAnswers.get(0));
+	private void setupButtons(HashSet<String> theAnswers) {
+		ArrayList<String> tempList = new ArrayList<>();
+		
+		for(String s : theAnswers) {
+			tempList.add(s);
+		}
+		
+		myAnswerOption1 = new JRadioButton(tempList.get(0));
 		myAnswerOption1.setOpaque(false);
 		myAnswerOption1.setFocusPainted(false);
-		myAnswerOption2 = new JRadioButton(theAnswers.get(1));
+		myAnswerOption2 = new JRadioButton(tempList.get(1));
 		myAnswerOption2.setOpaque(false);
 		myAnswerOption2.setFocusPainted(false);
-		myAnswerOption3 = new JRadioButton(theAnswers.get(2));
+		myAnswerOption3 = new JRadioButton(tempList.get(2));
 		myAnswerOption3.setOpaque(false);
 		myAnswerOption3.setFocusPainted(false);
-		myAnswerOption4 = new JRadioButton(theAnswers.get(3));
+		myAnswerOption4 = new JRadioButton(tempList.get(3));
 		myAnswerOption4.setOpaque(false);
 		myAnswerOption4.setFocusPainted(false);
 		
