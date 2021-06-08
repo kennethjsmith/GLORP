@@ -3,7 +3,6 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
-
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
@@ -63,7 +62,8 @@ public class RiddlePanel extends JPanel implements Runnable{
         myInputPanel = new InputPanel();
         myInputBorder.add(myInputPanel);
         add(myInputBorder, BorderLayout.PAGE_END);
-        myInputPanel.setVisible(false); // replace with a block or something, so looks like sphinx sitting on table
+        // replace with a block or something, so looks like sphinx is not floating  ??
+        myInputPanel.setVisible(false); 
 	}
 	
 	/**
@@ -89,10 +89,6 @@ public class RiddlePanel extends JPanel implements Runnable{
     	SPHINX.paintIcon(this, g, 70, 200);
     }
 	
-//	public boolean hasRetreated() {
-//	    return myInputPanel.hasRetreated();
-//	}
-
     public boolean hasResponse() {
         return myInputPanel.hasSubmitted();
     }
@@ -106,18 +102,14 @@ public class RiddlePanel extends JPanel implements Runnable{
     }
     
     public void riddleExplanation(String theExplanation) {
-        myInputPanel.setVisible(false);
+        myInputPanel.setVisible(false); //movement freezes once this is called
         myInputPanel.reset();
-        
-        
         myQuestionPanel.setText(theExplanation);
     }
     
     public void sphinxResponse(String theResponse) {
-        myInputPanel.setVisible(false);
+        myInputPanel.setVisible(false); // ... but movement does not freeze when this is called? 
         myInputPanel.reset();
-        
-        
         myQuestionPanel.setText(theResponse);
     }
 
@@ -128,6 +120,8 @@ public class RiddlePanel extends JPanel implements Runnable{
      */
     public void shutDown() {
         myRiddleStatus = false; //setting this to false ends producer thread
+        myInputPanel.setVisible(false);
+        myInputPanel.reset();
         myQuestionBorder.setVisible(false);   
     }   
     
@@ -139,13 +133,13 @@ public class RiddlePanel extends JPanel implements Runnable{
     public void run() {
         // while riddle activated & not yet submitted
         while(myRiddleStatus && !(myInputPanel.hasSubmitted())) {     
-            try {
-                Thread.sleep(5);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                System.out.println("Error in RiddlePanel run method!");
-                e.printStackTrace();
-            }
+//            try {
+//                Thread.sleep(5);
+//            } catch (InterruptedException e) {
+//                // TODO Auto-generated catch block
+//                System.out.println("Error in RiddlePanel run method!");
+//                e.printStackTrace();
+//            }
         } 
     }
 }

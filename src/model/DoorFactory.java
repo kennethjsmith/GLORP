@@ -9,6 +9,8 @@ import java.util.HashMap;
  * @version
  */
 public class DoorFactory {
+    
+    // don't need to serialize because once the doors are made, dont use this class anymore
         
     private Room[][] myRooms;
     

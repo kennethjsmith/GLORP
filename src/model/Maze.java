@@ -2,6 +2,20 @@ package model;
 
 import java.util.Objects;
 import java.util.Random;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Random;
+
+import controller.SerializeGame;
+import view.GameIcon;
 
 /**
  * The maze has all the rooms in a 2D array with a buffer of size 1 around the border.
@@ -9,32 +23,41 @@ import java.util.Random;
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
  * @version 5.14.21
  */
-public class Maze {
-	// fields
-	
-	// The 2D array that stores each room.
-	private Room[][] myMaze;
-	
-	// The player.
-	private final Player myPlayer;
-	
-	// The room our Player is currently in.
-	private Room myCurrentRoom;
+public class Maze implements Serializable{
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 7714896058615502865L;
 
-	// The room the player starts in.
-	private Room myStartRoom;
-	
-	// The room that contains the key (used to unlock chest in win room).
-	private Room myKeyRoom;
+    // fields
+    
+    //Data map for serialization
+    private static HashMap<String, Object> myDataMap;
 
-	// The room the player must get to so that they can win.
-	private Room myWinRoom;
+	// The 2D array that stores each room
+	private static Room[][] myMaze;
 	
-	// Provides information about whether we can access the win room.
-	private boolean myCanAccessWinRoom;
+// cant be final for serialization
+	// The player
+	private static Player myPlayer; 
 	
-	// Provides information about whether we can access the key room.
-	private boolean myCanAccessKeyRoom;
+	// The room our Player is currently in
+	private static Room myCurrentRoom;
+
+	// The room the player starts in
+	private static Room myStartRoom;
+	
+	// The room that contains the key (used to unlock chest in win room)
+	private static Room myKeyRoom;
+
+	// The room the player must get to so that they can win
+	private static Room myWinRoom;
+	
+	// Provides information about whether we can access the win room
+	private static boolean myCanAccessWinRoom;
+	
+	// Provides information about whether we can access the key room
+	private static boolean myCanAccessKeyRoom;
 	
 	// The number of rows in the maze that store rooms.
 	private final int LENGTH = 7;
@@ -46,8 +69,9 @@ public class Maze {
 	// This is 2 to account for the buffer on both sides.
 	private final int BORDER_BUFFER = 2;
 	
+//  cant be final if gonna serialize 
 	// Creates the maze.
-    private static final Maze THISMAZE = new Maze();
+    private final static Maze THISMAZE = new Maze(); 
 
     // Constructor - private due to singleton pattern.
     private Maze() {
@@ -65,6 +89,7 @@ public class Maze {
         blockBorderRooms(); // create "border wall" of completely blocked rooms surounding map
         myCanAccessWinRoom = true;
         myCanAccessKeyRoom = true;
+        setUpNameObjectMap();
 	}
 	
 	/**
@@ -404,9 +429,8 @@ public class Maze {
 		}
 	}
 
-	/**
-	 * Unlocks every door in the maze except doors surrounding border rooms.
-	 */
+	// CHEAT METHOD
+	// Unlocks every door in the maze except doors that lead to border rooms
 	public void unlockAllDoors() {
 		
 		// Unlocks all doors in the middle group of rooms
@@ -458,5 +482,113 @@ public class Maze {
 		getRoom(LENGTH, 1).setPlayer(myPlayer);
 		getRoom(LENGTH, WIDTH).setPlayer(myPlayer);
 	}
+	
+	
+	// serialize stuff
+	
+	//NOTE: issues with serializing imageIcons
+	
+	private void setUpNameObjectMap() {
+	    myDataMap = new HashMap<String, Object>();
+	    
+	    myDataMap.put("Maze", myMaze);
+	    myDataMap.put("Player", myPlayer);    
+	    myDataMap.put("StartRoom", myStartRoom);
+	    myDataMap.put("WinRoom", myWinRoom);
+	    myDataMap.put("KeyRoom", myKeyRoom);
+	    myDataMap.put("CurrentRoom", myCurrentRoom);
+	    myDataMap.put("CanWin", myCanAccessWinRoom);
+	    myDataMap.put("CanKey", myCanAccessKeyRoom);  
+	}
+	
+	public static void serializeMyObjects() {
+	    if(myDataMap != null) {
+    	    for(String fileName : myDataMap.keySet()) {
+    	        SerializeGame.serializeMe(myDataMap.get(fileName), fileName);
+    	    }
+	    }else
+	        System.out.println("Maze Data map has not been initialized yet!");
+	}
+	
+	// not the best... 
+	public static void deserializeMyObjects() {
+	    if(myDataMap != null) {
+
+                myMaze = (Room[][]) SerializeGame.deserializeMe(myDataMap.get("Maze"), "Maze");
+                myPlayer = (Player) SerializeGame.deserializeMe(myDataMap.get("Player"), "Player");    
+                myStartRoom = (Room) SerializeGame.deserializeMe(myDataMap.get("StartRoom"), "StartRoom");
+                myWinRoom = (Room) SerializeGame.deserializeMe(myDataMap.get("WinRoom"), "WinRoom");
+                myKeyRoom = (Room) SerializeGame.deserializeMe(myDataMap.get("KeyRoom"),"KeyRoom");
+                myCurrentRoom = (Room) SerializeGame.deserializeMe(myDataMap.get("CurrentRoom"), "CurrentRoom");
+                myCanAccessWinRoom = (boolean) SerializeGame.deserializeMe(myDataMap.get("CanWin"), "CanWin");
+                myCanAccessKeyRoom = (boolean) SerializeGame.deserializeMe(myDataMap.get("CanKey"), "CanKey"); 
+                
+            
+        }else
+            System.out.println("Maze Data map has not been initialized yet!");
+        
+    }
+//	
+//	private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+//	    ois.defaultReadObject();
+//	    THISMAZE = this;
+//	}
+//
+//	private Object readResolve()  {
+//	    return THISMAZE;
+//	}
+//	
+//	public static void serializeMaze() {
+//	    System.out.println(THISMAZE.toString()); 
+//	    
+//	    String filename = "savedGame.txt";
+//	    //Saving of object in a file             
+//	    FileOutputStream file;
+//        try {
+//            file = new FileOutputStream(filename);
+//            ObjectOutputStream out = new ObjectOutputStream(file); 
+//            
+//            out.writeObject(Maze.getInstance());
+//            
+//            out.close();             
+//            file.close(); 
+//        } catch (IOException e2) {
+//            // TODO Auto-generated catch block
+//            System.out.println("Error in Maze serializeMaze method! ");
+//            e2.printStackTrace();
+//       }             
+//	                	    
+//	}
+//	
+//	public void deserializeMaze() {
+//	       ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+//	        ObjectOutputStream oos;
+//	        
+//	        try {
+//	            oos = new java.io.ObjectOutputStream(baos);
+//	            oos.writeObject(getInstance());
+//	            oos.close();
+//	            
+//	        } catch (IOException e) {
+//	            System.out.println("Error in Maze serializeMaze method! ");
+//	            e.printStackTrace();
+//	        }
+//	        
+//	   // ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+//	    InputStream is = new ByteArrayInputStream(baos.toByteArray());
+//	    ObjectInputStream ois;
+//        try {
+//            ois = new ObjectInputStream(is);
+//            Maze deserialized = (Maze) ois.readObject();
+//            System.out.println(deserialized.toString()); 
+//        } catch (IOException | ClassNotFoundException e) {
+//            // TODO Auto-generated catch block
+//            System.out.println("Error in Maze deserializeMaze method! ");
+//            e.printStackTrace();
+//        }
+//	   
+//	   
+//	}
+
 
 }

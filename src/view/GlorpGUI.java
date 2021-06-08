@@ -126,6 +126,17 @@ public class GlorpGUI extends JFrame {
         JMenuItem save = new JMenuItem("Save Game");
         JMenuItem load = new JMenuItem("Load Game");
         JMenuItem exit = new JMenuItem("Exit");
+        save.addActionListener(e ->{
+            Maze.serializeMyObjects();
+            System.out.println("Save game");
+        });
+        
+        load.addActionListener(e ->{
+            Maze.deserializeMyObjects();
+            repaint();
+            System.out.println("Load game");
+        });
+        
         exit.addActionListener(e ->{
         	System.exit(ABORT);
         });
@@ -161,7 +172,7 @@ public class GlorpGUI extends JFrame {
         JMenuItem instructions = new JMenuItem("Game Play Instructions");
         instructions.addActionListener(e ->{
         	InstructionsWindow inInstructions = new InstructionsWindow(ICON);
-        	inInstructions.setSize(new Dimension(POP_UP_WIDTH, POP_UP_HEIGHT+20));
+        	inInstructions.setSize(new Dimension(POP_UP_WIDTH, POP_UP_HEIGHT+30));
         	inInstructions.setLocationRelativeTo(this);
         });
         

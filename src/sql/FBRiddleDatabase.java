@@ -61,12 +61,8 @@ public class FBRiddleDatabase {
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What 4-letter capitalized word can be written forward, backward or upside down, and can still be read from left to right?', 'NOON', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What kind of goose fights with snakes?', 'mongoose', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What word is always pronounced wrong?', 'Wrong', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('Only one color, but not one size,\n"
-			  		+ "Stuck at the bottom, yet easily flies.\n"
-			  		+ "Present in sun, but not in rain,\n"
-			  		+ "Doing no harm, and feeling no pain.\n"
-			  		+ "What is it?\n"
-			  		+ "\n', 'Shadow', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('Only one color, but not one size, Stuck at the bottom, yet easily flies."
+			  		+ "Present in sun, but not in rain. Doing no harm, and feeling no pain. What is it?', 'Shadow', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What English word retains the same pronunciation, even after you take away four of its five letters?', 'Queue', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('A time when they are green, a time when theyre brown, but both of these times, cause me to frown. But just in between, for a very short while, Theyre perfect and yellow and cause me to smile!\n"
 			  		+ "What are they?', 'Bananas', ' ' )");
@@ -98,12 +94,8 @@ public class FBRiddleDatabase {
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What 4-letter capitalized word can be written forward, backward or upside down, and can still be read from left to right?', 'NOON', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What kind of goose fights with snakes?', 'mongoose', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What word is always pronounced wrong?', 'Wrong', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('Only one color, but not one size,\n"
-			  		+ "Stuck at the bottom, yet easily flies.\n"
-			  		+ "Present in sun, but not in rain,\n"
-			  		+ "Doing no harm, and feeling no pain.\n"
-			  		+ "What is it?\n"
-			  		+ "\n', 'Shadow', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('Only one color, but not one size, Stuck at the bottom, yet easily flies."
+			  		+ "Present in sun, but not in rain. Doing no harm, and feeling no pain. What is it?', 'Shadow', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What English word retains the same pronunciation, even after you take away four of its five letters?', 'Queue', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('A time when they are green, a time when theyre brown, but both of these times, cause me to frown. But just in between, for a very short while, Theyre perfect and yellow and cause me to smile!\n"
 			  		+ "What are they?', 'Bananas', ' ' )");
@@ -111,7 +103,7 @@ public class FBRiddleDatabase {
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What kind of nut has no shell?', 'Doughnut', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What day would yesterday be if Thursday was four days before the day after tommorow?', 'Friday', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('When the ancient Egyptians held a party, what did they call it?', 'a House of Beer', ' ' )");
-			
+			  
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('A sphere has three, a circle has two, and a point has zero. What is it?', 'Dimension', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('The more you take, the more you leave behind. What am I?', 'Footsteps', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What 8 letter word can have a letter taken away and it still makes a word. Take another letter away and it still makes a word. Keep on doing that until you have one letter left. What is the word?', 'Starting', ' ' )");
@@ -135,12 +127,8 @@ public class FBRiddleDatabase {
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What 4-letter capitalized word can be written forward, backward or upside down, and can still be read from left to right?', 'NOON', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What kind of goose fights with snakes?', 'mongoose', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What word is always pronounced wrong?', 'Wrong', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('Only one color, but not one size,\n"
-			  		+ "Stuck at the bottom, yet easily flies.\n"
-			  		+ "Present in sun, but not in rain,\n"
-			  		+ "Doing no harm, and feeling no pain.\n"
-			  		+ "What is it?\n"
-			  		+ "\n', 'Shadow', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('Only one color, but not one size, Stuck at the bottom, yet easily flies."
+			  		+ "Present in sun, but not in rain. Doing no harm, and feeling no pain. What is it?', 'Shadow', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What English word retains the same pronunciation, even after you take away four of its five letters?', 'Queue', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('A time when they are green, a time when theyre brown, but both of these times, cause me to frown. But just in between, for a very short while, Theyre perfect and yellow and cause me to smile!\n"
 			  		+ "What are they?', 'Bananas', ' ' )");
@@ -148,7 +136,6 @@ public class FBRiddleDatabase {
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What kind of nut has no shell?', 'Doughnut', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What day would yesterday be if Thursday was four days before the day after tommorow?', 'Friday', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('When the ancient Egyptians held a party, what did they call it?', 'a House of Beer', ' ' )");
-		
 		} catch(SQLException e) {	
 		  // if the error message is "out of memory",
 		  // it probably means no database file is found

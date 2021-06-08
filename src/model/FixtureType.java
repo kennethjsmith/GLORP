@@ -1,8 +1,13 @@
 package model;
 
+import java.io.Serializable;
+
 import view.GameIcon;
 
-public enum FixtureType {
+public enum FixtureType implements Serializable{
+    
+    // no generated ID... dont need to serialize enums? 
+    
 	CHEST("CHEST"),
 	SHIP("SHIP"),
 	ALTSHIP("ALTSHIP");

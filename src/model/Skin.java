@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,8 +11,13 @@ import view.GameIcon;
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
  * @version 
  */
-public class Skin {
-	// fields
+public class Skin implements Serializable {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = -7677582022891169636L;
+    
+    // fields
 	private SkinType myType;
 	private GameIcon myMapIcon;
 	private int myIconWidth;

@@ -3,6 +3,8 @@ package model;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
@@ -15,15 +17,20 @@ import view.GameIcon;
  * @author Heather Finch, Katelynn Oleson, Ken Smith
  * @version
  */
-public class Room {
+public class Room implements Serializable{
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -8977518956610218988L;
+    
     private HashMap<Direction, Door> myDoorMap;
 	private Item myItem; 
 	private Fixture myFixture;
 	private Player myPlayer;
     // why does room contain the player? 
 	
-	private GameIcon myLargeIcon;
-	private GameIcon mySmallIcon;
+	private transient GameIcon myLargeIcon; // trouble serializing ImageIcons
+	private transient GameIcon mySmallIcon; // trouble serializing ImageIcons
 	private boolean isWinRoom;
 	private boolean isStartRoom;
 	private boolean isCurrentRoom;

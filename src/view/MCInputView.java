@@ -51,6 +51,16 @@ public class MCInputView extends JPanel {
 		myAnswerOption3 = new JRadioButton(theAnswers.get(2));
 		myAnswerOption3.setOpaque(false);
 		myAnswerOption4 = new JRadioButton(theAnswers.get(3));
+		myAnswerOption1.setFocusPainted(false);
+		myAnswerOption1.setOpaque(false);
+		myAnswerOption2 = new JRadioButton(theAnswers.get(1));
+		myAnswerOption2.setFocusPainted(false);
+		myAnswerOption2.setOpaque(false);
+		myAnswerOption3 = new JRadioButton(theAnswers.get(2));
+		myAnswerOption3.setFocusPainted(false);
+		myAnswerOption3.setOpaque(false);
+		myAnswerOption4 = new JRadioButton(theAnswers.get(3));
+		myAnswerOption4.setFocusPainted(false);
 		myAnswerOption4.setOpaque(false);
 		
 		myAnswers = new ButtonGroup();

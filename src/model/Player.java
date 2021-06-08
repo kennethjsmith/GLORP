@@ -2,6 +2,7 @@ package model;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import view.GameIcon;
@@ -11,12 +12,17 @@ import view.GameIcon;
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
  * @version 
  */
-public class Player extends GamePiece implements Cloneable {
+public class Player extends GamePiece implements Cloneable, Serializable{
 	
-	// fields
+	/**
+     * 
+     */
+    private static final long serialVersionUID = -8371632604355137402L;
+    
+    // fields
 	private PiecePoint myCoordinate;
 	private GameIcon myRoomIcon;
-	private final GameIcon myMapIcon = new GameIcon("src/icons/alien_map_icon.png"); //TODO: add mapIcon
+	private static final GameIcon myMapIcon = new GameIcon("src/icons/alien_map_icon.png"); //TODO: add mapIcon
 	
 	private ArrayList<ItemType> myInventory;
 	private Skin mySkin;
