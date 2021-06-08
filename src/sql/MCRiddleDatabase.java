@@ -50,7 +50,7 @@ public class MCRiddleDatabase {
 			  		+ "On the 20th day she covers the whole pond. On what day was Lily half the size of the pond?', "
 			  		+ " 'Day 19', 'Day 15', 'Day 10', 'Day 17', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many seconds are there in one year?', '12', '416853', '32536000', '92471900', "
-			  		+ "'There are 12 seconds in one year: January 2nd, February 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, August 2nd, September 2nd, October 2nd, November 2nd, December 2nd.' )");
+			  		+ "'There are 12 seconds in one year: Jan 2nd, Feb 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, Aug 2nd, Sept 2nd, Oct 2nd, Nov 2nd, Dec 2nd.' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What is the next letter in the sequence: bcdfgh__', 'j', 'm', 'i', 'r', 'this is a sequential list of consonants' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Ancient Egypt was responsible for the earliest known peace treaty which was between Egypt and what group of people', 'The Hittites', 'The Villanovans', 'The Paracas', 'The Assyrians', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('The Great Pyramids of Giza consists of how many pyramids?', '3', '2', '5', '6', ' ' )");
@@ -67,7 +67,7 @@ public class MCRiddleDatabase {
 			  		+ "On the 20th day she covers the whole pond. On what day was Lily half the size of the pond?', "
 			  		+ " 'Day 19', 'Day 15', 'Day 10', 'Day 17', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many seconds are there in one year?', '12', '416853', '32536000', '92471900', "
-			  		+ "'There are 12 seconds in one year: January 2nd, February 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, August 2nd, September 2nd, October 2nd, November 2nd, December 2nd.' )");
+			  		+ "'There are 12 seconds in one year: Jan 2nd, Feb 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, Aug 2nd, Sept 2nd, Oct 2nd, Nov 2nd, Dec 2nd.' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What is the next letter in the sequence: bcdfgh__', 'j', 'm', 'i', 'r', 'this is a sequential list of consonants' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Ancient Egypt was responsible for the earliest known peace treaty which was between Egypt and what group of people', 'The Hittites', 'The Villanovans', 'The Paracas', 'The Assyrians', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('The Great Pyramids of Giza consists of how many pyramids?', '3', '2', '5', '6', ' ' )");
@@ -79,12 +79,13 @@ public class MCRiddleDatabase {
 			  		+ "Even pharaohs need clean undies in the afterlife.' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Which of the following animals did ancient Egyptians NOT keep as pets?', 'Fish', 'Lions', 'Ibises', 'Baboons', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What mineral did ancient Egyptians use to create makeup?', 'Malachite', 'Quartz', 'Aurichalcite', 'Vesuvianite', ' ' )");
-		
+				 
+
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Lily is a lilypad in a small pond. Lilly doubles her size each day, "
 			  		+ "On the 20th day she covers the whole pond. On what day was Lily half the size of the pond?', "
 			  		+ " 'Day 19', 'Day 15', 'Day 10', 'Day 17', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many seconds are there in one year?', '12', '416853', '32536000', '92471900', "
-			  		+ "'There are 12 seconds in one year: January 2nd, February 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, August 2nd, September 2nd, October 2nd, November 2nd, December 2nd.' )");
+			  		+ "'There are 12 seconds in one year: Jan 2nd, Feb 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, Aug 2nd, Sept 2nd, Oct 2nd, Nov 2nd, Dec 2nd.' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What is the next letter in the sequence: bcdfgh__', 'j', 'm', 'i', 'r', 'this is a sequential list of consonants' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Ancient Egypt was responsible for the earliest known peace treaty which was between Egypt and what group of people', 'The Hittites', 'The Villanovans', 'The Paracas', 'The Assyrians', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('The Great Pyramids of Giza consists of how many pyramids?', '3', '2', '5', '6', ' ' )");
@@ -96,12 +97,12 @@ public class MCRiddleDatabase {
 			  		+ "Even pharaohs need clean undies in the afterlife.' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Which of the following animals did ancient Egyptians NOT keep as pets?', 'Fish', 'Lions', 'Ibises', 'Baboons', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What mineral did ancient Egyptians use to create makeup?', 'Malachite', 'Quartz', 'Aurichalcite', 'Vesuvianite', ' ' )");
-		
+			 
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Lily is a lilypad in a small pond. Lilly doubles her size each day, "
 			  		+ "On the 20th day she covers the whole pond. On what day was Lily half the size of the pond?', "
 			  		+ " 'Day 19', 'Day 15', 'Day 10', 'Day 17', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many seconds are there in one year?', '12', '416853', '32536000', '92471900', "
-			  		+ "'There are 12 seconds in one year: January 2nd, February 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, August 2nd, September 2nd, October 2nd, November 2nd, December 2nd.' )");
+			  		+ "'There are 12 seconds in one year: Jan 2nd, Feb 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, Aug 2nd, Sept 2nd, Oct 2nd, Nov 2nd, Dec 2nd.' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What is the next letter in the sequence: bcdfgh__', 'j', 'm', 'i', 'r', 'this is a sequential list of consonants' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Ancient Egypt was responsible for the earliest known peace treaty which was between Egypt and what group of people', 'The Hittites', 'The Villanovans', 'The Paracas', 'The Assyrians', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('The Great Pyramids of Giza consists of how many pyramids?', '3', '2', '5', '6', ' ' )");
@@ -113,12 +114,13 @@ public class MCRiddleDatabase {
 			  		+ "Even pharaohs need clean undies in the afterlife.' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Which of the following animals did ancient Egyptians NOT keep as pets?', 'Fish', 'Lions', 'Ibises', 'Baboons', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What mineral did ancient Egyptians use to create makeup?', 'Malachite', 'Quartz', 'Aurichalcite', 'Vesuvianite', ' ' )");
-		
+			  
+
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Lily is a lilypad in a small pond. Lilly doubles her size each day, "
 			  		+ "On the 20th day she covers the whole pond. On what day was Lily half the size of the pond?', "
 			  		+ " 'Day 19', 'Day 15', 'Day 10', 'Day 17', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many seconds are there in one year?', '12', '416853', '32536000', '92471900', "
-			  		+ "'There are 12 seconds in one year: January 2nd, February 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, August 2nd, September 2nd, October 2nd, November 2nd, December 2nd.' )");
+			  		+ "'There are 12 seconds in one year: Jan 2nd, Feb 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, Aug 2nd, Sept 2nd, Oct 2nd, Nov 2nd, Dec 2nd.' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What is the next letter in the sequence: bcdfgh__', 'j', 'm', 'i', 'r', 'this is a sequential list of consonants' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Ancient Egypt was responsible for the earliest known peace treaty which was between Egypt and what group of people', 'The Hittites', 'The Villanovans', 'The Paracas', 'The Assyrians', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('The Great Pyramids of Giza consists of how many pyramids?', '3', '2', '5', '6', ' ' )");
@@ -130,12 +132,12 @@ public class MCRiddleDatabase {
 			  		+ "Even pharaohs need clean undies in the afterlife.' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Which of the following animals did ancient Egyptians NOT keep as pets?', 'Fish', 'Lions', 'Ibises', 'Baboons', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What mineral did ancient Egyptians use to create makeup?', 'Malachite', 'Quartz', 'Aurichalcite', 'Vesuvianite', ' ' )");
-		
+		 
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Lily is a lilypad in a small pond. Lilly doubles her size each day, "
 			  		+ "On the 20th day she covers the whole pond. On what day was Lily half the size of the pond?', "
 			  		+ " 'Day 19', 'Day 15', 'Day 10', 'Day 17', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many seconds are there in one year?', '12', '416853', '32536000', '92471900', "
-			  		+ "'There are 12 seconds in one year: January 2nd, February 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, August 2nd, September 2nd, October 2nd, November 2nd, December 2nd.' )");
+			  		+ "'There are 12 seconds in one year: Jan 2nd, Feb 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, Aug 2nd, Sept 2nd, Oct 2nd, Nov 2nd, Dec 2nd.' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What is the next letter in the sequence: bcdfgh__', 'j', 'm', 'i', 'r', 'this is a sequential list of consonants' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Ancient Egypt was responsible for the earliest known peace treaty which was between Egypt and what group of people', 'The Hittites', 'The Villanovans', 'The Paracas', 'The Assyrians', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('The Great Pyramids of Giza consists of how many pyramids?', '3', '2', '5', '6', ' ' )");
@@ -147,12 +149,12 @@ public class MCRiddleDatabase {
 			  		+ "Even pharaohs need clean undies in the afterlife.' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Which of the following animals did ancient Egyptians NOT keep as pets?', 'Fish', 'Lions', 'Ibises', 'Baboons', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What mineral did ancient Egyptians use to create makeup?', 'Malachite', 'Quartz', 'Aurichalcite', 'Vesuvianite', ' ' )");
-		
+	
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Lily is a lilypad in a small pond. Lilly doubles her size each day, "
 			  		+ "On the 20th day she covers the whole pond. On what day was Lily half the size of the pond?', "
 			  		+ " 'Day 19', 'Day 15', 'Day 10', 'Day 17', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('How many seconds are there in one year?', '12', '416853', '32536000', '92471900', "
-			  		+ "'There are 12 seconds in one year: January 2nd, February 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, August 2nd, September 2nd, October 2nd, November 2nd, December 2nd.' )");
+			  		+ "'There are 12 seconds in one year: Jan 2nd, Feb 2nd, March 2nd, April 2nd, May 2nd, June 2nd, July 2nd, Aug 2nd, Sept 2nd, Oct 2nd, Nov 2nd, Dec 2nd.' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('What is the next letter in the sequence: bcdfgh__', 'j', 'm', 'i', 'r', 'this is a sequential list of consonants' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('Ancient Egypt was responsible for the earliest known peace treaty which was between Egypt and what group of people', 'The Hittites', 'The Villanovans', 'The Paracas', 'The Assyrians', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO mcriddles VALUES('The Great Pyramids of Giza consists of how many pyramids?', '3', '2', '5', '6', ' ' )");

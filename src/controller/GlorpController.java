@@ -64,7 +64,7 @@ public class GlorpController {
     private final static String RELEASED = "released ";
     private final static int SPINX_RESPONSE_TIME = 1500;
     private final static int SHORT_EXPLANATION_TIME = 1500;
-    private final static int LONG_EXPLANATION_TIME = 7000;
+    private final static int LONG_EXPLANATION_TIME = 3000;
 
 	private static final Random RAND = new Random();
 	
@@ -294,6 +294,7 @@ public class GlorpController {
         // open consumer
         Thread inConsumer = new RiddleConsumer(inRiddlePanel, inputPanel, inRiddleProducer);
         inConsumer.start();
+        
 
     }
 	
@@ -319,6 +320,7 @@ public class GlorpController {
 
         @Override
         public void run() {
+        	
           //while no message || player still in door region 
             while( (!myRiddlePanel.hasResponse()) && checkDoorZones() != null){          
                 try {

@@ -38,7 +38,7 @@ public class FBRiddleDatabase {
 		try {
 			  theStatement.executeUpdate("CREATE TABLE IF NOT EXISTS fbriddles ( question string, answer string, explanation string )");
 			  
-			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('A sphere has three, a circle has two, and a point has zero. What is it?', 'Dimensions', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('A sphere has three, a circle has two, and a point has zero. What is it?', 'Dimension', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('The more you take, the more you leave behind. What am I?', 'Footsteps', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What 8 letter word can have a letter taken away and it still makes a word. Take another letter away and it still makes a word. Keep on doing that until you have one letter left. What is the word?', 'Starting', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What has a head, a tail, is brown, and has no legs?', 'Penny', ' ' )");
@@ -56,7 +56,7 @@ public class FBRiddleDatabase {
 			  		+ "For most animals I am a useful tool. What am I?', 'Tooth', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What has six faces, but does not wear makeup, has twenty-one eyes, but cannot see? What is it?', 'Dice', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('I am a word of six; my first three letters refer to an automobile; my last three letters refer to a household animal; "
-			  		+ "my first four letters is a fish; my whole is found in your room. What am I?', 'Carpet', ' ' )");
+			  		+ "my first four letters is a fish; I am found in your room. What am I?', 'Carpet', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What number would you have to count before you would use the letter A in the English language spelling of a whole number.', '1000', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What 4-letter capitalized word can be written forward, backward or upside down, and can still be read from left to right?', 'NOON', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What kind of goose fights with snakes?', 'mongoose', ' ' )");
@@ -75,12 +75,10 @@ public class FBRiddleDatabase {
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What day would yesterday be if Thursday was four days before the day after tommorow?', 'Friday', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('When the ancient Egyptians held a party, what did they call it?', 'a House of Beer', ' ' )");
 			 
-			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('A sphere has three, a circle has two, and a point has zero. What is it?', 'Dimensions', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('A sphere has three, a circle has two, and a point has zero. What is it?', 'Dimension', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('The more you take, the more you leave behind. What am I?', 'Footsteps', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What 8 letter word can have a letter taken away and it still makes a word. "
-			  		+ "Take another letter away and it still makes a word. Keep on doing that until you have one letter left. "
-			  		+ "What is the word?', 'Starting', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What has a head, a tail, is brown, and has no legs?', 'Penny',' ' )");
+			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What 8 letter word can have a letter taken away and it still makes a word. Take another letter away and it still makes a word. Keep on doing that until you have one letter left. What is the word?', 'Starting', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What has a head, a tail, is brown, and has no legs?', 'Penny', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What has many keys, but cant even open a single door?', 'Piano', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('Re-arrange the letters, O O U S W T D N E J R, to spell just one word. What is it?', 'Just one word', 'JUST ONE WORD!' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What can point in every direction but cant reach the destination by itself?', 'Finger', ' ' )");
@@ -95,7 +93,7 @@ public class FBRiddleDatabase {
 			  		+ "For most animals I am a useful tool. What am I?', 'Tooth', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What has six faces, but does not wear makeup, has twenty-one eyes, but cannot see? What is it?', 'Dice', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('I am a word of six; my first three letters refer to an automobile; my last three letters refer to a household animal; "
-			  		+ "my first four letters is a fish; my whole is found in your room. What am I?', 'Carpet', ' ' )");
+			  		+ "my first four letters is a fish; I am found in your room. What am I?', 'Carpet', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What number would you have to count before you would use the letter A in the English language spelling of a whole number.', '1000', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What 4-letter capitalized word can be written forward, backward or upside down, and can still be read from left to right?', 'NOON', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What kind of goose fights with snakes?', 'mongoose', ' ' )");
@@ -113,13 +111,11 @@ public class FBRiddleDatabase {
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What kind of nut has no shell?', 'Doughnut', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What day would yesterday be if Thursday was four days before the day after tommorow?', 'Friday', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('When the ancient Egyptians held a party, what did they call it?', 'a House of Beer', ' ' )");
-			  
-			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('A sphere has three, a circle has two, and a point has zero. What is it?', 'Dimensions', ' ' )");
+			
+			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('A sphere has three, a circle has two, and a point has zero. What is it?', 'Dimension', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('The more you take, the more you leave behind. What am I?', 'Footsteps', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What 8 letter word can have a letter taken away and it still makes a word. "
-			  		+ "Take another letter away and it still makes a word. Keep on doing that until you have one letter left. "
-			  		+ "What is the word?', 'Starting', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What has a head, a tail, is brown, and has no legs?', 'Penny',' ' )");
+			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What 8 letter word can have a letter taken away and it still makes a word. Take another letter away and it still makes a word. Keep on doing that until you have one letter left. What is the word?', 'Starting', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What has a head, a tail, is brown, and has no legs?', 'Penny', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What has many keys, but cant even open a single door?', 'Piano', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('Re-arrange the letters, O O U S W T D N E J R, to spell just one word. What is it?', 'Just one word', 'JUST ONE WORD!' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What can point in every direction but cant reach the destination by itself?', 'Finger', ' ' )");
@@ -134,7 +130,7 @@ public class FBRiddleDatabase {
 			  		+ "For most animals I am a useful tool. What am I?', 'Tooth', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What has six faces, but does not wear makeup, has twenty-one eyes, but cannot see? What is it?', 'Dice', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('I am a word of six; my first three letters refer to an automobile; my last three letters refer to a household animal; "
-			  		+ "my first four letters is a fish; my whole is found in your room. What am I?', 'Carpet', ' ' )");
+			  		+ "my first four letters is a fish; I am found in your room. What am I?', 'Carpet', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What number would you have to count before you would use the letter A in the English language spelling of a whole number.', '1000', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What 4-letter capitalized word can be written forward, backward or upside down, and can still be read from left to right?', 'NOON', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What kind of goose fights with snakes?', 'mongoose', ' ' )");

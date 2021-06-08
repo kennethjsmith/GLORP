@@ -65,7 +65,6 @@ public class Maze {
         blockBorderRooms(); // create "border wall" of completely blocked rooms surounding map
         myCanAccessWinRoom = true;
         myCanAccessKeyRoom = true;
-  
 	}
 	
 	/**
@@ -229,6 +228,8 @@ public class Maze {
 		
 		myCurrentRoom.setCurrentRoom(true);
 		myCurrentRoom.setPlayer(myPlayer); 
+		
+		System.out.println("Current index row: " + myCurrentRoom.getIndex().getRow() + ", " + myCurrentRoom.getIndex().getCol());
 	}
 	
 	/**
@@ -330,7 +331,7 @@ public class Maze {
 	// TODO: containsRoom method is redundant unless we decide to make some spaces in the grid not exist as rooms.
 	public boolean containsRoom(int theRow, int theColumn) {
 	    if(theRow < 0 || theColumn < 0) return false;
-	    else if(theRow >= (LENGTH) || theColumn >= (WIDTH)) return false;
+	    else if(theRow > (LENGTH) || theColumn > (WIDTH)) return false;
 		else return true;
 	}
 	 
@@ -348,33 +349,32 @@ public class Maze {
 			// check if we can access the room with the key
 			myCanAccessKeyRoom = false;
 	        depthFirstSearchMaze(myCurrentRoom.getIndex().getRow(),  myCurrentRoom.getIndex().getCol(), visited, "key", myKeyRoom);  	        
-	        if(myCanAccessKeyRoom == false) return false;
+	        if(myCanAccessKeyRoom == false) {
+	        	return false;
+	        }
 		}
 		
 		// check if we can access the win room
 		visited = new boolean[LENGTH + BORDER_BUFFER][WIDTH + BORDER_BUFFER];
 		myCanAccessWinRoom = false;
         depthFirstSearchMaze(myCurrentRoom.getIndex().getRow(),  myCurrentRoom.getIndex().getCol(), visited, "win", myWinRoom);     
-  
         return myCanAccessWinRoom;
 	}
 	
 	
 	// Helper method for canWin. Uses depth first search to see if the win room is accessible
 	private void depthFirstSearchMaze(int theRow, int theColumn, boolean[][] theVisitedRooms, String theRoom, Room theGoalRoom) {				
-		
-		if(theRoom.equals("key") && myCanAccessKeyRoom == true) return;
-		else if(theRoom.equals("win") && myCanAccessWinRoom == true) return;		
+				
+		if(theGoalRoom.equals(myKeyRoom) && myCanAccessKeyRoom == true) return;
+		else if(theGoalRoom.equals(myWinRoom) && myCanAccessWinRoom == true) return;		
 		
 		// return if we've hit the end of the maze.
-	    if (theRow <= 0 || theColumn <= 0 || theRow > LENGTH - 1 || theColumn > WIDTH - 1 || theVisitedRooms[theRow][theColumn]) {
+	    if (theRow <= 0 || theColumn <= 0 || theRow > LENGTH + BORDER_BUFFER - 1 || theColumn > WIDTH + BORDER_BUFFER - 1 || theVisitedRooms[theRow][theColumn]) {
 	    	return;
 	    }
 	    
 	    // return if this room doesn't exist
-	    if(!this.containsRoom(theRow, theColumn)){
-	    	return;
-	    }
+	    if(!this.containsRoom(theRow, theColumn)) return;
 	    
 	    Room currentRoom = myMaze[theRow][theColumn];
 	    
@@ -382,24 +382,24 @@ public class Maze {
 	    // TODO, should I use a "break" to exit the depthFirstSearchMaze method once the winRoom has been found?
 	    // Otherwise the DFS could recurse further.
 	    if(currentRoom == theGoalRoom) {
-	    	if(theRoom.equals("key")) myCanAccessKeyRoom = true;
+	    	if(theGoalRoom.equals(myKeyRoom)) myCanAccessKeyRoom = true;
 	    	else myCanAccessWinRoom = true;
 	    	return;
 	    } else {
-	
+	    	
 		    //mark the cell visited
 		    theVisitedRooms[theRow][theColumn] = true;
 		    
-		    // if the right door is unlocked:
+		    // if the right door is not blocked:
 		    if(!currentRoom.getDoors().get(Direction.EAST).isBlocked()) depthFirstSearchMaze(theRow, theColumn + 1, theVisitedRooms, theRoom, theGoalRoom); // go right
 		    		    
-		    // if the left door is unlocked:
+		    // if the left door is not blocked:
 		    if(!currentRoom.getDoors().get(Direction.WEST).isBlocked()) depthFirstSearchMaze(theRow, theColumn - 1, theVisitedRooms, theRoom, theGoalRoom); //go left
 		    
-		    // if the bottom door is unlocked:
-		    if(!currentRoom.getDoors().get(Direction.SOUTH).isBlocked())	depthFirstSearchMaze(theRow + 1, theColumn, theVisitedRooms, theRoom, theGoalRoom); //go down
+		    // if the bottom door is not blocked:
+		    if(!currentRoom.getDoors().get(Direction.SOUTH).isBlocked()) depthFirstSearchMaze(theRow + 1, theColumn, theVisitedRooms, theRoom, theGoalRoom); //go down
 		    
-		    // if the top door is unlocked:
+		    // if the top door is not blocked:
 		    if(!currentRoom.getDoors().get(Direction.NORTH).isBlocked()) depthFirstSearchMaze(theRow - 1, theColumn, theVisitedRooms, theRoom, theGoalRoom); // go up
 		}
 	}
