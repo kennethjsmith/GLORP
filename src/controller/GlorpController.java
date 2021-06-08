@@ -291,11 +291,11 @@ public class GlorpController {
         RiddlePanel inRiddlePanel = myWindow.getRunnableRiddlePanel(currRiddle);
         InputPanel inputPanel = inRiddlePanel.getInputPanel();
                 
-        Thread inRiddleProducer = new Thread(inRiddlePanel); 
-        inRiddleProducer.start(); // show riddle prompt and wait for message
+        //Thread inRiddleProducer = new Thread(inRiddlePanel); 
+        //inRiddleProducer.start(); // show riddle prompt and wait for message
         
         // open consumer
-        Thread inConsumer = new RiddleConsumer(inRiddlePanel, inputPanel, inRiddleProducer);
+        Thread inConsumer = new RiddleConsumer(inRiddlePanel, inputPanel);
         inConsumer.start();
         
 
@@ -308,7 +308,7 @@ public class GlorpController {
 	    private RiddlePanel myRiddlePanel;
 	    private InputPanel myInputPanel;
 	    
-	    public RiddleConsumer(RiddlePanel thePanel, InputPanel theInputPanel, Thread theProducer) {
+	    public RiddleConsumer(RiddlePanel thePanel, InputPanel theInputPanel) {
 	        myRiddlePanel = thePanel;
 	        myInputPanel = theInputPanel;
 	    }

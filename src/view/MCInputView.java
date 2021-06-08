@@ -39,7 +39,7 @@ public class MCInputView extends JPanel {
 	private ArrayList<String> randomizeAnswerOptions(Riddle theRiddle) {
 		ArrayList<String> answerOptions = theRiddle.getWrongOptions();
 		answerOptions.add(theRiddle.getAnswer());
-		Collections.shuffle(answerOptions);
+		//Collections.shuffle(answerOptions);
 		return answerOptions;
 	}
 	
