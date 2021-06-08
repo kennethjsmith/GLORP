@@ -53,9 +53,9 @@ public class GlorpController {
     private static final String[] runawaySphinxResponse = {"I can smell your fear.", "Coward!", "Running away can't save you.", "I see your confidence is dwindling", "...", "..."};
     private final static String PRESSED = "pressed ";
     private final static String RELEASED = "released ";
-    private final static int SPHINX_RESPONSE_TIME = 1500;
+    private final static int SPHINX_RESPONSE_TIME = 1000;   // these response times must all be unique 
     private final static int SHORT_EXPLANATION_TIME = 1500;
-    private final static int LONG_EXPLANATION_TIME = 7000;
+    private final static int LONG_EXPLANATION_TIME = 3000;
     private static final Random RAND = new Random();
     
     private final Set<Integer> myPressedKeys = new HashSet<Integer>();
@@ -338,9 +338,7 @@ public class GlorpController {
                 if(answerCorrect()) {
                     myMaze.getCurrRoom().getDoors().get(inDir).setUnlocked();
                     attemptMapTraversal(inDir);
-                    displayRiddleExplanation();
-
-
+                    //displayRiddleExplanation();
                     myRiddlePanel.sphinxResponse(correctSphinxResponse[RAND.nextInt(correctSphinxResponse.length)]); //change to be randomized
                 } else {
                     myMaze.getCurrRoom().getDoors().get(inDir).setBlocked();
@@ -357,7 +355,7 @@ public class GlorpController {
                 		Music.stop();
                 		SoundEffect.LOSE.play();
                     }
-                	displayRiddleExplanation();
+                	//displayRiddleExplanation();
 
                     responseTime = displayRiddleExplanation();
                     if(responseTime == SPHINX_RESPONSE_TIME) {
@@ -370,10 +368,10 @@ public class GlorpController {
             }
     
             // display response
-            myWindow.repaint(); 
+            myWindow.repaint();   // not needed, response automatically displayed when text changed
             
             try {
-                RiddleConsumer.sleep(responseTime);
+                Thread.sleep(responseTime);
                     
             } catch (InterruptedException e) {
                 System.out.println("Error in GlorpController run method!");
