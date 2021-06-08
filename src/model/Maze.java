@@ -253,8 +253,6 @@ public class Maze implements Serializable{
 		
 		myCurrentRoom.setCurrentRoom(true);
 		myCurrentRoom.setPlayer(myPlayer); 
-		
-		System.out.println("Current index row: " + myCurrentRoom.getIndex().getRow() + ", " + myCurrentRoom.getIndex().getCol());
 	}
 	
 	/**
