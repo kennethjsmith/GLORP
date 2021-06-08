@@ -31,8 +31,6 @@ public class TFInputView extends JPanel {
 	
 	private void setupButtons() {
 		myAnswerOption1 = new JRadioButton("True");
-		myAnswerOption1.setOpaque(false);
-		myAnswerOption2 = new JRadioButton("False");
 		myAnswerOption1.setFocusPainted(false);
 		myAnswerOption1.setOpaque(false);
 		myAnswerOption2 = new JRadioButton("False");
