@@ -14,7 +14,7 @@ import model.Riddle;
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
  * @version 
  */
-public class RiddlePanel extends JPanel implements Runnable{
+public class RiddlePanel extends JPanel {
     /**
 	 * 
 	 */
@@ -71,7 +71,7 @@ public class RiddlePanel extends JPanel implements Runnable{
 	 * update the panel accordingly
 	 */
 	public void startUp(Riddle theRiddle) {
-	    myRiddleStatus = true; 
+		myRiddleStatus = true; 
 	    myCurrentRiddle = theRiddle; 
 	    myQuestionPanel.setText(myCurrentRiddle.getQuestion()); 
         myInputPanel.setupView(myCurrentRiddle);
@@ -126,20 +126,20 @@ public class RiddlePanel extends JPanel implements Runnable{
     }   
     
     
-    /**
-     * Seperate thread so that the player can "walk away" from the riddle
-     */
-    @Override
-    public void run() {
-        // while riddle activated & not yet submitted
-        while(myRiddleStatus && !(myInputPanel.hasSubmitted())) {     
-//            try {
-//                Thread.sleep(5);
-//            } catch (InterruptedException e) {
-//                // TODO Auto-generated catch block
-//                System.out.println("Error in RiddlePanel run method!");
-//                e.printStackTrace();
-//            }
-        } 
-    }
+//    /**
+//     * Seperate thread so that the player can "walk away" from the riddle
+//     */
+//    @Override
+//    public void run() {
+//        // while riddle activated & not yet submitted
+//        while(myRiddleStatus && !(myInputPanel.hasSubmitted())) {     
+////            try {
+////                Thread.sleep(5);
+////            } catch (InterruptedException e) {
+////                // TODO Auto-generated catch block
+////                System.out.println("Error in RiddlePanel run method!");
+////                e.printStackTrace();
+////            }
+//        } 
+//    }
 }
