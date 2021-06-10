@@ -6,25 +6,32 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.Objects;
 
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+/**
+ * Creates the question panel that will displayed on the RiddlePanel.
+ * Displays the question for each riddle.
+ * @author Ken Smith, Katelynn Oleson, Heather Finch
+ * @version 1.0.
+ */
 public class QuestionPanel extends RoundJPanel {
-	// fields
+	// A serialized ID for serialization.
+	private static final long serialVersionUID = 33188956188869938L;
+
 	private JTextPane myQuestionPane;
 	
 	private final static int WIDTH = 250;
 	private final static int HEIGHT = 175;
-	private final Color TRANSPARENT_BLACK = new Color(0,0,0,150);
-	private final Color OFF_WHITE = new Color(248,248,255);
+	private final static Color TRANSPARENT_BLACK = new Color(0,0,0,150);
+	private final static Color OFF_WHITE = new Color(248,248,255);
 	
 	/**
-	 * 
+	 * Constructs the QuestionPanel.
 	 */
 	public QuestionPanel(){
 		super();
@@ -33,7 +40,6 @@ public class QuestionPanel extends RoundJPanel {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setLayout(new GridBagLayout());
         
-            
         myQuestionPane = new JTextPane();
         myQuestionPane.setOpaque(false);
         myQuestionPane.setForeground(OFF_WHITE);
@@ -49,18 +55,19 @@ public class QuestionPanel extends RoundJPanel {
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         add(myQuestionPane,c);
-
 	}
 
 	/**
-	 * @param the String the myQuestionTextArea to set
+	 * Sets the text for the question, based on the current Riddle.
+	 * @param String The text to display for the question
 	 */
 	public void setText(String theString) {
+		Objects.requireNonNull(theString);
 		myQuestionPane.setText(theString);
 	}
 	
 	/**
-	 * 
+	 * Paints the QuestionPanel.
 	 */
 	@Override
     public void paintComponent(Graphics g) {

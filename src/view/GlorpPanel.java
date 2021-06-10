@@ -9,7 +9,9 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 
 public class GlorpPanel extends JPanel{
-	// fields
+	// A serialized ID for serialization.
+	private static final long serialVersionUID = -4524001795841344330L;
+
 	private TitlePanel myTitlePanel;
 	private MapPanel myMapPanel;
     private MapView myMapView;
@@ -17,7 +19,7 @@ public class GlorpPanel extends JPanel{
     private ItemView myItemView;
 	
     /**
-     * 
+     * Creates a GlorpPanel.
      */
 	public GlorpPanel() {
 		this.setLayout(new GridBagLayout());
@@ -29,14 +31,12 @@ public class GlorpPanel extends JPanel{
 		Border compound = BorderFactory.createCompoundBorder(raisedbevel, loweredbevel);
 		setBorder(compound);
 		
-	    // TODO: make this titlepanel its own class
 	    myTitlePanel = new TitlePanel();
 	    c.gridx = 0;
 	    c.gridy = 0;
 	    add(myTitlePanel, c);
 	    
-	    
-	    // add map view to map panel, add to GUI
+	    // Add map view to map panel, add to GUI.
 	    myMapPanel = new MapPanel();
 	    myMapView = new MapView();
 	    myMapPanel.add(myMapView);
@@ -44,7 +44,7 @@ public class GlorpPanel extends JPanel{
 	    c.gridy = 1;
 	    add(myMapPanel, c);
 	    
-	    // add item panel to GUI
+	    // Add item panel to GUI.
 	    myItemPanel = new ItemPanel();
 	    myItemView = new ItemView();
 	    myItemPanel.add(myItemView, BorderLayout.NORTH);
@@ -54,7 +54,8 @@ public class GlorpPanel extends JPanel{
 	}
 	
 	/**
-	 * @return the myItemView
+	 * Returns the Item panel.
+	 * @return ItemView The Item panel.
 	 */
 	public ItemView getItemView() {
 		return myItemView;

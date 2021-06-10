@@ -3,6 +3,11 @@ package view;
 import java.io.*;
 import javax.sound.sampled.*;
 
+/**
+ * An enumerated type for all of the sound effects used in Glorp.
+ * @author Ken Smith, Katelynn Oleson, Heather Finch.
+ * @version 1.0
+ */
 public enum SoundEffect {
 	ITEM("src/sounds/item.wav"),
 	EXPLOSION("src/sounds/explosion.wav"),
@@ -16,7 +21,7 @@ public enum SoundEffect {
    private FloatControl myGainControl;
    
    // Constructor to construct each element of the enum with its own sound file.
-   SoundEffect(String theSoundFileName) {
+   private SoundEffect(String theSoundFileName) {
       try {
          File file = new File(theSoundFileName);
          // Set up an audio input stream piped from the sound file.
@@ -36,13 +41,18 @@ public enum SoundEffect {
       }
    }
    
-   // Play or Re-play the sound effect from the beginning, by rewinding.
+   /**
+    * Play or Re-play the sound effect from the beginning, by rewinding.
+ 	*/
    public void play() {
-	   //if (myClip.isRunning()) myClip.stop();   // Stop the player if it is still running
-       myClip.setFramePosition(0); // rewind to the beginning
-       myClip.start();     // Start playing
+       myClip.setFramePosition(0); // Rewind to the beginning.
+       myClip.start(); // Start playing.
    }
    
+   /**
+    * Sets the volume for the sound effects.
+    * @param float The new volume for the sound effects
+ 	*/
    public static void setVolume(float theVolume) {
 	   for (SoundEffect effect : SoundEffect.values()) { 
 		    effect.myGainControl.setValue(theVolume); 

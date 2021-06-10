@@ -1,27 +1,29 @@
 package view;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.JTextPane;
-import javax.swing.border.Border;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+/**
+ * The gameplay instructions window.
+ * @author Ken Smith, Katelynn Oleson, Heather Finch.
+ * @version 1.0.
+ *
+ */
 public class InstructionsWindow extends JFrame{
-	// fields
+	// A serialized ID for serialization.
+	private static final long serialVersionUID = -8728025832652013840L;
+
 	private JPanel myPanel;
 	
 	private static final String TITLE = "Instructions";
@@ -30,10 +32,12 @@ public class InstructionsWindow extends JFrame{
 	private static final GameIcon BLOCKED_DOOR_ICON = new GameIcon("src/icons/door_red.png", 30, 6);
 	private static final GameIcon ARROW_KEY_ICON = new GameIcon("src/icons/arrow_keys.png", 120, 75);
 	private static final Color OFF_BLACK = new Color(15,15,15);
-	private final Color OFF_WHITE = new Color(248,248,255);
-	
-	public InstructionsWindow() {}
-	
+	private static final Color OFF_WHITE = new Color(248,248,255);
+		
+	/**
+	 * Creates the instructions window.
+	 * @param ImageIcon The icon for the window
+	 */
 	public InstructionsWindow(ImageIcon theIcon) {
 		super();
         setTitle(TITLE);
@@ -43,7 +47,7 @@ public class InstructionsWindow extends JFrame{
         myPanel = new JPanel();
         myPanel.setBackground(OFF_BLACK);
         myPanel.setOpaque(true);
-        //set layout
+        // Set layout.
         myPanel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -77,8 +81,7 @@ public class InstructionsWindow extends JFrame{
 	    JLabel arrowText = new JLabel();
 	    arrowText.setForeground(OFF_WHITE);
 	    arrowText.setText("Arrow keys to move");
-	    
-	    
+	   
 	    c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 2;
@@ -138,5 +141,4 @@ public class InstructionsWindow extends JFrame{
 	    setVisible(true);
 	    setAlwaysOnTop(true);
 	}
-	
 }

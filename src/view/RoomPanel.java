@@ -1,59 +1,40 @@
 package view;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.event.KeyEvent;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 
 import model.Direction;
-import model.Door;
 import model.Fixture;
 import model.Item;
 import model.Maze;
-import model.PiecePoint;
 import model.Player;
 import model.Room;
 
 /**
  * Displays the current room, the Player and all Items and Fixtures within.
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
- * @version 
+ * @version 1.0.
  */
 public class RoomPanel extends JPanel {
 
-    // fields
 	private static final long serialVersionUID = 1L;
     private Player myCurrentPlayer;
     private final static int SIZE = 501;
     
     /**
-     * 
+     * Creates the RoomPanel.
      */
     public RoomPanel() {
         setPreferredSize(new Dimension(SIZE,SIZE));
-//        Border raisedbevel = BorderFactory.createRaisedBevelBorder();
-//		Border loweredbevel = BorderFactory.createLoweredBevelBorder();
-//		Border compound = BorderFactory.createCompoundBorder(raisedbevel, loweredbevel);
-//		setBorder(compound);
         setLayout(new FlowLayout());
-        myCurrentPlayer = Maze.getInstance().getPlayer(); // TODO Getting instance of Maze in RoomPanel violates MVC?
+        myCurrentPlayer = Maze.getInstance().getPlayer();
     }
 
     /**
-     * 
+     * Updates the RoomPanel.
      */
     @Override
     public void update(Graphics g) {
@@ -61,25 +42,14 @@ public class RoomPanel extends JPanel {
     }
  
     /**
-     * 
+     * Paints the RoomPanel.
      */
     @Override
     public void paintComponent(Graphics g) {  
     	super.paintComponent(g);
-    	//new ImageIcon().paintIcon(this,g,d,d);
     	if(myCurrentPlayer != null) {
     		Room currRoom = Maze.getInstance().getCurrRoom();
-
-    		//System.out.println((int)myCurrentPlayer.getCoordinate().getX());
-    		//System.out.println((int)myCurrentPlayer.getCoordinate().getY());
-    		//TODO: this floor icon will need to come from the room class
     		currRoom.getLargeIcon().paintIcon(this, g, 0, 0);
-    		
-    		// paint items (we only have one item per room for now)
-//    		Map<Item, PiecePoint> inItems = currRoom.getItem();
-//    		for(Entry<Item, PiecePoint> entry : inItems.entrySet()) {
-//    			entry.getKey().getRoomIcon().paintIcon(this, g, (int)entry.getValue().getX(),(int) entry.getValue().getY());
-//    		}
     		Item inItem = currRoom.getItem();
     		if(inItem != null) {
     			inItem.getRoomIcon().paintIcon(this, g, (int)inItem.getIconArea().getX(),(int)inItem.getIconArea().getY());
@@ -96,7 +66,7 @@ public class RoomPanel extends JPanel {
     		GameIcon southDoorIcon = currRoom.getDoors().get(Direction.SOUTH).getRoomIcon();
     		southDoorIcon.paintIcon(this, g, 200, 480);
     		
-    		// paint fixture and player
+    		// Paint fixture and player.
     		Fixture inFixture = currRoom.getFixture();
     		if(inFixture != null && myCurrentPlayer.getBase().intersects(inFixture.getIconArea())) {
     			myCurrentPlayer.getRoomIcon().paintIcon(this, g, (int)myCurrentPlayer.getCoordinate().getX(), (int)myCurrentPlayer.getCoordinate().getY());
@@ -111,7 +81,8 @@ public class RoomPanel extends JPanel {
     }
 
 	/**
-	 * @param myCurrentPlayer the myCurrentPlayer to set
+	 * Adds the Player to this room.
+	 * @param Player The Player to add to this room.
 	 */
 	public void setCurrentPlayer(Player myCurrentPlayer) {
 		this.myCurrentPlayer = myCurrentPlayer;

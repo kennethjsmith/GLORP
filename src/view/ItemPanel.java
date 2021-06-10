@@ -3,37 +3,28 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
-
-import model.Item;
-import model.Player;
-import model.Room;
 
 /**
  * The panel for displaying a Player's inventory.
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
- * @version 
+ * @version 1.0.
  */
 public class ItemPanel extends JPanel{
-	// fields
+	// Serialized ID for serialization.
+	private static final long serialVersionUID = -4527116705909636684L;
+
 	private final String TITLE = "Items";
 	private final static int WIDTH = 285;
 	private final static int HEIGHT = 122;
-	private final GameIcon BACKGROUND = new GameIcon("src/icons/stars.png", WIDTH, HEIGHT);
+	private final static GameIcon BACKGROUND = new GameIcon("src/icons/stars.png", WIDTH, HEIGHT);
 	
 	/**
-	 * A default constructor. 
+	 * Constructs the item panel.
 	 */
 	public ItemPanel(){
 		super();
@@ -43,15 +34,11 @@ public class ItemPanel extends JPanel{
         border.setTitleColor(Color.WHITE);
         border.setTitleJustification(TitledBorder.CENTER);
         setLayout(new BorderLayout()); 
-//        GridBagConstraints c = new GridBagConstraints();
-//        c.fill = GridBagConstraints.NONE;
         setBorder(border);
-        //setBackground(Color.darkGray);
     }
 	
-	
 	/**
-	 * 
+	 * Paints the item panel.
 	 */
 	@Override
     public void paintComponent(Graphics g) {
