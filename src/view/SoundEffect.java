@@ -58,7 +58,6 @@ public enum SoundEffect {
 		    effect.myGainControl.setValue(theVolume); 
 		}
    }
-   // TODO: use it or lose it, for music class too
    // Optional static method to pre-load all the sound files.
    static void init() {
       values(); // calls the constructor for all the elements

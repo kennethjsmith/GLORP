@@ -34,7 +34,6 @@ public class Fixture extends GamePiece implements Serializable{
 		myType = Objects.requireNonNull(theType);
 		myXCoordinate = theXCoordinate;
 		myYCoordinate = theYCoordinate;
-		// TODO: refactor to model Item/ItemType
 		
 		if(theType == FixtureType.CHEST) {
 			myIcon = FixtureType.getChestIcon();
