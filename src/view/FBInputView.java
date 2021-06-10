@@ -1,26 +1,29 @@
 package view;
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+/**
+ * A JPanel to display Fill-in-the-blank riddles and trivia.
+ * Goes on top of the InputPanel, which goes on top of the RiddlePanel.
+ * @author Heather Finch, Katelynn Oleson, Ken Smith.
+ * @version 1.0.
+ *
+ */
 public class FBInputView extends JPanel {
-	
+	// A serialized ID for serialization.
 	private static final long serialVersionUID = -5405375207665157664L;
 	private final static int WIDTH = 275;
 	private final static int HEIGHT = 125;
 	
-	/** The number of columns in width of the TextField. */
+	// The number of columns in width of the TextField.
     private static final int TEXT_FIELD_COLUMNS = 15;
 	private String myTypedAnswer;
-	JTextField myTextField;
+	private JTextField myTextField;
 	
 	public FBInputView() {
 		super();
@@ -46,7 +49,7 @@ public class FBInputView extends JPanel {
 		    public void focusGained(FocusEvent e) {
 		        myTextField.setText(null); // Empty the text field when it receives focus
 		    }
-
+		    
 			@Override
 			public void focusLost(FocusEvent e) {
 				myTypedAnswer = myTextField.getText(); // Grab the text when it loses focus				
