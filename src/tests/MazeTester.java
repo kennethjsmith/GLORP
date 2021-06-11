@@ -10,6 +10,11 @@ import model.Maze;
 import model.Player;
 import model.Room;
 
+/**
+ * Tests the Maze class.
+ * @author Heather Finch, Katelynn Oleson, Ken Smith
+ * @version 1.0.
+ */
 class MazeTester {
 	
     // Tests canWin method at the start of the game
