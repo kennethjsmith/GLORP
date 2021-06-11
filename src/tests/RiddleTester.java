@@ -10,11 +10,8 @@ import java.util.Arrays;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import model.Maze;
 import model.Riddle;
-import model.RiddleFactory;
 import model.RiddleType;
-import model.Room;
 
 /**
  * Tests the Riddle class.
