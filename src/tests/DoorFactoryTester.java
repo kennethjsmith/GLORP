@@ -25,9 +25,7 @@ class DoorFactoryTester {
         myFactory = new DoorFactory(myRooms);
         
     }
-    
-    // not working, have someone else run it
-   
+       
     @Test
     void testNullArrayConstructor() {
         assertThrows(NullPointerException.class, () -> new DoorFactory(null));
