@@ -1,3 +1,7 @@
+/*
+ * GLORP: Revenge of the Sphinx
+ */
+
 package view;
 
 import java.awt.BorderLayout;
@@ -133,7 +137,7 @@ public class RiddlePanel extends JPanel {
     }
 
     
-    /*
+    /**
      * Shut down the riddle prompt 
      * and terminate the producer thread.
      */

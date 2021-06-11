@@ -1,3 +1,7 @@
+/*
+ * GLORP: Revenge of the Sphinx
+ */
+
 package model;
 
 import java.awt.Rectangle;

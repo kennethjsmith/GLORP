@@ -1,3 +1,7 @@
+/*
+ * GLORP: Revenge of the Sphinx
+ */
+
 package controller;
 
 import java.io.FileInputStream;
@@ -9,7 +13,7 @@ import java.util.Objects;
 
 
 /**
- * Serializes the game for saving and loading.
+ * Serializes a component for saving and loading the game.
  * @author Katelynn Oleson, Ken Smith, Heather Finch.
  * @version 1.0.
  */

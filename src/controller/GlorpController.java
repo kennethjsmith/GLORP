@@ -1,3 +1,7 @@
+/*
+ * GLORP: Revenge of the Sphinx
+ */
+
 package controller;
 
 import java.awt.Dimension;

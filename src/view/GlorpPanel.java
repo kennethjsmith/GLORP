@@ -1,3 +1,7 @@
+/*
+ * GLORP: Revenge of the Sphinx
+ */
+
 package view;
 
 import java.awt.BorderLayout;
@@ -8,6 +12,11 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
+/**
+ * Container Panel to hold the MapPanel and ItemPanel together
+ * @author Ken Smith, Heather Finch, Katelynn Oleson 
+ * @version 1.0.
+ */
 public class GlorpPanel extends JPanel{
 	// A serialized ID for serialization.
 	private static final long serialVersionUID = -4524001795841344330L;

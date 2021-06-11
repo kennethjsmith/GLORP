@@ -1,3 +1,8 @@
+/*
+ * GLORP: Revenge of the Sphinx
+ * A Maze Riddle Game for TCSS 360
+ */
+
 package controller;
 
 import java.awt.EventQueue;

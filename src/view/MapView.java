@@ -1,3 +1,6 @@
+/*
+ * GLORP: Revenge of the Sphinx
+ */
 package view;
 
 import java.awt.Color;
