@@ -174,7 +174,7 @@ class MazeTester {
     	westDoor.setUnlocked();
     	
     	assertTrue(!myMaze.isValidTraversal(Direction.WEST, room));
-    }
+    } 
     
     // Tests isValidTraversal method for south move past edge of maze
     @Test
