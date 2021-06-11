@@ -63,19 +63,17 @@ public class GlorpController {
 	private boolean myRiddleOpenFlag;
     
     // The amount of time the responses are displayed on the riddle panel.
-    // The response times must all be unique. TODO why do they have to be unique?
+    // The response times must all be unique. 
     private final static int SPHINX_RESPONSE_TIME = 1000;    
     private final static int SHORT_EXPLANATION_TIME = 1500;
     private final static int LONG_EXPLANATION_TIME = 3000;
     
-    // Used for key bindings. TODO explain further
+    // Used for key bindings. 
     private final static String PRESSED = "pressed ";
     private final static String RELEASED = "released ";
   
     // A set of the direction keys currently being pressed.
     private final Set<Integer> myPressedKeys = new HashSet<Integer>();
-    
-    // ?? TODO Add comment about what this hasmap is used for.
     private final HashMap<Direction, Point> myPositionChange = new HashMap<Direction, Point>();
    
     // Maze and Player are objects from Model that Controller interacts with.
@@ -87,7 +85,7 @@ public class GlorpController {
 	
 	/**
 	 * Default constructor for GlorpController.
-	 * @throws LineUnavailableException if TODO when does it throw this exception?
+	 * @throws LineUnavailableException 
 	 */
 	public GlorpController() throws LineUnavailableException{
 		myMaze = Objects.requireNonNull(Maze.getInstance());
@@ -101,8 +99,7 @@ public class GlorpController {
         myWindow.setTitle("GLORP"); 
         myWindow.repaint();
         
-        // Set up hashmap. TODO what is this hashmap for? Expand the comment
-        // TODO: Fix magic numbers! & make this a helper?
+        // Set up hashmap.
         myPositionChange.put(Direction.EAST, new Point(20, 200));
         myPositionChange.put(Direction.WEST, new Point(380, 200));
         myPositionChange.put(Direction.NORTH, new Point(200, 380));
@@ -191,10 +188,6 @@ public class GlorpController {
     		    timer.scheduleAtFixedRate(task, 0, 100);
     		}
     		
-    		// TODO: clean this up, 2 near identical sections of spaghetti
-    		// also, this is messy, I use the player piece's icon to display the win message
-    		// I also added a field and methods to fix his location
-    		
     		// If there is a Ship fixture for Ignignokt and we have the Gem item:
     		if(myPlayer.getInventory().contains(ItemType.GEM)  
     			&& inFixture.getType() == FixtureType.ALTSHIP){
@@ -261,9 +254,7 @@ public class GlorpController {
 
     // Returns the direction of the door the player is interescting with.
     // If the player is not interecting with a door, returns null.
-    private Direction checkDoorZones() {
-        // TODO duplicate code, create doorZone class/ hashmap with rectangle, Direction
-       
+    private Direction checkDoorZones() {       
         if(myPlayer.getIconArea().intersects(Room.getEastDoorZone())) return Direction.EAST;  // East door zone.
         else if(myPlayer.getIconArea().intersects(Room.getWestDoorZone())) return Direction.WEST; // West door zone.
         else if(myPlayer.getIconArea().intersects(Room.getNorthDoorZone())) return Direction.NORTH; // North door zone.
@@ -481,7 +472,7 @@ public class GlorpController {
                 if(theAddFlag) myPressedKeys.add(inKey);
                 else {
                     myPressedKeys.remove(inKey);
-                    if(myPressedKeys.isEmpty()) { // TODO is this needed? 
+                    if(myPressedKeys.isEmpty()) { 
                       myPlayer.setStride(0);
                       myPlayer.setSkipFrame(false);
                     }

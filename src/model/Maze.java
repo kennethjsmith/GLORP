@@ -184,9 +184,6 @@ public class Maze implements Serializable{
 	
 	}
 	
-	
-	// TODO: Right now move in Maze uses Direction - we may want to make a custom direction class
-	// TODO: add exception handeling to move method
 	/**
 	 * Move in a direction through the maze.
 	 * @param theDirection the direction the player will move in
@@ -296,7 +293,6 @@ public class Maze implements Serializable{
 		// Used for DFS, indicates if a room has been visited yet to see if it contains the relevant items.
 		boolean [][] visited = new boolean[LENGTH + BORDER_BUFFER][WIDTH + BORDER_BUFFER];
 		
-		// TODO NOTE if we add more items we will need to use .contains to see if the inventory contains the items we are checking for
 		// Check if key has been picked up.
 		if(myPlayer.getInventory().size() == 0) {
 			myCanAccessKeyRoom = false;
@@ -326,8 +322,6 @@ public class Maze implements Serializable{
 	    Room currentRoom = myMaze[theRow][theColumn];
 	    
 	    // Return if we've found the chest room
-	    // TODO, should I use a "break" to exit the depthFirstSearchMaze method once the winRoom has been found?
-	    // Otherwise the DFS could recurse further.
 	    if(currentRoom == theGoalRoom) {
 	    	if(theGoalRoom.equals(myKeyRoom)) myCanAccessKeyRoom = true;
 	    	else myCanAccessChestRoom = true;
@@ -402,7 +396,6 @@ public class Maze implements Serializable{
 		getRoom(LENGTH, WIDTH).setPlayer(myPlayer);
 	}
 	
-	//NOTE TODO: issues with serializing imageIcons
 	// Set up the object map for serializaiton.
 	private void setUpNameObjectMap() {
 	    myDataMap = new HashMap<String, Object>();
@@ -442,67 +435,4 @@ public class Maze implements Serializable{
                 myCanAccessKeyRoom = (boolean) SerializeGame.deserializeMe(myDataMap.get("CanKey"), "CanKey");               
 	    } else System.out.println("Maze Data map has not been initialized yet!");
     }
-//	
-//	private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
-//	    ois.defaultReadObject();
-//	    THISMAZE = this;
-//	}
-//
-//	private Object readResolve()  {
-//	    return THISMAZE;
-//	}
-//	
-//	public static void serializeMaze() {
-//	    System.out.println(THISMAZE.toString()); 
-//	    
-//	    String filename = "savedGame.txt";
-//	    //Saving of object in a file             
-//	    FileOutputStream file;
-//        try {
-//            file = new FileOutputStream(filename);
-//            ObjectOutputStream out = new ObjectOutputStream(file); 
-//            
-//            out.writeObject(Maze.getInstance());
-//            
-//            out.close();             
-//            file.close(); 
-//        } catch (IOException e2) {
-//            // TODO Auto-generated catch block
-//            System.out.println("Error in Maze serializeMaze method! ");
-//            e2.printStackTrace();
-//       }             
-//	                	    
-//	}
-//	
-//	public void deserializeMaze() {
-//	       ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-//	        ObjectOutputStream oos;
-//	        
-//	        try {
-//	            oos = new java.io.ObjectOutputStream(baos);
-//	            oos.writeObject(getInstance());
-//	            oos.close();
-//	            
-//	        } catch (IOException e) {
-//	            System.out.println("Error in Maze serializeMaze method! ");
-//	            e.printStackTrace();
-//	        }
-//	        
-//	   // ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-//	    InputStream is = new ByteArrayInputStream(baos.toByteArray());
-//	    ObjectInputStream ois;
-//        try {
-//            ois = new ObjectInputStream(is);
-//            Maze deserialized = (Maze) ois.readObject();
-//            System.out.println(deserialized.toString()); 
-//        } catch (IOException | ClassNotFoundException e) {
-//            // TODO Auto-generated catch block
-//            System.out.println("Error in Maze deserializeMaze method! ");
-//            e.printStackTrace();
-//        }
-//	   
-//	   
-//	}
-
-
 }

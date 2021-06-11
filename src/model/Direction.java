@@ -97,7 +97,7 @@ public enum Direction implements Serializable{ // .. not generating a serialize 
 		if(theXDirection == null) return theYDirection; // North or south.
 		if(theYDirection == null) return theXDirection; // West or east.
 		
-		return null; //TODO: fix to better way. this return should never happen
+		return null; 
 	}
 
 	/**
