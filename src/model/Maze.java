@@ -173,7 +173,7 @@ public class Maze implements Serializable{
 		Objects.requireNonNull(theDirection);
 		Objects.requireNonNull(theRoom);
 		
-	    RoomIndex currIndex = myCurrentRoom.getIndex();
+	    RoomIndex currIndex = theRoom.getIndex();
         int row = currIndex.getRow();
         int col = currIndex.getCol();
         
@@ -201,7 +201,7 @@ public class Maze implements Serializable{
 		int inCol = currIndex.getCol();
 
 		// Checks if the move is valid and the door is unlocked
-		if(!(isValidTraversal(theDirection, myCurrentRoom) || !myCurrentRoom.getDoors().get(theDirection).isUnlocked())) {
+		if(!isValidTraversal(theDirection, myCurrentRoom) || !myCurrentRoom.getDoors().get(theDirection).isUnlocked()) {
 			throw new IllegalArgumentException("You cannot move that way");
 	    }
 		
