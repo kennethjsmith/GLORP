@@ -65,7 +65,7 @@ public class Room implements Serializable{
 	 * @param theRow
 	 * @param theCol
 	 */
-	public Room(int theRow, int theCol) { // how will rooms get their riddles? 
+	public Room(int theRow, int theCol) { 
 		myDoorMap = null;
 		myItem = null;
 	    setRandomFloor(); 

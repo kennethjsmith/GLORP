@@ -3,4 +3,5 @@ module glorp {
     requires org.junit.jupiter.api;
 	requires java.sql;
 	requires sqlite.jdbc;
+    requires junit;
 }
