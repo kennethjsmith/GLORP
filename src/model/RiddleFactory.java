@@ -4,46 +4,39 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
 
 import sql.FBRiddleDatabase;
 import sql.MCRiddleDatabase;
 import sql.TFRiddleDatabase;
 
+/**
+ * This Riddle factory grabs information for the SQLite databases and creates a new Riddle.
+ * @author Heather Finch, Katelynn Oleson, Ken Smith.
+ * @version 1.0
+ */
 public class RiddleFactory {
-    /*
-     * Ex: how each would look
-     * 
-     * Question: "T/F Question"
-     * Answer: "True"
-     * Wrong Answers: "False"    
-     * NOTE:   myWrongOptions.length == 1
-     * 
-     * Question: "Multi Choice Question"
-     * Answer: "Correct Answer"
-     * Wrong Answers: "Wrong Answer 1", "Wrong Answer 2", "Wrong Answer 3" 
-     * NOTE:  myWrongOptions.length > 1
-     * 
-     * Question: "Open Ended Answer"
-     * Answer: "The Answer"
-     * Wrong Answers: 
-     * NOTE:   myWrongOptions.length == 0
-     * 
-     */
-    
+
+	// The classes that create and access the databases that store Riddles.
 	private final TFRiddleDatabase myTrueFalseRiddles;
 	private final MCRiddleDatabase myMultipleChoiceRiddles;
 	private final FBRiddleDatabase myFillInBlankRiddles;
 	
+	// A ResultSet for each type of Riddle.
     private final ResultSet myTFRiddleSet;
     private final ResultSet myMCRiddleSet;
     private final ResultSet myFBRiddleSet;
     
+    // Keeps track of how many Riddles have been used so far of each type.
     private int TF_RIDDLE_COUNT = 0;
     private int MC_RIDDLE_COUNT = 0;
     private int FB_RIDDLE_COUNT = 0;
 
 
+    /**
+     * Creates a new RiddleFactory.
+     */
     public RiddleFactory() {
         myTrueFalseRiddles = new TFRiddleDatabase();
         myTFRiddleSet = myTrueFalseRiddles.getTFRiddleSet();
@@ -55,8 +48,12 @@ public class RiddleFactory {
         myFBRiddleSet = myFillInBlankRiddles.getFBRiddleSet();
     }
              
+    /**
+     * Returns the next Riddle. The type of Riddle is selected randomly.
+     * @return Riddle The next Riddle.
+     */
     public Riddle getNextRiddle() {
-    	int randomNum = generateRandom(); //TODO be sure to select riddles in a way that is balanced
+    	int randomNum = generateRandom(); // Get a random number.
     	Riddle currRiddle = null;
     	try {
     		// If it is a true/false riddle
@@ -80,15 +77,12 @@ public class RiddleFactory {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-    	
-    	if(currRiddle == null) throw new NullPointerException("RiddleFactory tried to return a null riddle");
-    	return currRiddle; // TODO null handling
+    	return Objects.requireNonNull(currRiddle);
     }
     
-	 // TODO: make this into a utility ? Very similar to one used in Maze
-    /**
-	  * Generates a random index between 0 and 3
-	  */
+	 // Generates a random index between 0 and 3.
+	 // If the allocation of each type of riddle is unbalanced, 
+	 // this will attempt create balance by returning a different number.
 	 private int generateRandom() {
 	     Random rand = new Random();
 	     int randomNum = rand.nextInt(3);
@@ -96,10 +90,12 @@ public class RiddleFactory {
 	     if((FB_RIDDLE_COUNT > 1.3 * TF_RIDDLE_COUNT || FB_RIDDLE_COUNT > 1.3 * MC_RIDDLE_COUNT) && randomNum == 2) randomNum = 1;
 	     if((MC_RIDDLE_COUNT > 1.3 * TF_RIDDLE_COUNT || MC_RIDDLE_COUNT > 1.3 * FB_RIDDLE_COUNT) && randomNum == 1) randomNum = 0;
 	     if((TF_RIDDLE_COUNT > 1.3 * MC_RIDDLE_COUNT || TF_RIDDLE_COUNT > 1.3 * FB_RIDDLE_COUNT) && randomNum == 0) randomNum = 2;
-	    
-	     return randomNum;
+	     return randomNum;  
 	 }
     
+    /**
+     * Closes the connections to each database.
+     */
     public void close() {
     	myTrueFalseRiddles.closeConnection();
     	myMultipleChoiceRiddles.closeConnection();

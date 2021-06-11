@@ -1,11 +1,9 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.io.File;
-import java.io.IOException;
+import java.util.Objects;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -14,7 +12,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
-import javax.sound.sampled.*;
 
 import model.Direction;
 import model.Fixture;
@@ -24,20 +21,14 @@ import model.Player;
 import model.Riddle;
 import model.SkinType;
 /**
- * The main frame for the GUI.
+ * The main frame for the GUI. Extends JFrame.
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
- * @version 
+ * @version 1.0.
  */
 public class GlorpGUI extends JFrame {
-    
-    // static final fields (class constants)
-
-    /**
-     * The serial version UID.
-     */
+    // A serialized ID for serialization.
     private static final long serialVersionUID = 0;
-
-    // fields
+    
     private GlorpPanel myGlorpPanel;
     private RoomPanel myRoomPanel;
     private RiddlePanel myRiddlePanel;
@@ -48,7 +39,7 @@ public class GlorpGUI extends JFrame {
 	private final int POP_UP_HEIGHT = 300;
   
     /**
-     * 
+     * Constructs the GUI.
      */
     public GlorpGUI() {
         super();
@@ -56,10 +47,10 @@ public class GlorpGUI extends JFrame {
         setResizable(false);
         setIconImage(ICON.getImage());
         
-        // music
+        // Music.
         Music.WLAE.play();
         
-        //set layout
+        // Set layout.
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -70,36 +61,31 @@ public class GlorpGUI extends JFrame {
         c.gridheight = 1;
         add(myGlorpPanel, c);
         
-        // add room panel to GUI
+        // Add room panel to GUI.
         myRoomPanel = new RoomPanel();
         c.gridx = 1;
         c.gridy = 0;
         c.gridheight = 1;
         add(myRoomPanel, c);
         
-        // add riddle panel to GUI
+        // Add riddle panel to GUI.
         myRiddlePanel = new RiddlePanel();
         c.gridx = 2;
         c.gridy = 0;
         c.gridheight = 1;
         add(myRiddlePanel, c);
         
-        
         addMenuBar();
               
         pack();
-        repaint();
-        
+        repaint();  
     }
 
-    // TODO: move this into builder pattern
-    /**
-     * 
-     */
-    public void addMenuBar() {
+    // Create and add the menu bar.
+    private void addMenuBar() {
     	JMenuBar myMenubar = new JMenuBar();
         
-        // create file menu
+        // Create file menu.
     	JMenu file = new JMenu("File");
     	JMenuItem restart = new JMenuItem("Restart");
         JMenuItem save = new JMenuItem("Save Game");
@@ -120,7 +106,7 @@ public class GlorpGUI extends JFrame {
         	System.exit(ABORT);
         });
         
-        //create settings menu
+        // Create settings menu.
         JMenu settings = new JMenu("Settings");
         JMenu sound = new JMenu("Sound");
         JMenu music = new JMenu("Music Volume");
@@ -158,9 +144,8 @@ public class GlorpGUI extends JFrame {
         sound.add(music);
         sound.add(effects);
         
-        //create help menu
+        // Create help menu.
         JMenu help = new JMenu("Help");
-        // TODO: make these window singleton
         JMenuItem about = new JMenuItem("About");
         about.addActionListener(e ->{
         	AboutWindow inAbout = new AboutWindow(ICON);
@@ -243,35 +228,44 @@ public class GlorpGUI extends JFrame {
     }
 
     /**
-     * activates the riddle panel and returns the runnable object to open a new thread
-     * @return
+     * Activates the riddle panel and returns the runnable object to open a new thread.
+     * @return RiddlePanel The riddle panel
      */
     public RiddlePanel getRunnableRiddlePanel(Riddle theRiddle) {
+    	Objects.requireNonNull(theRiddle);
         myRiddlePanel.startUp(theRiddle);
         return myRiddlePanel;
     }
-   
 
 	/**
-	 * @return the myItemView
+	 * Getter for the GlorpPanel.
+	 * @return GlorpPanel
 	 */
 	public GlorpPanel getGlorpPanel() {
 		return myGlorpPanel;
 	}
 	
+    /**
+     * Sets the focus to the room.
+     */
     public void setFocusToRoom() {
         myRoomPanel.setFocusable(true);
         myRoomPanel.setRequestFocusEnabled(true);
         myRoomPanel.requestFocusInWindow(); 
-       // myRoomPanel.grabFocus();
     }
     
+    /**
+     * Sets the focus to the riddle panel.
+     */
     public void setFocusToRiddle() {
         myRiddlePanel.grabFocus();
     }
 
+    /**
+     * Getter for the RoomPanel.
+     * @return JPanel The RoomPanel
+     */
     public JPanel getRoomPanel() {
-        // TODO Auto-generated method stub
         return myRoomPanel;
     }
 }

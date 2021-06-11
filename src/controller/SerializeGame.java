@@ -5,58 +5,64 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Objects;
 
 
+/**
+ * Serializes the game for saving and loading.
+ * @author Katelynn Oleson, Ken Smith, Heather Finch.
+ * @version 1.0.
+ */
 public final class SerializeGame {
+	// Streams used for writing to and reading from files. 
     private static FileOutputStream myFileOutput;
     private static ObjectOutputStream myObjectOut;
     private static FileInputStream myFileInput;
     private static ObjectInputStream myObjectIn;
 
-    //Saving of object in a file    
+    /**
+     * Saves an object in a file.
+     * @param theObject The object to be saved
+     * @param theObjectName The name of the object being saved
+     */
     public static void serializeMe(Object theObject, String theObjectName) {
-        //System.out.println(theObject);   
-        
+        Objects.requireNonNull(theObject);
+        Objects.requireNonNull(theObjectName);
         try {
             myFileOutput = new FileOutputStream("./SavedGame/" + theObjectName + ".txt");
             myObjectOut = new ObjectOutputStream(myFileOutput); 
-            
             myObjectOut.writeObject(theObject);
-            
             myObjectOut.close();
             myFileOutput.close(); 
             
             System.out.println("Serialized " + theObjectName);
         } catch (IOException e2) {
-            // TODO Auto-generated catch block
             System.out.println("Error Serializing " + theObjectName);
             e2.printStackTrace();
        } 
     }
     
-    // Reading the object from a file
+    /**
+     * Deserialized an object by reading from a file.
+     * @param theObject The object to be read
+     * @param theObjectName The name of the objecting being read
+     * @return Object the object that was deserialized
+     */
     public static Object deserializeMe(Object theObject, String theObjectName) { 
-        Object inDeserializedObject = null;
-        
+        Objects.requireNonNull(theObject);
+        Objects.requireNonNull(theObjectName);
+    	Object inDeserializedObject = null;
         try {
             myFileInput = new FileInputStream("./SavedGame/" + theObjectName + ".txt");
             myObjectIn = new ObjectInputStream(myFileInput);    
-            
-            // Method for deserialization of object             
-            inDeserializedObject = myObjectIn.readObject();  
-            
+            inDeserializedObject = myObjectIn.readObject(); // Method for deserialization of object             
             myObjectIn.close();             
-            myFileInput.close();
-            
-            System.out.println("Deserialized " + theObjectName);
+            myFileInput.close();            
         } catch (IOException | ClassNotFoundException e) {
-            // TODO Auto-generated catch block
             System.out.println("Error deserializing " + theObjectName);
             e.printStackTrace();
         }             
-         
-        
-        return inDeserializedObject;
+        return Objects.requireNonNull(inDeserializedObject);
     }
 
 }

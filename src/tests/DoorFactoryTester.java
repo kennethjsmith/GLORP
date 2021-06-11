@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import model.Direction;
 import model.DoorFactory;
-import model.Riddle;
 import model.Room;
 
 class DoorFactoryTester {

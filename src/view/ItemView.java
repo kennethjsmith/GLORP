@@ -8,34 +8,34 @@ import java.awt.Graphics;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import model.Item;
 import model.ItemType;
 import model.Player;
 
-//TODO: clean this up
 /**
-* Displays the current map of the Maze.
+* Displays the current items in the players inventory.
+* Goes on top of ItemPanel.
 * @author Ken Smith, Heather Finch, Katelynn Oleson 
-* @version 
+* @version 1.0.
 */
 public class ItemView extends JPanel {
-	/**
-	 * 
-	 */
+	// A serialized ID for serialization.
 	private static final long serialVersionUID = 2788214106090858619L;
-	// fields
+
 	private JPanel item1;
     private JPanel item2;
     private JPanel item3;
-    JLabel itemLabel1;
-    JLabel itemLabel2;
-    JLabel itemLabel3;
+    private JLabel itemLabel1;
+    private JLabel itemLabel2;
+    private JLabel itemLabel3;
     private final static int WIDTH = 275;
 	private final static int HEIGHT = 90;
 	private final static int ICON_SIZE = 75;
 	private final static GameIcon BLANK = new GameIcon("src/icons/blank_item_icon.png", ICON_SIZE);
 	private static final Color TRANSPARENT = new Color(0, 0, 0, 64);
     
+	/**
+	 * Constructor creates the ItemView.
+	 */
 	public ItemView() {
 		super();
 		setPreferredSize(new Dimension(WIDTH,HEIGHT));
@@ -73,8 +73,8 @@ public class ItemView extends JPanel {
 	}
 	
 	/**
-	 * 
-	 * @param thePlayer
+	 * Updates the ItemView based on the players inventory.
+	 * @param Player The Players whose inventory we are using to update this
 	 */
 	public void update(Player thePlayer) {
 		itemLabel1.setIcon(BLANK);
@@ -100,7 +100,7 @@ public class ItemView extends JPanel {
 	}
 	
 	/**
-	 * 
+	 * Paints the ItemView.
 	 */
 	@Override
     public void paintComponent(Graphics g) {

@@ -6,28 +6,28 @@ import java.util.Random;
 
 /**
  * Extends point and can accept a Direction parameter to move a point.
+ * Used by GamePieces.
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
- * @version 5.14.21
+ * @version 1.0.
  */
-public class PiecePoint extends Point implements Serializable{
-    
-    // ... not generating ID... Point implements serializable?
-	
+public class PiecePoint extends Point implements Serializable {
+    	
 	private static final long serialVersionUID = 1L;
 	private int x;
 	private int y;
 	private static final Random RAND = new Random();
 	
 	/**
-	 * 
+	 * Default constructor, creates a new PiecePoint.
 	 */
 	public PiecePoint() {
 		super();
 	}
 	
 	/**
-	 * @param theX
-	 * @param theY
+	 * Creates a PiecePoint based off of the x and y coordiantes provided.
+	 * @param theX An int representing the x coordinate
+	 * @param theY An int representing the y coordinate
 	 */
 	public PiecePoint(int theX, int theY) {
 		super(theX, theY);
@@ -38,7 +38,7 @@ public class PiecePoint extends Point implements Serializable{
 	/**
 	 * Moves this in a direction based on theDirection. 
 	 * Uses a pythagorean equation to adjust dx and dy for diagonal movement.
-	 * @param theDirection
+	 * @param Direction The direction to move the PiecePoint
 	 */
 	public void move(Direction theDirection) {
 		int inSpeed = Player.getSpeed();
@@ -55,21 +55,25 @@ public class PiecePoint extends Point implements Serializable{
 	}
 	
 	/**
-	 *
+	 * Getter for the x coordiante.
+	 * @return The x coordinate, a double
 	 */
 	public double getX() {
 		return x;
 	}
 	
 	/**
-	 *
+	 * Getter for the y coordinate.
+	 * @return The y coordinate, a double
 	 */
 	public double getY() {
 		return y;
 	}
 	
 	/**
-	 *
+	 * Setter for the x and y coordinates.
+	 * @param x The x coordiante
+	 * @param y The y coordinate
 	 */
 	public void setLocation(int x, int y) {
 		this.x = x;
@@ -77,22 +81,14 @@ public class PiecePoint extends Point implements Serializable{
 	}
 	
 	/**
-	 * @param theX
-	 * @param theY
-	 * @return
+	 * Creates a random point.
+	 * @param theX The upper bound for the random x point
+	 * @param theY the upper bound for the random y point
+	 * @return A new PiecePoint
 	 */
 	public static PiecePoint randomPoint(int theX, int theY) {
 		int inX = RAND.nextInt(theX);
 		int inY = RAND.nextInt(theY);
 		return new PiecePoint(inX, inY);
 	}
-	
-	/**
-	 * A toString() method that returns a coordinate pair as a String.
-	 */
-	@Override
-	public String toString() {
-		return("("+x+", "+y+")");
-	}
-	
 }

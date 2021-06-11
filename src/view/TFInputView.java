@@ -1,34 +1,39 @@
 package view;
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
-
+/**
+ * A JPanel to display true/false riddles and trivia.
+ * Goes on top of the InputPanel, which goes on top of the RiddlePanel.
+ * @author Heather Finch, Katelynn Oleson, Ken Smith.
+ * @version 1.0.
+ */
 public class TFInputView extends JPanel {
-
+	// A serialized ID for serialization.
 	private static final long serialVersionUID = -5405375207665157664L;
-	private final static int WIDTH = 275;
-	private final static int HEIGHT = 125;
 	private ButtonGroup myAnswers;
-	JRadioButton myAnswerOption1;
-	JRadioButton myAnswerOption2;
+	private JRadioButton myAnswerOption1;
+	private JRadioButton myAnswerOption2;
 	private String mySelectedAnswer;
 	
+	/**
+	 * Constructs the TFInputView.
+	 */
 	public TFInputView() {
 		super();
 		setOpaque(false);
 		setLayout(new GridBagLayout());
-		//setPreferredSize(new Dimension(WIDTH,HEIGHT));
 		mySelectedAnswer = null;
 		setupButtons();
 		addListeners();
 	}
 	
+	// Helper method sets up and adds the buttons.
+	// There are 2 buttons: "True" and "False"
 	private void setupButtons() {
 		myAnswerOption1 = new JRadioButton("True");
 		myAnswerOption1.setFocusPainted(false);
@@ -44,17 +49,17 @@ public class TFInputView extends JPanel {
 		this.add(myAnswerOption2);
 	}
 	
+	// Adds listeners to the buttons. 
 	private void addListeners() {
-		myAnswerOption1.addActionListener(e ->{
-			mySelectedAnswer = myAnswerOption1.getText();
-		});
-		
-		myAnswerOption2.addActionListener(e -> {
-			mySelectedAnswer = myAnswerOption2.getText();
-		});
+		myAnswerOption1.addActionListener(e -> mySelectedAnswer = myAnswerOption1.getText());	
+		myAnswerOption2.addActionListener(e -> mySelectedAnswer = myAnswerOption2.getText());
 	}
-	// TODO: why is this public?
-	public String getAnswer() {
+	
+	/**
+	 * Getter for the players answer selection.
+	 * @return String The answer the player selected to this Riddle
+	 */
+	String getAnswer() {
 		return mySelectedAnswer;
 	}
 }

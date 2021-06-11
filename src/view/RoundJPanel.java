@@ -1,13 +1,22 @@
 package view;
 
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+/**
+ * The RoundJPanel is used for the RiddlePanel to give the questions
+ * and answers a rounded edge.
+ * @author Ken Smith, Katelynn Oleson, Heather Finch
+ * @version 1.0.
+ */
 public class RoundJPanel extends JPanel {
+	// A serialized ID for serialization.
+	private static final long serialVersionUID = 3018490270013327762L;
+
+	/**
+	 * Paints the RoundJPanel.
+	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);

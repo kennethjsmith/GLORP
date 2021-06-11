@@ -8,9 +8,25 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import org.sqlite.SQLiteDataSource;
 
+/**
+ * This class creates a database of multiple choice questions if one doesn't already exist.
+ * It also provides a means to access the database. 
+ * The database it creates is called mcriddles.db.
+ * Questions taken from:
+ * https://egypt.mrdonn.org/trivia.html
+ * https://www.riddles.com/
+ * https://conversationstartersworld.com/ancient-egypt-trivia-questions/
+ * https://www.history.com/news/11-things-you-may-not-know-about-ancient-egypt
+ * 
+ * @author Heather Finch, Ken Smith, Katelynn Oleson.
+ * @version 1.0.
+ */
 public class TFRiddleDatabase {
 	private Connection myConnection;
 	
+	/**
+	 * Creates database if it doesn't already exist.
+	 */
 	public TFRiddleDatabase() {
 		myConnection = null;
 		SQLiteDataSource ds = null;
@@ -24,9 +40,9 @@ public class TFRiddleDatabase {
 		  statement.setQueryTimeout(30);  // set timeout to 30 sec.
 		
 		  DatabaseMetaData md = myConnection.getMetaData();
-		  ResultSet rs = md.getTables(null, null, "tfriddles", null);
+		  ResultSet rs = md.getTables(null, null, "tfriddles", null); // Get the result set for table tfriddles.
 		  rs.next();
-		  if(!(rs.getRow() > 0)) addRiddles(statement);
+		  if(!(rs.getRow() > 0)) addRiddles(statement); // Adds riddle if tfriddles has a 0 rows.
 		  rs.close();
 
 		} catch(SQLException e) {
@@ -35,11 +51,16 @@ public class TFRiddleDatabase {
 		  System.err.println(e.getMessage());
 	    }
 	}
-		
+	
+	// Adds riddles to mcriddles.db.
+	// There are duplicates here to ensure that tfriddles has enough riddles to meet the 
+	// minumum required by Glorp for each database: 70 riddles.
 	private void addRiddles(Statement theStatement) {
 		try {
+			  // Create table if it doesn't already exist.
 			  theStatement.executeUpdate("CREATE TABLE IF NOT EXISTS tfriddles ( question string, answer string, wrong_answer string, explanation string )");
 			 
+			  // Add the riddles.
 			  theStatement.executeUpdate("INSERT INTO tfriddles VALUES('You live in a one story house made entirely of redwood. True or false: the stairs are red.', 'False', 'True', 'You live in a one-story house, there are no stairs!' )");
 			  theStatement.executeUpdate("INSERT INTO tfriddles VALUES('The Sphinx is the oldest known monumental sculpture in Egypt.', 'True', 'False', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO tfriddles VALUES('The Christian cross was developed from the djed, an ancient Egyptian symbol.', 'False', 'True', 'The Christian cross is based on the ankh, the key of life. The djed is a pillar-like symbol.' )");
@@ -111,8 +132,6 @@ public class TFRiddleDatabase {
 			  theStatement.executeUpdate("INSERT INTO tfriddles VALUES('Egyptian police officers used trained dogs and monkeys while out on patrol.', 'True', 'False', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO tfriddles VALUES('The Egyptians believed their makeup had magical healing powers.', 'True', 'False', 'They weren’t entirely wrong: Research has shown that the lead-based cosmetics worn along the Nile actually helped stave off eye infections!' )");
 			  theStatement.executeUpdate("INSERT INTO tfriddles VALUES('Both men and women ancient Egyptians were known to wear copious amounts of makeup.', 'True', 'False', ' ' )");
-
-		
 		} catch(SQLException e) {	
 		  // if the error message is "out of memory",
 		  // it probably means no database file is found
@@ -120,13 +139,16 @@ public class TFRiddleDatabase {
 	    }
 	}
 	
+	/**
+	 * Getter for a ResultSet for all of the data in tfriddles.
+	 * @return ResultSet All questions and answers in tfriddles
+	 */
 	public ResultSet getTFRiddleSet() {
 		ResultSet rs = null;
 		try {
 			myConnection = DriverManager.getConnection("jdbc:sqlite:tfriddles.db");
 			Statement statement = myConnection.createStatement();
 			statement.setQueryTimeout(30);  // set timeout to 30 sec.
-
 			rs = statement.executeQuery("SELECT * FROM tfriddles ORDER BY RANDOM()");
 		} catch (SQLException e) {
 	        System.err.println(e.getMessage());
@@ -134,6 +156,7 @@ public class TFRiddleDatabase {
 		return rs;	
 	}
 	
+	// Closes the connection to tfriddles.db.
 	public void closeConnection() {
 		try {
 		    if(myConnection != null)

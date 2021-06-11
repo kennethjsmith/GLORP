@@ -3,22 +3,20 @@ package model;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import view.GameIcon;
 
 /**
  * This class holds all the GameIcons representing the Player.
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
- * @version 
+ * @version 1.0.
  */
 public class Skin implements Serializable {
-	/**
-     * 
-     */
+	// A serialized ID for serialization.
     private static final long serialVersionUID = -7677582022891169636L;
-    
-    // fields
-	private SkinType myType;
+   	private SkinType myType;
+   	
 	private GameIcon myMapIcon;
 	private int myIconWidth;
 	private int myIconHeight;
@@ -26,14 +24,14 @@ public class Skin implements Serializable {
 	GameIcon[] myLeftIcons;
 	GameIcon[] myRightIcons;
 	private Map<IconDirection, GameIcon[]> myRoomIconMap;
-	// TODO: add front/rear facing icons
-	private static final int DEFAULT_SIZE = 100;
+	private static final int DEFAULT_SIZE = 100; // Size of the player icon.
 
 	/**
-	 * @param theType
+	 * Creates a new Skin.
+	 * @param SkinType The type of skin we are creating
 	 */
 	public Skin(SkinType theType){
-    	myType = theType;
+    	myType = Objects.requireNonNull(theType);
         myRoomIconMap = new HashMap<>();
         myLeftIcons = loadRoomIcons(IconDirection.LEFT, myType);
         myRightIcons = loadRoomIcons(IconDirection.RIGHT, myType);
@@ -44,9 +42,7 @@ public class Skin implements Serializable {
         myIconHeight = theType.getMyHeight();
 	}
 	
-	/*
-	 * Generates array of icons for a given icon direction and skin type.
-	 */
+	// Generates array of icons for a given icon direction and skin type.
 	private GameIcon[] loadRoomIcons(IconDirection theIconDirection, SkinType theSkinType) {
 		GameIcon[] inRoomIcons = new GameIcon[5];
 		for (int i = 0; i <= 4; i++) { 
@@ -56,17 +52,17 @@ public class Skin implements Serializable {
 		return inRoomIcons;
 	}
 
+	// Loads the map icon based on the SkinType.
 	private GameIcon loadMapIcon(SkinType theSkinType) {
+		Objects.requireNonNull(theSkinType);
 		GameIcon inMapIcon = new GameIcon(getMapIconFileName(theSkinType.getLabel()));
 		return inMapIcon;
 	}
 	
-	/**
-     * Builds a string representation of the objects image file name.
-     * 
-     * @return sb.toString() the string representation
-     */
+	// Builds a string representation of the objects image file name
     private String getRoomIconFileName(String theDirectionLabel, String theSkinTypeLabel, int i) {
+    	Objects.requireNonNull(theDirectionLabel);
+    	Objects.requireNonNull(theSkinTypeLabel);
         StringBuilder sb = new StringBuilder();
         sb.append("src/icons/");
         sb.append(theDirectionLabel.toLowerCase());
@@ -77,11 +73,9 @@ public class Skin implements Serializable {
         return sb.toString(); 
     }
     
-    /**
-     * @param theSkinTypeLabel
-     * @return
-     */
+    // Returns the icon name for the map icon based on the skin type.
     private String getMapIconFileName(String theSkinTypeLabel) {
+    	Objects.requireNonNull(theSkinTypeLabel);
         StringBuilder sb = new StringBuilder();
         sb.append("src/icons/");
         sb.append(theSkinTypeLabel.toLowerCase());
@@ -91,48 +85,55 @@ public class Skin implements Serializable {
     }
 	
 	/**
-	 * @param theIconDirection
-	 * @param theStride
-	 * @return
+	 * A getter for this skins icon.
+	 * @param Direction The Direction the icon should be facing.
+	 * @param The stride of the icon, an int
+	 * @return GameIcon The correct icon for this skin
 	 */
 	public GameIcon getIcon(IconDirection theIconDirection, int theStride) {
-		//System.out.println(myImageIconMap.get(theIconDirection)[theStride]);
+		Objects.requireNonNull(theIconDirection);
+		Objects.requireNonNull(theStride);
 		return myRoomIconMap.get(theIconDirection)[theStride];
 	}
 	
 	/**
-	 * @return
+	 * Getter for the size of this skins icon.
+	 * @return The size of the skin, an int
 	 */
 	public static int getSize() {
 		return DEFAULT_SIZE;
 	}
 
 	/**
-	 * @return the myIconWidth
+	 * Getter for the width of the icon.
+	 * @return The width of the icon
 	 */
 	public int getIconWidth() {
 		return myIconWidth;
 	}
 	
 	/**
-	 * @return the myIconHeight
+	 * Getter for the height of the icon.
+	 * @return The height of the icon
 	 */
 	public int getIconHeight() {
 		return myIconHeight;
 	}
 
 	/**
-	 * @return the myType
+	 * Getter for the SkinType.
+	 * @return SkinType The type of Skin this is
 	 */
 	public SkinType getType() {
 		return myType;
 	}
 
 	/**
-	 * @param myType the myType to set
+	 * Setter for the SkinType
+	 * @param SkinType The myType to set
 	 */
 	public void setType(SkinType theType) {
-		myType = theType;
+		myType = Objects.requireNonNull(theType);
 		myLeftIcons = loadRoomIcons(IconDirection.LEFT, theType);
         myRightIcons = loadRoomIcons(IconDirection.RIGHT, theType);
         myRoomIconMap.put(IconDirection.LEFT, myLeftIcons);

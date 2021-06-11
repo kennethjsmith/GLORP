@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -10,23 +9,29 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
 
+/**
+ * Creates the About popup for the GUI.
+ * @author Ken Smith, Katelynn Oleson, Heather Finch
+ * @version 1.0.
+ */
 public class AboutWindow extends JFrame{
-	// fields
+	// Serialized ID for serialization.
+	private static final long serialVersionUID = 1L;
 	private static final String TITLE = "About";
 	private final static int ICON_WIDTH = 225;
 	private final static int ICON_HEIGHT = 75;
 	private GameIcon TITLE_ICON = new GameIcon("src/icons/title.png", ICON_WIDTH, ICON_HEIGHT);
-	
-	public AboutWindow() {}
-	
+		
+	/**
+	 * Creates the about window with the icon provided.
+	 * @param ImageIcon The icon for the window
+	 */
 	public AboutWindow(ImageIcon theIcon) {
 		super();
         setTitle(TITLE);
         setIconImage(theIcon.getImage());
         setResizable(false);
-		
-		//set layout
-        this.setLayout(new GridBagLayout());
+        setLayout(new GridBagLayout()); // Set the layout.
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         
@@ -63,7 +68,6 @@ public class AboutWindow extends JFrame{
 	    c.gridx = 0;
         c.gridy = 3;
 	    add(text2, c);
-	    
 	    
 	    pack();
 	    setVisible(true);

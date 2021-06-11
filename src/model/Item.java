@@ -2,78 +2,73 @@ package model;
 
 import java.awt.Rectangle;
 import java.io.Serializable;
+import java.util.Objects;
 
 import view.GameIcon;
 
 /**
  * This class represents Item and extends GamePiece.  
  * @authors Heather Finch, Katelynn Oleson, Ken Smith
- * @version
+ * @version 1.0.
  */
 public class Item  extends GamePiece implements Serializable{
-	/**
-     * 
-     */
+    // A serialized ID for serialization.
     private static final long serialVersionUID = 4350554592080926262L;
-    
-    // fields
-	private Rectangle myIconArea;
+   	private Rectangle myIconArea;
 	private GameIcon myRoomIcon;
 	private GameIcon myItemPanelIcon;
 	private ItemType myType;
-	
 	private final static int MAX_SIZE = 75;
-	// TODO: should this be private to prevent instantiation? Fixture too?
-	/**
-	 * A default constructor.
-	 */
-	public Item() {
-		super();
-		myIconArea = null;
-	}
 	
 	/**
 	 * Constructs an item at the given point.
-	 * @param thePoint
+	 * @param PiecePoint the given point
+	 * @param ItemType the type of this item
 	 */
 	public Item(PiecePoint thePoint, ItemType theType) {
 		super();
-		myType = theType;
+		Objects.requireNonNull(thePoint);
+		myType = Objects.requireNonNull(theType);
 		myRoomIcon = ItemType.getRoomIcon(theType);
 		myItemPanelIcon = ItemType.getItemPanelIcon(theType);
 		myIconArea = new Rectangle(thePoint, ItemType.getDimension(theType));
 	}
 
 	/**
-	 * @return the ROOM_ICON
+	 * Getter for this items room icon.
+	 * @return GameIcon this icons room icon
 	 */
 	public GameIcon getRoomIcon() {
 		return myRoomIcon;
 	}
 	
 	/**
-	 * @return the ITEM_PANEL_ICON
+	 * Getter for this items icon for the item panel.
+	 * @return GameIcon the icon for the item panel
 	 */
 	public GameIcon getItemPanelIcon() {
 		return myItemPanelIcon;
 	}
 
 	/**
-	 * @return the myIconArea
+	 * Getter for this icons area.
+	 * @return Rectangle this icons area
 	 */
 	public Rectangle getIconArea() {
 		return myIconArea;
 	}
 	
 	/**
-	 * @return myType my ItemType
+	 * Getter for this icons ItemType.
+	 * @return ItemType the type of item that this icon is
 	 */
 	public ItemType getType() {
 		return myType;
 	}
 
 	/**
-	 * @return the max size
+	 * Getter for the maximum size of this item.
+	 * @return the max size of this item, an int
 	 */
 	public static int getMaxSize() {
 		return MAX_SIZE;

@@ -6,35 +6,24 @@ import javax.swing.ImageIcon;
 /**
  * Extends ImageIcon; allows for easy resizing and size to be set in the constructor.
  * @author Ken Smith, Heather Finch, Katelynn Oleson 
- * @version 
+ * @version 1.0.
  */
 public class GameIcon extends ImageIcon{
-
-
-	/**
-     * 
-     */
+	// A serialized ID for serialization.
     private static final long serialVersionUID = -4223394385991587942L;
-
-    /**
-	 * 
-	 */
-	public GameIcon() {
-		super();
-	}
 	
 	/**
-	 * 
-	 * @param theString
+	 * Creates a GameIcon based on the String passed in.
+	 * @param String The file name of the icon
 	 */
 	public GameIcon(String theString) {
 		super(theString);
 	}
 	
 	/**
-	 * 
-	 * @param theString
-	 * @param theSize
+	 * Creates a GameIcon based on the String and size passed in.
+	 * @param String The file name of the icon
+	 * @param The size of the icon, an int
 	 */
 	public GameIcon(String theString, int theSize) {
 		super(theString);
@@ -42,40 +31,31 @@ public class GameIcon extends ImageIcon{
 	}
 	
 	/**
-	 * 
-	 * @param theString
-	 * @param theWidth
-	 * @param theHeight
+	 * Creates a GameIcon based on the String, width, and height passed in.
+	 * @param String The file name of the icon
+	 * @param The width of the icon, an int
+	 * @param The height of the icon, an int
 	 */
 	public GameIcon(String theString, int theWidth, int theHeight) {
 		super(theString);
 		resize(theWidth, theHeight);
 	}
 	
-	/**
-	 * 
-	 * @param theSize
-	 */
-	public void resize(int theSize) {
+	// Resized the GameIcon based on size.
+	private void resize(int theSize) {
 		Image inTempImage;
-    	//resize left facing standing icon
-    	inTempImage = this.getImage(); // transform it 
-		inTempImage = inTempImage.getScaledInstance(theSize, theSize,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-		this.setImage(inTempImage); // transform it back
-    
+    	// Resize left facing standing icon.
+    	inTempImage = this.getImage(); // Transform it.
+		inTempImage = inTempImage.getScaledInstance(theSize, theSize,  java.awt.Image.SCALE_SMOOTH); // Scale it the smooth way.  
+		this.setImage(inTempImage); // Transform it back.
 	}
 	
-	/**
-	 * Resizes the Icon.
-	 * @param theWidth
-	 * @param theHeight
-	 */
-	public void resize(int theWidth, int theHeight) {
+	// Resizes the GameIcon based on width and height.
+	private void resize(int theWidth, int theHeight) {
 		Image inTempImage;
-    	//resize left facing standing icon
-    	inTempImage = this.getImage(); // transform it 
-		inTempImage = inTempImage.getScaledInstance(theWidth, theHeight,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-		this.setImage(inTempImage); // transform it back
-    
+    	// Resize left facing standing icon.
+    	inTempImage = this.getImage(); // Transform it.
+		inTempImage = inTempImage.getScaledInstance(theWidth, theHeight,  java.awt.Image.SCALE_SMOOTH); // Scale it the smooth way.  
+		this.setImage(inTempImage); // Transform it back.
 	}
 }

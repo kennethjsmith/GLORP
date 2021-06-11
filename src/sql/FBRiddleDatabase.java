@@ -8,36 +8,56 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import org.sqlite.SQLiteDataSource;
 
+/**
+ * This class creates a database of fill-in-the-blank questions if one doesn't already exist.
+ * It also provides a means to access the database. 
+ * The database it creates is called fbriddles.db.
+ * Questions taken from:
+ * https://egypt.mrdonn.org/trivia.html
+ * https://www.riddles.com/
+ * https://conversationstartersworld.com/ancient-egypt-trivia-questions/
+ * https://www.history.com/news/11-things-you-may-not-know-about-ancient-egypt
+ * 
+ * @author Heather Finch, Ken Smith, Katelynn Oleson.
+ * @version 1.0.
+ */
 public class FBRiddleDatabase {
 	private Connection myConnection;
 	
+	/**
+	 * Creates the database if it doesn't already exist.
+	 */
 	public FBRiddleDatabase() {
 		SQLiteDataSource ds = null;
 		
-		// Connect to database and check if the table exists already
+		// Connect to database and check if the table exists already.
 		try {
 			ds = new SQLiteDataSource();
 			ds.setUrl("jdbc:sqlite:fbriddles.db");
-		  myConnection = ds.getConnection();
-		  Statement statement = myConnection.createStatement();
-		  statement.setQueryTimeout(30);  // set timeout to 30 sec.
+			myConnection = ds.getConnection();
+			Statement statement = myConnection.createStatement();
+			statement.setQueryTimeout(30);  // set timeout to 30 sec.
 		
-		  DatabaseMetaData md = myConnection.getMetaData();
-		  ResultSet rs = md.getTables(null, null, "fbriddles", null);
-		  rs.next();
-		  if(!(rs.getRow() > 0)) addRiddles(statement);
-		  rs.close();
+			DatabaseMetaData md = myConnection.getMetaData();
+		  	ResultSet rs = md.getTables(null, null, "fbriddles", null); // Get the result set for table fbriddles.
+		  	rs.next();
+		  	if(!(rs.getRow() > 0)) addRiddles(statement); // Adds riddle if fbriddles has a 0 rows.
+		  	rs.close();
 		} catch(SQLException e) {
-		  // if the error message is "out of memory",
-		  // it probably means no database file is found
-		  System.err.println(e.getMessage());
-	    }
+			System.err.println(e.getMessage());
+		}
 	}
 		
+	// Adds riddles to fbriddles.db.
+	// There are duplicates here to ensure that fbriddles has enough riddles to meet the 
+	// minumum required by Glorp for each database: 70 riddles.
 	private void addRiddles(Statement theStatement) {
 		try {
+			  // Create the table if it doesn't exist.
 			  theStatement.executeUpdate("CREATE TABLE IF NOT EXISTS fbriddles ( question string, answer string, explanation string )");
 			  
+			  
+			  // Add the riddles.
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('A sphere has three, a circle has two, and a point has zero. What is it?', 'Dimension', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('The more you take, the more you leave behind. What am I?', 'Footsteps', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What 8 letter word can have a letter taken away and it still makes a word. Take another letter away and it still makes a word. Keep on doing that until you have one letter left. What is the word?', 'Starting', ' ' )");
@@ -55,8 +75,8 @@ public class FBRiddleDatabase {
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('Im white, and used for cutting and grinding. When Im damaged, humans usually remove me or fill me. "
 			  		+ "For most animals I am a useful tool. What am I?', 'Tooth', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What has six faces, but does not wear makeup, has twenty-one eyes, but cannot see? What is it?', 'Dice', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('I am a word of six; my first three letters refer to an automobile; my last three letters refer to a household animal; "
-			  		+ "my first four letters is a fish; I am found in your room. What am I?', 'Carpet', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('I am a word of 6; my first 3 letters refer to an automobile; my last 3 letters refer to a household animal; "
+			  		+ "my first 4 letters is a fish; I am found in your room. What am I?', 'Carpet', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What number would you have to count before you would use the letter A in the English language spelling of a whole number.', '1000', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What 4-letter capitalized word can be written forward, backward or upside down, and can still be read from left to right?', 'NOON', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What kind of goose fights with snakes?', 'mongoose', ' ' )");
@@ -64,7 +84,7 @@ public class FBRiddleDatabase {
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('Only one color, but not one size, Stuck at the bottom, yet easily flies."
 			  		+ "Present in sun, but not in rain. Doing no harm, and feeling no pain. What is it?', 'Shadow', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What English word retains the same pronunciation, even after you take away four of its five letters?', 'Queue', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('A time when they are green, a time when theyre brown, but both of these times, cause me to frown. But just in between, for a very short while, Theyre perfect, yellow and cause me to smile. What are they?', 'Bananas', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('A time when they are green, a time when theyre brown, but both of these times, cause me to frown. But just in between theyre perfect, yellow and cause me to smile. What are they?', 'Bananas', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('There is an ancient invention, still used in some parts of the world today, that allows people to see through walls. What is it?', 'Window', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What kind of nut has no shell?', 'Doughnut', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What day would yesterday be if Thursday was four days before the day after tommorow?', 'Friday', ' ' )");
@@ -87,8 +107,8 @@ public class FBRiddleDatabase {
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('Im white, and used for cutting and grinding. When Im damaged, humans usually remove me or fill me. "
 			  		+ "For most animals I am a useful tool. What am I?', 'Tooth', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What has six faces, but does not wear makeup, has twenty-one eyes, but cannot see? What is it?', 'Dice', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('I am a word of six; my first three letters refer to an automobile; my last three letters refer to a household animal; "
-			  		+ "my first four letters is a fish; I am found in your room. What am I?', 'Carpet', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('I am a word of 6; my first 3 letters refer to an automobile; my last 3 letters refer to a household animal; "
+			  		+ "my first 4 letters is a fish; I am found in your room. What am I?', 'Carpet', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What number would you have to count before you would use the letter A in the English language spelling of a whole number.', '1000', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What 4-letter capitalized word can be written forward, backward or upside down, and can still be read from left to right?', 'NOON', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What kind of goose fights with snakes?', 'mongoose', ' ' )");
@@ -96,7 +116,7 @@ public class FBRiddleDatabase {
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('Only one color, but not one size, Stuck at the bottom, yet easily flies."
 			  		+ "Present in sun, but not in rain. Doing no harm, and feeling no pain. What is it?', 'Shadow', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What English word retains the same pronunciation, even after you take away four of its five letters?', 'Queue', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('A time when they are green, a time when theyre brown, but both of these times, cause me to frown. But just in between, for a very short while, Theyre perfect, yellow and cause me to smile. What are they?', 'Bananas', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('A time when they are green, a time when theyre brown, but both of these times, cause me to frown. But just in between theyre perfect, yellow and cause me to smile. What are they?', 'Bananas', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('There is an ancient invention, still used in some parts of the world today, that allows people to see through walls. What is it?', 'Window', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What kind of nut has no shell?', 'Doughnut', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What day would yesterday be if Thursday was four days before the day after tommorow?', 'Friday', ' ' )");
@@ -119,8 +139,8 @@ public class FBRiddleDatabase {
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('Im white, and used for cutting and grinding. When Im damaged, humans usually remove me or fill me. "
 			  		+ "For most animals I am a useful tool. What am I?', 'Tooth', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What has six faces, but does not wear makeup, has twenty-one eyes, but cannot see? What is it?', 'Dice', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('I am a word of six; my first three letters refer to an automobile; my last three letters refer to a household animal; "
-			  		+ "my first four letters is a fish; I am found in your room. What am I?', 'Carpet', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('I am a word of 6; my first 3 letters refer to an automobile; my last 3 letters refer to a household animal; "
+			  		+ "my first 4 letters is a fish; I am found in your room. What am I?', 'Carpet', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What number would you have to count before you would use the letter A in the English language spelling of a whole number.', '1000', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What 4-letter capitalized word can be written forward, backward or upside down, and can still be read from left to right?', 'NOON', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What kind of goose fights with snakes?', 'mongoose', ' ' )");
@@ -128,7 +148,7 @@ public class FBRiddleDatabase {
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('Only one color, but not one size, Stuck at the bottom, yet easily flies."
 			  		+ "Present in sun, but not in rain. Doing no harm, and feeling no pain. What is it?', 'Shadow', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What English word retains the same pronunciation, even after you take away four of its five letters?', 'Queue', ' ' )");
-			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('A time when they are green, a time when theyre brown, but both of these times, cause me to frown. But just in between, for a very short while, Theyre perfect, yellow and cause me to smile. What are they?', 'Bananas', ' ' )");
+			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('A time when they are green, a time when theyre brown, but both of these times, cause me to frown. But just in between theyre perfect, yellow and cause me to smile. What are they?', 'Bananas', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('There is an ancient invention, still used in some parts of the world today, that allows people to see through walls. What is it?', 'Window', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What kind of nut has no shell?', 'Doughnut', ' ' )");
 			  theStatement.executeUpdate("INSERT INTO fbriddles VALUES('What day would yesterday be if Thursday was four days before the day after tommorow?', 'Friday', ' ' )");
@@ -140,13 +160,16 @@ public class FBRiddleDatabase {
 	    }
 	}
 	
+	/**
+	 * Getter for a ResultSet for all of the data in fbriddles.
+	 * @return ResultSet All questions and answers in fbriddles
+	 */
 	public ResultSet getFBRiddleSet() {
 		ResultSet rs = null;
 		try {
 			myConnection = DriverManager.getConnection("jdbc:sqlite:fbriddles.db");
 			Statement statement = myConnection.createStatement();
 			statement.setQueryTimeout(30);  // set timeout to 30 sec.
-
 			rs = statement.executeQuery("SELECT * FROM fbriddles ORDER BY RANDOM()");
 		} catch (SQLException e) {
 	        System.err.println(e.getMessage());
@@ -154,13 +177,13 @@ public class FBRiddleDatabase {
 		return rs;	
 	}
 	
+	// Closes the connection to fbriddles.db.
 	public void closeConnection() {
 		try {
-		    if(myConnection != null)
-		      myConnection.close();
+		    if(myConnection != null) myConnection.close();
 		  } catch(SQLException e) {
-		    // connection close failed.
-		        System.err.println(e.getMessage());
+			  // Connection close failed.
+		      System.err.println(e.getMessage());
 	      }
 	}
 }
