@@ -25,21 +25,19 @@ class DoorFactoryTester {
         myFactory = new DoorFactory(myRooms);
         
     }
+       
+    @Test
+    void testNullArrayConstructor() {
+        assertThrows(NullPointerException.class, () -> new DoorFactory(null));
+    }
     
-    // not working, have someone else run it
-   
-//    @Test
-//    void testNullArrayConstructor() {
-//        assertThrows(NullPointerException.class, new DoorFactory(null));
-//    }
-//    
-//    @Test(expected=NullPointerException.class)
-//    void testNullRoomConstructor() {
-//        Room[][] inRooms = new Room[2][2];
-//        inRooms[0][0] = new Room(0,0);
-//        inRooms[1][0] = null;
-//        assertThrows(NullPointerException.class, new DoorFactory(inRooms));
-//    }
+    @Test
+    void testNullRoomConstructor() {
+        Room[][] inRooms = new Room[2][2];
+        inRooms[0][0] = new Room(0,0);
+        inRooms[1][0] = null;
+        assertThrows(NullPointerException.class, () -> new DoorFactory(inRooms));
+    }
     
 
     @Test
@@ -92,9 +90,5 @@ class DoorFactoryTester {
                 }
             }
         }
-        
-        
     }
-
-
 }
