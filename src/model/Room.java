@@ -60,7 +60,11 @@ public class Room implements Serializable{
 	 * @param theCol The column of the room.
 	 */
 
-	public Room(int theRow, int theCol) {  
+	public Room(int theRow, int theCol) throws IllegalArgumentException{ 
+	    if(theRow < 0 || theCol < 0) {
+	        throw new IllegalArgumentException("Row and Column cannot be negative.");
+	    }
+	    
 		myDoorMap = null;
 		myItem = null;
 	    setRandomFloor(); 
@@ -77,6 +81,7 @@ public class Room implements Serializable{
      * @param Door[] theDoors
      */
     public void setDoors(HashMap<Direction, Door> theDoors) {
+        Objects.requireNonNull(theDoors, "Cannot set door map to null");
     	myDoorMap = theDoors;
     }
     
@@ -85,6 +90,7 @@ public class Room implements Serializable{
      * @return HashMap<Direction, Door> The directions and doors in the room
      */
     public HashMap<Direction, Door> getDoors() {
+        Objects.requireNonNull(myDoorMap, "There is no door map to get!");
     	return myDoorMap;
     }
     
@@ -92,15 +98,16 @@ public class Room implements Serializable{
 	 * Getter for the Item in this room.
 	 * @return Item The Item in this room
 	 */
-	public Item getItem() {
-		return myItem;
+	public Item getItem() throws NullPointerException {
+	    Objects.requireNonNull(myItem, "There is no item to get!");
+	    return myItem;
 	}
 
 	/**
 	 * Adds an Item to this room.
 	 * @param Item The new Item for the room
 	 */
-	public void setItem(Item theItem) {
+	public void setItem(Item theItem) { //???
 		myItem = theItem;
 		if (theItem == null) mySmallIcon = MAP_ICON_KEY;
 	}
@@ -110,6 +117,7 @@ public class Room implements Serializable{
 	 * @param myItem the myItem to add to the room
 	 */
 	public void addItem(Item theGamePiece) {
+	    Objects.requireNonNull(theGamePiece, "Cannot place null item in room!");
 		myItem = theGamePiece;
 	}
 	
@@ -118,6 +126,8 @@ public class Room implements Serializable{
 	 * @param myItem the myItem to set
 	 */
 	public void setPlayer(Player thePlayer) {
+	    // when player removed, sets null? 
+	    //Objects.requireNonNull(thePlayer, "Cannot set to null player!");
 		myPlayer = thePlayer;
 		isVisited = true;
 	}
